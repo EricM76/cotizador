@@ -12,15 +12,15 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Price.belongsTo(models.System,{
-        foreignKey : systemId,
+        foreignKey : 'systemId',
         as : 'system'
       })
       Price.belongsTo(models.Cloth,{
-        foreignKey : clothId,
+        foreignKey : 'clothId',
         as : 'cloth'
       })
       Price.belongsTo(models.Color,{
-        foreignKey : colorId,
+        foreignKey : 'colorId',
         as : 'color'
       })
     }

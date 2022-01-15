@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Order.belongsToMany(model.Quotation,{
+      Order.belongsToMany(models.Quotation,{
         as: 'quotations',
         through : 'OrderQuotation',
         foreignKey : 'orderId',

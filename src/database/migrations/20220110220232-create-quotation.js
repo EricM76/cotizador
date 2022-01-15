@@ -74,11 +74,11 @@ module.exports = {
           key : 'id'
         }
       },
-      modelId: {
+      patternId: {
         type: Sequelize.INTEGER,
         references : {
           model : {
-            tableName : 'Models'
+            tableName : 'Patterns'
           },
           key : 'id'
         }

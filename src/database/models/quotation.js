@@ -11,38 +11,38 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Quotation.belongsTo(models.System,{
-        foreignKey : systemId,
+        foreignKey : 'systemId',
         as : 'system'
       })
       Quotation.belongsTo(models.Cloth,{
-        foreignKey : clothId,
+        foreignKey : 'clothId',
         as : 'cloth'
       })
       Quotation.belongsTo(models.Color,{
-        foreignKey : colorId,
+        foreignKey : 'colorId',
         as : 'color'
       })
       Quotation.belongsTo(models.Support,{
-        foreignKey : supportId,
+        foreignKey : 'supportId',
         as : 'support'
       })
-      Quotation.belongsTo(models.Model,{
-        foreignKey : modelId,
+      Quotation.belongsTo(models.Pattern,{
+        foreignKey : 'patternId',
         as : 'model'
       })
       Quotation.belongsTo(models.Chain,{
-        foreignKey : chainId,
+        foreignKey : 'chainId',
         as : 'chain'
       })
       Quotation.belongsTo(models.User,{
-        foreignKey : userId,
+        foreignKey : 'userId',
         as : 'user'
       })
       Quotation.belongsTo(models.Reference,{
-        foreignKey : referenceId,
+        foreignKey : 'referenceId',
         as : 'reference'
       })
-      Quotation.belongsToMany(model.Order,{
+      Quotation.belongsToMany(models.Order,{
         as : 'orders',
         through : 'OrderQuotation',
         foreignKey : 'quotationId',

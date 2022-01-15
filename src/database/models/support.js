@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Support.hasMany(models.Quotation,{
-        foreignKey : supportId,
-        as : 'quotation'
+        foreignKey : 'supportId',
+        as : 'quotations'
       })
     }
   };

@@ -11,15 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       System.hasMany(models.Price,{
-        foreignKey : systemId,
-        as : 'price'
+        foreignKey : 'systemId',
+        as : 'prices'
       })
       System.hasMany(models.Quotation,{
-        foreignKey : systemId,
-        as : 'quotation'
+        foreignKey : 'systemId',
+        as : 'quotations'
       })
       System.hasMany(models.Clarification,{
-        foreignKey : systemId,
+        foreignKey : 'systemId',
         as : 'clarifications',
         onDelete : 'cascade'
       })

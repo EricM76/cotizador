@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Chain.hasMany(models.Quotation,{
-        foreignKey : chainId,
-        as : 'quotation'
+        foreignKey : 'chainId',
+        as : 'quotations'
       })
     }
   };

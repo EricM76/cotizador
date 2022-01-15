@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       })
       Reference.hasMany(models.Quotation,{
         foreignKey : 'referenceId',
-        as : 'quotation'
+        as : 'quotations'
       })
     }
   };

@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Quotation,{
-        foreignKey : userId,
-        as : 'quotation'
+        foreignKey : 'userId',
+        as : 'quotations'
       })
       User.belongsTo(models.Rol,{
-        foreignKey : rolId,
+        foreignKey : 'rolId',
         as: 'rol'
       })
       User.hasMany(models.Reference,{

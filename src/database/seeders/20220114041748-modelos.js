@@ -14,12 +14,12 @@ const models = modelos.map(({name,visible,idLocal,price} )=> {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
 
-      await queryInterface.bulkInsert('Models', models, {});
+      await queryInterface.bulkInsert('Patterns', models, {});
   
   },
 
   down: async (queryInterface, Sequelize) => {
    
-     await queryInterface.bulkDelete('Models', null, {});
+     await queryInterface.bulkDelete('Patterns', null, {});
        }
 };
