@@ -6,8 +6,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var quoterRouter = require('./routes/quoter');
-var usersRouter = require('./routes/users');
+const chainsRouter = require('./routes/chain');
+const clothsRouter = require('./routes/cloth');
+const colorsRouter = require('./routes/color');
+const ordersRouter = require('./routes/order');
+const patternsRouter = require('./routes/pattern');
+const pricesRouter = require('./routes/price');
+const quotersRouter = require('./routes/quoter');
+const supportsRouter = require('./routes/support');
+const systemsRouter = require('./routes/system');
+const usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -22,8 +30,17 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '..','public')));
 
-app.use('/', quoterRouter);
+app.use('/chains', chainsRouter);
+app.use('/cloths', clothsRouter);
+app.use('/colors', colorsRouter);
+app.use('/orders', ordersRouter);
+app.use('/patterns', patternsRouter);
+app.use('/prices', pricesRouter);
+app.use('/quoters', quotersRouter);
+app.use('/supports', supportsRouter);
+app.use('/systems', systemsRouter);
 app.use('/users', usersRouter);
+app.use('/', (req,res) => res.redirect('/quoters/add'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -2,24 +2,24 @@ const db = require('../database/models');
 
 module.exports = {
     index : (req,res) => {
-        res.render('systems')
+        res.render('chains')
     },
     add : (req,res) => {
-        res.render('systemAdd')
+        res.render('chainAdd')
     },
     store : (req,res) => {
-        res.render('systems')
+        res.render('chains')
     },
     detail : (req,res) => {
-        res.render('systemDetail')
+        res.render('chainDetail')
     },
     edit : (req,res) => {
-        res.render('systemEdit')
+        res.render('chainEdit')
     },
     update : (req,res) => {
-        res.render('systemUpdate')
+        res.render('chainUpdate')
     },
     remove : (req,res) => {
-        res.render('systems')
+        res.render('chains')
     }
 }

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {index,add,store,detail,edit,update,remove} = require('../controllers/quoterController');
+const {index,add,store,detail,edit,update,remove} = require('../controllers/patternController');
 
 router
     .get('/', index)

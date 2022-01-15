@@ -2,24 +2,24 @@ const db = require('../database/models');
 
 module.exports = {
     index : (req,res) => {
-        res.render('systems')
+        res.render('patterns')
     },
     add : (req,res) => {
-        res.render('systemAdd')
+        res.render('patternAdd')
     },
     store : (req,res) => {
-        res.render('systems')
+        res.render('patterns')
     },
     detail : (req,res) => {
-        res.render('systemDetail')
+        res.render('patternDetail')
     },
     edit : (req,res) => {
-        res.render('systemEdit')
+        res.render('patternEdit')
     },
     update : (req,res) => {
-        res.render('systemUpdate')
+        res.render('patternUpdate')
     },
     remove : (req,res) => {
-        res.render('systems')
+        res.render('patterns')
     }
 }

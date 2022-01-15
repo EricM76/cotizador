@@ -1,7 +1,10 @@
 const db = require('../database/models');
 
 module.exports = {
-    form: (req, res) => {
+    index : (req,res) => {
+        res.render('quoters')
+    },
+    add: (req, res) => {
         const systems = db.System.findAll({
             where : {
                 visible : true
@@ -51,5 +54,20 @@ module.exports = {
                 })
             })
             .catch(error => console.log(error))
+    },
+    store : (req,res) => {
+        res.render('quoters')
+    },
+    detail : (req,res) => {
+        res.render('quoterDetail')
+    },
+    edit : (req,res) => {
+        res.render('quoterEdit')
+    },
+    update : (req,res) => {
+        res.render('quoterUpdate')
+    },
+    remove : (req,res) => {
+        res.render('quoters')
     }
 }
