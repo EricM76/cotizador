@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
+
+  <body>
+    <%- include('partials/header') %>
+    
+
+          <main class="container">
+            <section class="col-12 mt-5 mx-auto">
+              <article class="card shadow">
+                <div class="card-body">
+                  <form class="row" action="">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                      <div class="form-floating ">
+                        <select class="form-select" id="system">
+                          <option selected hidden>Seleccione...</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                        <label for="system">Sistema</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+
+                      <div class="form-floating">
+                        <select class="form-select" id="system">
+                          <option selected hidden>Seleccione...</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                        <label for="system">Tela</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+
+                      <div class="form-floating">
+                        <select class="form-select" id="system">
+                          <option selected hidden>Seleccione...</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                        <label for="system">Color</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+
+                      <div class="form-floating ">
+                        <select class="form-select" id="system">
+                          <option selected hidden>Seleccione...</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                        <label for="system">Soporte</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+
+                      <div class="form-floating ">
+                        <select class="form-select" id="system">
+                          <option selected hidden>Seleccione...</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                        <label for="system">Modelo</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+
+                      <div class="form-floating ">
+                        <select class="form-select" id="system">
+                          <option selected hidden>Seleccione...</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                        <label for="system">Cadena</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="width">
+                        <label for="width">Ancho de paño (cm)</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="heigth">
+                        <label for="heigth">Alto (cm)</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="heigth">
+                        <label for="heigth">Nombre de referencia</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                      <div class="alert alert-warning">
+                          Todos los campos son obligatorios. Puede ver mas abajo aclaraciones de cada sistema seleccionado.
+                      </div>
+                  </div>
+                  <div class="col-12 col-md-8 mb-3 ">
+                      <div class="alert alert-success text-center py-2">
+                       <h4>Monto: <span></span></h4>
+                      </div>
+                      <button class="btn buttons__btn-custom w-100">COTIZAR CORTINA</button>
+                  </div>
+                    <div class="col-12 mb-3">
+                        <div class="alert alert-info">
+                          <h6><i class="fas fa-info-circle"></i> Aclaraciones</h6>
+                          <hr>
+                          <ul>
+                            <li>Lo primero que debe seleccionarse es el sistema a cotizar. Ej: <b>Roller</b></li>
+                            <li>Las medidas deben ser expresadas en centimetros. Ej: <b>2m = 200cm</b> </li>
+                            <li>Consulten con nosotros si el cotizador no cotiza alguna medida.</li>
+                          </ul>
+                        </div>
+                    </div>
+                  </form>
+                </div>
+
+              </article>
+
+            </section>
+
+
+          </main>
+          <%- include('partials/footer') %>
+          <%- include('partials/scripts') %>
+  </body>
+
+</html>

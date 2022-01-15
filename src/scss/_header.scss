@@ -1,0 +1,9 @@
+header{
+    background-color: darken($color: red, $amount:20);
+    a.navbar-brand{
+        margin: 5px 0 -35px;
+        img{
+            width: 120px;
+        }
+    }
+}
