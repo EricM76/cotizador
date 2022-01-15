@@ -2,15 +2,40 @@ const db = require('../database/models');
 
 module.exports = {
     form: (req, res) => {
-        const systems = db.System.findAll();
-        const cloths = db.Cloth.findAll();
-        const colors = db.Color.findAll();
-        const supports = db.Support.findAll();
-        const patterns = db.Pattern.findAll();
+        const systems = db.System.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        const cloths = db.Cloth.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        const colors = db.Color.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        const supports = db.Support.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        const patterns = db.Pattern.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
         const chains = db.Chain.findAll();
 
         Promise.all([systems, cloths, colors, supports, patterns, chains])
-            .then((systems, cloths, colors, supports, patterns, chains) => {
+            .then(([systems, cloths, colors, supports, patterns, chains]) => {
                 return res.render('quoter', {
                     systems,
                     cloths,

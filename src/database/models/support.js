@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey : 'supportId',
         as : 'quotations'
       })
+      Support.belongsToMany(models.System,{
+        as : 'systems',
+        through : 'SystemSupport',
+        foreignKey : 'supportId',
+        otherKey : 'systemId'
+      })
     }
   };
   Support.init({

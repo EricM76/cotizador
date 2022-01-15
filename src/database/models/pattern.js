@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey : 'modelId',
         as : 'quotations'
       })
+      Pattern.belongsToMany(models.System,{
+        as : 'systems',
+        through : 'SystemPattern',
+        foreignKey : 'patternId',
+        otherKey : 'systemId'
+      })
     }
   };
   Pattern.init({

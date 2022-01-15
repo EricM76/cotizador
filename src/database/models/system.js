@@ -23,6 +23,36 @@ module.exports = (sequelize, DataTypes) => {
         as : 'clarifications',
         onDelete : 'cascade'
       })
+      System.belongsToMany(models.Chain,{
+        as : 'chains',
+        through : 'SystemChain',
+        foreignKey : 'systemId',
+        otherKey : 'chainId'
+      })
+      System.belongsToMany(models.Cloth,{
+        as : 'cloths',
+        through : 'SystemCloth',
+        foreignKey : 'systemId',
+        otherKey : 'clothId'
+      })
+      System.belongsToMany(models.Color,{
+        as : 'colors',
+        through : 'SystemColor',
+        foreignKey : 'systemId',
+        otherKey : 'colorId'
+      })
+      System.belongsToMany(models.Pattern,{
+        as : 'patterns',
+        through : 'SystemPattern',
+        foreignKey : 'systemId',
+        otherKey : 'patternId'
+      })
+      System.belongsToMany(models.Support,{
+        as : 'supports',
+        through : 'SystemSupport',
+        foreignKey : 'systemId',
+        otherKey : 'supportId'
+      })
     }
   };
   System.init({

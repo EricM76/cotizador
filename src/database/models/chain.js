@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey : 'chainId',
         as : 'quotations'
       })
+      Chain.belongsToMany(models.System,{
+        as : 'systems',
+        through : 'SystemChain',
+        foreignKey : 'chainId',
+        otherKey : 'systemId'
+      })
     }
   };
   Chain.init({

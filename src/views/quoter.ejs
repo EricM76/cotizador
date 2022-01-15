@@ -15,9 +15,9 @@
                       <div class="form-floating ">
                         <select class="form-select" id="system">
                           <option selected hidden>Seleccione...</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <% systems.forEach(system => { %>
+                            <option value="<%= system.id %>"><%= system.name %></option>
+                          <% }) %>
                         </select>
                         <label for="system">Sistema</label>
                       </div>
@@ -27,9 +27,9 @@
                       <div class="form-floating">
                         <select class="form-select" id="system">
                           <option selected hidden>Seleccione...</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <% cloths.forEach(cloth => { %>
+                            <option value="<%= cloth.id %>"><%= cloth.name %></option>
+                          <% }) %>
                         </select>
                         <label for="system">Tela</label>
                       </div>
@@ -39,9 +39,9 @@
                       <div class="form-floating">
                         <select class="form-select" id="system">
                           <option selected hidden>Seleccione...</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <% colors.forEach(color => { %>
+                            <option value="<%= color.id %>"><%= color.name %></option>
+                          <% }) %>
                         </select>
                         <label for="system">Color</label>
                       </div>
@@ -52,9 +52,9 @@
                       <div class="form-floating ">
                         <select class="form-select" id="system">
                           <option selected hidden>Seleccione...</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <% supports.forEach(support => { %>
+                            <option value="<%= support.id %>"><%= support.name %></option>
+                          <% }) %>
                         </select>
                         <label for="system">Soporte</label>
                       </div>
@@ -64,9 +64,9 @@
                       <div class="form-floating ">
                         <select class="form-select" id="system">
                           <option selected hidden>Seleccione...</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <% patterns.forEach(pattern => { %>
+                            <option value="<%= pattern.id %>"><%= pattern.name %></option>
+                          <% }) %>
                         </select>
                         <label for="system">Modelo</label>
                       </div>

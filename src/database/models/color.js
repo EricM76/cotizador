@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey : 'colorId',
         as : 'quotations'
       })
+      Color.belongsToMany(models.System,{
+        as : 'systems',
+        through : 'SystemColor',
+        foreignKey : 'colorId',
+        otherKey : 'systemId'
+      })
     }
   };
   Color.init({

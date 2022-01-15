@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey : 'clothId',
         as : 'quotations'
       })
+      Cloth.belongsToMany(models.System,{
+        as : 'systems',
+        through : 'SystemCloth',
+        foreignKey : 'clothId',
+        otherKey : 'systemId'
+      })
     }
   };
   Cloth.init({
