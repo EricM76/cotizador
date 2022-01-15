@@ -77,9 +77,9 @@
                       <div class="form-floating ">
                         <select class="form-select" id="system">
                           <option selected hidden>Seleccione...</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
+                          <% chains.forEach(chain => { %>
+                            <option value="<%= chain.id %>"><%= chain.name %></option>
+                          <% }) %>
                         </select>
                         <label for="system">Cadena</label>
                       </div>

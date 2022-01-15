@@ -32,7 +32,12 @@ module.exports = {
             },
             order : ['name']
         });
-        const chains = db.Chain.findAll();
+        const chains = db.Chain.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
 
         Promise.all([systems, cloths, colors, supports, patterns, chains])
             .then(([systems, cloths, colors, supports, patterns, chains]) => {
