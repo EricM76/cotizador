@@ -69,5 +69,8 @@ module.exports = {
     },
     remove : (req,res) => {
         res.render('quoters')
+    },
+    search : (req,res) => {
+        res.render('quoters')
     }
 }

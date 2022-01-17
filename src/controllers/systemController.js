@@ -1,14 +1,32 @@
 const db = require('../database/models');
+const {Op} = require('sequelize');
 
 module.exports = {
-    index : (req,res) => {
-        res.render('systems')
+    index: async (req, res) => {
+        let total = await db.System.count({
+            where : {visible : true}
+        })
+        db.System.findAll({
+            where: {
+                visible: true,
+            },
+            limit : 8
+        })
+            .then(items => res.render('systems', {
+                items,
+                total,
+                active : 1,
+                pages : 1,
+                keywords : "",
+                multiplo : total%8 === 0 ? 0 : 1
+            }))
+            .catch(error => console.log(error))
     },
     add : (req,res) => {
         res.render('systemAdd')
     },
     store : (req,res) => {
-        res.render('systems')
+        res.render('system')
     },
     detail : (req,res) => {
         res.render('systemDetail')
@@ -21,5 +39,82 @@ module.exports = {
     },
     remove : (req,res) => {
         res.render('systems')
+    },
+    filter: async (req, res) => {
+
+        let { order, filter, keywords, active,pages }= req.query;
+        let items = [];
+        let total = 0;
+        try {
+            if (filter === "all") {
+                total = await db.System.count({
+                    where : {
+                        name : {
+                            [Op.substring] : keywords
+                        }
+                    },
+                })
+                items = await db.System.findAll({
+                    where : {
+                        name : {
+                            [Op.substring] : keywords
+                        }
+                    },
+                    order: [order || 'id'],
+                    limit : 8,
+                    offset : active && (+active * 8) - 8 
+                })
+            } else {
+                total = await db.System.count({
+                    where: {
+                        visible: filter || true,
+                        name : {
+                            [Op.substring] : keywords
+                        }
+                    },
+                })
+                items = await db.System.findAll({
+                    where: {
+                        visible: filter || true,
+                        name : {
+                            [Op.substring] : keywords
+                        }
+                    },
+                    order: [order || 'id'],
+                    limit : 8,
+                    offset : active && (+active * 8) - 8 
+
+                })
+            }
+            return res.render('systems', {
+                items,
+                total,
+                active,
+                pages,
+                keywords,
+                multiplo : total%8 === 0 ? 0 : 1
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    visibility: async (req, res) => {
+
+        const { id, visibility } = req.params;
+        console.log(visibility)
+        try {
+
+            await db.System.update(
+                { visible: visibility === "true" ? 0 : 1 },
+                { where: { id } }
+            )
+
+        } catch (error) {
+            console.log(error)
+            return res.status(error.status || 500).json({
+                ok: false,
+                msg: error.msg
+            })
+        }
     }
 }

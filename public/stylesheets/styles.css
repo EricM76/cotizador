@@ -391,8 +391,30 @@ template {
   --bs-body-bg: #fff;
 }
 
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 body {
   background-color: #f8f9fa;
+}
+
+main {
+  padding-bottom: 50px;
+}
+
+.page-link {
+  color: darkred;
+}
+.page-link:hover {
+  color: darkred;
+}
+
+.page-item.active .page-link {
+  background-color: darkred;
+  border-color: darkred;
+  color: white;
 }
 
 header {
@@ -406,6 +428,8 @@ header a.navbar-brand img {
 }
 
 footer {
+  position: absolute;
+  bottom: 0;
   margin-top: 20px;
   width: 100%;
   background-color: #e6e6e6;

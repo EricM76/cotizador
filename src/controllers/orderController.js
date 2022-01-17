@@ -21,5 +21,9 @@ module.exports = {
     },
     remove : (req,res) => {
         res.render('orders')
+    },
+    search : (req,res) => {
+        res.render('orders')
     }
+    
 }
