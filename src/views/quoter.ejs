@@ -4,115 +4,103 @@
 
   <body>
     <%- include('partials/header') %>
-    
-
+    <%- include('partials/spinner') %> 
           <main class="container">
             <section class="col-12 mt-5 mx-auto">
               <article class="card shadow">
                 <div class="card-body">
-                  <form class="row" action="">
+                  <form class="row" action="" id="form-quoter">
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="form-floating ">
-                        <select class="form-select" id="system">
+                        <select class="form-select" id="systems">
                           <option selected hidden>Seleccione...</option>
                           <% systems.forEach(system => { %>
                             <option value="<%= system.id %>"><%= system.name %></option>
                           <% }) %>
                         </select>
-                        <label for="system">Sistema</label>
+                        <label for="systems">Sistema</label>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating">
-                        <select class="form-select" id="system">
-                          <option selected hidden>Seleccione...</option>
-                          <% cloths.forEach(cloth => { %>
-                            <option value="<%= cloth.id %>"><%= cloth.name %></option>
-                          <% }) %>
+                        <select class="form-select" id="cloths">
+                          
                         </select>
-                        <label for="system">Tela</label>
+                        <label for="cloths">Tela</label>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating">
-                        <select class="form-select" id="system">
-                          <option selected hidden>Seleccione...</option>
-                          <% colors.forEach(color => { %>
-                            <option value="<%= color.id %>"><%= color.name %></option>
-                          <% }) %>
+                        <select class="form-select" id="colors">
+                       
                         </select>
-                        <label for="system">Color</label>
+                        <label for="colors">Color</label>
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="system">
-                          <option selected hidden>Seleccione...</option>
-                          <% supports.forEach(support => { %>
-                            <option value="<%= support.id %>"><%= support.name %></option>
-                          <% }) %>
+                        <select class="form-select" id="supports">
+                         
                         </select>
-                        <label for="system">Soporte</label>
+                        <label for="supports">Soporte</label>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="system">
-                          <option selected hidden>Seleccione...</option>
-                          <% patterns.forEach(pattern => { %>
-                            <option value="<%= pattern.id %>"><%= pattern.name %></option>
-                          <% }) %>
+                        <select class="form-select" id="patterns">
+                         
                         </select>
-                        <label for="system">Modelo</label>
+                        <label for="patterns">Modelo</label>
                       </div>
                     </div>
 
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="system">
-                          <option selected hidden>Seleccione...</option>
-                          <% chains.forEach(chain => { %>
-                            <option value="<%= chain.id %>"><%= chain.name %></option>
-                          <% }) %>
+                        <select class="form-select" id="chains">
+                         
                         </select>
-                        <label for="system">Cadena</label>
+                        <label for="chains">Cadena</label>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="width">
+                        <input type="text" class="form-control" id="width" name="width">
                         <label for="width">Ancho de paño (cm)</label>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="heigth">
+                        <input type="text" class="form-control" id="heigth" name="heigth">
                         <label for="heigth">Alto (cm)</label>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="heigth">
+                        <input type="text" class="form-control" id="reference" name="reference">
                         <label for="heigth">Nombre de referencia</label>
                       </div>
                     </div>
-                    <div class="col-12 col-md-4 mb-3">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="alert alert-warning">
-                          Todos los campos son obligatorios. Puede ver mas abajo aclaraciones de cada sistema seleccionado.
+                        Todos los campos son obligatorios.
                       </div>
                   </div>
-                  <div class="col-12 col-md-8 mb-3 ">
-                      <div class="alert alert-success text-center py-2">
-                       <h4>Monto: <span></span></h4>
+                  <div class="col-12 col-md-6 col-lg-4">
+                      <div class="alert alert-success text-center py-2" id="amount-box" hidden>
+                       <p id="amount"></p>
                       </div>
-                      <button class="btn buttons__btn-custom w-100">COTIZAR CORTINA</button>
+                     
                   </div>
+                  <div class="col-12 col-md-12 col-lg-4 mb-3">
+                   
+                    <button class="btn buttons__btn-custom w-100 py-3 ">COTIZAR CORTINA</button>
+                </div>
                     <div class="col-12 mb-3">
                         <div class="alert alert-info">
                           <h6><i class="fas fa-info-circle"></i> Aclaraciones</h6>
@@ -135,6 +123,7 @@
           </main>
           <%- include('partials/footer') %>
           <%- include('partials/scripts') %>
+          <script src="/javascripts/quoterForm.js"></script>
   </body>
 
 </html>

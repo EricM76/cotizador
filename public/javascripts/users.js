@@ -1,10 +1,22 @@
-const changeVisibility = async (id, visibility,item) => {
+
+const changeEnable = async (id, enable) => {
+
     try {
 
-        let response = await fetch(`/${item}/api/visibility/${id}/${visibility}`, {
-            method: 'POST'
+
+        let response = await fetch(`/users/api/enable`, {
+            method: 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                id,
+                enable
+            })
         });
+
         let result = await response.json()
+
         console.log(result)
 
     } catch (error) {
@@ -72,9 +84,9 @@ window.onload = function () {
         case 'name':
             $('name').selected = "selected"
             break;
-        case 'price':
-            $('price').selected = "selected"
-            break
+        case 'surname':
+            $('surname').selected = "selected"
+            break;
         case 'id':
             $('default').selected = "selected"
             break;
@@ -94,7 +106,7 @@ window.onload = function () {
 
     document.getElementById('form-items').addEventListener('submit', (e) => {
         e.preventDefault();
-        getKeywords();
+        //getKeywords();
         e.target.submit()
     })
 }

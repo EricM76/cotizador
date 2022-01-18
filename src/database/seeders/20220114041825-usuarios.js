@@ -7,6 +7,7 @@ const users = usuarios.map(({name,surname,email,idLocal} )=> {
     surname,
     email,
     idLocal,
+    enabled : true,
     createdAt : new Date,
   }
 })
