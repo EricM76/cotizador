@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   SystemCloth.init({
     systemId: DataTypes.INTEGER,
-    cloth: DataTypes.INTEGER
+    clothId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'SystemCloth',

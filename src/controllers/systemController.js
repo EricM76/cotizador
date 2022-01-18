@@ -32,10 +32,135 @@ module.exports = {
         res.render('systemDetail')
     },
     edit : (req,res) => {
-        res.render('systemEdit')
+        
+        const system = db.System.findByPk(req.params.id,{
+            include : {
+                all : true
+            }
+        });
+        const cloths = db.Cloth.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        const colors = db.Color.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        const supports = db.Support.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        const patterns = db.Pattern.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        const chains = db.Chain.findAll({
+            where : {
+                visible : true
+            },
+            order : ['name']
+        });
+        
+        Promise.all([system,cloths, colors, supports, patterns, chains])
+            .then(([system,cloths, colors, supports, patterns, chains]) => {
+                //return res.send(system)
+                return res.render('systemEdit',{
+                    system,
+                    cloths,
+                    colors,
+                    supports,
+                    patterns,
+                    chains,
+                    clothsIds : system.cloths.map(item => item.id),
+                    colorsIds : system.colors.map(item => item.id),
+                    supportsIds : system.supports.map(item => item.id),
+                    patternsIds : system.patterns.map(item => item.id),
+                    chainsIds : system.chains.map(item => item.id),
+
+                })
+            })
+            .catch(error => console.log(error))
+
     },
-    update : (req,res) => {
-        res.render('systemUpdate')
+    update : async (req,res) => {
+        let  {name, price, idLocal, cloths, colors, supports, patterns, chains, visible} = req.body;
+        cloths = typeof cloths === 'string' ? cloths.split() : cloths;
+        colors = typeof colors === 'string' ? colors.split() : colors;
+        supports = typeof supports === 'string' ? supports.split() : supports;
+        patterns = typeof patterns === 'string' ? patterns.split() : patterns;
+        chains = typeof chains === 'string' ? chains.split() : chains;
+
+        cloths = cloths && cloths.map(cloth => ({
+            systemId : req.params.id,
+            clothId : cloth
+        }));
+        colors = colors && colors.map(color => ({
+            systemId : req.params.id,
+            colorId : color
+        }));
+        supports = supports && supports.map(support => ({
+            systemId : req.params.id,
+            supportId : support
+        }));
+        patterns = patterns && patterns.map(pattern => ({
+            systemId : req.params.id,
+            patternId : pattern
+        }));
+        chains = chains && chains.map(chain => ({
+            systemId : req.params.id,
+            chainId : chain
+        }));
+       
+        try {
+            await db.System.update(
+                {
+                    name : name.trim(),
+                    price,
+                    idLocal,
+                    visible : visible ? true : false
+                },
+                {
+                    where : {id : req.params.id}
+                }
+            )
+            await db.SystemCloth.destroy({
+                where : {systemId : req.params.id}
+            });
+            cloths && await db.SystemCloth.bulkCreate(cloths, { validate: true });
+
+            await db.SystemColor.destroy({
+                where : {systemId : req.params.id}
+            });
+            colors && await db.SystemColor.bulkCreate(colors, { validate: true });
+
+            await db.SystemSupport.destroy({
+                where : {systemId : req.params.id}
+            });
+            supports && await db.SystemSupport.bulkCreate(supports, { validate: true });
+
+            await db.SystemPattern.destroy({
+                where : {systemId : req.params.id}
+            });
+            patterns && await db.SystemPattern.bulkCreate(patterns, { validate: true });
+
+            await db.SystemChain.destroy({
+                where : {systemId : req.params.id}
+            });
+            chains && await db.SystemChain.bulkCreate(chains, { validate: true });
+        
+        } catch (error) {
+            console.log(error)
+        }
+      
+        return res.redirect('/systems')
     },
     remove : (req,res) => {
         res.render('systems')

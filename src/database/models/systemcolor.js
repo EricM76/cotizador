@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   SystemColor.init({
     systemId: DataTypes.INTEGER,
-    color: DataTypes.INTEGER
+    colorId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'SystemColor',

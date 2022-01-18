@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Pattern.hasMany(models.Quotation,{
-        foreignKey : 'modelId',
+        foreignKey : 'patternId',
         as : 'quotations'
       })
       Pattern.belongsToMany(models.System,{

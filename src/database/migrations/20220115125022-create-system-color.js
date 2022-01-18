@@ -19,7 +19,7 @@ module.exports = {
         onDelete : 'cascade',
         onUpdate : 'cascade'
       },
-      color: {
+      colorId: {
         type: Sequelize.INTEGER,
         references : {
           model : {

@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
     clothId: DataTypes.INTEGER,
     colorId: DataTypes.INTEGER,
     supportId: DataTypes.INTEGER,
-    modelId: DataTypes.INTEGER,
+    patternId: DataTypes.INTEGER,
     chainId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
     amount: DataTypes.INTEGER,

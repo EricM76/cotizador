@@ -19,7 +19,7 @@ module.exports = {
         onDelete : 'cascade',
         onUpdate : 'cascade'
       },
-      cloth: {
+      clothId: {
         type: Sequelize.INTEGER,
         references : {
           model : {
