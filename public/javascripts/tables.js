@@ -65,6 +65,11 @@ const getKeywords = () => {
 
 window.onload = function () {
 
+    if(sessionStorage.getItem('pathname') !== window.location.pathname){
+        sessionStorage.setItem('active', 1);
+        sessionStorage.setItem('pages', 1);
+        sessionStorage.removeItem('keywords');
+    }
 
     let query = new URLSearchParams(window.location.search);
 
@@ -96,7 +101,11 @@ window.onload = function () {
         e.preventDefault();
         getKeywords();
         e.target.submit()
+
     })
 }
 
+window.addEventListener('beforeunload', () => {
+    sessionStorage.setItem('pathname',window.location.pathname)
+})
 

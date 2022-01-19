@@ -108,7 +108,11 @@ window.onload = function () {
         e.preventDefault();
         //getKeywords();
         e.target.submit()
+
     })
 }
 
+window.addEventListener('beforeunload', () => {
+    sessionStorage.setItem('pathname',window.location.pathname)
+})
 

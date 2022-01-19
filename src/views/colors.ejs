@@ -16,7 +16,6 @@
                   <select class="form-select" id="order" name="order" onchange="setValues()">
                     <option value="" selected hidden>Ordenar</option>
                     <option value="name" id="name">Nombre</option>
-                    <option value="price" id="price">Precio</option>
                     <option value="id" id="default">Default</option>
                   </select>
                 </div>
@@ -94,7 +93,6 @@
                       <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Precio</th>
                         <th scope="col">IDLocal</th>
                         <th scope="col">Acciones</th>
                         <th scope="col">Visible</th>
@@ -110,10 +108,6 @@
                           <td>
                             <%= item.name %>
                           </td>
-                          <td>
-                            <%= item.price %>
-                          </td>
-
                           <td>
                             <%= item.idLocal %>
                           </td>
