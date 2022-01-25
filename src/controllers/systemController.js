@@ -241,5 +241,25 @@ module.exports = {
                 msg: error.msg
             })
         }
-    }
+    },
+    getAll: async (req, res) => {
+
+        try {
+            const systems = await db.System.findAll({
+                where:{
+                    visible : true
+                },
+                order : ['name']
+            });
+
+            return res.status(200).json({
+                ok: true,
+                data: systems
+            })
+
+        } catch (error) {
+            console.log(error);
+            return res.status(error.status || 500).json(error.status === 500 ? "Comuníquese con el administrador del sitio" : error.message);
+        }
+    },
 }

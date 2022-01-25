@@ -9,14 +9,12 @@
             <section class="col-12 mt-5 mx-auto">
               <article class="card shadow">
                 <div class="card-body">
-                  <form class="row" action="" id="form-quoter">
+                  <form class="row " action="" id="form-quoter" novalidate>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="form-floating ">
-                        <select class="form-select" id="systems">
-                          <option selected hidden>Seleccione...</option>
-                          <% systems.forEach(system => { %>
-                            <option value="<%= system.id %>"><%= system.name %></option>
-                          <% }) %>
+                        <select class="form-select" id="systems" required>
+                          <option value="" selected hidden>Seleccione...</option>
+                      
                         </select>
                         <label for="systems">Sistema</label>
                       </div>
@@ -24,7 +22,7 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating">
-                        <select class="form-select" id="cloths">
+                        <select class="form-select" id="cloths" required>
                           
                         </select>
                         <label for="cloths">Tela</label>
@@ -33,7 +31,7 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating">
-                        <select class="form-select" id="colors">
+                        <select class="form-select" id="colors" required>
                        
                         </select>
                         <label for="colors">Color</label>
@@ -43,7 +41,7 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="supports">
+                        <select class="form-select" id="supports" required>
                          
                         </select>
                         <label for="supports">Soporte</label>
@@ -52,7 +50,7 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="patterns">
+                        <select class="form-select" id="patterns" required>
                          
                         </select>
                         <label for="patterns">Modelo</label>
@@ -62,7 +60,7 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="chains">
+                        <select class="form-select" id="chains" required>
                          
                         </select>
                         <label for="chains">Cadena</label>
@@ -70,19 +68,19 @@
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="width" name="width">
+                        <input type="text" class="form-control" id="width" name="width" required>
                         <label for="width">Ancho de paño (cm)</label>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="heigth" name="heigth">
+                        <input type="text" class="form-control" id="heigth" name="heigth" required>
                         <label for="heigth">Alto (cm)</label>
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="reference" name="reference">
+                        <input type="text" class="form-control" id="reference" name="reference" required>
                         <label for="heigth">Nombre de referencia</label>
                       </div>
                     </div>
