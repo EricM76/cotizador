@@ -94,6 +94,11 @@ $('systems').addEventListener('focus', async () => {
 })
 
 /* validar datos */
+$('systems').addEventListener('focus', ({target}) => {
+
+    target.classList.remove('is-invalid')
+
+})
 
 $('cloths').addEventListener('focus', ({target}) => {
 
