@@ -51,9 +51,11 @@
             </ul>
          
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <% if (locals.userLogin) { %>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Cerrar sesión</a>
+                  <a class="nav-link" href="/users/logout">Cerrar sesión</a>
                 </li>
+              <% } %>
               </ul>
           </div>
         </div>

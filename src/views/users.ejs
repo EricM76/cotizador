@@ -82,8 +82,6 @@
 
                     </ul>
                   </nav>
-                 
-
                 </div>
 
                 </form>
@@ -92,7 +90,7 @@
                   <table class="table table-striped">
                     <thead>
                       <tr>
-                        <th scope="col">Activo</th>
+                        <th scope="col">Habilitado</th>
                         <th scope="col">IDLocal</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
@@ -105,7 +103,7 @@
                     <tbody>
                       <% items.forEach((item) => { %>
                         <tr>
-                            <td>
+                            <td class="">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="enabled<%= item.id %>"
                                     <%=item.enabled && 'checked' %> onchange="changeEnable(<%=item.id%>,
@@ -122,7 +120,7 @@
                             <%= item.surname %>
                           </td>
                           <td>
-                            <%= item.rolId %>
+                            <%= item.rol?.name  %>
                           </td>
                           <td>
                             <%= item.email %>
@@ -131,16 +129,13 @@
                             <%= item.phone %>
                           </td>
                           <td class="d-flex">
-                            <a class="btn btn-sm btn-primary mx-1" style="width:33px;"
-                            href="/users/credentials/<%= item.id %>"><i class="fas fa-key"></i></a>
                             <a class="btn btn-sm btn-success mx-1" style="width:33px;"
                               href="/users/edit/<%= item.id %>"><i class="fas fa-edit"></i></a>
-                            <form action="/users/remove/<%= item.id %>?_method=delete" method="post">
+                            <form action="/users/remove/<%= item.id %>?_method=delete" method="POST">
                               <button class="btn btn-sm btn-danger mx-1" style="width:33px;"><i
                                   class="fas fa-trash"></i></button>
                             </form>
                           </td>
-                         
                         </tr>
                         <% }) %>
                     </tbody>

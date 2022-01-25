@@ -404,6 +404,10 @@ main {
   padding-bottom: 50px;
 }
 
+.box-hidden {
+  display: none;
+}
+
 .page-link {
   color: darkred;
 }
@@ -645,6 +649,25 @@ footer {
   100% {
     opacity: 0;
   }
+}
+.login__section {
+  position: relative;
+}
+.login__section article {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 350px;
+  width: 280px;
+  margin: 90px auto;
+}
+.login__section article h1 {
+  color: darkred;
+  line-height: 30px;
+  text-align: center;
+  font-size: 24px;
 }
 
 /*# sourceMappingURL=styles.css.map */

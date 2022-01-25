@@ -1,24 +1,24 @@
 'use strict';
+const roles = require('../../data/rols_db.json');
+
+const rols = roles.map( rol => {
+  return {
+    name : rol,
+    createdAt : new Date,
+    updatedAt : new Date,
+
+  }
+})
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
+
+      await queryInterface.bulkInsert('Rols', rols, {});
+  
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
-  }
+   
+     await queryInterface.bulkDelete('Rols', null, {});
+       }
 };

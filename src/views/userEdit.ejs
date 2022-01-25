@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
+
+  <body>
+    <%- include('partials/header') %>
+      <main class="container">
+        <section class="col-12 col-md-8 mt-5 mx-auto">
+          <article class="card shadow">
+            <div class="card-header">
+              Editar Usuario
+            </div>
+            <div class="card-body">
+              <form action="/users/update/<%= user.id %>?_method=PUT" method="POST" class="row needs-validation" novalidate>
+                <div class="col-12 col-md-6">
+                  <div class="form-floating mb-3">
+                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="rolId">
+                      <% if (!user.rol) { %>
+                        <option selected hidden value="">Seleccione...</option>
+                        <% } %>
+                          <% rols.forEach(rol=> { %>
+                            <option <%=rol.id===user.rol?.id && 'selected' %> value="<%= rol.id %>"><%= rol.name %>
+                            </option>
+                            <% }) %>
+                    </select>
+                    <label for="floatingSelect">Rol</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 d-flex justify-content-between align-items-center">
+                  <div class="form-floating  mb-3 w-50">
+                    <input type="text" class="form-control" id="idLocal" name="idLocal" placeholder="ID Local"
+                      value="<%= user.idLocal%>">
+                    <label for="idLocal">ID Local</label>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="enabled" name="enabled" <%=user.enabled
+                      && 'checked' %> >
+                    <label class="form-check-label" for="enabled">Habilitado</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Nombre"
+                      value="<%= user.name %>" required> 
+                    <label for="name"> Nombre</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="surname" name="surname" placeholder="Apellido"
+                      value="<%=user.surname%>" required>
+                    <label for="surname">Apellido</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                      value="<%=user.email%>" required>
+                    <label for="email">Email</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono"
+                      value="<%= user.phone%>">
+                    <label for="phone">Teléfono</label>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Usuario"
+                      value="<%= user.username%>">
+                    <label for="username">Usuario</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="d-flex align-items-start">
+                    <div class="form-floating mb-3 box-hidden" id="box-password">
+                      <input type="text" class="form-control" id="password" name="password" placeholder="Contraseña">
+                      <label for="password">Contraseña</label>
+                    </div>
+                     <div class="box-hidden" id="box-buttons">
+                      <button style="width: 60px; height: 60px;" type="button" class="btn" id= "btn-close" 
+                      ><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+
+                  <a class="btn btn-outline-dark w-100 py-3"
+                  id="btn-change">Crear | Actualizar contraseña</a>
+                  </div>
+
+                <div class="col-12 text-end">
+
+                  <a href="/users" class="btn btn-secondary mx-1 mb-3">Cancelar</a>
+                  <button type="submit" class="btn buttons__btn-custom mx-1 mb-3">Guardar</button>
+                </div>
+
+              </form>
+            </div>
+          </article>
+        </section>
+      </main>
+      <%- include('partials/footer') %>
+        <%- include('partials/scripts') %>
+      <script src="/javascripts/userEdit.js"></script>
+  </body>
+
+</html>

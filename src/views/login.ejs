@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
+
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand border rounded bg-white px-3 px-md-4 pt-md-3 pt-sm-3 pb-2 pb-md-3"
+                        href="https://www.blancomad.com/index.php">
+                        <img class="d-inline-block align-top mt-3" src="/images/logo-blancomad2.svg" alt="imagen">
+                    </a>
+                </div>
+            </nav>
+        </header>
+        <main class="container">
+            <section class="login__section">
+                <article class="card shadow">
+                    <div class="card-body ">
+                        <h1>Cotizador de cortinas</h1>
+                        <hr>
+                        <form method="POST">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput"
+                                    placeholder="Nombre de usuario" name="username">
+                                <label for="floatingInput">Usuario</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="floatingPassword"
+                                    placeholder="Password" name="password">
+                                <label for="floatingPassword">Contraseña</label>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <span class="text-danger <%= locals.errors && 'alert alert-danger py-0' %> "><%= locals.errors && errors.username && errors.username.msg  %> </span>
+
+                            </div>
+                            <div class="">
+                                <button type="submit" class="btn buttons__btn-custom w-100">Ingresar</button>
+                            </div>
+                        </form>
+                    </div>
+                </article>
+            </section>
+        </main>
+        <%- include('partials/footer') %>
+            <%- include('partials/scripts') %>
+
+    </body>
+
+</html>
