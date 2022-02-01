@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {index,add,store,detail,edit,update,remove,search,load,quote} = require('../controllers/quoterController');
 
+/* quoters */
 router
     .get('/', index)
     .get('/add',add)

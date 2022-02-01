@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Reference.belongsTo(models.User,{
+     /*  Reference.belongsTo(models.User,{
         foreignKey : 'userId',
         as : 'user'
       })
       Reference.hasMany(models.Quotation,{
         foreignKey : 'referenceId',
         as : 'quotations'
-      })
+      }) */
     }
   };
   Reference.init({

@@ -1,8 +1,35 @@
 const db = require('../database/models');
-
+const moment = require('moment');
 module.exports = {
-    index: (req, res) => {
-        res.render('quoters')
+    index: async (req, res) => {
+        let total = await db.Quotation.count({
+            where : {
+                userId : req.session.userLogin?.id || 86
+            }
+        })
+        db.Quotation.findAll({
+            where : {
+                userId : req.session.userLogin?.id || 86
+            },
+            limit : 40,
+            order : [
+                ['id','DESC']
+            ],
+            include : {all : true}
+        })
+            .then(items => {
+            return res.render('quotations', {
+                    items,
+                    total,
+                    active : 1,
+                    pages : 1,
+                    keywords : "",
+                    multiplo : total%8 === 0 ? 0 : 1,
+                    moment
+                })
+            })
+            .catch(error => console.log(error));
+        
     },
     add: (req, res) => {
         db.System.findAll({
@@ -62,7 +89,6 @@ module.exports = {
                     id : +system
                 }
             })
-
             const priceCloth = await db.Cloth.findOne({
                 where : {
                     id : +cloth
@@ -91,17 +117,54 @@ module.exports = {
 
             if(price && grid){
                 data = price.amount + grid.price;
+                if(priceSystem){
+                    data = data + priceSystem.price
+                }
+                if(priceCloth){
+                    data = data + priceCloth.price
+                }
+                if(priceSupport){
+                    data = data + priceSupport.price
+                }
+                if(pricePattern){
+                    data = data + pricePattern.price
+                }
+                if(priceChain){
+                    data = data + priceChain.price
+                }
             }
 
-           /*  console.log(price?.id,'>>>>>>>>>>>>PRECIO',price?.amount)
+            console.log(price?.id,'>>>>>>>>>>>>PRECIO',price?.amount)
             console.log(grid?.id,'>>>>>>>>>>>>GRILLA',grid?.price)
             console.log(priceSystem?.id,'>>>>>>>>>>>>SISTEMA',priceSystem?.price)
             console.log(priceCloth?.id,'>>>>>>>>>>>>TELA',priceCloth?.price)
             console.log(priceSupport?.id,'>>>>>>>>>>>>SOPORTE',priceSupport?.price)
             console.log(pricePattern?.id,'>>>>>>>>>>>>MODELO',pricePattern?.price)
-            console.log(priceChain?.id,'>>>>>>>>>>>>CADENA',priceChain?.price) */
+            console.log(priceChain?.id,'>>>>>>>>>>>>CADENA',priceChain?.price)
 
-
+            /* GUARDAR la cotización, si esta existe */
+            if(data){
+                /* 
+                const { system, cloth, color, support, pattern, chain, width,heigth,reference} = req.body;
+                */
+                const quotation = await db.Quotation.create({
+                    clothWidth : +width,
+                    heigth : +heigth,
+                    amount : data,
+                    date : new Date(),
+                    reference,
+                    systemId : +system,
+                    clothId : +cloth,
+                    colorId : +color,
+                    supportId : +support,
+                    patternId : +pattern,
+                    chainId : +chain,
+                    userId : req.session.userLogin?.id || 85
+                })
+                if(quotation){
+                    console.log('cotización guardada exitosamente!');
+                }
+            }
             return res.status(200).json({
                 ok: true,
                 data
@@ -113,7 +176,9 @@ module.exports = {
 
     },
     store: (req, res) => {
-        res.render('quoters')
+
+        console.log('guardando...');
+        //res.render('quoters')
     },
     detail: (req, res) => {
         res.render('quoterDetail')

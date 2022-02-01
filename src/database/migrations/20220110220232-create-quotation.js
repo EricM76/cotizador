@@ -29,7 +29,7 @@ module.exports = {
       date: {
         type: Sequelize.DATE
       },
-      referenceId: {
+     /*  referenceId: {
         type: Sequelize.INTEGER,
         references : {
           model : {
@@ -37,6 +37,9 @@ module.exports = {
           },
           key : 'id'
         }
+      }, */
+      reference: {
+        type: Sequelize.STRING,
       },
       systemId: {
         type: Sequelize.INTEGER,

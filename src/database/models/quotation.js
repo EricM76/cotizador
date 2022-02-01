@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       })
       Quotation.belongsTo(models.Pattern,{
         foreignKey : 'patternId',
-        as : 'model'
+        as : 'pattern'
       })
       Quotation.belongsTo(models.Chain,{
         foreignKey : 'chainId',
@@ -38,10 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey : 'userId',
         as : 'user'
       })
-      Quotation.belongsTo(models.Reference,{
+    /*   Quotation.belongsTo(models.Reference,{
         foreignKey : 'referenceId',
         as : 'reference'
-      })
+      }) */
       Quotation.belongsToMany(models.Order,{
         as : 'orders',
         through : 'OrderQuotation',
@@ -65,7 +65,8 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     amount: DataTypes.INTEGER,
     date: DataTypes.DATE,
-    referenceId: DataTypes.INTEGER
+    reference : DataTypes.STRING,
+    /* referenceId: DataTypes.INTEGER */
   }, {
     sequelize,
     modelName: 'Quotation',
