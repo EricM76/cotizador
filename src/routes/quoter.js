@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {index,add,store,detail,edit,update,remove,search,load,quote} = require('../controllers/quoterController');
+const {index,add,store,detail,edit,update,remove,search,load,quote, filter,getUsers} = require('../controllers/quoterController');
 
 /* quoters */
 router
@@ -13,9 +13,11 @@ router
     .put('/update/:id',update)
     .delete('/remove/:id',remove)
     .get('/search',search)
+    .get('/filter',filter)
     
     /* apis */
     .get('/api/load/:id',load)
     .post('/api/quote',quote)
+    .post('/api/users',getUsers)
 
 module.exports = router;

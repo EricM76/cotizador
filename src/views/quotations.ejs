@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<%- include('partials/head',{ title : "Cotizador de cortinas | Modelos" }) %>
+<%- include('partials/head',{ title : "Cotizador de cortinas | Cotizaciones" }) %>
 
   <body>
     <%- include('partials/header') %>
@@ -10,22 +10,41 @@
             <div class="card-header">
 
 
-              <form action="/patterns/filter" class="row" id="form-items">
-
+              <form action="/quoters/filter" class="row" id="form-items">
+                <% if (locals.userLogin?.rol === 1) { %>
+                  <div class="col-12 col-md-4 mb-2">
+                    <select class="form-select" id="order" name="order" onchange="setValues()">
+                      <option value="" selected hidden>Ordenar</option>
+                      <option value="id" id="default">Default</option>
+                    </select>
+  
+                  </div>
+                  <div class="col-12 col-md-4 mb-2">
+                    <select class="form-select" id="filter" name="filter" onchange="resetValues()">
+                      <option value="" selected hidden>Filtrar</option>
+                      <% users.forEach(item => { %>
+                        <option id="user<%= item.userId %>" value=<%= item.userId %> ><%= item.user.name %> </option>
+                      <% }) %>
+                      <option id="all" value="all">Todos</option>
+                    </select>
+                  </div>
+                  <div class="col-12  col-md-4 mb-2 position-relative">
+                    <input type="text" class="form-control w-100" id="search" placeholder="Buscar" name="search">
+                    <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit" onclick="handlerSearch()"><i
+                        class="fas fa-search"></i></button>
+                  </div>
+                <% }else{ %>
                 <div class="col-12 col-md-4 mb-2">
-                  <select class="form-select" id="order" name="order" onchange="setValues()">
-                    <option value="" selected hidden>Ordenar</option>
-                    <option value="name" id="name">Nombre</option>
-                    <option value="price" id="price">Precio</option>
-                    <option value="id" id="default">Default</option>
-                  </select>
+                  <a class="btn btn-sm btn-outline-dark w-100 h-100 pt-2" href="/quoters/add">Cotizar</a>
+
                 </div>
                 <div class="col-12 col-md-4 mb-2">
                   <select class="form-select" id="filter" name="filter" onchange="resetValues()">
                     <option value="" selected hidden>Filtrar</option>
-                    <option id="visible" value="1">Visibles</option>
-                    <option id="hidden" value="0">Ocultas</option>
-                    <option id="all" value="all">Todas</option>
+                    <% items.forEach(item => { %>
+                      <option id="all" value="all"><%= item.user.name %> </option>
+                    <% }) %>
+                    <option id="all" value="all">Todos</option>
                   </select>
                 </div>
                 <div class="col-12  col-md-4 mb-2 position-relative">
@@ -33,12 +52,12 @@
                   <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit" onclick="handlerSearch()"><i
                       class="fas fa-search"></i></button>
                 </div>
+                <% } %>
             </div>
             </div>
             <div class="card-body">
               <div class="row">
                 <div class="col-12 col-md-4">
-                  <a class="btn btn-sm btn-outline-dark w-100" href="/quoters/add">Cotizar</a>
 
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-center">
@@ -166,7 +185,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
-          <script src="/javascripts/tables.js"></script>
+          <script src="/javascripts/quotations.js"></script>
 
   </body>
 

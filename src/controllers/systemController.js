@@ -223,6 +223,7 @@ module.exports = {
             console.log(error)
         }
     },
+    /* APIS */
     visibility: async (req, res) => {
 
         const { id, visibility } = req.params;
