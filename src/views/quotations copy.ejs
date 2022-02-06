@@ -1,92 +1,113 @@
 <!DOCTYPE html>
 <html>
-<%- include('partials/head',{ title : "Cotizador de cortinas | Modelos" }) %>
+<%- include('partials/head',{ title : "Cotizador de cortinas | Cotizaciones" }) %>
 
   <body>
     <%- include('partials/header') %>
       <main class="container">
-        <section class="col-12  mt-5  mx-auto">
+        <section class="col-12  mt-5 mt-lg-5 mx-auto">
           <article class="card shadow">
             <div class="card-header">
 
 
               <form action="/quoters/filter" class="row" id="form-items">
+                <% if (locals.userLogin?.rol===1) { %>
+                  <div class="col-12 col-md-6 mb-2">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                      <select class="form-select" id="filter" name="filter" onchange="resetValues()">
+                        <option value="" selected hidden>Filtar por vendedor...</option>
+                        <% users.forEach(item=> { %>
+                          <option id="user<%= item.userId %>" value=<%=item.userId %> ><%= item.user.name %>
+                          </option>
+                          <% }) %>
+                            <option id="all" value="all">Todos</option>
+                      </select>
+                    </div>
 
+                  </div>
+                  <div class="col-12  col-md-6 mb-2 d-flex justify-content-end ">
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination pagination-sm">
+
+                        <% if (pages> 1) { %>
+                          <li class="page-item">
+                            <button class="page-link text-dark" onclick="blockPagesPrevious('<%= pages %>')"
+                              aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                            </button>
+                          </li>
+                          <% } %>
+
+                            <% for( let i=+pages; i <=(total / 8) + multiplo ; i++ ) { %>
+                              <% if (i <=+pages + 4 ) { %>
+                                <li class="page-item <%= +active == i && 'active' %> "><button class="page-link"
+                                    onclick="changeActive('<%=i%>')">
+                                    <%= i %>
+                                  </button></li>
+                                <% } %>
+                                  <% } %>
+
+                                    <input id="active" type="text" value="1" hidden name="active" />
+                                    <input id="pages" type="text" value="<%= pages %>" hidden name="pages" />
+                                    <input type="text" value="" hidden name="keywords" id="keywords">
+
+                                    <% if (pages < (total / 8) - 4) { %>
+                                      <li class="page-item">
+                                        <button class="page-link text-dark" aria-label="Next"
+                                          onclick="blockPagesNext('<%= pages %>')">
+                                          <span aria-hidden="true">&raquo;</span>
+                                        </button>
+                                      </li>
+                                      <% } %>
+
+                      </ul>
+                    </nav>
+                  </div>
+              </form>
+
+              <% }else{ %>
                 <div class="col-12 col-md-4 mb-2">
-                  <select class="form-select" id="order" name="order" onchange="setValues()">
-                    <option value="" selected hidden>Ordenar</option>
-                    <option value="id" id="default">Default</option>
-                  </select>
+                  <a class="btn btn-sm btn-outline-dark w-100 h-100 pt-2" href="/quoters/add">Cotizar</a>
+
                 </div>
                 <div class="col-12 col-md-4 mb-2">
                   <select class="form-select" id="filter" name="filter" onchange="resetValues()">
-                    <option value="" selected hidden>Filtrar por vendedor</option>
-                    <% users.forEach(item=> { %>
-                      <option id="user<%= item.userId %>" value=<%=item.userId %> ><%= item.user.name %>
+                    <option value="" selected hidden>Filtrar</option>
+                    <% items.forEach(item=> { %>
+                      <option id="all" value="all">
+                        <%= item.user.name %>
                       </option>
                       <% }) %>
                         <option id="all" value="all">Todos</option>
                   </select>
                 </div>
                 <div class="col-12  col-md-4 mb-2 position-relative">
-                  <input type="text" class="form-control w-100" id="search" placeholder="Buscar" name="search">
-                  <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit" onclick="handlerSearch()"><i
-                      class="fas fa-search"></i></button>
+                  <input type="text" class="form-control w-100" id="search" placeholder="Buscar" name="keywords">
+                  <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit"
+                    onclick="handlerSearch()"><i class="fas fa-search"></i></button>
                 </div>
+                <% } %>
             </div>
             </div>
             <div class="card-body">
               <div class="row">
                 <div class="col-12 col-md-4">
-                  <a class="btn btn-sm btn-outline-dark w-100" href="/quoters/add">Agregar</a>
 
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-center">
                   <h5 class="text-center">COTIZACIONES</h5><span class="small ms-2">(<%= total %>)</span>
 
                 </div>
-                <div class="col-12 col-md-4 d-flex justify-content-end">
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination pagination-sm">
+                <div class="col-12 col-md-4 mb-2 d-flex justify-content-end position-relative">
 
-                      <% if (pages> 1) { %>
-                        <li class="page-item">
-                          <button class="page-link text-dark" onclick="blockPagesPrevious('<%= pages %>')"
-                            aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                          </button>
-                        </li>
-                        <% } %>
-
-                          <% for( let i=+pages; i <= (total / 8) + multiplo ; i++ ) { %>
-                            <% if (i <= +pages + 4 ) { %>
-                              <li class="page-item <%= +active == i && 'active' %> "><button class="page-link"
-                                  onclick="changeActive('<%=i%>')">
-                                  <%= i %>
-                                </button></li>
-                              <% } %>
-                                <% } %>
-
-                                  <input id="active" type="text" value="1" hidden name="active" />
-                                  <input id="pages" type="text" value="<%= pages %>" hidden name="pages" />
-                                  <input type="text" value="" hidden name="keywords" id="keywords">
-
-                                  <% if (pages < (total / 8) - 4) { %>
-                                    <li class="page-item">
-                                      <button class="page-link text-dark" aria-label="Next"
-                                        onclick="blockPagesNext('<%= pages %>')">
-                                        <span aria-hidden="true">&raquo;</span>
-                                      </button>
-                                    </li>
-                                    <% } %>
-
-                    </ul>
-                  </nav>
-                 
+                  <form action="/quoters/search" onsubmit="handleSearch(event)">
+                    <input type="text" class="form-control w-100" id="search" placeholder="Buscar por referencia..." name="keywords">
+                    <input type="text" hidden name="filter" id="input-filter">
+                    <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit"><i class="fas fa-search"></i></button>
+                  </form>
 
                 </div>
 
-                </form>
                 <div class="table-responsive">
                   <% if (items.length> 0) { %>
                     <table class="table table-striped">
@@ -168,7 +189,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
-          <script src="/javascripts/tables.js"></script>
+          <script src="/javascripts/quotations.js"></script>
 
   </body>
 

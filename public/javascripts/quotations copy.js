@@ -1,3 +1,6 @@
+let query = new URLSearchParams(location.search);
+
+
 const changeActive = (id) => {
 
     sessionStorage.setItem('active',id)
@@ -6,7 +9,7 @@ const changeActive = (id) => {
 
 const blockPagesNext = (pages) => {
 
-    const block = +pages + 4    
+    const block = +pages + 4
     sessionStorage.setItem('pages', block)
     $('pages').value = block;
     changeActive(block)
@@ -38,38 +41,42 @@ const resetValues = () => {
     document.getElementById('form-items').submit()
 }
 
-const handlerSearch = () => {
-    sessionStorage.setItem('keywords',$('search').value)    
-    $('keywords').value = $('search').value;
-    console.log($('active').value);
-    console.log($('filter').value);
-}
-
-const getKeywords = () => {
-    $('keywords').value = sessionStorage.getItem('keywords');
+const handleSearch = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    if(query.has('filter')){
+        $('input-filter').value= query.get('filter')
+    }
+    e.target.submit()
 }
 
 window.onload = function () {
 
-    if(sessionStorage.getItem('pathname') !== window.location.pathname){
+    if (sessionStorage.getItem('pathname') !== window.location.pathname) {
         sessionStorage.setItem('active', 1);
         sessionStorage.setItem('pages', 1);
         sessionStorage.removeItem('keywords');
     }
 
-    let query = new URLSearchParams(window.location.search);
 
     switch (query.get('order')) {
+        case 'name':
+            $('name').selected = "selected"
+            break;
+        case 'price':
+            $('price').selected = "selected"
+            break
         case 'id':
             $('default').selected = "selected"
             break;
     }
+
     if (query.get('filter') === 'all') {
         $('all').selected = "selected"
     }
 
 
-/*     const getUsers = async () => {
+    const getUsers = async () => {
 
         try {
             let response = await fetch('/quoters/api/users', {
@@ -89,18 +96,12 @@ window.onload = function () {
         }
 
     }
-   getUsers(); */
+   getUsers();
 
 
-    document.getElementById('form-items').addEventListener('submit', (e) => {
-        e.preventDefault();
-        getKeywords();
-        e.target.submit()
-
-    })
 }
 
 window.addEventListener('beforeunload', () => {
-    sessionStorage.setItem('pathname',window.location.pathname)
+    sessionStorage.setItem('pathname', window.location.pathname)
 })
 

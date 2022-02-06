@@ -162,81 +162,73 @@ module.exports = {
     },
     filter: async (req, res) => {
 
-        let { order, filter, keywords, active,pages }= req.query;
+        let { order, filter, keywords, active, pages } = req.query;
         let items = [];
         let users = [];
         let total = 0;
+
         if (req.session.userLogin.rol === 1) {
-
-        try {
-            users = await db.Quotation.findAll({
-                attributes: ['userId'],
-                include: [
-                    { association: 'user' }
-                ],
-                group: ['userId'],
-                having: ''
-
-            })
-            if (filter === "all" || !filter) {
-                total = await db.Quotation.count({
-                    where : {
-                        reference : {
-                            [Op.substring] : keywords
-                        }
-                    },
-                })
-                items = await db.Quotation.findAll({
-                    where : {
-                        reference : {
-                            [Op.substring] : keywords
-                        }
-                    },
-                    order: [order || 'id'],
-                    limit : 8,
-                    offset : active && (+active * 8) - 8,
-                    include: { all: true }
+            try {
+                users = await db.Quotation.findAll({
+                    attributes: ['userId'],
+                    include: [
+                        { association: 'user' }
+                    ],
+                    group: ['userId'],
+                    having: ''
 
                 })
+                if (filter === "all") {
+                    total = await db.Quotation.count()
+                    items = await db.Quotation.findAll({
+                        order: [order || 'id'],
+                        limit: 8,
+                        offset: active && (+active * 8) - 8,
+                        include: { all: true }
+                    })
+                } else if (!filter) {
+                    console.log('>>>>>>>>>> sin filtro');
+                    total = await db.Quotation.count()
+                    items = await db.Quotation.findAll({
+                        order: [order || 'id'],
+                        limit: 8,
+                        offset: active && (+active * 8) - 8,
+                        include: { all: true }
+                    })
 
-            }else {
-                total = await db.Quotation.count({
-                    where: {
-                        userId: +filter,
-                        reference : {
-                            [Op.substring] : keywords
-                        }
-                    },
+                } else {
+                    total = await db.Quotation.count({
+                        where: {
+                            userId: +filter,
+                        },
+                    })
+                    items = await db.Quotation.findAll({
+                        where: {
+                            userId: +filter,
+                        },
+                        order: [order || 'id'],
+                        limit: 8,
+                        offset: active && (+active * 8) - 8,
+                        include: { all: true }
+
+                    })
+                }
+                return res.render('quotations', {
+                    items,
+                    total,
+                    active,
+                    pages,
+                    keywords: "",
+                    multiplo: total % 8 === 0 ? 0 : 1,
+                    moment,
+                    users
                 })
-                items = await db.Quotation.findAll({
-                    where: {
-                        userId: +filter,
-                        reference : {
-                            [Op.substring] : keywords
-                        }
-                    },
-                    order: [order || 'id'],
-                    limit : 8,
-                    offset : active && (+active * 8) - 8,
-                    include: { all: true }
-                })
+            } catch (error) {
+                console.log(error)
             }
-            return res.render('quotations', {
-                items,
-                total,
-                active,
-                pages,
-                keywords,
-                multiplo : total%8 === 0 ? 0 : 1,
-                moment,
-                users
-            })
-        } catch (error) {
-            console.log(error)
+        } else {
+
         }
-    }else{
-        return res.send('users')
-    }
     },
     //APIS
     load: async (req, res) => {
