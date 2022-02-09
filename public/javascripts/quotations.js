@@ -1,3 +1,4 @@
+
 const changeActive = (id) => {
 
     sessionStorage.setItem('active',id)
@@ -35,6 +36,18 @@ const resetValues = () => {
     $('active').value = 1;
     $('pages').value = 1;
     $('keywords').value = "";
+
+    document.getElementById('form-items').submit()
+}
+
+const resetValuesFilter = () => {
+    sessionStorage.setItem('active', 1);
+    sessionStorage.setItem('pages', 1);
+    sessionStorage.removeItem('keywords');
+
+    $('active').value = 1;
+    $('pages').value = 1;
+    $('keywords').value = "";
     document.getElementById('form-items').submit()
 }
 
@@ -59,6 +72,7 @@ window.onload = function () {
 
     let query = new URLSearchParams(window.location.search);
 
+
     switch (query.get('order')) {
         case 'id':
             $('default').selected = "selected"
@@ -66,31 +80,9 @@ window.onload = function () {
     }
     if (query.get('filter') === 'all') {
         $('all').selected = "selected"
+    }else{
+        $(`user${query.get('filter')}`).selected = 'selected'
     }
-
-
-/*     const getUsers = async () => {
-
-        try {
-            let response = await fetch('/quoters/api/users', {
-                method: 'POST'
-            });
-            let {data} = await response.json();
-            
-            data.forEach(({ userId }) => {
-                if (userId == query.get('filter')) {
-                    $(`user${userId}`).selected = "selected"
-                }
-            });
-        
-
-        } catch (error) {
-            console.warn(error);
-        }
-
-    }
-   getUsers(); */
-
 
     document.getElementById('form-items').addEventListener('submit', (e) => {
         e.preventDefault();

@@ -12,13 +12,7 @@
 
               <form action="/quoters/filter" class="row" id="form-items">
 
-                <div class="col-12 col-md-4 mb-2">
-                  <select class="form-select" id="order" name="order" onchange="setValues()">
-                    <option value="" selected hidden>Ordenar</option>
-                    <option value="id" id="default">Default</option>
-                  </select>
-                </div>
-                <div class="col-12 col-md-4 mb-2">
+                <div class="col-12 col-md-5 col-lg-4 mb-2">
                   <select class="form-select" id="filter" name="filter" onchange="resetValues()">
                     <option value="" selected hidden>Filtrar por vendedor</option>
                     <% users.forEach(item=> { %>
@@ -28,8 +22,11 @@
                         <option id="all" value="all">Todos</option>
                   </select>
                 </div>
-                <div class="col-12  col-md-4 mb-2 position-relative">
-                  <input type="text" class="form-control w-100" id="search" placeholder="Buscar" name="search">
+                <div class="col-12 col-md-2 col-lg-4 mb-2">
+                
+                </div>
+                <div class="col-12  col-md-5 col-lg-4 mb-2 position-relative">
+                  <input type="text" class="form-control w-100" id="search" placeholder="Buscar por referencia..." name="search">
                   <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit" onclick="handlerSearch()"><i
                       class="fas fa-search"></i></button>
                 </div>
@@ -38,8 +35,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-12 col-md-4">
-                  <a class="btn btn-sm btn-outline-dark w-100" href="/quoters/add">Agregar</a>
-
+                 
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-center">
                   <h5 class="text-center">COTIZACIONES</h5><span class="small ms-2">(<%= total %>)</span>
@@ -168,7 +164,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
-          <script src="/javascripts/tables.js"></script>
+          <script src="/javascripts/quotations.js"></script>
 
   </body>
 
