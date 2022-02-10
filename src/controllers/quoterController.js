@@ -13,7 +13,6 @@ module.exports = {
                 ],
                 group: ['userId'],
                 having: ''
-
             })
 
             db.Quotation.findAll({
@@ -36,12 +35,21 @@ module.exports = {
         } else {
             let total = await db.Quotation.count({
                 where: {
-                    userId: req.session.userLogin?.id || 86
+                    userId: req.session.userLogin?.id
                 }
             })
+            let references = await db.Quotation.findAll({
+                where: {
+                    userId: req.session.userLogin?.id
+                },
+                attributes: ['reference'],
+                group: ['reference'],
+                having: ''
+            })
+
             db.Quotation.findAll({
                 where: {
-                    userId: req.session.userLogin?.id || 86
+                    userId: req.session.userLogin?.id
                 },
                 limit: 8,
                 include: { all: true }
@@ -54,7 +62,8 @@ module.exports = {
                         pages: 1,
                         keywords: "",
                         multiplo: total % 8 === 0 ? 0 : 1,
-                        moment
+                        moment,
+                        references
                     })
                 })
                 .catch(error => console.log(error));
@@ -124,13 +133,13 @@ module.exports = {
                     limit: 8,
                     include: { all: true }
                 })
-            }else{
+            } else {
                 total = await db.Quotation.count({
                     where: {
                         reference: {
                             [Op.substring]: keywords
                         },
-                        userId : filter
+                        userId: filter
                     }
                 })
                 items = await db.Quotation.findAll({
@@ -138,7 +147,7 @@ module.exports = {
                         reference: {
                             [Op.substring]: keywords
                         },
-                        userId : filter
+                        userId: filter
                     },
                     limit: 8,
                     include: { all: true }
@@ -157,86 +166,123 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-      
+
 
     },
     filter: async (req, res) => {
 
-        let { order, filter, keywords, active,pages }= req.query;
+        let { order, filter, keywords, active, pages } = req.query;
         let items = [];
         let users = [];
         let total = 0;
+
         if (req.session.userLogin.rol === 1) {
 
-        try {
-            users = await db.Quotation.findAll({
-                attributes: ['userId'],
-                include: [
-                    { association: 'user' }
-                ],
-                group: ['userId'],
-                having: ''
-
-            })
-            if (filter === "all" || !filter) {
-                total = await db.Quotation.count({
-                    where : {
-                        reference : {
-                            [Op.substring] : keywords
-                        }
-                    },
-                })
-                items = await db.Quotation.findAll({
-                    where : {
-                        reference : {
-                            [Op.substring] : keywords
-                        }
-                    },
-                    order: [order || 'id'],
-                    limit : 8,
-                    offset : active && (+active * 8) - 8,
-                    include: { all: true }
+            try {
+                users = await db.Quotation.findAll({
+                    attributes: ['userId'],
+                    include: [
+                        { association: 'user' }
+                    ],
+                    group: ['userId'],
+                    having: ''
 
                 })
+                if (filter === "all" || !filter) {
+                    total = await db.Quotation.count({
+                        where: {
+                            reference: {
+                                [Op.substring]: keywords
+                            }
+                        },
+                    })
+                    items = await db.Quotation.findAll({
+                        where: {
+                            reference: {
+                                [Op.substring]: keywords
+                            }
+                        },
+                        order: [order || 'id'],
+                        limit: 8,
+                        offset: active && (+active * 8) - 8,
+                        include: { all: true }
 
-            }else {
-                total = await db.Quotation.count({
-                    where: {
-                        userId: +filter,
-                        reference : {
-                            [Op.substring] : keywords
-                        }
-                    },
+                    })
+
+                } else {
+                    total = await db.Quotation.count({
+                        where: {
+                            userId: +filter,
+                            reference: {
+                                [Op.substring]: keywords
+                            }
+                        },
+                    })
+                    items = await db.Quotation.findAll({
+                        where: {
+                            userId: +filter,
+                            reference: {
+                                [Op.substring]: keywords
+                            }
+                        },
+                        order: [order || 'id'],
+                        limit: 8,
+                        offset: active && (+active * 8) - 8,
+                        include: { all: true }
+                    })
+                }
+                return res.render('quotations', {
+                    items,
+                    total,
+                    active,
+                    pages,
+                    keywords,
+                    multiplo: total % 8 === 0 ? 0 : 1,
+                    moment,
+                    users
                 })
-                items = await db.Quotation.findAll({
-                    where: {
-                        userId: +filter,
-                        reference : {
-                            [Op.substring] : keywords
-                        }
-                    },
-                    order: [order || 'id'],
-                    limit : 8,
-                    offset : active && (+active * 8) - 8,
-                    include: { all: true }
-                })
+            } catch (error) {
+                console.log(error)
             }
-            return res.render('quotations', {
-                items,
-                total,
-                active,
-                pages,
-                keywords,
-                multiplo : total%8 === 0 ? 0 : 1,
-                moment,
-                users
-            })
-        } catch (error) {
-            console.log(error)
+        } else {
+            try {
+              console.log('>>>>>>>>>>>>>>>>>>>>>>>>>',keywords);
+                total = await db.Quotation.count({
+                    where: {
+                        userId: req.session.userLogin?.id,
+                        reference: {
+                            [Op.substring]: keywords
+                        }
+                    },
+                })
+                items = await db.Quotation.findAll({
+                    where: {
+                        userId: req.session.userLogin?.id,
+                        reference: {
+                            [Op.substring]: keywords
+                        }
+                    },
+                    order: [order || 'id'],
+                    limit: 8,
+                    offset: active && (+active * 8) - 8,
+                    include: { all: true }
+
+                })
+
+
+                return res.render('quotations', {
+                    items,
+                    total,
+                    active,
+                    pages,
+                    keywords,
+                    multiplo: total % 8 === 0 ? 0 : 1,
+                    moment,
+                })
+            } catch (error) {
+                console.log(error)
+            }
         }
-    }else{
-        return res.send('users')
-    }
     },
     //APIS
     load: async (req, res) => {
