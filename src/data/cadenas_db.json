@@ -1,0 +1,32 @@
+[
+  {
+    "idLocal": 1,
+    "name": 2,
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 2,
+    "name": 2.5,
+    "price": 40,
+    "visible": 0
+  },
+  {
+    "idLocal": 3,
+    "name": 3,
+    "price": 80,
+    "visible": 1
+  },
+  {
+    "idLocal": 4,
+    "name": 3.5,
+    "price": 120,
+    "visible": 0
+  },
+  {
+    "idLocal": 5,
+    "name": 4,
+    "price": 160,
+    "visible": 1
+  }
+]

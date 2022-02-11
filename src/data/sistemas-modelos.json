@@ -1,0 +1,34 @@
+[
+    {
+      "id" : 113,
+      "patterns" : [1,2]
+    },
+    {
+      "id" : 111,
+      "patterns" : [1,2,3]
+    },
+    {
+      "id" : 112,
+      "patterns" : [4]
+    },
+    {
+      "id" : 129,
+      "patterns" : [4]
+    },
+    {
+      "id" : 130,
+      "patterns" : [4]
+    },
+    {
+      "id" : 116,
+      "patterns" : [4]
+    },
+    {
+      "id" : 127,
+      "patterns" : [6]
+    },
+    {
+      "id" : 114,
+      "patterns" : [6]
+    }
+  ]

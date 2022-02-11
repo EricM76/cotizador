@@ -1,0 +1,38 @@
+[
+  {
+    "idLocal": 1,
+    "name": "Cadena Metalica",
+    "price": 50,
+    "visible": 1
+  },
+  {
+    "idLocal": 2,
+    "name": "Cadena Plastica",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 3,
+    "name": "A cordon",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 4,
+    "name": "A baston",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 5,
+    "name": "Libre",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 6,
+    "name": "Ninguno",
+    "price": 0,
+    "visible": 1
+  }
+]

@@ -2,45 +2,48 @@ const db = require('../database/models');
 const { Op } = require('sequelize');
 
 module.exports = {
-    index : (req,res) => {
+    index: (req, res) => {
         res.render('orders')
     },
-    add : async (req,res) => {
-        console.log('>>>>>>>>>>>>>', req.query.quoters);
+    add: async (req, res) => {
 
-        const quoters = req.query.quoters.map(quoter => +quoter)
-
-        db.Quotation.findAll({
-            where : {
-                id : {
-                    [Op.in] : quoters
-                }
-            }
-        })
-            .then(items => {
-                return res.send(items)
-                res.render('orderAdd')
+        const quoters = JSON.parse(req.query.quoters).map(quoter => +quoter)
+        try {
+            let items = await db.Quotation.findAll({
+                where: {
+                    id: {
+                        [Op.in]: quoters
+                    }
+                },
+                include: [{ all: true }]
             })
-            .catch(error => console.log(error))
-       
+
+            return res.render('orderAdd', {
+                items
+            })
+        } catch (error) {
+            console.log(error)
+        }
     },
-    store : (req,res) => {
+    store: (req, res) => {
         res.render('orders')
     },
-    detail : (req,res) => {
+    detail: (req, res) => {
         res.render('orderDetail')
     },
-    edit : (req,res) => {
+    edit: (req, res) => {
         res.render('orderEdit')
     },
-    update : (req,res) => {
+    update: (req, res) => {
         res.render('orderUpdate')
     },
-    remove : (req,res) => {
+    remove: (req, res) => {
         res.render('orders')
     },
-    search : (req,res) => {
+    search: (req, res) => {
         res.render('orders')
-    }
+    },
+    /* apis */
     
+
 }

@@ -1,0 +1,506 @@
+[
+    {
+        "idLocal": 4405,
+        "name": "Erica",
+        "surname": "Castiello",
+        "email": "eri_vcp@hotmail.com"
+    },
+    {
+        "idLocal": 4516,
+        "name": "Agustin",
+        "surname": "Leglise",
+        "email": "agusleglise@hotmail.com"
+    },
+    {
+        "idLocal": 5312,
+        "name": "Martin",
+        "surname": "Rubin",
+        "email": "viloncortinas@gmail.com"
+    },
+    {
+        "idLocal": 5513,
+        "name": "Maximo",
+        "surname": "Haurie",
+        "email": "hauriemaximo@yahoo.com.ar"
+    },
+    {
+        "idLocal": 6433,
+        "name": "Monica",
+        "surname": "Arrom Borras",
+        "email": "bordadospatagonia@yahoo.com"
+    },
+    {
+        "idLocal": 6618,
+        "name": "Jose Alberto",
+        "surname": "Oitaben",
+        "email": "serviciosnico@hotmail.com"
+    },
+    {
+        "idLocal": 6688,
+        "name": "Gaston",
+        "surname": "Morillo",
+        "email": "tatomorillo@hotmail.com"
+    },
+    {
+        "idLocal": 6780,
+        "name": "Martin",
+        "surname": "Moya",
+        "email": "martinmoya_@hotmail.com"
+    },
+    {
+        "idLocal": 7161,
+        "name": "Maria Florencia",
+        "surname": "Bourras",
+        "email": "flopibou@gmail.com"
+    },
+    {
+        "idLocal": 7251,
+        "name": "Lorena",
+        "surname": "Mango",
+        "email": "lorena.mango@hotmail.com"
+    },
+    {
+        "idLocal": 7252,
+        "name": "Juliana",
+        "surname": "Guibert",
+        "email": "juliguibert@hotmail.com"
+    },
+    {
+        "idLocal": 7270,
+        "name": "Alejandro",
+        "surname": "Mana",
+        "email": "cortinasmodera@gmail.com"
+    },
+    {
+        "idLocal": 7292,
+        "name": "Lorena",
+        "surname": "Porta",
+        "email": "ANLOPO@HOTMAIL.COM"
+    },
+    {
+        "idLocal": 7539,
+        "name": "Ruben",
+        "surname": "Blackhall",
+        "email": "electrotodo@mymcom.com.ar"
+    },
+    {
+        "idLocal": 7742,
+        "name": "Pablo",
+        "surname": "Bressan",
+        "email": "arquitectobressan@gmail.com"
+    },
+    {
+        "idLocal": 7878,
+        "name": "Daniel",
+        "surname": "Sosa",
+        "email": "triumphsmdp@gmail.com"
+    },
+    {
+        "idLocal": 7988,
+        "name": "Nicolas",
+        "surname": "Arata",
+        "email": "cocolonas@gmail.com"
+    },
+    {
+        "idLocal": 8028,
+        "name": "Veronica",
+        "surname": "Del Moro",
+        "email": "blanco-patagonia@hotmail.com"
+    },
+    {
+        "idLocal": 8039,
+        "name": "Maximo",
+        "surname": "Magneres",
+        "email": "moscosomv@hotmail.com"
+    },
+    {
+        "idLocal": 8044,
+        "name": "Roxana",
+        "surname": "Scaglia",
+        "email": "mundoaberturasmer1@gmail.com"
+    },
+    {
+        "idLocal": 8132,
+        "name": "Leonardo Carlos",
+        "surname": "Canava",
+        "email": "carpaselsanjuanino@yahoo.com.ar"
+    },
+    {
+        "idLocal": 8196,
+        "name": "Enriqueta",
+        "surname": "Olivello",
+        "email": "estudioarqei@gmail.com"
+    },
+    {
+        "idLocal": 8222,
+        "name": "Pamela",
+        "surname": "Vietti",
+        "email": "pamelavietti@gmail.com"
+    },
+    {
+        "idLocal": 8272,
+        "name": "Pablo",
+        "surname": "Oliver",
+        "email": "lodecocosp@gmail.com"
+    },
+    {
+        "idLocal": 8445,
+        "name": "Gabriela",
+        "surname": "Picabea",
+        "email": "giveamoblamientos@gmail.com"
+    },
+    {
+        "idLocal": 8489,
+        "name": "Fernando",
+        "surname": "Rey Torres",
+        "email": "fernandoreytorres@gmail.com"
+    },
+    {
+        "idLocal": 8554,
+        "name": "Marcelo",
+        "surname": "Quinteros",
+        "email": "maqelconstructora@gmail.com"
+    },
+    {
+        "idLocal": 8559,
+        "name": "Megashop",
+        "surname": "Gustavo Lezcano",
+        "email": "natachaveronica@yahoo.com.ar"
+    },
+    {
+        "idLocal": 8569,
+        "name": "Celeste",
+        "surname": "Gonzalez",
+        "email": "celeste.gonzalez@hotmail.com"
+    },
+    {
+        "idLocal": 8577,
+        "name": "Martin",
+        "surname": "Benzoni",
+        "email": "carlosmbenzoni@gmail.com"
+    },
+    {
+        "idLocal": 8588,
+        "name": "Julia",
+        "surname": "Angelone",
+        "email": "angelonejulia@outlook.com"
+    },
+    {
+        "idLocal": 8625,
+        "name": "Enrique",
+        "surname": "Ramos",
+        "email": "enriqueramos614@gmail.com"
+    },
+    {
+        "idLocal": 8662,
+        "name": "Cristian",
+        "surname": "Ocen",
+        "email": "desitilo@yahoo.com.ar"
+    },
+    {
+        "idLocal": 8720,
+        "name": "Damian",
+        "surname": "Pozzi",
+        "email": "pozzidamian@gmail.com"
+    },
+    {
+        "idLocal": 8742,
+        "name": "Cristian",
+        "surname": "Heinrich",
+        "email": "seccoplacsalta@gmail.com"
+    },
+    {
+        "idLocal": 8763,
+        "name": "Miriam",
+        "surname": "Bagnis",
+        "email": "plaquenamoblamientos@hotmail.com"
+    },
+    {
+        "idLocal": 8764,
+        "name": "Damian",
+        "surname": "Alonso",
+        "email": "dalonso@grupomontalban.com"
+    },
+    {
+        "idLocal": 8791,
+        "name": "Silvana",
+        "surname": "Avero",
+        "email": "mscreacionesencortinas@gmail.com"
+    },
+    {
+        "idLocal": 8821,
+        "name": "Ariel",
+        "surname": "Arranz",
+        "email": "info@amets.com.ar"
+    },
+    {
+        "idLocal": 8839,
+        "name": "Dorella",
+        "surname": "Pappalardo",
+        "email": "renogeneralvillegas@gmail.com"
+    },
+    {
+        "idLocal": 8942,
+        "name": "Paola",
+        "surname": "Graciano",
+        "email": "gracianopaola@gmail.com"
+    },
+    {
+        "idLocal": 8987,
+        "name": "Erika",
+        "surname": "Wagner",
+        "email": "rum.sanitarios@gmail.com"
+    },
+    {
+        "idLocal": 9027,
+        "name": "Guillermina",
+        "surname": "Garcia Sierra",
+        "email": "hauscorreo@gmail.com"
+    },
+    {
+        "idLocal": 9062,
+        "name": "Maximiliano",
+        "surname": "Ferraro",
+        "email": "mueblesdelosandes@gmail.com"
+    },
+    {
+        "idLocal": 9078,
+        "name": "Sofia Ines",
+        "surname": "Costa",
+        "email": "sofiainescosta@outlook.com"
+    },
+    {
+        "idLocal": 9085,
+        "name": "Facundo Noel",
+        "surname": "Herrera",
+        "email": "maspisoscalafate@gmail.com"
+    },
+    {
+        "idLocal": 9136,
+        "name": "Franco",
+        "surname": "Herrera",
+        "email": "tapiceriargl@gmail.com"
+    },
+    {
+        "idLocal": 9153,
+        "name": "Rocio",
+        "surname": "Figueroa",
+        "email": "Bricoshop@gmail.com"
+    },
+    {
+        "idLocal": 9201,
+        "name": "Angel Antonio",
+        "surname": "Samid",
+        "email": "samid.angel.12@gmail.com"
+    },
+    {
+        "idLocal": 9205,
+        "name": "Yamila",
+        "surname": "Viola",
+        "email": "yami-va@hotmail.com"
+    },
+    {
+        "idLocal": 9217,
+        "name": "Ricardo",
+        "surname": "Villafaena",
+        "email": "villafaenaricardo@gmail.com"
+    },
+    {
+        "idLocal": 9235,
+        "name": "Silvia",
+        "surname": "Palla",
+        "email": "silviapalla46@gmail.com"
+    },
+    {
+        "idLocal": 9319,
+        "name": "Juan Matias",
+        "surname": "Capogrosso",
+        "email": "info@piedranegra.com.ar"
+    },
+    {
+        "idLocal": 9321,
+        "name": "Walter",
+        "surname": "Cullerton",
+        "email": "cullerton@hotmail.com"
+    },
+    {
+        "idLocal": 9397,
+        "name": "Ricardo",
+        "surname": "Domenech",
+        "email": "runaobjetos@gmail.com"
+    },
+    {
+        "idLocal": 9398,
+        "name": "Andrea",
+        "surname": "Luna",
+        "email": "arq-andrealuna@hotmail.com"
+    },
+    {
+        "idLocal": 9486,
+        "name": "Mario Sebastian",
+        "surname": "Gabriel",
+        "email": "spazioconstructora@hotmail.com"
+    },
+    {
+        "idLocal": 9495,
+        "name": "Elizabeth",
+        "surname": "Velasquez",
+        "email": "lizzeth07@hotmail.com"
+    },
+    {
+        "idLocal": 9546,
+        "name": "Norma",
+        "surname": "Eidman",
+        "email": "INFO@DECORFLORES.COM.AR"
+    },
+    {
+        "idLocal": 9555,
+        "name": "Maria",
+        "surname": "Angelone",
+        "email": "marilueangelone@gmail.com"
+    },
+    {
+        "idLocal": 9566,
+        "name": "Rocio",
+        "surname": "Paissan",
+        "email": "rpaissancortinasroller@gmail.com"
+    },
+    {
+        "idLocal": 9598,
+        "name": "Guillermo",
+        "surname": "Gomez",
+        "email": "seccoplacjunin@gmail.com"
+    },
+    {
+        "idLocal": 9650,
+        "name": "Delfina",
+        "surname": "Ledesma",
+        "email": "voila.viar@gmail.com"
+    },
+    {
+        "idLocal": 9680,
+        "name": "Claudia Andrea",
+        "surname": "Cantarutti",
+        "email": "claudiaandrea1105@hotmail.com"
+    },
+    {
+        "idLocal": 9713,
+        "name": "Joaquin",
+        "surname": "Miotti",
+        "email": "jmcontrolsolar@gmail.com"
+    },
+    {
+        "idLocal": 9777,
+        "name": "Gerardo",
+        "surname": "Alvarez",
+        "email": "myhfabrica@hotmail.com"
+    },
+    {
+        "idLocal": 9813,
+        "name": "Matias",
+        "surname": "Morbidelli",
+        "email": "matyas_111@hotmail.com"
+    },
+    {
+        "idLocal": 9821,
+        "name": "Gonzalo",
+        "surname": "Cornu",
+        "email": "graficorfsa@gmail.com"
+    },
+    {
+        "idLocal": 9846,
+        "name": "Cristian",
+        "surname": "Charras",
+        "email": "aberturasalfayomega@gmail.com"
+    },
+    {
+        "idLocal": 9848,
+        "name": "Gabriela",
+        "surname": "Hermann",
+        "email": "Gabrielaahermann@gmail.com"
+    },
+    {
+        "idLocal": 9917,
+        "name": "Manuel Daniel",
+        "surname": "Montecino",
+        "email": "manueldanielmontecino@gmail.com"
+    },
+    {
+        "idLocal": 9942,
+        "name": "Luis",
+        "surname": "Gregorini",
+        "email": "luiscesargregorini@gmail.com"
+    },
+    {
+        "idLocal": 9964,
+        "name": "Federico",
+        "surname": "Grande Suarez",
+        "email": "grandefederico1998@gmail.com"
+    },
+    {
+        "idLocal": 9990,
+        "name": "Nestor",
+        "surname": "Cordoba castaneda",
+        "email": "lauesmege@gmail.com"
+    },
+    {
+        "idLocal": 10079,
+        "name": "Monica",
+        "surname": "Valdes",
+        "email": "Monicavaldes7@hotmail.com"
+    },
+    {
+        "idLocal": 10183,
+        "name": "Luis",
+        "surname": "Espinosa",
+        "email": "julianantu7@gmail.com"
+    },
+    {
+        "idLocal": 10431,
+        "name": "Maria Teresa",
+        "surname": "Carnibella",
+        "email": "arqmariacarnibella@gmail.com"
+    },
+    {
+        "idLocal": 10492,
+        "name": "Diego Andres",
+        "surname": "May",
+        "email": "dmayservicios@gmail.com"
+    },
+    {
+        "idLocal": 10494,
+        "name": "Marcelo",
+        "surname": "Valicenti",
+        "email": "amanecercortinas@gmail.com"
+    },
+    {
+        "idLocal": 10503,
+        "name": "Martin",
+        "surname": "Darre",
+        "email": "mdarre79@gmail.com"
+    },
+    {
+        "idLocal": 10516,
+        "name": "Diego",
+        "surname": "Ricci",
+        "email": "migra20@hotmail.com"
+    },
+    {
+        "idLocal": 10561,
+        "name": "Lucas",
+        "surname": "Paz Aguilar",
+        "email": "lucas.pazaguilar@gmail.com"
+    },
+    {
+        "idLocal": 10565,
+        "name": "Damian",
+        "surname": "Alonso",
+        "email": "dalonso@grupomontalban.com"
+    },
+    {
+        "idLocal": 10587,
+        "name": "Jorge Oscar",
+        "surname": "Rodriguez",
+        "email": "jorgerodrigueztj@hotmail.com.ar"
+    }
+]

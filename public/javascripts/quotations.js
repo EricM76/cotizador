@@ -76,8 +76,7 @@ $('btn-generateOrder').addEventListener('click', (e) => {
 document.querySelector('.table').addEventListener('click', ({ target }) => {
 
     let selected = JSON.parse(localStorage.getItem('selected')) || []
-    let checks = document.querySelectorAll('.form-check-input');
-    let selectedChecks = false;
+   
 
     if (target.name === "quotation") {
         if (target.checked) {
@@ -91,15 +90,21 @@ document.querySelector('.table').addEventListener('click', ({ target }) => {
 
     };
 
+selectedChecks()
 
+})
+
+const selectedChecks = () => {
+    let checks = document.querySelectorAll('.form-check-input');
+
+    let selectedChecks = false;
     checks.forEach(check => {
         if (check.checked) {
             selectedChecks = true;
         }
     });
     selectedChecks && $('btn-generateOrder').classList.remove('disabled')
-
-})
+}
 
 const checkSelected = (id) => {
     return JSON.parse(localStorage.getItem('selected')).includes(+id)
@@ -116,6 +121,8 @@ window.onload = function () {
             check.checked = false
         }
     });
+
+    selectedChecks()
 
     let query = new URLSearchParams(window.location.search);
 

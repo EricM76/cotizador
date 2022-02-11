@@ -1,0 +1,194 @@
+[
+  {
+    "idLocal": 1,
+    "name": "Techo",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 2,
+    "name": "Pared",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 3,
+    "name": "Techo/Pared",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 4,
+    "name": "Union",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 5,
+    "name": "Ninguno",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 6,
+    "name": "Doble",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 7,
+    "name": "Simple",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 8,
+    "name": "Simple 5",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 9,
+    "name": "Union 5",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 10,
+    "name": "Union especial 5",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 11,
+    "name": "Simple 7.5",
+    "price": 40,
+    "visible": 0
+  },
+  {
+    "idLocal": 12,
+    "name": "Union 7.5",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 13,
+    "name": "Union especial 7.5",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": null,
+    "name": "SIN REGISTRO",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 15,
+    "name": "Simple 10",
+    "price": 50,
+    "visible": 0
+  },
+  {
+    "idLocal": 16,
+    "name": "Union 10",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 17,
+    "name": "Union especial 10",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 18,
+    "name": "Ninguno",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 19,
+    "name": "Viejo Doble",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 20,
+    "name": "no se",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 21,
+    "name": "escuadra de 15cm",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 22,
+    "name": "Doble Union",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": null,
+    "name": "SIN REGISTRO",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 24,
+    "name": "5 cm 1 solo X",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 25,
+    "name": "7.5 cm 1 solo X",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 26,
+    "name": "10cm 1solo X",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 27,
+    "name": "velcro gancho",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 28,
+    "name": "Corto",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 29,
+    "name": "Largo",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 30,
+    "name": "Union corto",
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 31,
+    "name": "Union Largo",
+    "price": 0,
+    "visible": 0
+  },
+  {
+    "idLocal": 32,
+    "name": "Doble",
+    "price": 0,
+    "visible": 0
+  }
+]

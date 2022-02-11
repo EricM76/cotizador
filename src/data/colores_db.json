@@ -1,0 +1,447 @@
+[
+  {
+    "idLocal": 1,
+    "name": "Blanco",
+    "visible": 1
+  },
+  {
+    "idLocal": 2,
+    "name": "Gris",
+    "visible": 1
+  },
+  {
+    "idLocal": 3,
+    "name": "Natural",
+    "visible": 1
+  },
+  {
+    "idLocal": 4,
+    "name": "Marron",
+    "visible": 1
+  },
+  {
+    "idLocal": 5,
+    "name": "Lila",
+    "visible": 0
+  },
+  {
+    "idLocal": 6,
+    "name": "Maiz",
+    "visible": 0
+  },
+  {
+    "idLocal": 7,
+    "name": "Durazno",
+    "visible": 0
+  },
+  {
+    "idLocal": 8,
+    "name": "Beige",
+    "visible": 0
+  },
+  {
+    "idLocal": 9,
+    "name": "Azul",
+    "visible": 0
+  },
+  {
+    "idLocal": 10,
+    "name": "Nat y Bco",
+    "visible": 0
+  },
+  {
+    "idLocal": 11,
+    "name": "crudo",
+    "visible": 0
+  },
+  {
+    "idLocal": 12,
+    "name": "Fucsia",
+    "visible": 0
+  },
+  {
+    "idLocal": 13,
+    "name": "Bordo",
+    "visible": 0
+  },
+  {
+    "idLocal": 14,
+    "name": "Marfil",
+    "visible": 0
+  },
+  {
+    "idLocal": 15,
+    "name": "Malva",
+    "visible": 0
+  },
+  {
+    "idLocal": 16,
+    "name": "Negro",
+    "visible": 1
+  },
+  {
+    "idLocal": 17,
+    "name": "Ninguno",
+    "visible": 0
+  },
+  {
+    "idLocal": 18,
+    "name": "Naranja",
+    "visible": 0
+  },
+  {
+    "idLocal": 19,
+    "name": "Turquesa",
+    "visible": 0
+  },
+  {
+    "idLocal": 20,
+    "name": "Terracota",
+    "visible": 0
+  },
+  {
+    "idLocal": 21,
+    "name": "Verde Pistacho",
+    "visible": 0
+  },
+  {
+    "idLocal": 22,
+    "name": "Rojo",
+    "visible": 0
+  },
+  {
+    "idLocal": 23,
+    "name": "manzana verde",
+    "visible": 0
+  },
+  {
+    "idLocal": 24,
+    "name": "Lacre",
+    "visible": 0
+  },
+  {
+    "idLocal": 25,
+    "name": "crudo",
+    "visible": 0
+  },
+  {
+    "idLocal": 26,
+    "name": "lino",
+    "visible": 1
+  },
+  {
+    "idLocal": 27,
+    "name": "No se",
+    "visible": 0
+  },
+  {
+    "idLocal": 28,
+    "name": "Ninguno",
+    "visible": 0
+  },
+  {
+    "idLocal": 29,
+    "name": "Cuadrille",
+    "visible": 0
+  },
+  {
+    "idLocal": 30,
+    "name": "chocolate",
+    "visible": 0
+  },
+  {
+    "idLocal": 31,
+    "name": "Negro y Blanco",
+    "visible": 0
+  },
+  {
+    "idLocal": 32,
+    "name": "Crema",
+    "visible": 0
+  },
+  {
+    "idLocal": 33,
+    "name": "bordo /natural",
+    "visible": 0
+  },
+  {
+    "idLocal": 34,
+    "name": "rosa",
+    "visible": 0
+  },
+  {
+    "idLocal": 35,
+    "name": "cacau 26",
+    "visible": 0
+  },
+  {
+    "idLocal": 36,
+    "name": "ORO",
+    "visible": 0
+  },
+  {
+    "idLocal": 37,
+    "name": "Nat/Blanco",
+    "visible": 0
+  },
+  {
+    "idLocal": 38,
+    "name": "Rosa/Blanco",
+    "visible": 0
+  },
+  {
+    "idLocal": 39,
+    "name": "Gris Plata",
+    "visible": 0
+  },
+  {
+    "idLocal": 40,
+    "name": "Aero",
+    "visible": 0
+  },
+  {
+    "idLocal": 41,
+    "name": "Marron Claro",
+    "visible": 0
+  },
+  {
+    "idLocal": 42,
+    "name": "Francia",
+    "visible": 0
+  },
+  {
+    "idLocal": 43,
+    "name": "Bco y Gris",
+    "visible": 0
+  },
+  {
+    "idLocal": 44,
+    "name": "Verde Agua",
+    "visible": 0
+  },
+  {
+    "idLocal": 45,
+    "name": "Rosa Viejo",
+    "visible": 0
+  },
+  {
+    "idLocal": 46,
+    "name": "violeta",
+    "visible": 0
+  },
+  {
+    "idLocal": 47,
+    "name": "camel",
+    "visible": 0
+  },
+  {
+    "idLocal": 48,
+    "name": "maiz y naranja",
+    "visible": 0
+  },
+  {
+    "idLocal": 49,
+    "name": "Natural/Maiz",
+    "visible": 0
+  },
+  {
+    "idLocal": 50,
+    "name": "rojo/blanco",
+    "visible": 0
+  },
+  {
+    "idLocal": 51,
+    "name": "Tostado",
+    "visible": 1
+  },
+  {
+    "idLocal": 52,
+    "name": "Verde Malva",
+    "visible": 0
+  },
+  {
+    "idLocal": 53,
+    "name": "marron charcoal 3071",
+    "visible": 0
+  },
+  {
+    "idLocal": 54,
+    "name": "Marron/Natural",
+    "visible": 0
+  },
+  {
+    "idLocal": 55,
+    "name": "3 Blanco/  2marron",
+    "visible": 0
+  },
+  {
+    "idLocal": 56,
+    "name": "Marfil 2549",
+    "visible": 0
+  },
+  {
+    "idLocal": 57,
+    "name": "marron/natural/blanco/natural",
+    "visible": 0
+  },
+  {
+    "idLocal": 58,
+    "name": "2 natural/2 marron",
+    "visible": 0
+  },
+  {
+    "idLocal": 59,
+    "name": "2 bcos 1 natural",
+    "visible": 0
+  },
+  {
+    "idLocal": 60,
+    "name": "a definir",
+    "visible": 0
+  },
+  {
+    "idLocal": 61,
+    "name": "MOSTAZA",
+    "visible": 0
+  },
+  {
+    "idLocal": 62,
+    "name": "gros caqui 900-29",
+    "visible": 0
+  },
+  {
+    "idLocal": 63,
+    "name": "2Blanco/1negro/1gris claro",
+    "visible": 0
+  },
+  {
+    "idLocal": 64,
+    "name": "Marron Intermedio",
+    "visible": 0
+  },
+  {
+    "idLocal": 65,
+    "name": "Verde 900-47",
+    "visible": 0
+  },
+  {
+    "idLocal": 66,
+    "name": "Caqui",
+    "visible": 0
+  },
+  {
+    "idLocal": 67,
+    "name": "marron.bco.nat",
+    "visible": 0
+  },
+  {
+    "idLocal": 68,
+    "name": "2negro/2gris",
+    "visible": 0
+  },
+  {
+    "idLocal": 69,
+    "name": "gris cadac",
+    "visible": 0
+  },
+  {
+    "idLocal": 70,
+    "name": "Marron/Blanco",
+    "visible": 0
+  },
+  {
+    "idLocal": 71,
+    "name": "3nat/1blanco",
+    "visible": 0
+  },
+  {
+    "idLocal": 72,
+    "name": "Lino/blanco",
+    "visible": 0
+  },
+  {
+    "idLocal": 73,
+    "name": "Tostado",
+    "visible": 0
+  },
+  {
+    "idLocal": 74,
+    "name": "Tomate",
+    "visible": 0
+  },
+  {
+    "idLocal": 75,
+    "name": "tiza",
+    "visible": 0
+  },
+  {
+    "idLocal": 76,
+    "name": "Cemento",
+    "visible": 0
+  },
+  {
+    "idLocal": 77,
+    "name": "blanco/fucsia",
+    "visible": 0
+  },
+  {
+    "idLocal": 78,
+    "name": "natural/tostado",
+    "visible": 0
+  },
+  {
+    "idLocal": 79,
+    "name": "sepia",
+    "visible": 0
+  },
+  {
+    "idLocal": 80,
+    "name": "gris oscuro",
+    "visible": 0
+  },
+  {
+    "idLocal": 81,
+    "name": "nickel",
+    "visible": 0
+  },
+  {
+    "idLocal": 82,
+    "name": "forra negro",
+    "visible": 0
+  },
+  {
+    "idLocal": 83,
+    "name": "negro forrad",
+    "visible": 0
+  },
+  {
+    "idLocal": 84,
+    "name": "Blanco / Negro atras",
+    "visible": 0
+  },
+  {
+    "idLocal": 85,
+    "name": "bco/negro",
+    "visible": 0
+  },
+  {
+    "idLocal": 86,
+    "name": "nickel",
+    "visible": 0
+  },
+  {
+    "idLocal": 87,
+    "name": "negro por atras",
+    "visible": 0
+  },
+  {
+    "idLocal": 88,
+    "name": "acero",
+    "visible": 0
+  },
+  {
+    "idLocal": 89,
+    "name": "blan/nat",
+    "visible": 0
+  }
+]
