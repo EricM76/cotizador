@@ -26,7 +26,7 @@ module.exports = {
         }
     },
     store: (req, res) => {
-        res.render('orders')
+        return res.send(req.body)
     },
     detail: (req, res) => {
         res.render('orderDetail')

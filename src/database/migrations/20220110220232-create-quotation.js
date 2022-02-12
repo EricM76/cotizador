@@ -20,7 +20,7 @@ module.exports = {
       clothWidth: {
         type: Sequelize.INTEGER
       },
-      heigth: {
+      height: {
         type: Sequelize.INTEGER
       },
       amount: {
@@ -40,6 +40,18 @@ module.exports = {
       }, */
       reference: {
         type: Sequelize.STRING,
+      },
+      command : {
+        type : Sequelize.STRING,
+      },
+      supportOrientation : {
+        type : Sequelize.STRING,
+      },
+      clothOrientation : {
+        type : Sequelize.STRING,
+      },
+      observations : {
+        type : Sequelize.TEXT,
       },
       systemId: {
         type: Sequelize.INTEGER,

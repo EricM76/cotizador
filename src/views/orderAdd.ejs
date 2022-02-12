@@ -7,81 +7,76 @@
       <main class="container">
         <section class="col-12 mt-5 mx-auto">
           <article class="card shadow">
+            <form action="" method="POST">
+
             <div class="card-header">
               <h5>Nuevo presupuesto</h5>
+              <button class="btn btn-outline-dark">Enviar presupuesto</button>
+
             </div>
-            <div class="card-body">
+            <div class="card-body row">
               <% items.forEach(({id,system,cloth,color, clothWidth, heigth, pattern, chain,support, reference, amount}) => { %>
-                <form action="" class="row">
-                  <div class="col-3 col-md-2 col-lg-1 mb-3">
+                <input type="text" value="<%= id %>" name="id" hidden>
+                  <div class="col-4 col-md-2 col-lg-1 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="quantity" placeholder="cantidad" value="1" name="quantity-<%= id %>">
-                      <label for="quantity">Cantidad</label>
+                      <input type="number" min="1" class="form-control" id="quantity" placeholder="cantidad" value="1" name="quantity">
+                      <label for="quantity">Cant.</label>
                     </div>
                   </div>
-                  <div class="col-9 col-md-6 col-lg-3 mb-3">
+                  <div class="col-8 col-md-4 col-lg-3 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="system" placeholder="sistema" value="<%= system.name %>" name="" readonly>
+                      <input type="text" class="form-control" id="system" placeholder="sistema" value="<%= system.name %>" name="sytem" readonly>
                       <label for="system">Sistema</label>
                     </div>
                   </div>
                   <div class="col-12 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="cloth" placeholder="tela" value="<%= cloth.name %>" readonly>
+                      <input type="text" class="form-control" id="cloth" placeholder="tela" value="<%= cloth.name %>" name="cloth" readonly>
                       <label for="cloth">Tela</label>
                     </div>
                   </div>
                   <div class="col-12 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="color" placeholder="color" value="<%= color.name  %>" readonly>                      
+                      <input type="text" class="form-control" id="color" placeholder="color" value="<%= color.name  %>" name="color" readonly>                      
                       <label for="color">Color</label>
                     </div>
                    
                   </div>
                   <div class="col-6 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="clothWidth" placeholder="ancho" value="<%= clothWidth %>" readonly>
+                      <input type="number" class="form-control" id="clothWidth" placeholder="ancho" value="<%= clothWidth %>" name="clothWidth" readonly>
                       <label for="ancho">Ancho</label>
                     </div>
                   </div>
                   <div class="col-6 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="heigth" placeholder="alto" value="<%= heigth %>" readonly>
+                      <input type="number" class="form-control" id="height" placeholder="alto" value="<%= heigth %>" name="height" readonly>
                       <label for="heigth">Alto</label>
                     </div>
                   </div>
                   <div class="col-12 col-md-6 col-lg-4 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="pattern" placeholder="modelo" value="<%= pattern.name %>" readonly>
+                      <input type="text" class="form-control" id="pattern" placeholder="modelo" value="<%= pattern.name %>" name="pattern" readonly>
                       <label for="pattern">Modelo</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-2 mb-3">
+                  <div class="col-6 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="chain" placeholder="cadena" value="<%= chain.name %>" readonly>
+                      <input type="number" class="form-control" id="chain" placeholder="cadena" value="<%= chain.name %>" name="chain" readonly>
                       <label for="chain">Cadena</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-4 mb-3">
+                  <div class="col-6 col-md-6 col-lg-3 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="support" placeholder="soporte" value="<%= support.name %>" readonly>
+                      <input type="text" class="form-control" id="support" placeholder="soporte" value="<%= support.name %>" name="support" readonly>
                       <label for="support">Soporte</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-2 mb-3">
+               
+                  <div class="col-12 col-md-6 col-lg-3 mb-3">
                     <div class="form-floating">
-                    <select class="form-select" id="command">
-                      <option selected hidden>Seleccione...</option>
-                      <option value="der">Derecho</option>
-                      <option value="izq">Izquierdo</option>
-                    </select>
-                    <label for="command">Comando</label>
-                  </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating">
-                    <select class="form-select" id="support-orientation">
-                      <option selected hidden>Seleccione...</option>
+                    <select class="form-select" id="support-orientation" name="supportOrientation">
+                      <option selected hidden value="">Seleccione...</option>
                       <option value="pared">Pared</option>
                       <option value="techo">Techo</option>
                     </select>
@@ -90,8 +85,8 @@
                   </div>
                   <div class="col-12 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating">
-                    <select class="form-select" id="cloth orientation">
-                      <option selected hidden>Seleccione...</option>
+                    <select class="form-select" id="cloth orientation" name="clothOrientation">
+                      <option selected hidden value="">Seleccione...</option>
                       <option value="delante">Por delante</option>
                       <option value="detras">Por detrás</option>
                     </select>
@@ -99,28 +94,43 @@
                   </div>
                   </div>
                   <div class="col-12 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="reference" placeholder="referencia" value="<%= reference %>" readonly>
-                      <label for="reference">Referencia</label>
-                    </div>
+                    <div class="form-floating">
+                    <select class="form-select" id="command" name="command">
+                      <option selected hidden value="">Seleccione...</option>
+                      <option value="der">Derecho</option>
+                      <option value="izq">Izquierdo</option>
+                    </select>
+                    <label for="command">Comando</label>
+                  </div>
                   </div>
                   <div class="col-12 col-md-6 col-lg-4 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="observations">
+                      <input type="text" class="form-control" id="observations" name="observations">
                       <label for="observations">Observaciones</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-2 mb-3">
+                  <div class="col-6 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="amount" placeholder="monto" value="$ <%= amount %>" readonly>
-                      <label for="amount">Monto</label>
+                      <input type="text" class="form-control" id="reference" placeholder="referencia" value="<%= reference %>" name="reference" readonly>
+                      <label for="reference">Referencia</label>
                     </div>
                   </div>
-                </form>
+                  <div class="col-6 col-md-6 col-lg-2 mb-3">
+                    <div class="d-flex align-items-center">
+                      <span class="me-2">$</span>
+                      <div class="form-floating mb-3 flex-grow-1">
+                        <input type="text" class="form-control" id="amount" placeholder="monto" value="<%= amount %>" name="amount" readonly>
+                        <label for="amount">Monto</label>
+                      </div>
+                    </div>
+                  
+                  </div>
                 <hr>
               <% }) %>
-              <button class="btn btn-outline-dark">Enviar presupuesto</button>
+
             </div>
+          </form>
+
           </article>
         </section>
       </main>

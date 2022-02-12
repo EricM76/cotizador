@@ -389,7 +389,7 @@ module.exports = {
                 */
                 const quotation = await db.Quotation.create({
                     clothWidth: +width,
-                    heigth: +heigth,
+                    height: +heigth,
                     amount: data,
                     date: new Date(),
                     reference,
