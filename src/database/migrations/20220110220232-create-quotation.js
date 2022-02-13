@@ -20,7 +20,7 @@ module.exports = {
       clothWidth: {
         type: Sequelize.INTEGER
       },
-      height: {
+      heigth: {
         type: Sequelize.INTEGER
       },
       amount: {
@@ -52,6 +52,9 @@ module.exports = {
       },
       observations : {
         type : Sequelize.TEXT,
+      },
+      quantity : {
+        type : Sequelize.INTEGER,
       },
       systemId: {
         type: Sequelize.INTEGER,

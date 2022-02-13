@@ -70,7 +70,8 @@ $('btn-generateOrder').addEventListener('click', (e) => {
     e.preventDefault();
     //console.log(JSON.parse(localStorage.getItem('selected')));
 
-    window.location = '/orders/add?quoters=' + localStorage.getItem('selected')
+    window.location = '/orders/add?quoters=' + localStorage.getItem('selected');
+    localStorage.removeItem('selected')
 })
 
 document.querySelector('.table').addEventListener('click', ({ target }) => {
@@ -107,7 +108,7 @@ const selectedChecks = () => {
 }
 
 const checkSelected = (id) => {
-    return JSON.parse(localStorage.getItem('selected')).includes(+id)
+    return localStorage.getItem('selected') && JSON.parse(localStorage.getItem('selected')).includes(+id)
 }
 
 window.onload = function () {

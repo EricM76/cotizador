@@ -7,23 +7,22 @@
       <main class="container">
         <section class="col-12 mt-5 mx-auto">
           <article class="card shadow">
-            <form action="" method="POST">
+            <form action="" method="POST" novalidate>
 
-            <div class="card-header">
-              <h5>Nuevo presupuesto</h5>
-              <button class="btn btn-outline-dark">Enviar presupuesto</button>
-
+            <div class="card-header d-flex flex-column flex-md-row justify-content-between">
+              <h5 class="mb-3">Nuevo pedido</h5>
+              <button class="btn btn-outline-dark">Generar pedido</button>
             </div>
             <div class="card-body row">
               <% items.forEach(({id,system,cloth,color, clothWidth, heigth, pattern, chain,support, reference, amount}) => { %>
                 <input type="text" value="<%= id %>" name="id" hidden>
-                  <div class="col-4 col-md-2 col-lg-1 mb-3">
+                  <div class="col-4 col-md-2 col-lg-2 mb-3">
                     <div class="form-floating mb-3">
-                      <input type="number" min="1" class="form-control" id="quantity" placeholder="cantidad" value="1" name="quantity">
+                      <input type="number" min="1" class="form-control" id="quantity" placeholder="cantidad" value="1" name="quantity" required>
                       <label for="quantity">Cant.</label>
                     </div>
                   </div>
-                  <div class="col-8 col-md-4 col-lg-3 mb-3">
+                  <div class="col-8 col-md-4 col-lg-2 mb-3">
                     <div class="form-floating mb-3">
                       <input type="text" class="form-control" id="system" placeholder="sistema" value="<%= system.name %>" name="sytem" readonly>
                       <label for="system">Sistema</label>
@@ -75,30 +74,30 @@
                
                   <div class="col-12 col-md-6 col-lg-3 mb-3">
                     <div class="form-floating">
-                    <select class="form-select" id="support-orientation" name="supportOrientation">
+                    <select class="form-select" id="support-orientation" name="supportOrientation" required>
                       <option selected hidden value="">Seleccione...</option>
-                      <option value="pared">Pared</option>
-                      <option value="techo">Techo</option>
+                      <option value="PARED">Pared</option>
+                      <option value="TECHO">Techo</option>
                     </select>
                     <label for="support-orientation">Orientación soporte</label>
                   </div>
                   </div>
                   <div class="col-12 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating">
-                    <select class="form-select" id="cloth orientation" name="clothOrientation">
+                    <select class="form-select" id="cloth orientation" name="clothOrientation" required>
                       <option selected hidden value="">Seleccione...</option>
-                      <option value="delante">Por delante</option>
-                      <option value="detras">Por detrás</option>
+                      <option value="POR DELANTE">Por delante</option>
+                      <option value="POR DETRÁS">Por detrás</option>
                     </select>
                     <label for="cloth orientation">Orientación tela</label>
                   </div>
                   </div>
                   <div class="col-12 col-md-6 col-lg-2 mb-3">
                     <div class="form-floating">
-                    <select class="form-select" id="command" name="command">
+                    <select class="form-select" id="command" name="command" required>
                       <option selected hidden value="">Seleccione...</option>
-                      <option value="der">Derecho</option>
-                      <option value="izq">Izquierdo</option>
+                      <option value="DER">Derecho</option>
+                      <option value="IZQ">Izquierdo</option>
                     </select>
                     <label for="command">Comando</label>
                   </div>

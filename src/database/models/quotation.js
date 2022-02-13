@@ -70,6 +70,7 @@ module.exports = (sequelize, DataTypes) => {
     supportOrientation : DataTypes.STRING,
     clothOrientation : DataTypes.STRING,
     observations : DataTypes.STRING,
+    quantity : DataTypes.INTEGER
     /* referenceId: DataTypes.INTEGER */
   }, {
     sequelize,
