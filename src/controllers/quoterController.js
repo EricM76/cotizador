@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 
 module.exports = {
     index: async (req, res) => {
-        if (req.session.userLogin?.rol === 1) {
+        if (req.session.userLogin.rol === 1) {
             let total = await db.Quotation.count();
             let users = await db.Quotation.findAll({
                 attributes: ['userId'],
