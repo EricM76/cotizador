@@ -374,13 +374,13 @@ module.exports = {
                 }
             }
 
-            console.log(price?.id, '>>>>>>>>>>>>PRECIO', price?.amount)
+            /* console.log(price?.id, '>>>>>>>>>>>>PRECIO', price?.amount)
             console.log(grid?.id, '>>>>>>>>>>>>GRILLA', grid?.price)
             console.log(priceSystem?.id, '>>>>>>>>>>>>SISTEMA', priceSystem?.price)
             console.log(priceCloth?.id, '>>>>>>>>>>>>TELA', priceCloth?.price)
             console.log(priceSupport?.id, '>>>>>>>>>>>>SOPORTE', priceSupport?.price)
             console.log(pricePattern?.id, '>>>>>>>>>>>>MODELO', pricePattern?.price)
-            console.log(priceChain?.id, '>>>>>>>>>>>>CADENA', priceChain?.price)
+            console.log(priceChain?.id, '>>>>>>>>>>>>CADENA', priceChain?.price) */
 
             /* GUARDAR la cotización, si esta existe */
             if (data) {
