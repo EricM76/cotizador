@@ -3,10 +3,12 @@ const router = express.Router();
 
 const {index,add,store,detail,edit,update,remove,search,load,quote, filter,getUsers} = require('../controllers/quoterController');
 
+const {userSessionCheck} = require('../middlewares') 
+
 /* quoters */
 router
     .get('/', index)
-    .get('/add',add)
+    .get('/add', userSessionCheck,add)
     .post('/add',store)
     .get('/detail/:id',detail)
     .get('/edit/:id',edit)
