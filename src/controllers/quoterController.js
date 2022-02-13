@@ -35,12 +35,12 @@ module.exports = {
         } else {
             let total = await db.Quotation.count({
                 where: {
-                    userId: req.session.userLogin?.id
+                    userId: req.session.userLogin.id
                 }
             })
             let references = await db.Quotation.findAll({
                 where: {
-                    userId: req.session.userLogin?.id
+                    userId: req.session.userLogin.id
                 },
                 attributes: ['reference'],
                 group: ['reference'],
@@ -49,7 +49,7 @@ module.exports = {
 
             db.Quotation.findAll({
                 where: {
-                    userId: req.session.userLogin?.id
+                    userId: req.session.userLogin.id
                 },
                 limit: 8,
                 include: { all: true }
@@ -249,7 +249,7 @@ module.exports = {
               console.log('>>>>>>>>>>>>>>>>>>>>>>>>>',keywords);
                 total = await db.Quotation.count({
                     where: {
-                        userId: req.session.userLogin?.id,
+                        userId: req.session.userLogin.id,
                         reference: {
                             [Op.substring]: keywords
                         }
@@ -257,7 +257,7 @@ module.exports = {
                 })
                 items = await db.Quotation.findAll({
                     where: {
-                        userId: req.session.userLogin?.id,
+                        userId: req.session.userLogin.id,
                         reference: {
                             [Op.substring]: keywords
                         }
@@ -399,7 +399,7 @@ module.exports = {
                     supportId: +support,
                     patternId: +pattern,
                     chainId: +chain,
-                    userId: req.session.userLogin?.id || 85
+                    userId: req.session.userLogin.id || 85
                 })
                 if (quotation) {
                     console.log('cotización guardada exitosamente!');
