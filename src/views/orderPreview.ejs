@@ -7,9 +7,10 @@
       <main class="container">
         <section class="col-12 mt-5 mx-auto">
           <article class="card shadow">
+            <form action="/orders/send?order=<%= order.id %>" method="POST">
             <div class="card-header d-flex flex-column flex-md-row justify-content-between">
                 <h4 class="mb-3">Pedido</h4>
-                <button class="btn btn-outline-dark">Enviar pedido</button>
+               <!--  <button class="btn btn-outline-dark">Enviar pedido</button> -->
               </div>
             <div class="card-body">
                 <div class="row">
@@ -119,13 +120,17 @@
                             </td>
                             <td colspan="1" class="text-end">
                                 
-                                       $<%= toThousand(total)  %>
+                                       $<%= toThousand(total + order.packaging)  %>
                             </td>
                           </tr>
                       </tbody>
                     </table>
                   </div>
             </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-outline-dark w-100">Enviar pedido</button>
+            </div>
+          </form>
           </article>
         </section>
       </main>

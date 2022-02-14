@@ -25,44 +25,6 @@ module.exports = {
             console.log(error)
         }
     },
-    preview: async (req, res) => {
-
-        db.Order.findOne({
-            where: {
-                id: +req.query.order
-            },
-            include: [
-                {
-                    association: 'user',
-                    attributes: ['name','surname']
-                },
-                {
-                    association: 'quotations',
-                    include: { all: true }
-                }
-            ]
-        }).then(order => {
-            
-            const names = order.quotations.map(quotation => quotation.reference)
-
-            const references = [...new Set(names)];
-
-            const amounts = order.quotations.map(quotation => quotation.amount * quotation.quantity);
-
-            const total = amounts.reduce((acum,num) => acum + num)
-
-            return res.render('orderPreview', {
-                order,
-                user: order.user,
-                quotations: order.quotations,
-                references,
-                total,
-                toThousand : n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-            });
-        }).catch(error => console.log(error))
-
-
-    },
     store: async (req, res) => {
 
         let { id: ids, quantity: quantities, supportOrientation: supportOrientations, clothOrientation: clothOrientations, command: commands, observations } = req.body;
@@ -109,7 +71,61 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
+    },
+    preview: async (req, res) => {
 
+        db.Order.findOne({
+            where: {
+                id: +req.query.order
+            },
+            include: [
+                {
+                    association: 'user',
+                    attributes: ['name', 'surname']
+                },
+                {
+                    association: 'quotations',
+                    include: { all: true }
+                }
+            ]
+        }).then(order => {
+
+            const names = order.quotations.map(quotation => quotation.reference)
+
+            const references = [...new Set(names)];
+
+            const amounts = order.quotations.map(quotation => quotation.amount * quotation.quantity);
+
+            const total = amounts.reduce((acum, num) => acum + num)
+
+            return res.render('orderPreview', {
+                order,
+                user: order.user,
+                quotations: order.quotations,
+                references,
+                total,
+                toThousand: n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+            });
+        }).catch(error => console.log(error))
+    },
+    send: async (req, res) => {
+        
+        try {
+            await db.Order.update(
+                {
+                    observations : req.body.observations
+                },
+                {
+                    where : {
+                        id : +req.query.order
+                    }
+                },
+            )
+        } catch (error) {
+            console.log(error);
+        }
+        
+     
     },
     detail: (req, res) => {
         res.render('orderDetail')

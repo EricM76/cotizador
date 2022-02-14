@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const {index,add,preview,store,detail,edit,update,remove} = require('../controllers/orderController');
+const {index,add,preview,store,send,detail,edit,update,remove} = require('../controllers/orderController');
 
 router
     .get('/', index)
     .get('/add',add)
-    .post('/add',store)
     .get('/preview',preview)
+    .post('/add',store)
+    .post('/send', send)
     .get('/detail/:id',detail)
     .get('/edit/:id',edit)
     .put('/update/:id',update)
