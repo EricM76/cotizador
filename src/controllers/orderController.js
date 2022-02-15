@@ -1,8 +1,17 @@
 const xl = require("excel4node");
 const moment = require("moment");
+const {SMTPClient, Message} = require('emailjs');
+const { Op } = require("sequelize");
 
 const db = require("../database/models");
-const { Op } = require("sequelize");
+
+
+const client = new SMTPClient({
+	user: 'cotizadorblancomad@gmail.com',
+	password: 'cotizador2022',
+	host: 'smtp.gmail.com',
+	ssl: true,
+});
 
 module.exports = {
   index: (req, res) => {
@@ -442,7 +451,7 @@ module.exports = {
               horizontal: "right",
           },
           });
-  
+          
           var fileAdmin = `${new Date().getTime()}.xlsx`;
   
           await db.Order.update(
@@ -460,6 +469,37 @@ module.exports = {
           wb.write(`src/downloads/${fileAdmin}`);
 
         setTimeout(() => {
+
+            let message = new Message({
+                text: `Hola, ${req.session.userLogin.name}.\nSe adjunta planilla con los datos de la orden generada. Gracias por usar nuestra aplicación.`,
+                from: 'cotizadorblancomad@gmail.com',
+                to: req.session.userLogin.email,
+                cc: ' ',
+                subject: 'Orden | Presupuesto',
+                attachment: [
+                    { path: `src/downloads/${fileClient}`, type: 'application/octet-stream', name: fileClient },
+                ],
+            });
+            let message2 = new Message({
+                text: `Se adjunta planilla de la orden con ID ${order.id}.\nVendedor/a: ${req.session.userLogin.name}.`,
+                from: 'cotizadorblancomad@gmail.com',
+                to: 'cotizadorblancomad@gmail.com',
+                cc: ' ',
+                subject: 'Orden | Presupuesto',
+                attachment: [
+                    { path: `src/downloads/${fileAdmin}`, type: 'application/octet-stream', name: fileAdmin },
+                ],
+            });
+
+            client.send(message, (err, message) => {
+                console.log(err || message);
+            });
+
+            client.send(message2, (err, message) => {
+                console.log(err || message);
+            });
+
+
           return res.redirect("/");
         }, 2000);
       }

@@ -278,6 +278,7 @@ module.exports = {
                 req.session.userLogin = {
                     id : user.id,
                     name: user.name,
+                    email : user.email,
                     rol: +user.rolId
                 }
                 return res.redirect('/quoters/add')
