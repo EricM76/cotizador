@@ -26,7 +26,9 @@ module.exports = (sequelize, DataTypes) => {
   Order.init({
     userId: DataTypes.INTEGER,
     observations: DataTypes.TEXT,
-    packaging: DataTypes.INTEGER
+    packaging: DataTypes.INTEGER,
+    fileClient: DataTypes.STRING,
+    fileAdmin: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Order',

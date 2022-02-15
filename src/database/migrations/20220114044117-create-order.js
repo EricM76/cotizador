@@ -23,6 +23,12 @@ module.exports = {
       packaging: {
         type: Sequelize.INTEGER
       },
+      fileClient:{
+        type: Sequelize.STRING
+      },
+      fileAdmin:{
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
