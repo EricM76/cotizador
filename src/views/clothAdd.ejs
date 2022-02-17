@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
+
+  <body>
+    <%- include('partials/header') %>
+      <main class="container">
+        <section class="col-12 col-md-10 col-lg-8 mt-5 mx-auto">
+          <article class="card shadow">
+            <div class="card-header">
+              Nueva Tela
+            </div>
+            <div class="card-body">
+              <form action="/cloths/add" method="POST" class="row needs-validation" novalidate>
+
+                <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" required>
+                    <label for="name">Nombre</label>
+                  </div>
+                  <span class="ms-1 text-danger">
+                    <%= locals.errors && errors.name && errors.name.msg %>
+                  </span>
+                  <div class="invalid-feedback">
+                    El nombre es requerido
+                  </div>
+              </div>
+
+              <div class="col-12 col-md-6 d-flex justify-content-between my-2">
+                <div class="form-floating w-50">
+                  <input type="text" class="form-control" id="price" name="price" placeholder="Precio">
+                  <label for="price">Precio</label>
+                </div>
+                <div class="form-check form-switch mx-auto">
+                  <input class="form-check-input" type="checkbox" id="enabled" name="enabled">
+                  <label class="form-check-label" for="enabled">Visibilizar</label>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="idLocal" name="idLocal" placeholder="ID Local" required>
+                  <label for="idLocal">ID Local</label>
+                </div>
+                <span class="ms-1 text-danger">
+                  <%= locals.errors && errors.idLocal && errors.idLocal.msg %>
+                </span>
+                <div class="invalid-feedback">
+                  El ID Local es requerido
+                </div>
+              </div>
+              <div class="col-12 text-end">
+                <a href="/cloths" class="btn btn-secondary mx-1 mb-3">Cancelar</a>
+                <button type="submit" class="btn buttons__btn-custom mx-1 mb-3">Guardar</button>
+              </div>
+              </form>
+            </div>
+          </article>
+        </section>
+      </main>
+      <%- include('partials/footer') %>
+        <%- include('partials/scripts') %>
+
+  </body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
+
+  <body>
+    <%- include('partials/header') %>
+      <main class="container">
+        <section class="col-12 mt-5 mx-auto">
+          <article class="card shadow">
+            <div class="card-header d-flex justify-content-between">
+              <h5>
+                Nuevo Sistema
+              </h5>
+              <div>
+               
+                <form action="/systems/add" method="POST">
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="1" id="visible" name="visible">
+                    <label class="form-check-label" for="visible">
+                      Visible
+                    </label>
+                  </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                  <label for="name" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="name"
+                    name="name" />
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                  <label for="price" class="form-label">Precio</label>
+                  <input type="number" class="form-control" id="price" name="price"/>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                  <label for="idLocal" class="form-label">ID Local</label>
+                  <input type="number" class="form-control" id="idLocal" name="idLocal"/>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label class="form-label"><b>Telas</b></label>
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <% cloths.forEach((cloth,index)=> { %>
+                        <% if (index < cloths.length / 2) { %>
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="<%= cloth.id %>"
+                              id="cloths<%= cloth.id %>" name="cloths">
+                            <label class="form-check-label" for="cloths<%= cloth.id %>">
+                              <%= cloth.name %>
+                            </label>
+                          </div>
+                          <% } %>
+
+                            <% }) %>
+                    </div>
+                    <div class="col-12 col-md-6 ">
+                      <% for( let i=cloths.length / 2; i < cloths.length; i++ ) { %>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="<%= cloths[i].id %>"
+                            id="cloths<%= cloths[i].id %>"
+                          name="cloths">
+                          <label class="form-check-label" for="cloths<%= cloths[i].id %>">
+                            <%= cloths[i].name %>
+                          </label>
+                        </div>
+                        <% } %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-3 col-lg-2 mb-3">
+
+                  <label for="colors" class="form-label"><b>Colores</b> </label>
+
+                  <% colors.forEach(color=> { %>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="colors<%= color.id %>"
+                      value="<%= color.id %>" name="colors">
+                        <label class="form-check-label" for="colors<%= color.id %>">
+                          <%= color.name %>
+                        </label>
+                    </div>
+                    <% }) %>
+                </div>
+                <div class="col-12 col-md-3 col-lg-2 mb-3">
+                  <label for="supports" class="form-label"><b>Soportes</b> </label>
+                  <% supports.forEach(support=> { %>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="<%= support.id %>"
+                        id="supports<%= support.id %>" name="supports">
+                      <label class="form-check-label" for="supports<%= support.id %>">
+                        <%= support.name %>
+                      </label>
+                    </div>
+                    <% }) %>
+                </div>
+                <div class="col-12 col-md-3 col-lg-2 mb-3">
+                  <label for="patterns" class="form-label"><b>Modelos</b> </label>
+                  <% patterns.forEach(pattern=> { %>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="<%= pattern.id %>"
+                        id="patterns<%= pattern.id %>" name="patterns">
+                      <label class="form-check-label" for="patterns<%= pattern.id %>">
+                        <%= pattern.name %>
+                      </label>
+                    </div>
+                    <% }) %>
+                </div>
+                <div class="col-12 col-md-4 col-lg-2 mb-3">
+                  <label for="chains" class="form-label"><b>Cadenas</b> </label>
+                  <% chains.forEach(chain=> { %>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="<%= chain.id %>"
+                        id="chains<%= chain.id %>" name="chains">
+                      <label class="form-check-label" for="chains<%= chain.id %>">
+                        <%= chain.name %>
+                      </label>
+                    </div>
+                    <% }) %>
+                </div>
+
+                <div class="text-end">
+                  <a href="/systems" class="btn btn-secondary mb-2">Volver a sistemas</a>
+                  <button type="submit" class="btn buttons__btn-custom mb-2">Guardar cambios</button>
+                </div>
+              </div>
+              </form>
+
+            </div>
+          </article>
+        </section>
+      </main>
+      <%- include('partials/footer') %>
+        <%- include('partials/scripts') %>
+
+  </body>
+
+</html>
