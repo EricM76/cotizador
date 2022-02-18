@@ -45,8 +45,8 @@ module.exports = {
     res.render("chainDetail");
   },
   edit: async (req, res) => {
-    const chain = await db.Chain.findByPk(req.params.id);
-    res.render("chainEdit", { chain });
+    const item = await db.Chain.findByPk(req.params.id);
+    res.render("chainEdit", { item });
   },
   update: (req, res) => {
     let { name, price, enabled, idLocal } = req.body;

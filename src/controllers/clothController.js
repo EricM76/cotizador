@@ -43,14 +43,32 @@ module.exports = {
     detail: (req, res) => {
         res.render('clothDetail')
     },
-    edit: (req, res) => {
-        res.render('clothEdit')
+    edit: async (req, res) => {
+        const item = await db.Cloth.findByPk(req.params.id);
+        res.render("clothEdit", { item });
     },
-    update: (req, res) => {
-        res.render('clothUpdate')
+    update: async (req, res) => {
+        let { name, price, enabled, idLocal } = req.body;
+
+        enabled = enabled ? 1 : 0;
+    
+       await db.Cloth.update(
+          {
+            visible: enabled,
+            name,
+            idLocal,
+            price,
+          },
+          {
+            where: { id: req.params.id },
+          }
+        );
+    
+        res.redirect("/cloths");
     },
-    remove: (req, res) => {
-        res.render('cloths')
+    remove: async (req, res) => {
+        await db.Cloth.destroy({where:{id: req.params.id}})
+        res.redirect('/cloths')
     },
     filter: async (req, res) => {
 
