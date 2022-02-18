@@ -27,7 +27,18 @@ module.exports = {
         res.render('clothAdd')
     },
     store: (req, res) => {
-        res.render('cloths')
+        let { name, price, enabled, idLocal } = req.body;
+
+        enabled = enabled ? 1 : 0;
+
+        db.Cloth.create({
+          visible: enabled,
+          name,
+          idLocal,
+          price,
+        });
+
+        res.redirect("/cloths");
     },
     detail: (req, res) => {
         res.render('clothDetail')
