@@ -131,6 +131,7 @@ module.exports = {
       chains =
         chains &&
         chains.map((chain) => ({
+          systemId: system.id,
           chainId: chain,
         }));
 

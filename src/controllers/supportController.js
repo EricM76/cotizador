@@ -26,19 +26,47 @@ module.exports = {
         res.render('supportAdd')
     },
     store : (req,res) => {
-        res.render('supports')
+        let { name, enabled,price, idLocal } = req.body;
+
+        enabled = enabled ? 1 : 0;
+
+        db.Support.create({
+          visible: enabled,
+          name,
+          idLocal,
+          price
+        });
+
+        res.redirect("/supports");
     },
     detail : (req,res) => {
         res.render('supportDetail')
     },
-    edit : (req,res) => {
-        res.render('supportEdit')
+    edit : async(req,res) => {
+        const item = await db.Support.findByPk(req.params.id);
+        res.render("supportEdit", { item });
     },
     update : (req,res) => {
-        res.render('supportUpdate')
+        let { name, enabled,price, idLocal } = req.body;
+
+        enabled = enabled ? 1 : 0;
+    
+       db.Support.update(
+          {
+            visible: enabled,
+            name,
+            idLocal,
+            price
+          },
+          {
+            where: { id: req.params.id },
+          }
+        );
+        res.redirect("/supports");
     },
     remove : (req,res) => {
-        res.render('supports')
+        db.Support.destroy({where:{id: req.params.id}})
+        res.redirect('/supports')
     },
     filter: async (req, res) => {
 
