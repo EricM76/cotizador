@@ -29,7 +29,7 @@ module.exports = {
   },
   store: (req, res) => {
     let { name, price, enabled, idLocal } = req.body;
-    
+
     enabled = enabled ? 1 : 0;
 
     db.Chain.create({
@@ -44,11 +44,25 @@ module.exports = {
   detail: (req, res) => {
     res.render("chainDetail");
   },
-  edit: (req, res) => {
-    res.render("chainEdit");
+  edit: async(req, res) => {
+      const chain=await db.Chain.findByPk(req.params.id)
+            res.render("chainEdit",{chain});
   },
   update: (req, res) => {
-    res.render("chainUpdate");
+    let { name, price, enabled, idLocal } = req.body;
+
+    enabled = enabled ? 1 : 0;
+
+    db.Chain.update({
+      visible: enabled,
+      name,
+      idLocal,
+      price
+    },{
+        where:{id: req.params.id }
+    });
+ 
+    res.redirect("/chains");
   },
   remove: (req, res) => {
     res.render("chains");

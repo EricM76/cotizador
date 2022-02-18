@@ -11,11 +11,11 @@
               Editar Cadena
             </div>
             <div class="card-body">
-              <form action="/chains/update/:id?_method=PUT" method="POST" class="row needs-validation" novalidate>
+              <form action="/chains/update/<%=chain.id%>?_method=PUT" method="POST" class="row needs-validation" novalidate>
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
                     <div class="form-floating">
-                      <input type="text" class="form-control" id="name" name="name" placeholder="Nombre" required>
+                      <input type="text" class="form-control" id="name" name="name" value="<%= chain.name %>" placeholder="Nombre" required>
                       <label for="name">Nombre</label>
                     </div>
                     <span class="ms-1 text-danger">
@@ -28,18 +28,18 @@
 
                 <div class="col-12 col-md-6 d-flex justify-content-between my-2">
                   <div class="form-floating w-50">
-                    <input type="text" class="form-control" id="price" name="price" placeholder="Precio">
+                    <input type="text" class="form-control" id="price" name="price" value="<%= chain.price %>" placeholder="Precio">
                     <label for="price">Precio</label>
                   </div>
                   <div class="form-check form-switch mx-auto">
-                    <input class="form-check-input" type="checkbox" id="enabled" name="enabled">
+                    <input class="form-check-input" type="checkbox" <%= chain.visible && 'checked'%> id="enabled" name="enabled">
                     <label class="form-check-label" for="enabled">Visibilizar</label>
                   </div>
                 </div>
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="idLocal" name="idLocal" placeholder="ID Local" required>
+                    <input type="text" class="form-control" id="idLocal" name="idLocal" value="<%= chain.idLocal %>" placeholder="ID Local" required>
                     <label for="idLocal">ID Local</label>
                   </div>
                   <span class="ms-1 text-danger">
