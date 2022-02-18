@@ -36,7 +36,7 @@ module.exports = {
       visible: enabled,
       name,
       idLocal,
-      price
+      price,
     });
 
     res.redirect("/chains");
@@ -44,28 +44,32 @@ module.exports = {
   detail: (req, res) => {
     res.render("chainDetail");
   },
-  edit: async(req, res) => {
-      const chain=await db.Chain.findByPk(req.params.id)
-            res.render("chainEdit",{chain});
+  edit: async (req, res) => {
+    const chain = await db.Chain.findByPk(req.params.id);
+    res.render("chainEdit", { chain });
   },
   update: (req, res) => {
     let { name, price, enabled, idLocal } = req.body;
 
     enabled = enabled ? 1 : 0;
 
-    db.Chain.update({
-      visible: enabled,
-      name,
-      idLocal,
-      price
-    },{
-        where:{id: req.params.id }
-    });
- 
+    db.Chain.update(
+      {
+        visible: enabled,
+        name,
+        idLocal,
+        price,
+      },
+      {
+        where: { id: req.params.id },
+      }
+    );
+
     res.redirect("/chains");
   },
   remove: (req, res) => {
-    res.render("chains");
+    db.Chain.destroy({ where: { id: req.params.id } });
+    res.redirect("/chains");
   },
   filter: async (req, res) => {
     let { order, filter, keywords, active, pages } = req.query;
