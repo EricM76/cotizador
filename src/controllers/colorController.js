@@ -26,19 +26,46 @@ module.exports = {
         res.render('colorAdd')
     },
     store : (req,res) => {
-        res.render('colors')
+        let { name, enabled, idLocal } = req.body;
+
+        enabled = enabled ? 1 : 0;
+
+        db.Color.create({
+          visible: enabled,
+          name,
+          idLocal
+        });
+
+        res.redirect("/colors");
     },
     detail : (req,res) => {
         res.render('colorDetail')
     },
-    edit : (req,res) => {
-        res.render('colorEdit')
+    edit : async (req,res) => {
+        const item = await db.Color.findByPk(req.params.id);
+        res.render("colorEdit", { item });
     },
     update : (req,res) => {
-        res.render('colorUpdate')
+        let { name, enabled, idLocal } = req.body;
+
+        enabled = enabled ? 1 : 0;
+    
+       db.Color.update(
+          {
+            visible: enabled,
+            name,
+            idLocal
+          },
+          {
+            where: { id: req.params.id },
+          }
+        );
+    
+        res.redirect("/colors");
     },
     remove : (req,res) => {
-        res.render('colors')
+        db.Color.destroy({where:{id: req.params.id}})
+        res.redirect('/colors')
     },
     filter: async (req, res) => {
 

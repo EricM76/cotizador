@@ -11,11 +11,11 @@
                             Editar Color
                         </div>
                         <div class="card-body">
-                            <form action="/colors/update/:id?_method=PUT" method="POST" class="row needs-validation" novalidate>
+                            <form action="/colors/update/<%=item.id%>?_method=PUT" method="POST" class="row needs-validation" novalidate>
 
                                 <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" name="name"
+                                        <input type="text" class="form-control" id="name" name="name" value="<%=item.name %>"
                                             placeholder="Nombre" required>
                                         <label for="name">Nombre</label>
                                     </div>
@@ -31,11 +31,11 @@
                                 <div class="col-12 col-md-6 d-flex justify-content-between my-2">
                                     <div class="form-floating w-50">
                                         <input type="text" class="form-control" id="idLocal" name="idLocal"
-                                            placeholder="ID Local" required>
+                                            placeholder="ID Local" value="<%=item.idLocal %>" required>
                                         <label for="idLocal">ID Local</label>
                                     </div>
                                     <div class="form-check form-switch mx-auto">
-                                        <input class="form-check-input" type="checkbox" id="enabled" name="enabled">
+                                        <input class="form-check-input" type="checkbox" id="enabled" name="enabled" <%=item.visible && 'checked' %>>
                                         <label class="form-check-label" for="enabled">Visibilizar</label>
                                     </div>
                                 </div>
