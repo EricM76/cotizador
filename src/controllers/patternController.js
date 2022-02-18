@@ -26,19 +26,48 @@ module.exports = {
         res.render('patternAdd')
     },
     store : (req,res) => {
-        res.render('patterns')
+        let { name, enabled,price, idLocal } = req.body;
+
+        enabled = enabled ? 1 : 0;
+
+        db.Pattern.create({
+          visible: enabled,
+          name,
+          idLocal,
+          price
+        });
+
+        res.redirect("/patterns");
     },
     detail : (req,res) => {
         res.render('patternDetail')
     },
-    edit : (req,res) => {
-        res.render('patternEdit')
+    edit :async (req,res) => {
+        const item = await db.Pattern.findByPk(req.params.id);
+        res.render("patternEdit", { item });
     },
     update : (req,res) => {
-        res.render('patternUpdate')
+        let { name, enabled,price, idLocal } = req.body;
+
+        enabled = enabled ? 1 : 0;
+    
+       db.Pattern.update(
+          {
+            visible: enabled,
+            name,
+            idLocal,
+            price
+          },
+          {
+            where: { id: req.params.id },
+          }
+        );
+    
+        res.redirect("/patterns");
     },
     remove : (req,res) => {
-        res.render('patterns')
+        db.Pattern.destroy({where:{id: req.params.id}})
+        res.redirect('/patterns')
     },
     filter: async (req, res) => {
 
