@@ -1,8 +1,8 @@
 module.exports = {
-  catalogue: async (req, res) => {
+  catalogue: (req, res) => {
    res.render('catalogue')
   },
-  manual: async (req, res) => {
+  manual: (req, res) => {
    res.render('manual')
   },
 
