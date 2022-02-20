@@ -1,1 +1,0 @@
-const checkPath = (event) => location.pathname === '/catalogue' && event.preventDefault()
