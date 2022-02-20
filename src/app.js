@@ -53,7 +53,7 @@ app.use('/quoters', quotersRouter);
 app.use('/supports', supportsRouter);
 app.use('/systems', systemsRouter);
 app.use('/users', usersRouter);
-app.use('/', catalogueRouter);
+app.use('/information', catalogueRouter);
 app.use('/', (req,res) => res.redirect('/quoters/add'));
 
 // catch 404 and forward to error handler
