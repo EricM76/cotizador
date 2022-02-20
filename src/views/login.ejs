@@ -27,21 +27,14 @@
                             </div>
                             
                             <div class="form-floating mb-3 d-flex align-items-center">
-                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
-                                    name="password">
-                                <label for="floatingPassword">Contraseña </label>
-                                <span class="position-absolute top-25 end-0 mx-3">
-                                    <i class="fa fa-eye" ></i>
+                                <input type="password" class="form-control pe-5" id="floatingPassword"
+                                    placeholder="Password" name="password">
+                                <label for="floatingPassword">Contraseña</label>
+
+                                <span class="position-absolute top-25 end-0 mx-2 py-2 bg-white">
+                                    <i class="fa fa-eye" id="icon-eye" onclick="seePass()"></i>
                                 </span>
                             </div>
-
-                            <!--    <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
-                                    name="password">
-                                <label for="floatingPassword">Contraseña</label>
-                            </div>
- -->
-
 
                             <div class="mb-3 text-center">
                                 <span class="text-danger <%= locals.errors && 'alert alert-danger py-0' %> ">
@@ -59,6 +52,7 @@
         </main>
         <%- include('partials/footer') %>
             <%- include('partials/scripts') %>
+                <script src="/javascripts/seePassword.js"></script>
 
     </body>
 
