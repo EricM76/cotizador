@@ -25,13 +25,28 @@
                                     placeholder="Nombre de usuario" name="username">
                                 <label for="floatingInput">Usuario</label>
                             </div>
-                            <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="floatingPassword"
-                                    placeholder="Password" name="password">
+                            
+                            <div class="form-floating mb-3 d-flex align-items-center">
+                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                                    name="password">
+                                <label for="floatingPassword">Contraseña </label>
+                                <span class="position-absolute top-25 end-0 mx-3">
+                                    <i class="fa fa-eye" ></i>
+                                </span>
+                            </div>
+
+                            <!--    <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                                    name="password">
                                 <label for="floatingPassword">Contraseña</label>
                             </div>
+ -->
+
+
                             <div class="mb-3 text-center">
-                                <span class="text-danger <%= locals.errors && 'alert alert-danger py-0' %> "><%= locals.errors && errors.username && errors.username.msg  %> </span>
+                                <span class="text-danger <%= locals.errors && 'alert alert-danger py-0' %> ">
+                                    <%= locals.errors && errors.username && errors.username.msg %>
+                                </span>
 
                             </div>
                             <div class="">
