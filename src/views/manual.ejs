@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : " Manual" }) %>
+
+    <body>
+        <%- include('partials/header') %>
+            <main class="container">
+                <section class="col-12 mt-5 mx-auto">
+                    <article class="card shadow">
+                        <div class="card-body p-2">
+                            <embed src="/documents/manual.pdf" type="application/pdf" width="100%" height="550px" />
+                        </div>
+                    </article>
+                </section>
+            </main>
+            <%- include('partials/footer') %>
+                <%- include('partials/scripts') %>
+                <script src="/javascripts/information.js"></script>
+    </body>
+
+</html>
