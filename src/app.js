@@ -9,6 +9,7 @@ var logger = require('morgan');
 const session = require('express-session');
 const methodOverride = require('method-override');
 const localsUserCheck = require('./middlewares/localsUserCheck');
+const userSessionCheck = require('./middlewares/userSessionCheck');
 
 const chainsRouter = require('./routes/chain');
 const clothsRouter = require('./routes/cloth');
@@ -43,17 +44,17 @@ app.use(localsUserCheck)
 
 app.use(express.static(path.join(__dirname, '..','public')));
 
-app.use('/chains', chainsRouter);
-app.use('/cloths', clothsRouter);
-app.use('/colors', colorsRouter);
-app.use('/orders', ordersRouter);
-app.use('/patterns', patternsRouter);
-app.use('/prices', pricesRouter);
-app.use('/quoters', quotersRouter);
-app.use('/supports', supportsRouter);
-app.use('/systems', systemsRouter);
+app.use('/chains',userSessionCheck, chainsRouter);
+app.use('/cloths',userSessionCheck, clothsRouter);
+app.use('/colors',userSessionCheck, colorsRouter);
+app.use('/orders',userSessionCheck, ordersRouter);
+app.use('/patterns',userSessionCheck, patternsRouter);
+app.use('/prices',userSessionCheck, pricesRouter);
+app.use('/quoters',userSessionCheck, quotersRouter);
+app.use('/supports',userSessionCheck, supportsRouter);
+app.use('/systems',userSessionCheck, systemsRouter);
 app.use('/users', usersRouter);
-app.use('/information', catalogueRouter);
+app.use('/information',userSessionCheck, catalogueRouter);
 app.use('/', (req,res) => res.redirect('/quoters/add'));
 
 // catch 404 and forward to error handler
