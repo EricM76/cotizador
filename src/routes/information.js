@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const {catalogue,manual} = require('../controllers/informationController');
+const {backout} = require('../controllers/informationController');
 
 router
-    .get('/catalogue', catalogue)
-    .get('/manual', manual)
+    .get('/backout', backout)
+   
 
 module.exports = router;

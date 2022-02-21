@@ -20,7 +20,7 @@ const pricesRouter = require('./routes/price');
 const quotersRouter = require('./routes/quoter');
 const supportsRouter = require('./routes/support');
 const systemsRouter = require('./routes/system');
-const catalogueRouter = require('./routes/information');
+const informationRouter = require('./routes/information');
 const usersRouter = require('./routes/users');
 
 var app = express();
@@ -54,7 +54,7 @@ app.use('/quoters',userSessionCheck, quotersRouter);
 app.use('/supports',userSessionCheck, supportsRouter);
 app.use('/systems',userSessionCheck, systemsRouter);
 app.use('/users', usersRouter);
-app.use('/information',userSessionCheck, catalogueRouter);
+app.use('/information', informationRouter);
 app.use('/', (req,res) => res.redirect('/quoters/add'));
 
 // catch 404 and forward to error handler
