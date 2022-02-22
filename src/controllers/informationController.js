@@ -11,14 +11,10 @@ module.exports = {
   search: async (req, res) => {
     const items = await db.Cloth.findAll({
       where: {
-        [Op.and]: [
-          { visible: true },
-          {
-            name: {
-              [Op.like]: `%${req.query.search}%`,
-            },
-          },
-        ],
+        visible: true,
+        name: {
+            [Op.like]: `%${req.query.search}%`,
+          }
       },
       order:[['name','ASC']]
     });
