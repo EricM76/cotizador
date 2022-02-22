@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       price: DataTypes.INTEGER,
       visible: DataTypes.BOOLEAN,
       idLocal: DataTypes.INTEGER,
-      width: DataTypes.INTEGER
+      width: DataTypes.DECIMAL
     },
     {
       sequelize,

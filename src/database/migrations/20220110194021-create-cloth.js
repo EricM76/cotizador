@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       width:{
-        type: Sequelize.INTEGER
+        type: Sequelize.DECIMAL(3,2)
       },
       idLocal :{
         type: Sequelize.INTEGER

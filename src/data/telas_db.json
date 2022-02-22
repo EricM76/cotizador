@@ -5106,7 +5106,8 @@
     "idLocal": 730,
     "name": "Marsella",
     "price": 0,
-    "visible":1
+    "visible":1,
+    "width":0
   },
   {
     "idLocal": 731,

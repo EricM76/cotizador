@@ -5,7 +5,7 @@ module.exports = {
     res.render("messagePremiumStandard");
   },
   width: async (req, res) => {
-    const items = await db.Cloth.findAll({ where: { visible: true } });
+    const items = await db.Cloth.findAll({ where: { visible: true },order:[['name','ASC']] });
     res.render("clothWidth", { items, total: items.length });
   },
   search: async (req, res) => {
@@ -20,6 +20,7 @@ module.exports = {
           },
         ],
       },
+      order:[['name','ASC']]
     });
     res.render("clothWidth", {
       items,
