@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Cloth extends Model {
     /**
@@ -10,31 +8,35 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Cloth.hasMany(models.Price,{
-        foreignKey : 'clothId',
-        as : 'prices'
-      })
-      Cloth.hasMany(models.Quotation,{
-        foreignKey : 'clothId',
-        as : 'quotations'
-      })
-      Cloth.belongsToMany(models.System,{
-        as : 'systems',
-        through : 'SystemCloth',
-        foreignKey : 'clothId',
-        otherKey : 'systemId'
-      })
+      Cloth.hasMany(models.Price, {
+        foreignKey: "clothId",
+        as: "prices",
+      });
+      Cloth.hasMany(models.Quotation, {
+        foreignKey: "clothId",
+        as: "quotations",
+      });
+      Cloth.belongsToMany(models.System, {
+        as: "systems",
+        through: "SystemCloth",
+        foreignKey: "clothId",
+        otherKey: "systemId",
+      });
     }
-  };
-  Cloth.init({
-    name: DataTypes.STRING,
-    price: DataTypes.INTEGER,
-    visible : DataTypes.BOOLEAN,
-    idLocal : DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'Cloth',
-    paranoid : true
-  });
+  }
+  Cloth.init(
+    {
+      name: DataTypes.STRING,
+      price: DataTypes.INTEGER,
+      visible: DataTypes.BOOLEAN,
+      idLocal: DataTypes.INTEGER,
+      width: DataTypes.INTEGER
+    },
+    {
+      sequelize,
+      modelName: "Cloth",
+      paranoid: true,
+    }
+  );
   return Cloth;
 };

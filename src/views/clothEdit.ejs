@@ -42,6 +42,20 @@
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
                   <div class="form-floating">
+                    <input type="text" class="form-control" id="width" name="width" placeholder="Ancho"
+                      value="<%=item.width%>" required>
+                    <label for="width">Ancho</label>
+                  </div>
+                  <span class="ms-1 text-danger">
+                    <%= locals.errors && errors.width && errors.width.msg %>
+                  </span>
+                  <div class="invalid-feedback">
+                    El ancho es requerido
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
+                  <div class="form-floating">
                     <input type="text" class="form-control" id="idLocal" name="idLocal" value="<%= item.idLocal %>"
                       placeholder="ID Local" required>
                     <label for="idLocal">ID Local</label>

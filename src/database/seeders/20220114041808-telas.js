@@ -1,10 +1,11 @@
 'use strict';
 const telas = require('../../data/telas_db.json');
 
-const cloths = telas.map(({name,visible,idLocal,price} )=> {
+const cloths = telas.map(({name,visible,idLocal,price,width})=> {
   return {
     name,
     price,
+    width,
     idLocal,
     visible,
     createdAt : new Date,
