@@ -10,8 +10,8 @@
             <form action="" method="POST" novalidate id="form-generate-order">
 
             <div class="card-header d-flex flex-column flex-md-row justify-content-between">
-              <h5 class="mb-3">Nuevo pedido</h5>
-              <!-- <button type="submit" class="btn btn-outline-dark">Generar pedido</button> -->
+              <h4 class="mb-3">Nuevo pedido</h4>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#quoterModal"  id="btn-createQuotation" class="btn btn-outline-dark">Nueva cotización</button>            
             </div>
             <div class="card-body row">
               <% items.forEach(({id,system,cloth,color, clothWidth, heigth, pattern, chain,support, reference, amount}) => { %>
@@ -138,7 +138,10 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
+
       <script src="/javascripts/orderAdd.js"></script>
+      <%- include('modals/quoter') %>
+
   </body>
 
 </html>

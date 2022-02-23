@@ -17,6 +17,11 @@ module.exports = {
     res.render("orders");
   },
   add: async (req, res) => {
+
+    if(req.query.quoters === 'null'){
+      return res.redirect('/quoters')
+    }
+
     const quoters = JSON.parse(req.query.quoters).map((quoter) => +quoter);
     try {
       let items = await db.Quotation.findAll({
@@ -466,7 +471,7 @@ module.exports = {
             },
           });
 
-        var fileAdmin = `${new Date().getTime()}.xlsx`;
+        var fileAdmin = `${new Date().getTime()}.xls`;
 
         await db.Order.update(
           {

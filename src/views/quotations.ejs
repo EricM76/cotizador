@@ -12,7 +12,7 @@
 
               <form action="/quoters/filter" class="row" id="form-items">
 
-                <div class="col-12 col-md-5 col-lg-4 mb-2">
+                <div class="col-12 col-md-4 col-lg-4 mb-2">
                   <% if (locals.userLogin.rol === 1) { %>
                     <select class="form-select" id="filter" name="filter" onchange="resetValues()">
                       <option value="" selected hidden>Filtrar por vendedor</option>
@@ -23,15 +23,16 @@
                           <option id="all" value="all">Todos</option>
                     </select>
                   <% }else{ %>
-                    <button id="btn-generateOrder" class="btn btn-outline-dark disabled">Generar presupuesto</button>
+                    <button id="btn-generateOrder" class="btn btn-outline-dark disabled w-100">Generar pedido</button>
+                   
                   <% } %>
                 </div>
-                <div class="col-12 col-md-2 col-lg-4 mb-2">
-                
+                <div class="col-12 col-md-4 col-lg-4 mb-2">
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#quoterModal"  id="btn-createQuotation" class="btn btn-outline-dark w-100">Nueva cotización</button>
                 </div>
-                <div class="col-12  col-md-5 col-lg-4 mb-2 position-relative">
+                <div class="col-12  col-md-4 col-lg-4 mb-2 position-relative">
                   <input type="text" class="form-control w-100" id="search" placeholder="Buscar por referencia..." name="search">
-                  <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit" onclick="handlerSearch()"><i
+                  <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit" onclick="handlerSearch()" id="btn-search"><i
                       class="fas fa-search"></i></button>
                 </div>
             </div>
@@ -93,7 +94,9 @@
                       <thead>
                         <tr>
                           <th scope="col">Fecha</th>
+                          <% if (locals.userLogin.rol === 1) { %>
                           <th scope="col">Usuario</th>
+                          <% } %>
                           <th scope="col">Referencia</th>
                           <th scope="col">Ancho</th>
                           <th scope="col">Alto</th>
@@ -115,9 +118,12 @@
                             <th scope="row">
                               <%= moment(item.date).format('DD-MM-YY') %>
                             </th>
+                            <% if (locals.userLogin.rol === 1) { %>
                             <td>
                               <%= item.user.name %>
                             </td>
+                            <% } %>
+
                             <td>
                               <%= item.reference %>
                             </td>
@@ -173,6 +179,8 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
+        <%- include('modals/quoter') %>
+
           <script src="/javascripts/quotations.js"></script>
 
   </body>
