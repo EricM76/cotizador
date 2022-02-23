@@ -1,3 +1,4 @@
+
 /* obtener información */
 $('cloths').disabled = true;
 $('colors').disabled = true;
@@ -7,6 +8,25 @@ $('chains').disabled = true;
 $('width').disabled = true;
 $('heigth').disabled = true;
 $('reference').disabled = true;
+
+window.addEventListener('load', async () => {
+
+    try {
+
+        let response = await fetch('/systems/api/get-all');
+        let result = await response.json();
+
+        $('systems').innerHTML = null;
+        $('systems').innerHTML += `<option value="" selected hidden>Seleccione...</option>`
+        result.data.forEach(item => {
+            $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>`
+        })
+
+    } catch (error) {
+        console.error(error)
+    }
+
+})
 
 const getData = async (target) => {
     $('amount-box').setAttribute('hidden', true)
@@ -75,21 +95,14 @@ $('systems').addEventListener('change', async ({ target }) => {
 
 });
 
-$('systems').addEventListener('focus', async () => {
+$('systems').addEventListener('focus', async (e) => {
 
-    try {
+    let elements = e.path[3].elements;
 
-        let response = await fetch('/systems/api/get-all');
-        let result = await response.json();
-
-        $('systems').innerHTML = null;
-        result.data.forEach(item => {
-            $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>`
-        })
-
-    } catch (error) {
-        console.error(error)
+    for (let index = 0; index < elements.length; index++) {
+        elements[index].classList.remove('is-invalid')   
     }
+ 
 
 })
 
