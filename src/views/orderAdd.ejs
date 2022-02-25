@@ -14,122 +14,138 @@
               <button type="button" data-bs-toggle="modal" data-bs-target="#quoterModal"  id="btn-createQuotation" class="btn btn-outline-dark">Nueva cotización</button>            
             </div>
             <div class="card-body row">
-              <% items.forEach(({id,system,cloth,color, clothWidth, heigth, pattern, chain,support, reference, amount}) => { %>
-                <input type="text" value="<%= id %>" name="id" hidden>
-                  <div class="col-4 col-md-2 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="number" min="1" class="form-control" id="quantity" placeholder="cantidad" value="1" name="quantity" required>
-                      <label for="quantity">Cant.</label>
-                    </div>
-                  </div>
-                  <div class="col-8 col-md-4 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="system" placeholder="sistema" value="<%= system.name %>" name="sytem" readonly>
-                      <label for="system">Sistema</label>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="cloth" placeholder="tela" value="<%= cloth.name %>" name="cloth" readonly>
-                      <label for="cloth">Tela</label>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="color" placeholder="color" value="<%= color.name  %>" name="color" readonly>                      
-                      <label for="color">Color</label>
-                    </div>
+
+              <div class="accordion" id="accordionExample">
+                <% items.forEach(({id,system,cloth,color, clothWidth, heigth, pattern, chain,support, reference, amount},index) => { %>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading<%= id %>">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= id %>" aria-expanded=<%= index === 0 ? 'true' : false %>  aria-controls="collapse<%= id %>">
+                      Cotización <%= index + 1 %> | <%= reference %>  
+                    </button>
+                  </h2>
+                  <div id="collapse<%= id %>" class="accordion-collapse collapse <%= index === 0 ? 'show' : null %>" aria-labelledby="heading<%= id %>" data-bs-parent="#accordionExample">
+                    <div class="accordion-body row">
+
+                      <input type="text" value="<%= id %>" name="id" hidden>
+                      <div class="col-4 col-md-2 col-lg-2 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="number" min="1" class="form-control" id="quantity" placeholder="cantidad" value="1" name="quantity" required>
+                          <label for="quantity">Cant.</label>
+                        </div>
+                      </div>
+                      <div class="col-8 col-md-4 col-lg-2 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="system" placeholder="sistema" value="<%= system.name %>" name="sytem" readonly>
+                          <label for="system">Sistema</label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-2 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="cloth" placeholder="tela" value="<%= cloth.name %>" name="cloth" readonly>
+                          <label for="cloth">Tela</label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-2 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="color" placeholder="color" value="<%= color.name  %>" name="color" readonly>                      
+                          <label for="color">Color</label>
+                        </div>
+                       
+                      </div>
+                      <div class="col-6 col-md-6 col-lg-2 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="number" class="form-control" id="clothWidth" placeholder="ancho" value="<%= clothWidth %>" name="clothWidth" readonly>
+                          <label for="ancho">Ancho</label>
+                        </div>
+                      </div>
+                      <div class="col-6 col-md-6 col-lg-2 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="number" class="form-control" id="height" placeholder="alto" value="<%= heigth %>" name="height" readonly>
+                          <label for="heigth">Alto</label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="pattern" placeholder="modelo" value="<%= pattern.name %>" name="pattern" readonly>
+                          <label for="pattern">Modelo</label>
+                        </div>
+                      </div>
+                      <div class="col-6 col-md-6 col-lg-2 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="number" class="form-control" id="chain" placeholder="cadena" value="<%= chain.name %>" name="chain" readonly>
+                          <label for="chain">Cadena</label>
+                        </div>
+                      </div>
+                      <div class="col-6 col-md-6 col-lg-3 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="support" placeholder="soporte" value="<%= support.name %>" name="support" readonly>
+                          <label for="support">Soporte</label>
+                        </div>
+                      </div>
                    
-                  </div>
-                  <div class="col-6 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="clothWidth" placeholder="ancho" value="<%= clothWidth %>" name="clothWidth" readonly>
-                      <label for="ancho">Ancho</label>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="height" placeholder="alto" value="<%= heigth %>" name="height" readonly>
-                      <label for="heigth">Alto</label>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-4 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="pattern" placeholder="modelo" value="<%= pattern.name %>" name="pattern" readonly>
-                      <label for="pattern">Modelo</label>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="chain" placeholder="cadena" value="<%= chain.name %>" name="chain" readonly>
-                      <label for="chain">Cadena</label>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-6 col-lg-3 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="support" placeholder="soporte" value="<%= support.name %>" name="support" readonly>
-                      <label for="support">Soporte</label>
-                    </div>
-                  </div>
-               
-                  <div class="col-12 col-md-6 col-lg-3 mb-3">
-                    <div class="form-floating">
-                    <select class="form-select" id="support-orientation" name="supportOrientation" onchange="this.classList.remove('is-invalid')">
-                      <option selected hidden value="">Seleccione...</option>
-                      <option value="PARED">Pared</option>
-                      <option value="TECHO">Techo</option>
-                    </select>
-                    <label for="support-orientation">Orientación soporte</label>
-                  </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating">
-                    <select class="form-select" id="cloth-orientation" name="clothOrientation" onchange="this.classList.remove('is-invalid')">
-                      <option selected hidden value="">Seleccione...</option>
-                      <option value="POR DELANTE">Por delante</option>
-                      <option value="POR DETRÁS">Por detrás</option>
-                    </select>
-                    <label for="cloth orientation">Orientación tela</label>
-                  </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating">
-                    <select class="form-select" id="command" name="command" onchange="this.classList.remove('is-invalid')">
-                      <option selected hidden value="">Seleccione...</option>
-                      <option value="DER">Derecho</option>
-                      <option value="IZQ">Izquierdo</option>
-                    </select>
-                    <label for="command">Comando</label>
-                  </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-4 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="observations" name="observations">
-                      <label for="observations">Observaciones</label>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-6 col-lg-2 mb-3">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="reference" placeholder="referencia" value="<%= reference %>" name="reference" readonly>
-                      <label for="reference">Referencia</label>
-                    </div>
-                  </div>
-                  <div class="col-6 col-md-6 col-lg-2 mb-3">
-                    <div class="d-flex align-items-center">
-                      <span class="me-2">$</span>
-                      <div class="form-floating mb-3 flex-grow-1">
-                        <input type="text" class="form-control" id="amount" placeholder="monto" value="<%= amount %>" name="amount" readonly>
-                        <label for="amount">Monto</label>
+                      <div class="col-12 col-md-6 col-lg-3 mb-3">
+                        <div class="form-floating">
+                        <select class="form-select" id="support-orientation" name="supportOrientation" onchange="this.classList.remove('is-invalid')">
+                          <option selected hidden value="">Seleccione...</option>
+                          <option value="PARED">Pared</option>
+                          <option value="TECHO">Techo</option>
+                        </select>
+                        <label for="support-orientation">Orientación soporte</label>
+                      </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-2 mb-3">
+                        <div class="form-floating">
+                        <select class="form-select" id="cloth-orientation" name="clothOrientation" onchange="this.classList.remove('is-invalid')">
+                          <option selected hidden value="">Seleccione...</option>
+                          <option value="POR DELANTE">Por delante</option>
+                          <option value="POR DETRÁS">Por detrás</option>
+                        </select>
+                        <label for="cloth orientation">Orientación tela</label>
+                      </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-2 mb-3">
+                        <div class="form-floating">
+                        <select class="form-select" id="command" name="command" onchange="this.classList.remove('is-invalid')">
+                          <option selected hidden value="">Seleccione...</option>
+                          <option value="DER">Derecho</option>
+                          <option value="IZQ">Izquierdo</option>
+                        </select>
+                        <label for="command">Comando</label>
+                      </div>
+                      </div>
+                      <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="observations" name="observations">
+                          <label for="observations">Observaciones</label>
+                        </div>
+                      </div>
+                      <div class="col-6 col-md-6 col-lg-2 mb-3">
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="reference" placeholder="referencia" value="<%= reference %>" name="reference" readonly>
+                          <label for="reference">Referencia</label>
+                        </div>
+                      </div>
+                      <div class="col-6 col-md-6 col-lg-2 mb-3">
+                        <div class="d-flex align-items-center">
+                          <span class="me-2">$</span>
+                          <div class="form-floating mb-3 flex-grow-1">
+                            <input type="text" class="form-control" id="amount" placeholder="monto" value="<%= amount %>" name="amount" readonly>
+                            <label for="amount">Monto</label>
+                          </div>
+                        </div>
+                      
                       </div>
                     </div>
-                  
                   </div>
-                <hr>
-              <% }) %>
+                </div>
+                <% }) %>
 
+                </div>
+              </div>
             </div>
             <div class="card-footer">
-              <button type="submit" class="btn btn-outline-dark w-100">Generar pedido</button>
+              <button type="submit" id="btn-orderGenerate" class="btn btn-outline-dark w-100">Generar pedido</button>
             </div>
           </form>
 

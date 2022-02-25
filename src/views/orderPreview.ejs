@@ -7,7 +7,7 @@
       <main class="container">
         <section class="col-12 mt-5 mx-auto">
           <article class="card shadow">
-            <form action="/orders/send?order=<%= order.id %>" method="POST">
+            <form action="/orders/send?order=<%= order.id %>" method="POST" id="form-sendOrder">
             <div class="card-header d-flex flex-column flex-md-row justify-content-between">
                 <h4 class="mb-3">Pedido</h4>
                <!--  <button class="btn btn-outline-dark">Enviar pedido</button> -->
@@ -136,7 +136,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
-
+<script src="/javascripts/orderPreview.js"></script>
   </body>
 
 </html>

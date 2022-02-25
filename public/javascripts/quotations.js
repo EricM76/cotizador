@@ -111,17 +111,19 @@ const checkSelected = (id) => {
     return localStorage.getItem('selected') && JSON.parse(localStorage.getItem('selected')).includes(+id)
 }
 
-$('btn-search').addEventListener('click', (e) => {
+/* $('btn-search').addEventListener('click', (e) => {
     //e !== "" && e.path[2].submit()
     e.preventDefault();
     e.path[3][1].value !== "" && e.path[3].submit()
-})
+}) */
 
 $('search').addEventListener('keydown', (e) => {
-    e.preventDefault()
+    e.key === 'Enter' && e.preventDefault()
 })
 
 window.onload = function () {
+
+    localStorage.removeItem('dataOrder')
         
     let checks = document.querySelectorAll('.form-check-input');
     checks.forEach(check => {
@@ -133,7 +135,8 @@ window.onload = function () {
         }
     });
 
-    selectedChecks()
+    //selectedChecks();
+    JSON.parse(localStorage.getItem('selected')).length > 0 && $('btn-generateOrder').classList.remove('disabled');
 
     let query = new URLSearchParams(window.location.search);
 
@@ -181,7 +184,7 @@ window.onload = function () {
 
 window.addEventListener('beforeunload', () => {
     sessionStorage.setItem('pathname', window.location.pathname)
-    localStorage.removeItem('selected');
+    
 
 })
 

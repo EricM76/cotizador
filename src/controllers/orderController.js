@@ -18,7 +18,7 @@ module.exports = {
   },
   add: async (req, res) => {
 
-    if(req.query.quoters === 'null'){
+    if (req.query.quoters === 'null') {
       return res.redirect('/quoters')
     }
 
@@ -62,6 +62,7 @@ module.exports = {
     try {
       let order = await db.Order.create({
         userId: req.session.userLogin.id,
+        send : false,
         packaging: 200,
       });
 
@@ -131,9 +132,13 @@ module.exports = {
   },
   send: async (req, res) => {
     try {
+      await db.Order.destroy({
+        where : {send:false}
+      })
       await db.Order.update(
         {
           observations: req.body.observations,
+          send : true
         },
         {
           where: {
@@ -148,7 +153,7 @@ module.exports = {
         include: [
           {
             association: "user",
-            attributes: ["name", "surname"],
+            attributes: ["name", "surname","idLocal"],
           },
           {
             association: "quotations",
@@ -161,7 +166,12 @@ module.exports = {
         const references = [...new Set(names)];
 
         let wb = new xl.Workbook();
-        let ws = wb.addWorksheet("Orden: " + new Date().getTime());
+        let ws = wb.addWorksheet("Orden: " + new Date().getTime(), {
+          sheetProtection: {
+            sheet: true,
+            password: 'blancoMad2022'
+          },
+        });
 
         let style = wb.createStyle({
           font: {
@@ -179,6 +189,7 @@ module.exports = {
               horizontal: "left",
             },
           });
+
         ws.cell(2, 1, 2, 5, true)
           .string(`PEDIDO PARA : ${references.join(", ")}`)
           .style(style)
@@ -189,8 +200,17 @@ module.exports = {
             },
           });
 
-        ws.cell(1, 6, 2, 10, true)
-          .string(`OBSERVACIONES PEDIDO : ${order.observations}`)
+        ws.cell(1, 6, 1, 7, true)
+          .string(`OBSERVACIONES PEDIDO :`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+          ws.cell(1, 8, 1, 8, true)
+          .string(`${order.observations}`)
           .style(style)
           .style({
             alignment: {
@@ -198,9 +218,17 @@ module.exports = {
               horizontal: "left",
             },
           });
-
-        ws.cell(1, 11, 2, 15, true)
-          .string(`FECHA PEDIDO : ${moment().format("DD/MM/YY")}`)
+        ws.cell(2, 6, 2, 7, true)
+          .string(`FECHA PEDIDO :`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+          ws.cell(2, 8, 2, 8, true)
+          .string(`${moment().format("DD/MM/YY")}`)
           .style(style)
           .style({
             alignment: {
@@ -223,9 +251,10 @@ module.exports = {
         ws.column(10).setWidth(15); //comando
         ws.column(11).setWidth(15); //o. soporte
         ws.column(12).setWidth(15); //o. tela
-        ws.column(13).setWidth(15); //observaciones
-        ws.column(14).setWidth(15); //p. unitario
-        ws.column(15).setWidth(15); //total
+        ws.column(13).setWidth(15); //referencia
+        ws.column(14).setWidth(15); //observaciones
+        ws.column(15).setWidth(15); //p. unitario
+        ws.column(16).setWidth(15); //total
 
         let titles = [
           "Cant",
@@ -240,6 +269,7 @@ module.exports = {
           "Comando",
           "Orien. Soporte",
           "Orien. Tela",
+          "Referencia",
           "Observaciones",
           "Precio unitario",
           "Total",
@@ -270,15 +300,16 @@ module.exports = {
           ws.cell(index, 10).string(quotation.command).style(style);
           ws.cell(index, 11).string(quotation.supportOrientation).style(style);
           ws.cell(index, 12).string(quotation.clothOrientation).style(style);
-          ws.cell(index, 13).string(quotation.observations).style(style);
-          ws.cell(index, 14).number(quotation.amount).style(style);
-          ws.cell(index, 15)
+          ws.cell(index, 13).string(quotation.reference).style(style);
+          ws.cell(index, 14).string(quotation.observations).style(style);
+          ws.cell(index, 15).number(quotation.amount).style(style);
+          ws.cell(index, 16)
             .number(quotation.amount * quotation.quantity)
             .style(style);
           lastRow = index + 1;
         });
 
-        ws.cell(lastRow, 14, lastRow, 14, true)
+        ws.cell(lastRow, 15, lastRow, 15, true)
           .string(`EMBALAJE: `)
           .style(style)
           .style({
@@ -287,7 +318,7 @@ module.exports = {
               horizontal: "right",
             },
           });
-        ws.cell(lastRow, 15, lastRow, 15, true)
+        ws.cell(lastRow, 16, lastRow, 16, true)
           .number(order.packaging)
           .style(style)
           .style({
@@ -303,7 +334,7 @@ module.exports = {
 
         const total = amounts.reduce((acum, num) => acum + num);
 
-        ws.cell(lastRow + 1, 14, lastRow + 1, 14, true)
+        ws.cell(lastRow + 1, 15, lastRow + 1, 15, true)
           .string(`TOTAL:`)
           .style(style)
           .style({
@@ -312,7 +343,7 @@ module.exports = {
               horizontal: "right",
             },
           });
-        ws.cell(lastRow + 1, 15, lastRow + 1, 15, true)
+        ws.cell(lastRow + 1, 16, lastRow + 1, 16, true)
           .number(total + order.packaging)
           .style(style)
           .style({
@@ -334,8 +365,19 @@ module.exports = {
         );
 
         ws2
-          .cell(1, 1, 1, 5, true)
-          .string(`VENDEDOR: ${order.user.name} ${order.user.surname}`)
+          .cell(1, 1, 1, 2, true)
+          .string(`VENDEDOR:`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+
+        ws2
+          .cell(1, 3, 1, 3, true)
+          .number(order.user.idLocal)
           .style(style)
           .style({
             alignment: {
@@ -343,9 +385,22 @@ module.exports = {
               horizontal: "left",
             },
           });
+
+
         ws2
-          .cell(2, 1, 2, 5, true)
-          .string(`PEDIDO PARA : ${references.join(", ")}`)
+          .cell(2, 1, 2, 2, true)
+          .string(`PEDIDO PARA :`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+
+          ws2
+          .cell(2, 3, 2, 3, true)
+          .string(`${references.join(", ")}`)
           .style(style)
           .style({
             alignment: {
@@ -355,8 +410,19 @@ module.exports = {
           });
 
         ws2
-          .cell(1, 6, 2, 10, true)
-          .string(`OBSERVACIONES PEDIDO : ${order.observations}`)
+          .cell(1, 6, 1, 8, true)
+          .string(`OBSERVACIONES PEDIDO:`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+
+        ws2
+          .cell(1, 9, 1, 9, true)
+          .string(`${order.observations}`)
           .style(style)
           .style({
             alignment: {
@@ -366,8 +432,19 @@ module.exports = {
           });
 
         ws2
-          .cell(1, 11, 2, 15, true)
-          .string(`FECHA PEDIDO : ${moment().format("DD/MM/YY")}`)
+          .cell(2, 6, 2, 8, true)
+          .string(`FECHA PEDIDO`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+
+        ws2
+          .cell(2, 9, 2, 9, true)
+          .string(`${moment().format("DD/MM/YY")}`)
           .style(style)
           .style({
             alignment: {
@@ -379,20 +456,21 @@ module.exports = {
         ws2.row(1).setHeight(30);
         ws2.row(2).setHeight(30);
         ws2.column(1).setWidth(5); //cantidad
-        ws2.column(2).setWidth(15); //sistema
-        ws2.column(3).setWidth(15); //tela
-        ws2.column(4).setWidth(15); //color
-        ws2.column(5).setWidth(15); //ancho
-        ws2.column(6).setWidth(15); //alto
-        ws2.column(7).setWidth(15); //modelo
-        ws2.column(8).setWidth(15); //cadena
-        ws2.column(9).setWidth(15); //soporte
-        ws2.column(10).setWidth(15); //comando
+        ws2.column(2).setWidth(10); //sistema
+        ws2.column(3).setWidth(10); //tela
+        ws2.column(4).setWidth(10); //color
+        ws2.column(5).setWidth(10); //ancho
+        ws2.column(6).setWidth(10); //alto
+        ws2.column(7).setWidth(10); //modelo
+        ws2.column(8).setWidth(10); //cadena
+        ws2.column(9).setWidth(10); //soporte
+        ws2.column(10).setWidth(10); //comando
         ws2.column(11).setWidth(15); //o. soporte
         ws2.column(12).setWidth(15); //o. tela
-        ws2.column(13).setWidth(15); //observaciones
-        ws2.column(14).setWidth(15); //p. unitario
-        ws2.column(15).setWidth(15); //total
+        ws2.column(13).setWidth(15); //referencia
+        ws2.column(14).setWidth(20); //observaciones
+        ws2.column(15).setWidth(15); //p. unitario
+        ws2.column(16).setWidth(10); //total
 
         titles.forEach((title, index) => {
           ws2
@@ -420,17 +498,18 @@ module.exports = {
           ws2.cell(index, 10).string(quotation.command).style(style);
           ws2.cell(index, 11).string(quotation.supportOrientation).style(style);
           ws2.cell(index, 12).string(quotation.clothOrientation).style(style);
-          ws2.cell(index, 13).string(quotation.observations).style(style);
-          ws2.cell(index, 14).number(quotation.amount).style(style);
+          ws2.cell(index, 13).string(quotation.reference).style(style);
+          ws2.cell(index, 14).string(quotation.observations).style(style);
+          ws2.cell(index, 15).number(quotation.amount).style(style);
           ws2
-            .cell(index, 15)
+            .cell(index, 16)
             .number(quotation.amount * quotation.quantity)
             .style(style);
           lastRow = index + 1;
         });
 
         ws2
-          .cell(lastRow, 14, lastRow, 14, true)
+          .cell(lastRow + 1, 15, lastRow + 1, 15, true)
           .string(`EMBALAJE: `)
           .style(style)
           .style({
@@ -440,7 +519,7 @@ module.exports = {
             },
           });
         ws2
-          .cell(lastRow, 15, lastRow, 15, true)
+          .cell(lastRow + 1, 16, lastRow + 1, 16, true)
           .number(order.packaging)
           .style(style)
           .style({
@@ -451,7 +530,7 @@ module.exports = {
           });
 
         ws2
-          .cell(lastRow + 1, 14, lastRow + 1, 14, true)
+          .cell(lastRow + 2, 15, lastRow + 2, 15, true)
           .string(`TOTAL:`)
           .style(style)
           .style({
@@ -461,7 +540,7 @@ module.exports = {
             },
           });
         ws2
-          .cell(lastRow + 1, 15, lastRow + 1, 15, true)
+          .cell(lastRow + 2, 16, lastRow + 2, 16, true)
           .number(total + order.packaging)
           .style(style)
           .style({
@@ -537,7 +616,7 @@ module.exports = {
       console.log(error);
     }
   },
-  createExcel: (req, res) => {},
+  createExcel: (req, res) => { },
   detail: (req, res) => {
     res.render("orderDetail");
   },
