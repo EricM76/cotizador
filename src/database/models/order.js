@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   Order.init({
     userId: DataTypes.INTEGER,
     observations: DataTypes.TEXT,
+    send: DataTypes.BOOLEAN,
     packaging: DataTypes.INTEGER,
     fileClient: DataTypes.STRING,
     fileAdmin: DataTypes.STRING

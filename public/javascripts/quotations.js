@@ -71,7 +71,7 @@ $('btn-generateOrder').addEventListener('click', (e) => {
     //console.log(JSON.parse(localStorage.getItem('selected')));
 
     window.location = '/orders/add?quoters=' + localStorage.getItem('selected');
-    localStorage.removeItem('selected')
+    //localStorage.removeItem('selected')
 })
 
 document.querySelector('.table').addEventListener('click', ({ target }) => {
@@ -111,8 +111,20 @@ const checkSelected = (id) => {
     return localStorage.getItem('selected') && JSON.parse(localStorage.getItem('selected')).includes(+id)
 }
 
+/* $('btn-search').addEventListener('click', (e) => {
+    //e !== "" && e.path[2].submit()
+    e.preventDefault();
+    e.path[3][1].value !== "" && e.path[3].submit()
+}) */
+
+$('search').addEventListener('keydown', (e) => {
+    e.key === 'Enter' && e.preventDefault()
+})
+
 window.onload = function () {
 
+    localStorage.removeItem('dataOrder')
+        
     let checks = document.querySelectorAll('.form-check-input');
     checks.forEach(check => {
         if (checkSelected(check.value)) {
@@ -123,7 +135,8 @@ window.onload = function () {
         }
     });
 
-    selectedChecks()
+    //selectedChecks();
+    localStorage.getItem('selected') && JSON.parse(localStorage.getItem('selected')).length > 0 && $('btn-generateOrder').classList.remove('disabled');
 
     let query = new URLSearchParams(window.location.search);
 
@@ -171,5 +184,7 @@ window.onload = function () {
 
 window.addEventListener('beforeunload', () => {
     sessionStorage.setItem('pathname', window.location.pathname)
+    
+
 })
 

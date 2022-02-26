@@ -7,12 +7,7 @@ $('patterns').disabled = true;
 $('chains').disabled = true;
 $('width').disabled = true;
 $('heigth').disabled = true;
-$('reference').disabled = true;
-
-sessionStorage.getItem('orderInProcess') && sessionStorage.removeItem('orderInProcess');
-sessionStorage.getItem('observations') && sessionStorage.removeItem('observations');
-localStorage.getItem('selected') && localStorage.removeItem('selected');
-localStorage.getItem('dataOrder') && localStorage.removeItem('dataOrder');
+$('referenceQuoter').disabled = true;
 
 window.addEventListener('load', async () => {
 
@@ -34,7 +29,7 @@ window.addEventListener('load', async () => {
 })
 
 const getData = async (target) => {
-    $('amount-box').setAttribute('hidden', true)
+    $('amountQuoter-box').setAttribute('hidden', true)
 
 
     try {
@@ -52,7 +47,7 @@ const getData = async (target) => {
         $('chains').disabled = false;
         $('width').disabled = false;
         $('heigth').disabled = false;
-        $('reference').disabled = false;
+        $('referenceQuoter').disabled = false;
         $('spinner').hidden = true;
 
         const { cloths, colors, supports, patterns, chains } = result.data;
@@ -88,7 +83,7 @@ const getData = async (target) => {
         }
         $('width').value = null;
         $('heigth').value = null;
-        $('reference').value = null;
+        $('referenceQuoter').value = null;
     } catch (error) {
         console.error(error)
     }
@@ -166,7 +161,7 @@ $('heigth').addEventListener('focus', ({target}) => {
      target.classList.remove('is-invalid')
 
 })
-$('reference').addEventListener('focus', ({target}) => {
+$('referenceQuoter').addEventListener('focus', ({target}) => {
 
      target.classList.remove('is-invalid')
 
@@ -228,7 +223,7 @@ $('cloths').addEventListener('blur', ({target}) => {
         target.classList.remove('is-invalid')
     }
    })
-   $('reference').addEventListener('blur', ({target}) => {
+   $('referenceQuoter').addEventListener('blur', ({target}) => {
     if(!target.value){
         target.classList.add('is-invalid')
     }else{
@@ -274,25 +269,37 @@ $('form-quoter').addEventListener('submit', async (e) => {
                     chain: $('chains').value,
                     width: $('width').value.trim(),
                     heigth: $('heigth').value.trim(),
-                    reference: $('reference').value.trim()
+                    reference: $('referenceQuoter').value.trim()
                 })
             });
             const result = await response.json();
-
+            console.log(result)
             if (result.ok) {
-                $('amount-box').classList.add('alert-success')
-                $('amount-box').classList.remove('alert-danger')
-                $('amount-box').removeAttribute('hidden', false)
-                $('amount').classList.remove('h6')
-                $('amount').classList.add('h4')
-                $('amount').innerHTML = `Monto: $ ${result.data}`;
+                $('amountQuoter-box').classList.add('alert-success')
+                $('amountQuoter-box').classList.remove('alert-danger')
+                $('amountQuoter-box').removeAttribute('hidden', false)
+                $('amountQuoter').classList.remove('h6')
+                $('amountQuoter').classList.add('h4')
+                $('amountQuoter').innerHTML = `Monto: $ ${result.data}`;
+
+                if(window.location.pathname === '/quoters'){
+                    window.location.reload()
+                }else{
+                    let query = new URLSearchParams(window.location.search);
+                    let ids = JSON.parse(query.get('quoters'));
+                    ids.push(result.id)
+                    localStorage.setItem('selected', JSON.stringify(ids))
+                    console.log(ids)
+                    window.location.href = `/orders/add?quoters=[${ids}]`
+                }
+
             } else {
-                $('amount-box').classList.remove('alert-success')
-                $('amount-box').classList.add('alert-danger')
-                $('amount-box').removeAttribute('hidden', false)
-                $('amount').classList.add('h6')
-                $('amount').classList.remove('h4')
-                $('amount').innerHTML = `El producto no se encuentra en la lista de precios`
+                $('amountQuoter-box').classList.remove('alert-success')
+                $('amountQuoter-box').classList.add('alert-danger')
+                $('amountQuoter-box').removeAttribute('hidden', false)
+                $('amountQuoter').classList.add('h6')
+                $('amountQuoter').classList.remove('h4')
+                $('amountQuoter').innerHTML = `El producto no se encuentra en la lista de precios`
             }
 
         } catch (error) {

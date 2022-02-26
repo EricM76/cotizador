@@ -384,6 +384,9 @@ module.exports = {
             console.log(priceChain?.id, '>>>>>>>>>>>>CADENA', priceChain?.price) */
 
       /* GUARDAR la cotización, si esta existe */
+      console.log('====================================');
+      console.log(data);
+      console.log('====================================');
       if (data) {
         /* 
                 const { system, cloth, color, support, pattern, chain, width,heigth,reference} = req.body;
@@ -403,13 +406,19 @@ module.exports = {
           userId: req.session.userLogin.id || 85,
         });
         if (quotation) {
-          console.log("cotización guardada exitosamente!");
+          console.log(quotation.id);
         }
+        return res.status(200).json({
+          ok: true,
+          data,
+          id : quotation.id
+        });
+      }else{
+        return res.status(200).json({
+          ok : false
+        })
       }
-      return res.status(200).json({
-        ok: true,
-        data,
-      });
+    
     } catch (error) {
       console.log(error);
       return res

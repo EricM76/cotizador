@@ -29,6 +29,9 @@ module.exports = {
       fileAdmin:{
         type: Sequelize.STRING
       },
+      send : {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
