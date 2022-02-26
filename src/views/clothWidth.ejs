@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
+
+    <body>
+        <%- include('partials/header') %>
+            <main class="container">
+                <section class="col-12 col-md-10 col-lg-8 mt-5 mx-auto">
+                    <article class="card shadow">
+                        <div class="card-body">
+                            <div class="row">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="col-9">Tipo de Tela</th>
+                                                <th scope="col" class="col-3">Ancho <span class="d-none d-lg-inline">rollo </span><span class="d-none d-md-inline">(mts)</span></th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% items.forEach((item)=> { %>
+                                                <tr>
+                                                    <th scope="row" class="text-secondary">
+                                                        ∘  <%= item.name %>
+                                                    </th>
+                                                    <td>
+                                                         <%= item.width %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                               
+
+                            </div>
+                        </div>
+
+
+                        </div>
+                    </article>
+                </section>
+            </main>
+            <%- include('partials/footer') %>
+                <%- include('partials/scripts') %>
+                <script src="/javascripts/information.js"></script>
+    </body>
+
+</html>
