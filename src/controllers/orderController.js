@@ -132,9 +132,7 @@ module.exports = {
   },
   send: async (req, res) => {
     try {
-      await db.Order.destroy({
-        where : {send:false}
-      })
+   
       await db.Order.update(
         {
           observations: req.body.observations,
@@ -146,6 +144,10 @@ module.exports = {
           },
         }
       );
+      await db.Order.destroy({
+        where : {send:0},
+        force : true,
+      })
       let order = await db.Order.findOne({
         where: {
           id: +req.query.order,

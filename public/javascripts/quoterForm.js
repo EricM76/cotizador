@@ -9,6 +9,11 @@ $('width').disabled = true;
 $('heigth').disabled = true;
 $('reference').disabled = true;
 
+sessionStorage.getItem('orderInProcess') && sessionStorage.removeItem('orderInProcess');
+sessionStorage.getItem('observations') && sessionStorage.removeItem('observations');
+localStorage.getItem('selected') && localStorage.removeItem('selected');
+localStorage.getItem('dataOrder') && localStorage.removeItem('dataOrder');
+
 window.addEventListener('load', async () => {
 
     try {

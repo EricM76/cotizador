@@ -136,7 +136,7 @@ window.onload = function () {
     });
 
     //selectedChecks();
-    JSON.parse(localStorage.getItem('selected')).length > 0 && $('btn-generateOrder').classList.remove('disabled');
+    localStorage.getItem('selected') && JSON.parse(localStorage.getItem('selected')).length > 0 && $('btn-generateOrder').classList.remove('disabled');
 
     let query = new URLSearchParams(window.location.search);
 
