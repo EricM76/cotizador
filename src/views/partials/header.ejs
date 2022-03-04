@@ -27,6 +27,8 @@
                   <li><a class="dropdown-item" href="/information/cloth-width" onclick="checkPath(event,'/information/cloth-width')">Ancho de telas</a></li>
                 </ul>
               </li>
+              <% if (locals.userLogin.rol === 1) { %>
+               
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   ABMs
@@ -35,6 +37,7 @@
                   <li><a class="dropdown-item" href="/chains">Cadenas</a></li>
                   <li><a class="dropdown-item" href="/colors">Colores</a></li>
                   <li><a class="dropdown-item" href="/patterns">Modelos</a></li>
+                  <li><a class="dropdown-item" href="/rols">Roles</a></li>
                   <li><a class="dropdown-item" href="/systems">Sistemas</a></li>
                   <li><a class="dropdown-item" href="/supports">Soportes</a></li>
                   <li><a class="dropdown-item" href="/cloths">Telas</a></li>
@@ -49,6 +52,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="#">Presupuestos</a>
               </li>
+              <% } %>
             </ul>
          
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

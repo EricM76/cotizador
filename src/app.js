@@ -10,6 +10,8 @@ const session = require('express-session');
 const methodOverride = require('method-override');
 const localsUserCheck = require('./middlewares/localsUserCheck');
 const userSessionCheck = require('./middlewares/userSessionCheck');
+const adminSessionCheck = require('./middlewares/adminSessionCheck');
+
 
 const chainsRouter = require('./routes/chain');
 const clothsRouter = require('./routes/cloth');
@@ -22,7 +24,8 @@ const supportsRouter = require('./routes/support');
 const systemsRouter = require('./routes/system');
 const informationRouter = require('./routes/information');
 const usersRouter = require('./routes/users');
-const responseRouter = require('./routes/response')
+const responseRouter = require('./routes/response');
+const rolsRouter = require('./routes/rol')
 
 var app = express();
 
@@ -45,18 +48,19 @@ app.use(localsUserCheck)
 
 app.use(express.static(path.join(__dirname, '..','public')));
 
-app.use('/chains',userSessionCheck, chainsRouter);
-app.use('/cloths',userSessionCheck, clothsRouter);
-app.use('/colors',userSessionCheck, colorsRouter);
-app.use('/orders',userSessionCheck, ordersRouter);
-app.use('/patterns',userSessionCheck, patternsRouter);
-app.use('/prices',userSessionCheck, pricesRouter);
+app.use('/chains',adminSessionCheck, chainsRouter);
+app.use('/cloths',adminSessionCheck, clothsRouter);
+app.use('/colors',adminSessionCheck, colorsRouter);
+app.use('/orders',adminSessionCheck, ordersRouter);
+app.use('/patterns',adminSessionCheck, patternsRouter);
+app.use('/prices',adminSessionCheck, pricesRouter);
 app.use('/quoters',userSessionCheck, quotersRouter);
-app.use('/supports',userSessionCheck, supportsRouter);
+app.use('/supports',adminSessionCheck, supportsRouter);
 app.use('/systems',userSessionCheck, systemsRouter);
 app.use('/users', usersRouter);
 app.use('/information', informationRouter);
-app.use('/response', responseRouter)
+app.use('/response', responseRouter);
+app.use('/rols',adminSessionCheck, rolsRouter)
 app.use('/', (req,res) => res.redirect('/quoters/add'));
 
 // catch 404 and forward to error handler

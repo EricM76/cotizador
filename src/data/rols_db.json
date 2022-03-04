@@ -1,1 +1,46 @@
-["Administrador", "Usuario 0%", "Usuario 5%", "Usuario 10%", "Usuario 15%", "Usuario 20%", "Usuario + 80", "Tarjeta", "+ 5%", "Instagram" ]
+[
+    {
+        "name" :  "Administrador",
+        "coefficient" : 0
+    },
+    {
+        "name" :  "Control",
+        "coefficient" : 0
+    },
+    {
+        "name" :   "Usuario 0%",
+        "coefficient" : 0
+    },
+    {
+        "name" :    "Usuario 5%",
+        "coefficient" : -0.05
+    },
+    {
+        "name" :   "Usuario 10%",
+        "coefficient" : -0.10
+    },
+    {
+        "name" :   "Usuario 15%",
+        "coefficient" : -0.15
+    },
+    {
+        "name" :   "Usuario 20%",
+        "coefficient" : -0.20
+    },
+    {
+        "name" :   "Usuario +80",
+        "coefficient" : 0.8
+    },
+    {
+        "name" :   "Tarjeta",
+        "coefficient" : 0
+    },
+    {
+        "name" :   "+5%",
+        "coefficient" : 0.05
+    },
+    {
+        "name" :   "Instagram",
+        "coefficient" : 0
+    }
+]

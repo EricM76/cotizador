@@ -45,7 +45,7 @@ module.exports = {
             db.User.create({
                 name: name.trim(),
                 surname: surname.trim(),
-                rolId: rolId ? +rolId : 2,
+                rolId: rolId ? +rolId : 3,
                 idLocal: idLocal ? idLocal : null,
                 enabled: enabled ? true : false,
                 email,
@@ -273,13 +273,18 @@ module.exports = {
                 let user = await db.User.findOne({
                     where: {
                         username,
-                    }
+                    },
+                    include : [
+                        {association : 'rol'}
+                    ]
                 })
                 req.session.userLogin = {
                     id : user.id,
                     name: user.name,
+                    username : user.username,
                     email : user.email,
-                    rol: +user.rolId
+                    rol: +user.rolId,
+                    coefficient : +user.rol.coefficient
                 }
                 return res.redirect('/quoters/add')
 

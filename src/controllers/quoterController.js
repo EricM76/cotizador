@@ -385,8 +385,11 @@ module.exports = {
 
       /* GUARDAR la cotización, si esta existe */
       console.log('====================================');
-      console.log(data);
+      console.log(data, req.session.userLogin.coefficient,req.session.userLogin.rol, req.session.userLogin.rol > 3 ? data + data * req.session.userLogin.coefficient : data);
       console.log('====================================');
+
+      data = req.session.userLogin.rol > 3 ? data + data * req.session.userLogin.coefficient : data;      
+
       if (data) {
         /* 
                 const { system, cloth, color, support, pattern, chain, width,heigth,reference} = req.body;

@@ -3,7 +3,8 @@ const roles = require('../../data/rols_db.json');
 
 const rols = roles.map( rol => {
   return {
-    name : rol,
+    name : rol.name,
+    coefficient : rol.coefficient,
     createdAt : new Date,
     updatedAt : new Date,
 

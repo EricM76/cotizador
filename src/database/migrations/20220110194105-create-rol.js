@@ -11,6 +11,9 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      coefficient : {
+        type: Sequelize.DECIMAL(3,2)
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Rol.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    coefficient: DataTypes.DECIMAL(3,2)
   }, {
     sequelize,
     modelName: 'Rol',
