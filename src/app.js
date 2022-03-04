@@ -22,6 +22,7 @@ const supportsRouter = require('./routes/support');
 const systemsRouter = require('./routes/system');
 const informationRouter = require('./routes/information');
 const usersRouter = require('./routes/users');
+const responseRouter = require('./routes/response')
 
 var app = express();
 
@@ -55,6 +56,7 @@ app.use('/supports',userSessionCheck, supportsRouter);
 app.use('/systems',userSessionCheck, systemsRouter);
 app.use('/users', usersRouter);
 app.use('/information', informationRouter);
+app.use('/response', responseRouter)
 app.use('/', (req,res) => res.redirect('/quoters/add'));
 
 // catch 404 and forward to error handler

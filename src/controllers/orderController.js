@@ -1,4 +1,6 @@
+const path = require('path');
 const xl = require("excel4node");
+const html_to_pdf = require('html-pdf-node');
 const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
 const { Op } = require("sequelize");
@@ -10,6 +12,7 @@ const client = new SMTPClient({
   password: "cotizador2022",
   host: "smtp.gmail.com",
   ssl: true,
+  timeout : 10000
 });
 
 module.exports = {
@@ -136,7 +139,8 @@ module.exports = {
       await db.Order.update(
         {
           observations: req.body.observations,
-          send : true
+          send : true,
+          orderNumber : req.session.userLogin.id +'-'+ (new Date().getTime()).toString().slice(-8) + '-' + new Date().getFullYear().toString().slice(-2)
         },
         {
           where: {
@@ -167,7 +171,7 @@ module.exports = {
         const names = order.quotations.map((quotation) => quotation.reference);
         const references = [...new Set(names)];
 
-        let wb = new xl.Workbook();
+       /*  let wb = new xl.Workbook();
         let ws = wb.addWorksheet("Orden: " + new Date().getTime(), {
           sheetProtection: {
             sheet: true,
@@ -358,13 +362,52 @@ module.exports = {
         var fileClient = `${new Date().getTime()}.xlsx`;
 
         wb.write(`src/downloads/${fileClient}`);
+ */
 
+  
         //planilla admin
         let wbAdmin = new xl.Workbook();
-
         let ws2 = wbAdmin.addWorksheet(
-          "Orden: " + new Date().getTime() + " - admin"
+          "Orden: " + order.orderNumber + " - admin"
         );
+
+        let lastRow;
+
+        const amounts = order.quotations.map(
+          (quotation) => quotation.amount * quotation.quantity
+        );
+
+        const total = amounts.reduce((acum, num) => acum + num);
+
+      
+
+        let titles = [
+          "Cant",
+          "Sistema",
+          "Tela",
+          "Color",
+          "Ancho",
+          "Alto",
+          "Modelo",
+          "Cadena",
+          "Soporte",
+          "Comando",
+          "Orien. Soporte",
+          "Orien. Tela",
+          "Referencia",
+          "Observaciones",
+          "Precio unitario",
+          "Total",
+        ];
+
+        let style = wbAdmin.createStyle({
+          font: {
+            color: "#666666",
+            size: 12,
+          },
+        });
+
+       
 
         ws2
           .cell(1, 1, 1, 2, true)
@@ -552,7 +595,8 @@ module.exports = {
             },
           });
 
-        var fileAdmin = `${new Date().getTime()}.xls`;
+        var fileAdmin = `${order.orderNumber}.xls`;
+        var fileClient=`${order.orderNumber}.pdf`
 
         await db.Order.update(
           {
@@ -568,51 +612,147 @@ module.exports = {
 
         wbAdmin.write(`src/downloads/${fileAdmin}`);
 
-        setTimeout(() => {
+                //pdf vendedor
+
+        //  <tr>
+
+      let rows = '<tbody>\n'
+      order.quotations.forEach((quotation, index) => {
+        rows += `
+        <tr>
+        <th scope="row">${quotation.quantity}</th>
+        <td>${quotation.system.name}</td>
+        <td>${quotation.cloth.name}</td>
+        <td>${quotation.color.name}</td>
+        <td>${quotation.clothWidth}</td>
+        <td>${quotation.heigth}</td>
+        <td>${quotation.pattern.name}</td>
+        <td>${quotation.chain.name}</td>
+        <td>${quotation.support.name}</td>
+        <td>${quotation.command}</td>
+        <td>${quotation.supportOrientation}</td>
+        <td>${quotation.clothOrientation}</td>
+        <td>${quotation.reference}</td>
+        <td>${quotation.observations}</td>
+        <td style="text-align: right;">${quotation.amount}</td>
+        <td style="text-align: right;">${quotation.amount * quotation.quantity}</td>
+      </tr>
+        `
+      })
+  
+        let file = {content :  `
+
+<body>
+    <div class="container">
+        <div class="row">
+
+            <h2>Pedido #${order.orderNumber}</h2>
+            <div class="card">
+                <div class="card-header d-flex">
+                    <h4>Vendedor: ${order.user.name} ${order.user.surname}</h4>
+                    <h4>Pedido para: ${references}</h4>
+                </div>
+                <div class="card-body">
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Cant.</th>
+                    <th scope="col">Sistema</th>
+                    <th scope="col">Tela</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Ancho</th>
+                    <th scope="col">Alto</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">Cadena</th>
+                    <th scope="col">Soporte</th>
+                    <th scope="col">Comando</th>
+                    <th scope="col">Orien. Soporte</th>
+                    <th scope="col">Orien. Tela</th>
+                    <th scope="col">Referencia</th>
+                    <th scope="col">Observaciones</th>
+                    <th scope="col">Precio unitario</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                ${rows}
+                <tr>
+                <td colspan="15" style="text-align: right;">Embalaje: </td>
+                <td style="text-align: right;"><span>200</span></td>
+                </tr>
+                <tr>
+                <td colspan="15" style="text-align: right;">Total: </td>
+                <td style="text-align: right;"><span>${total}</span></td>
+                </tr>
+                </tbody>
+              </table>
+                </div>
+                <div class="card-footer">
+                    <p>Fecha: ${moment().format("DD/MM/YY")}</p>
+                    <hr>
+                    <p>Observaciones: ${order.observations}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+        `
+  }
+        const options = {
+          format : 'A4',
+          landscape : true,
+          path : path.join(__dirname,'..','downloads', `${order.orderNumber}.pdf`)
+        }
+
+        try {
+          let pdfBuffer = await html_to_pdf.generatePdf(file, options)
+          console.log("PDF Buffer:-", pdfBuffer);
+        } catch (error) {
+          console.log(error)
+        }
+
           let message = new Message({
-            text: `Hola, ${req.session.userLogin.name}.\nSe adjunta planilla con los datos de la orden generada. Gracias por usar nuestra aplicación.`,
+            text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
             from: "cotizadorblancomad@gmail.com",
             to: req.session.userLogin.email,
             cc: " ",
-            subject: "Orden | Presupuesto",
+            subject: "Orden #" + order.orderNumber,
             attachment: [
               {
-                path: `src/downloads/${fileClient}`,
-                type: "application/octet-stream",
-                name: fileClient,
+                path: `src/downloads/${order.orderNumber}.pdf`,
+                type: "application/pdf",
+                name: `${order.orderNumber}.pdf`,
               },
             ],
           });
           let message2 = new Message({
-            text: `Se adjunta planilla de la orden con ID ${order.id}.\nVendedor/a: ${req.session.userLogin.name}.`,
+            text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
             from: "cotizadorblancomad@gmail.com",
             to: "cotizadorblancomad@gmail.com",
             cc: " ",
-            subject: "Orden | Presupuesto",
+            subject: "Orden #" + order.orderNumber,
             attachment: [
+           
               {
-                path: `src/downloads/${fileClient}`,
+                path: `src/downloads/${order.orderNumber}.xls`,
                 type: "application/octet-stream",
-                name: fileClient,
-              },
-              {
-                path: `src/downloads/${fileAdmin}`,
-                type: "application/octet-stream",
-                name: fileAdmin,
+                name: `${order.orderNumber}.xls`,
               },
             ],
           });
 
-          client.send(message, (err, message) => {
-            console.log(err || message);
-          });
-
-          client.send(message2, (err, message) => {
-            console.log(err || message);
-          });
-
-          return res.redirect("/");
-        }, 2000);
+          try {
+            await client.send(message, (err, message) => {
+              console.log(err || message);
+            });
+  
+            await client.send(message2, (err, message) => {
+              console.log(err || message);
+            });
+          } catch (error) {
+            console.log(error)
+          }
+          return res.redirect("/response/send-order");
       }
     } catch (error) {
       console.log(error);

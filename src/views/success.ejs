@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<body>
+    <%- include('./partials/scripts') %> 
+    <script>
+        window.addEventListener('load', () => {
+            Swal.fire({
+                title: '<%=title%>',
+                text :'<%=text%>',
+                icon: '<%=icon%>',
+                confirmButtonText: 'Continuar'
+            }).then( (result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/'
+                } 
+            })
+        })
+    </script>
+</body>
+</html>

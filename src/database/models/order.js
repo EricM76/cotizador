@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     send: DataTypes.BOOLEAN,
     packaging: DataTypes.INTEGER,
     fileClient: DataTypes.STRING,
-    fileAdmin: DataTypes.STRING
+    fileAdmin: DataTypes.STRING,
+    orderNumber: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Order',

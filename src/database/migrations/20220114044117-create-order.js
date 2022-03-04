@@ -32,6 +32,9 @@ module.exports = {
       send : {
         type: Sequelize.BOOLEAN
       },
+      orderNumber : {
+        type : Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

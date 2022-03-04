@@ -26,17 +26,12 @@ document.getElementById('form-sendOrder').addEventListener('submit', (e) => {
         confirmButtonText: 'Enviar pedido'
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire(
-                '¡Pedido enviado!',
-                'Recibirá en su email la información enviada a la fábrica',
-                'success'
-            )
+           
             sessionStorage.removeItem('orderInProcess');
             sessionStorage.removeItem('observations');
             localStorage.removeItem('selected');
             localStorage.removeItem('dataOrder');
             e.target.submit()
-
         }
     })
 
