@@ -160,6 +160,11 @@ module.exports = {
                                 surname: {
                                     [Op.substring]: keywords
                                 }
+                            },
+                            {
+                                username: {
+                                    [Op.substring]: keywords
+                                }
                             }
                         ]
                     },
@@ -174,6 +179,11 @@ module.exports = {
                             },
                             {
                                 surname: {
+                                    [Op.substring]: keywords
+                                }
+                            },
+                            {
+                                username: {
                                     [Op.substring]: keywords
                                 }
                             }
@@ -198,6 +208,11 @@ module.exports = {
                                 surname: {
                                     [Op.substring]: keywords
                                 }
+                            },
+                            {
+                                username: {
+                                    [Op.substring]: keywords
+                                }
                             }
                         ]
                     },
@@ -213,6 +228,11 @@ module.exports = {
                             },
                             {
                                 surname: {
+                                    [Op.substring]: keywords
+                                }
+                            },
+                            {
+                                username: {
                                     [Op.substring]: keywords
                                 }
                             }
@@ -300,5 +320,26 @@ module.exports = {
     logout: (req, res) => {
         req.session.destroy()
         res.redirect('/users/login')
+    },
+    /* APIS */
+    verifyUsername : async (req,res) => {
+
+        const {username} = req.body;
+
+        let user = await db.User.findOne({
+            where : {
+                username
+            }
+        })
+        if(user){
+            return res.status(200).json({
+                ok: false,
+                msg : 'El nombre de usuario ya existe'
+            })
+        }else{
+            return res.status(200).json({
+                ok : true
+            })
+        }
     }
 }

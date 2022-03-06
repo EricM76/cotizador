@@ -10,7 +10,6 @@ const session = require('express-session');
 const methodOverride = require('method-override');
 const localsUserCheck = require('./middlewares/localsUserCheck');
 const userSessionCheck = require('./middlewares/userSessionCheck');
-const adminSessionCheck = require('./middlewares/adminSessionCheck');
 
 
 const chainsRouter = require('./routes/chain');
@@ -48,19 +47,19 @@ app.use(localsUserCheck)
 
 app.use(express.static(path.join(__dirname, '..','public')));
 
-app.use('/chains',adminSessionCheck, chainsRouter);
-app.use('/cloths',adminSessionCheck, clothsRouter);
-app.use('/colors',adminSessionCheck, colorsRouter);
-app.use('/orders',adminSessionCheck, ordersRouter);
-app.use('/patterns',adminSessionCheck, patternsRouter);
-app.use('/prices',adminSessionCheck, pricesRouter);
+app.use('/chains',userSessionCheck, chainsRouter);
+app.use('/cloths',userSessionCheck, clothsRouter);
+app.use('/colors',userSessionCheck, colorsRouter);
+app.use('/orders',userSessionCheck, ordersRouter);
+app.use('/patterns',userSessionCheck, patternsRouter);
+app.use('/prices',userSessionCheck, pricesRouter);
 app.use('/quoters',userSessionCheck, quotersRouter);
-app.use('/supports',adminSessionCheck, supportsRouter);
+app.use('/supports',userSessionCheck, supportsRouter);
 app.use('/systems',userSessionCheck, systemsRouter);
 app.use('/users', usersRouter);
 app.use('/information', informationRouter);
 app.use('/response', responseRouter);
-app.use('/rols',adminSessionCheck, rolsRouter)
+app.use('/rols',userSessionCheck, rolsRouter)
 app.use('/', (req,res) => res.redirect('/quoters/add'));
 
 // catch 404 and forward to error handler

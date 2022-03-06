@@ -36,10 +36,12 @@ module.exports = {
       visible: enabled,
       name,
       idLocal,
-      price,
-    });
+      price : +price || 0,
+    }).then( () => {
+      console.log('cadena agregada con éxito');
+      return res.redirect("/chains");
+    }).catch(error => console.log(error))
 
-    res.redirect("/chains");
   },
   detail: (req, res) => {
     res.render("chainDetail");

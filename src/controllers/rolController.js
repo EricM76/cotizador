@@ -21,14 +21,15 @@ module.exports = {
         res.render('rolAdd')
     },
     store : (req,res) => {
-        let { name,coefficent } = req.body;
+        let { name,coefficient } = req.body;
 
         db.Rol.create({
           name,
-          coefficent
-        });
-
-        res.redirect("/rols");
+          coefficient : +coefficient/100 
+        }).then( () => {
+            console.log('rol agregado con éxito')
+            return res.redirect("/rols");
+        }).catch(error => console.log(error))
     },
     detail : (req,res) => {
         res.render('rolDetail')
@@ -38,13 +39,13 @@ module.exports = {
         res.render("rolEdit", { item });
     },
     update : (req,res) => {
-        let { name, coefficent } = req.body;
+        let { name, coefficient } = req.body;
     
        db.Rol.update(
           {
             name,
-            coefficent,
-          },
+            coefficient : +coefficient/100 
+        },
           {
             where: { id: req.params.id },
           }

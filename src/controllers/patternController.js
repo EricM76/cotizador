@@ -34,10 +34,12 @@ module.exports = {
           visible: enabled,
           name,
           idLocal,
-          price
-        });
+          price : +price || 0
+        }).then( () => {
+            console.log('modelo agregado con éxito')
+            return res.redirect("/patterns");
+        }).catch(error => console.log(error))
 
-        res.redirect("/patterns");
     },
     detail : (req,res) => {
         res.render('patternDetail')

@@ -17,7 +17,7 @@
                     <select class="form-select" id="filter" name="filter" onchange="resetValues()">
                       <option value="" selected hidden>Filtrar por vendedor</option>
                       <% users.forEach(item=> { %>
-                        <option id="user<%= item.userId %>" value=<%=item.userId %> ><%= item.user.name %>
+                        <option id="user<%= item.userId %>" value=<%=item.userId %> ><%= item.user.username %>
                         </option>
                         <% }) %>
                           <option id="all" value="all">Todos</option>

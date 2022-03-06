@@ -385,10 +385,10 @@ module.exports = {
 
       /* GUARDAR la cotización, si esta existe */
       console.log('====================================');
-      console.log(data, req.session.userLogin.coefficient,req.session.userLogin.rol, req.session.userLogin.rol > 3 ? data + data * req.session.userLogin.coefficient : data);
+      console.log(data, req.session.userLogin.coefficient,req.session.userLogin.rol, req.session.userLogin.coefficient !== 0 ? data + data * req.session.userLogin.coefficient : data);
       console.log('====================================');
 
-      data = req.session.userLogin.rol > 3 ? data + data * req.session.userLogin.coefficient : data;      
+      data = req.session.userLogin.coefficient !== 0 ? data + data * req.session.userLogin.coefficient : data;      
 
       if (data) {
         /* 

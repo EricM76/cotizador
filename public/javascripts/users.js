@@ -76,7 +76,12 @@ const getKeywords = () => {
 }
 
 window.onload = function () {
-
+    
+    if(sessionStorage.getItem('pathname') !== window.location.pathname){
+        sessionStorage.setItem('active', 1);
+        sessionStorage.setItem('pages', 1);
+        sessionStorage.removeItem('keywords');
+    }
 
     let query = new URLSearchParams(window.location.search);
 
@@ -106,7 +111,7 @@ window.onload = function () {
 
     document.getElementById('form-items').addEventListener('submit', (e) => {
         e.preventDefault();
-        //getKeywords();
+        getKeywords();
         e.target.submit()
 
     })

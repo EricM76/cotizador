@@ -8,6 +8,10 @@
         "coefficient" : 0
     },
     {
+        "name" :   "Medidor",
+        "coefficient" : 0
+    },
+    {
         "name" :   "Usuario 0%",
         "coefficient" : 0
     },

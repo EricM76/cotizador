@@ -34,10 +34,11 @@ module.exports = {
           visible: enabled,
           name,
           idLocal,
-          price
-        });
-
-        res.redirect("/supports");
+          price : +price || 0
+        }).then( () => {
+            console.log('soporte agregado con éxito')
+            return res.redirect("/supports");
+        }).catch(error => console.log(error))
     },
     detail : (req,res) => {
         res.render('supportDetail')

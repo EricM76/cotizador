@@ -34,9 +34,11 @@ module.exports = {
           visible: enabled,
           name,
           idLocal
-        });
+        }).then( () => {
+            console.log('color agregado con éxito')
+            return res.redirect("/colors");
+        }).catch(error => console.log(error))
 
-        res.redirect("/colors");
     },
     detail : (req,res) => {
         res.render('colorDetail')

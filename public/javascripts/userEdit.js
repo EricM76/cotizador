@@ -21,3 +21,25 @@ $('btn-close').addEventListener('click', () => {
     $('box-buttons').classList.toggle('box-hidden');
     $('btn-change').classList.toggle('box-hidden');
 })
+
+const verifyUsername = async (username) => {
+  
+    let response = await fetch('/users/api/verify-username',{
+        method : 'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            username
+        })
+    });
+    let result = await response.json();
+
+   $('error-username').innerHTML = !result.ok ? result.msg : null 
+
+}
+
+$('username').addEventListener('keyup', ({target}) => {
+
+ verifyUsername(target.value)
+})

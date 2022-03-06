@@ -94,7 +94,8 @@
                         <th scope="col">IDLocal</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
-                        <th scope="col">Tipo Usuario</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Usuario</th>
                         <th scope="col">Email</th>
                         <th scope="col">Teléfono</th>
                         <th scope="col">Acciones</th>
@@ -120,7 +121,10 @@
                             <%= item.surname %>
                           </td>
                           <td>
-                            <%= item.rolId !== null && item.rol.name  %>
+                            <%= item.rolId !== null ? item.rol.name : '-' %>
+                          </td>
+                          <td>
+                            <%= item.username !== null ? item.username : '-'  %>
                           </td>
                           <td>
                             <%= item.email %>

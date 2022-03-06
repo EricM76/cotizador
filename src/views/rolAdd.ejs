@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
+
+    <body>
+        <%- include('partials/header') %>
+            <main class="container">
+                <section class="col-12 col-md-10 col-lg-8 mt-5 mx-auto">
+                    <article class="card shadow">
+                        <div class="card-header">
+                            Nuevo Rol
+                        </div>
+                        <div class="card-body">
+                            <form action="/rols/add" method="POST" class="row needs-validation" novalidate>
+
+                                <div class="col-12 col-md-5 col-lg-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            placeholder="Nombre" required>
+                                        <label for="name">Nombre</label>
+                                    </div>
+                                    <span class="ms-1 text-danger">
+                                        <%= locals.errors && errors.name && errors.name.msg %>
+                                    </span>
+                                    <div class="invalid-feedback">
+                                        El nombre es requerido
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12 col-md-3">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="coefficient" name="coefficient" placeholder="Coeficiente"  required>
+                                        <label for="coefficient">Coeficiente</label>      
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4 col-lg-3 mt-3 mt-md-0 d-flex justify-content-around align-items-center">
+                                    <a href="/rols" class="btn btn-secondary mx-1 mb-3">Cancelar</a>
+                                    <button type="submit" class="btn buttons__btn-custom mb-3">Guardar</button>
+                                </div>
+                              
+
+                            </form>
+                        </div>
+                    </article>
+                </section>
+            </main>
+            <%- include('partials/footer') %>
+                <%- include('partials/scripts') %>
+
+    </body>
+
+</html>

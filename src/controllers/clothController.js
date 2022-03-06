@@ -36,11 +36,13 @@ module.exports = {
       visible: enabled,
       name,
       idLocal,
-      price,
+      price : +price || 0,
       width,
-    });
+    }).then( () => {
+      console.log('tela agregada con éxito');
+      return res.redirect("/cloths");
+    }).catch(error => console.log(error))
 
-    res.redirect("/cloths");
   },
   detail: (req, res) => {
     res.render("clothDetail");

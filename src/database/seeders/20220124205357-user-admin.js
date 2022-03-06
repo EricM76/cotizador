@@ -37,7 +37,7 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "test0",
+            username: "medidor",
             password: bcrypt.hashSync('123', 10),
             rolId: 3
          },
@@ -49,7 +49,7 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "test5",
+            username: "test0",
             password: bcrypt.hashSync('123', 10),
             rolId: 4
          },
@@ -61,7 +61,7 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "test10",
+            username: "test5",
             password: bcrypt.hashSync('123', 10),
             rolId: 5
          },
@@ -73,7 +73,7 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "test15",
+            username: "test",
             password: bcrypt.hashSync('123', 10),
             rolId: 6
          },
@@ -85,7 +85,7 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "test20",
+            username: "test15",
             password: bcrypt.hashSync('123', 10),
             rolId: 7
          },
@@ -97,7 +97,7 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "test80",
+            username: "test20",
             password: bcrypt.hashSync('123', 10),
             rolId: 8
          },
@@ -109,7 +109,7 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "tarjeta",
+            username: "test80",
             password: bcrypt.hashSync('123', 10),
             rolId: 9
          },
@@ -121,7 +121,7 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "test+5",
+            username: "tarjeta",
             password: bcrypt.hashSync('123', 10),
             rolId: 10
          },
@@ -133,9 +133,21 @@ module.exports = {
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "instagram",
+            username: "test5+",
             password: bcrypt.hashSync('123', 10),
             rolId: 11
+         },
+         {
+            name: "test",
+            surname: "example",
+            email: "menaericdaniel@gmail.com",
+            idLocal: 9999,
+            enabled: true,
+            createdAt: new Date,
+            phone: '11 3401-6900',
+            username: "instagram",
+            password: bcrypt.hashSync('123', 10),
+            rolId: 12
          }
       ], {});
 

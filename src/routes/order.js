@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const {index,add,preview,store,send,detail,edit,update,remove} = require('../controllers/orderController');
+const adminSessionCheck = require('../middlewares/adminSessionCheck');
 
 router
     .get('/', index)
@@ -12,6 +13,6 @@ router
     .get('/detail/:id',detail)
     .get('/edit/:id',edit)
     .put('/update/:id',update)
-    .delete('/remove/:id',remove)
+    .delete('/remove/:id',adminSessionCheck,remove)
 
 module.exports = router;
