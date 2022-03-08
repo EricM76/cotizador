@@ -1,5 +1,6 @@
 const path = require('path');
 const xl = require("excel4node");
+const html_to_pdf = require('html-pdf-node');
 const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
 const { Op } = require("sequelize");
@@ -460,22 +461,120 @@ module.exports = {
 
                 //pdf vendedor
 
-        setTimeout(() => {
-          let message2 = new Message({
+        //  <tr>
+
+      let rows = '<tbody>\n'
+      order.quotations.forEach((quotation, index) => {
+        rows += `
+        <tr>
+        <th scope="row">${quotation.quantity}</th>
+        <td>${quotation.system.name}</td>
+        <td>${quotation.cloth.name}</td>
+        <td>${quotation.color.name}</td>
+        <td>${quotation.clothWidth}</td>
+        <td>${quotation.heigth}</td>
+        <td>${quotation.pattern.name}</td>
+        <td>${quotation.chain.name}</td>
+        <td>${quotation.support.name}</td>
+        <td>${quotation.command}</td>
+        <td>${quotation.supportOrientation}</td>
+        <td>${quotation.clothOrientation}</td>
+        <td>${quotation.environment}</td>
+        <td>${quotation.reference}</td>
+        <td>${quotation.observations}</td>
+        <td style="text-align: right;">${quotation.amount}</td>
+        <td style="text-align: right;">${quotation.amount * quotation.quantity}</td>
+      </tr>
+        `
+      })
+  
+        let file = {content :  `
+
+<body>
+    <div class="container">
+        <div class="row">
+
+            <h2>Pedido #${order.orderNumber}</h2>
+            <div class="card">
+                <div class="card-header d-flex">
+                    <h4>Vendedor: ${order.user.name} ${order.user.surname}</h4>
+                    <h4>Pedido para: ${references}</h4>
+                </div>
+                <div class="card-body">
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Cant.</th>
+                    <th scope="col">Sistema</th>
+                    <th scope="col">Tela</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Ancho</th>
+                    <th scope="col">Alto</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">Cadena</th>
+                    <th scope="col">Soporte</th>
+                    <th scope="col">Comando</th>
+                    <th scope="col">Orien. Soporte</th>
+                    <th scope="col">Orien. Tela</th>
+                    <th scope="col">Ambiente</th>
+                    <th scope="col">Referencia</th>
+                    <th scope="col">Observaciones</th>
+                    <th scope="col">Precio unitario</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                ${rows}
+                <tr>
+                <td colspan="16" style="text-align: right;">Embalaje: </td>
+                <td style="text-align: right;"><span>200</span></td>
+                </tr>
+                <tr>
+                <td colspan="16" style="text-align: right;">Total: </td>
+                <td style="text-align: right;"><span>${total}</span></td>
+                </tr>
+                </tbody>
+              </table>
+                </div>
+                <div class="card-footer">
+                    <p>Fecha: ${moment().format("DD/MM/YY")}</p>
+                    <hr>
+                    <p>Observaciones: ${order.observations}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+        `
+  }
+        const options = {
+          format : 'A4',
+          landscape : true,
+          path : path.join(__dirname,'..','downloads', `${order.orderNumber}.pdf`)
+        }
+
+        try {
+          let pdfBuffer = await html_to_pdf.generatePdf(file, options)
+          console.log("PDF Buffer:-", pdfBuffer);
+        } catch (error) {
+          console.log(error)
+        }
+
+          let message = new Message({
             text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
             from: "cotizadorblancomad@gmail.com",
             to: req.session.userLogin.email,
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
-             /*  {
+              {
                 path: `src/downloads/${order.orderNumber}.pdf`,
                 type: "application/pdf",
                 name: `${order.orderNumber}.pdf`,
-              }, */
+              },
             ],
           });
-          let message = new Message({
+          let message2 = new Message({
             text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
             from: "cotizadorblancomad@gmail.com",
             to: "cotizadorblancomad@gmail.com",
@@ -483,26 +582,30 @@ module.exports = {
             subject: "Orden #" + order.orderNumber,
             attachment: [
               {
-                path: path.resolve(__dirname,'..','downloads', `${order.orderNumber}.xls`),
+                path: `src/downloads/${order.orderNumber}.pdf`,
+                type: "application/pdf",
+                name: `${order.orderNumber}.pdf`,
+              },
+              {
+                path: `src/downloads/${order.orderNumber}.xls`,
                 type: "application/octet-stream",
                 name: `${order.orderNumber}.xls`,
               },
             ],
           });
 
-           client.send(message, (err, message) => {
+          try {
+            await client.send(message, (err, message) => {
               console.log(err || message);
             });
   
-           client.send(message2, (err, message) => {
+            await client.send(message2, (err, message) => {
               console.log(err || message);
             });
-            return res.redirect("/response/send-order");
-
-        }, 2000);
-
-         
-         
+          } catch (error) {
+            console.log(error)
+          }
+          return res.redirect("/response/send-order");
       }
     } catch (error) {
       console.log(error);
