@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     packaging: DataTypes.INTEGER,
     fileClient: DataTypes.STRING,
     fileAdmin: DataTypes.STRING,
-    orderNumber: DataTypes.STRING
+    orderNumber: DataTypes.STRING,
+    total :DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Order',

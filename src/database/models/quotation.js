@@ -67,6 +67,7 @@ module.exports = (sequelize, DataTypes) => {
     date: DataTypes.DATE,
     reference : DataTypes.STRING,
     command : DataTypes.STRING,
+    environment : DataTypes.STRING,
     supportOrientation : DataTypes.STRING,
     clothOrientation : DataTypes.STRING,
     observations : DataTypes.STRING,

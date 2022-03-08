@@ -44,6 +44,8 @@
                           <th scope="col">Orien. Soporte</th>
                           <th scope="col">Orien. Tela</th>
                           <th scope="col">Obs.</th>
+                          <th scope="col">Ambiente</th>
+                          <th scope="col">Referencia</th>
                           <th scope="col">Precio unitario</th>
                           <th scope="col">Total</th>
                         </tr>
@@ -91,6 +93,12 @@
                                 <%= item.observations %>
                               </td>
                               <td>
+                                <%= item.environment %>
+                              </td>
+                              <td>
+                                <%= item.reference %>
+                              </td>
+                              <td>
                                   <div class="d-flex justify-content-around">
                                     <span>$</span><span><%= toThousand(item.amount) %></span> 
                                   </div>
@@ -103,7 +111,7 @@
                           </tr>
                           <% }) %>
                           <tr>
-                            <td colspan="14" class="text-end">
+                            <td colspan="16" class="text-end">
                                 <b>EMBALAJE:</b> 
                             </td>
                             <td colspan="1" class="text-end">
@@ -115,20 +123,20 @@
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="14" class="text-end">
+                            <td colspan="16" class="text-end">
                                 <b>TOTAL:</b> 
                             </td>
                             <td colspan="1" class="text-end">
-                                
-                                       $<%= toThousand(total + order.packaging)  %>
+                                $<%= toThousand(total + order.packaging)  %>
                             </td>
                           </tr>
                       </tbody>
                     </table>
                   </div>
             </div>
-            <div class="card-footer">
-              <button type="submit" class="btn btn-outline-dark w-100">Enviar pedido</button>
+            <div class="card-footer text-end">
+              <button type="button" class="btn btn-secondary mx-1" onclick="window.history.back()">Volver atrás</button>
+              <button type="submit" class="btn btn-primary mx-1">Enviar pedido</button>
             </div>
           </form>
           </article>

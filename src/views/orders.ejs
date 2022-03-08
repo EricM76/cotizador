@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas | Cotizaciones" }) %>
+
+  <body>
+    <%- include('partials/header') %>
+      <main class="container">
+        <section class="col-12  mt-5  mx-auto">
+          <article class="card shadow">
+            <div class="card-header">
+
+
+              <form action="/orders/filter" class="row" id="form-items">
+
+                <div class="col-12 col-md-4 col-lg-4 mb-2">
+                    <select class="form-select" id="filter" name="filter" onchange="resetValues()">
+                      <option value="" selected hidden>Filtrar por vendedor</option>
+                      <% users.forEach(item=> { %>
+                        <option id="user<%= item.userId %>" value=<%=item.userId %> ><%= item.user.username %>
+                        </option>
+                        <% }) %>
+                          <option id="all" value="all">Todos</option>
+                    </select>
+              
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 mb-2">
+                
+                </div>
+                <div class="col-12  col-md-4 col-lg-4 mb-2 position-relative">
+                  <input type="text" class="form-control w-100" id="search" placeholder="Buscar por referencia..." name="search">
+                  <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit" onclick="handlerSearch()" id="btn-search"><i
+                      class="fas fa-search"></i></button>
+                </div>
+            </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 col-md-4" id="result">
+                 
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-center">
+                  <h5 class="text-center">ORDENES</h5><span class="small ms-2">(<%= total %>)</span>
+
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-end">
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination pagination-sm">
+
+                      <% if (pages> 1) { %>
+                        <li class="page-item">
+                          <button class="page-link text-dark" onclick="blockPagesPrevious('<%= pages %>')"
+                            aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </button>
+                        </li>
+                        <% } %>
+
+                          <% for( let i=+pages; i <= (total / 8) + multiplo ; i++ ) { %>
+                            <% if (i <= +pages + 4 ) { %>
+                              <li class="page-item <%= +active == i && 'active' %> "><button class="page-link"
+                                  onclick="changeActive('<%=i%>')">
+                                  <%= i %>
+                                </button></li>
+                              <% } %>
+                                <% } %>
+
+                                  <input id="active" type="text" value="1" hidden name="active" />
+                                  <input id="pages" type="text" value="<%= pages %>" hidden name="pages" />
+                                  <input type="text" value="" hidden name="keywords" id="keywords">
+
+                                  <% if (pages < (total / 8) - 4) { %>
+                                    <li class="page-item">
+                                      <button class="page-link text-dark" aria-label="Next"
+                                        onclick="blockPagesNext('<%= pages %>')">
+                                        <span aria-hidden="true">&raquo;</span>
+                                      </button>
+                                    </li>
+                                    <% } %>
+
+                    </ul>
+                  </nav>
+                 
+
+                </div>
+
+                </form>
+                <div class="table-responsive">
+                  <% if (items.length> 0) { %>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Orden</th>
+                            <th scope="col">Vendedor</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Monto</th>
+                            <th scope="col">Enviado</th>
+                            <th scope="col">Archivos</th>
+                            <th scope="col">Cotizaciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% items.forEach((item)=> { %>
+                          <tr>
+                            <td class="align-middle">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#orderInfo"  id="btn-createQuotation" class="btn btn-sm btn-primary">más info</button>
+                            </td>
+                            <td class="align-middle">
+                                <%= moment(item.date).format('DD-MM-YY') %>
+                            </td>
+                         
+                            <td class="align-middle">
+                                <%= item.orderNumber%>
+                              </td>
+                              <td class="align-middle">
+                                <%= item.user.name %> <%= item.user.surname %> 
+                            </td>
+                            <td class="align-middle">
+                                <%= item.user.username %> 
+                              </td>
+                              <td class="align-middle">
+                                <%= item.total %>
+                              </td>
+                              <td class="align-middle">
+                                <%= item.send %>
+                            </td>
+                            <td class="align-middle">
+                                <a href="/orders/download?file=client&orderNumber=<%= item.orderNumber %>" class="btn btn-sm btn-danger me-1"><i class="fas fa-file-pdf"></i></a>
+                                <a href="/orders/download?file=admin&orderNumber=<%= item.orderNumber %>" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i></a>
+                            </td>
+                           
+                            <td class="d-flex flex-column">
+                                <ul class="list-group list-group-flush">
+
+                              <% item.quotations.forEach(quotation => { %>
+                                <li class="list-group-item bg-transparent">
+                                  
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#quoterInfo<%= quotation.id %>"  id="btn-createQuotation" class="btn btn-sm btn-primary" style="width: 30px;"><i class="fas fa-info"></i></button>
+                                    <span>
+                                        <%= moment(quotation.date).format('DD/MM') %> <b>$<%= quotation.amount * quotation.quantity %></b> - <%= quotation.reference %>
+                                    </span>
+                                    <div class="modal fade" id="quoterInfo<%= quotation.id %>" tabindex="-1" aria-labelledby="quoterModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                          <div class="modal-content">
+                                            <div class="modal-body">
+                                              <main class="container">
+                                                <section class="col-12 mt-5 mx-auto">
+                                                  <article class="card shadow">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-4 col-md-2 col-lg-2 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="number" min="1" class="form-control" id="quantity" placeholder="cantidad" value="1" name="quantity" required readonly value="<%= quotation.quantity%>">
+                                                                <label for="quantity">Cant.</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-8 col-md-4 col-lg-2 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="system" placeholder="sistema" value="<%= quotation.system.name %>" name="sytem" readonly>
+                                                                <label for="system">Sistema</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-lg-2 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="cloth" placeholder="tela" value="<%= quotation.cloth.name %>" name="cloth" readonly>
+                                                                <label for="cloth">Tela</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-lg-2 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="color" placeholder="color" value="<%= quotation.color.name  %>" name="color" readonly>                      
+                                                                <label for="color">Color</label>
+                                                              </div>
+                                                             
+                                                            </div>
+                                                            <div class="col-6 col-md-6 col-lg-2 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="number" class="form-control" id="clothWidth" placeholder="ancho" value="<%= quotation.clothWidth %>" name="clothWidth" readonly>
+                                                                <label for="ancho">Ancho</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-6 col-md-6 col-lg-2 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="number" class="form-control" id="height" placeholder="alto" value="<%= quotation.heigth %>" name="height" readonly>
+                                                                <label for="heigth">Alto</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="pattern" placeholder="modelo" value="<%= quotation.pattern.name %>" name="pattern" readonly>
+                                                                <label for="pattern">Modelo</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-6 col-md-6 col-lg-2 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="number" class="form-control" id="chain" placeholder="cadena" value="<%= quotation.chain.name %>" name="chain" readonly>
+                                                                <label for="chain">Cadena</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-6 col-md-6 col-lg-3 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="support" placeholder="soporte" value="<%= quotation.support.name %>" name="support" readonly>
+                                                                <label for="support">Soporte</label>
+                                                              </div>
+                                                            </div>
+                                                         
+                                                            <div class="col-12 col-md-6 col-lg-3 mb-3">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="text" class="form-control" id="support-orientation" placeholder="soporte" value="<%= quotation.supportOrientation %>" name="support-orientation" readonly>
+                                                                    <label for="support-orientation">Orientación soporte</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-lg-2 mb-3">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="text" class="form-control" id="clothOrientation" placeholder="soporte" value="<%= quotation.clothOrientation %>" name="clothOrientation" readonly>
+                                                                    <label for="clothOrientation">Orientación tela</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-lg-2 mb-3">
+                                                                <div class="form-floating mb-3">
+                                                                    <input type="text" class="form-control" id="command" placeholder="comando" value="<%= quotation.command %>" name="command" readonly>
+                                                                    <label for="command">Orientación tela</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="observations" name="observations"  value="<%= quotation.observations%>" readonly>
+                                                                <label for="observations">Observaciones</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-6 col-md-6 col-lg-2 mb-3">
+                                                              <div class="form-floating mb-3">
+                                                                <input type="text" class="form-control" id="reference" placeholder="referencia" value="<%= quotation.reference %>" name="reference" readonly>
+                                                                <label for="reference">Referencia</label>
+                                                              </div>
+                                                            </div>
+                                                            <div class="col-6 col-md-6 col-lg-2 mb-3">
+                                                              <div class="d-flex align-items-center">
+                                                                <span class="me-2">$</span>
+                                                                <div class="form-floating mb-3 flex-grow-1">
+                                                                  <input type="text" class="form-control" id="amount" placeholder="monto" value="<%= quotation.amount %>" name="amount" readonly>
+                                                                  <label for="amount">Monto</label>
+                                                                </div>
+                                                              </div>
+                                                            
+                                                            </div>
+                                                          </div>
+                                                          <div class="card-footer text-end">
+                                                              <a type="button" class="btn btn-primary py-3" data-bs-dismiss="modal">VOLVER</a>
+                                                          </div>
+                                                    </div>
+                                                  </article>
+                                                </section>
+                                              </main>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </li>         
+                              <% }) %>
+                              </ul>
+                            </td>
+                          
+                          
+                          </tr>
+                          <% }) %>
+                      </tbody>
+                    </table>
+                    <% }else{ %>
+                      <p class="alert alert-warning mt-4 text-center">No hay resultados <%= keywords && 'para ' +
+                          keywords %>
+                      </p>
+                      <% } %>
+
+                </div>
+              </div>
+          </article>
+        </section>
+      </main>
+      <%- include('partials/footer') %>
+        <%- include('partials/scripts') %>
+
+          <script src="/javascripts/orders.js"></script>
+
+  </body>
+
+</html>

@@ -56,6 +56,9 @@ module.exports = {
       quantity : {
         type : Sequelize.INTEGER,
       },
+      environment : {
+        type : Sequelize.STRING
+      },
       systemId: {
         type: Sequelize.INTEGER,
         references : {

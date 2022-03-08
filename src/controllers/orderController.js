@@ -17,7 +17,37 @@ const client = new SMTPClient({
 
 module.exports = {
   index: (req, res) => {
-    res.render("orders");
+    let users = db.Quotation.findAll({
+      attributes: ["userId"],
+      include: [{ association: "user" }],
+      group: ["userId"],
+      having: "",
+    });
+    let items = db.Order.findAll({
+      include : [
+        {
+          association : 'quotations',
+          include : {all:true}
+        },
+        {association : 'user'}
+      ],
+      order : [['createdAt','DESC']]
+    })
+    let total = db.Order.count()
+    Promise.all(([users,items, total]))
+    .then(([users,items, total]) => {
+    
+      return res.render("orders",{
+        items,
+        users,
+        total,
+        active: 1,
+        pages: 1,
+        keywords: "",
+        multiplo: total % 8 === 0 ? 0 : 1,
+        moment,
+      });
+    }).catch(error => console.log(error))
   },
   add: async (req, res) => {
 
@@ -50,6 +80,7 @@ module.exports = {
       supportOrientation: supportOrientations,
       clothOrientation: clothOrientations,
       command: commands,
+      environment :environments,
       observations,
     } = req.body;
 
@@ -59,6 +90,7 @@ module.exports = {
       supportOrientations = [supportOrientations];
       clothOrientations = [clothOrientations];
       commands = [commands];
+      environments = [environments]
       observations = [observations];
     }
 
@@ -76,6 +108,7 @@ module.exports = {
             command: commands[i],
             supportOrientation: supportOrientations[i],
             clothOrientation: clothOrientations[i],
+            environment: environments[i],
             observations: observations[i],
           },
           {
@@ -168,219 +201,30 @@ module.exports = {
         ],
       });
       if (order) {
+        let lastRow;
         const names = order.quotations.map((quotation) => quotation.reference);
         const references = [...new Set(names)];
-
-       /*  let wb = new xl.Workbook();
-        let ws = wb.addWorksheet("Orden: " + new Date().getTime(), {
-          sheetProtection: {
-            sheet: true,
-            password: 'blancoMad2022'
-          },
-        });
-
-        let style = wb.createStyle({
-          font: {
-            color: "#666666",
-            size: 12,
-          },
-        });
-
-        ws.cell(1, 1, 1, 5, true)
-          .string(`VENDEDOR: ${order.user.name} ${order.user.surname}`)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "left",
-            },
-          });
-
-        ws.cell(2, 1, 2, 5, true)
-          .string(`PEDIDO PARA : ${references.join(", ")}`)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "left",
-            },
-          });
-
-        ws.cell(1, 6, 1, 7, true)
-          .string(`OBSERVACIONES PEDIDO :`)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "right",
-            },
-          });
-          ws.cell(1, 8, 1, 8, true)
-          .string(`${order.observations}`)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "left",
-            },
-          });
-        ws.cell(2, 6, 2, 7, true)
-          .string(`FECHA PEDIDO :`)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "right",
-            },
-          });
-          ws.cell(2, 8, 2, 8, true)
-          .string(`${moment().format("DD/MM/YY")}`)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "left",
-            },
-          });
-
-        ws.row(1).setHeight(30);
-        ws.row(2).setHeight(30);
-        ws.column(1).setWidth(5); //cantidad
-        ws.column(2).setWidth(15); //sistema
-        ws.column(3).setWidth(15); //tela
-        ws.column(4).setWidth(15); //color
-        ws.column(5).setWidth(15); //ancho
-        ws.column(6).setWidth(15); //alto
-        ws.column(7).setWidth(15); //modelo
-        ws.column(8).setWidth(15); //cadena
-        ws.column(9).setWidth(15); //soporte
-        ws.column(10).setWidth(15); //comando
-        ws.column(11).setWidth(15); //o. soporte
-        ws.column(12).setWidth(15); //o. tela
-        ws.column(13).setWidth(15); //referencia
-        ws.column(14).setWidth(15); //observaciones
-        ws.column(15).setWidth(15); //p. unitario
-        ws.column(16).setWidth(15); //total
-
-        let titles = [
-          "Cant",
-          "Sistema",
-          "Tela",
-          "Color",
-          "Ancho",
-          "Alto",
-          "Modelo",
-          "Cadena",
-          "Soporte",
-          "Comando",
-          "Orien. Soporte",
-          "Orien. Tela",
-          "Referencia",
-          "Observaciones",
-          "Precio unitario",
-          "Total",
-        ];
-
-        titles.forEach((title, index) => {
-          ws.cell(3, index + 1)
-            .string(title)
-            .style(style)
-            .style({
-              font: {
-                bold: true,
-              },
-            });
-        });
-        let lastRow;
-        order.quotations.forEach((quotation, index) => {
-          index = index + 4;
-          ws.cell(index, 1).number(quotation.quantity).style(style);
-          ws.cell(index, 2).string(quotation.system.name).style(style);
-          ws.cell(index, 3).string(quotation.cloth.name).style(style);
-          ws.cell(index, 4).string(quotation.color.name).style(style);
-          ws.cell(index, 5).number(quotation.clothWidth).style(style);
-          ws.cell(index, 6).number(quotation.heigth).style(style);
-          ws.cell(index, 7).string(quotation.pattern.name).style(style);
-          ws.cell(index, 8).string(quotation.chain.name).style(style);
-          ws.cell(index, 9).string(quotation.support.name).style(style);
-          ws.cell(index, 10).string(quotation.command).style(style);
-          ws.cell(index, 11).string(quotation.supportOrientation).style(style);
-          ws.cell(index, 12).string(quotation.clothOrientation).style(style);
-          ws.cell(index, 13).string(quotation.reference).style(style);
-          ws.cell(index, 14).string(quotation.observations).style(style);
-          ws.cell(index, 15).number(quotation.amount).style(style);
-          ws.cell(index, 16)
-            .number(quotation.amount * quotation.quantity)
-            .style(style);
-          lastRow = index + 1;
-        });
-
-        ws.cell(lastRow, 15, lastRow, 15, true)
-          .string(`EMBALAJE: `)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "right",
-            },
-          });
-        ws.cell(lastRow, 16, lastRow, 16, true)
-          .number(order.packaging)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "right",
-            },
-          });
-
         const amounts = order.quotations.map(
           (quotation) => quotation.amount * quotation.quantity
         );
-
         const total = amounts.reduce((acum, num) => acum + num);
 
-        ws.cell(lastRow + 1, 15, lastRow + 1, 15, true)
-          .string(`TOTAL:`)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "right",
+        await db.Order.update(
+          {
+            total,
+          },
+          {
+            where: {
+              id: +req.query.order,
             },
-          });
-        ws.cell(lastRow + 1, 16, lastRow + 1, 16, true)
-          .number(total + order.packaging)
-          .style(style)
-          .style({
-            alignment: {
-              vertical: "center",
-              horizontal: "right",
-            },
-          });
+          }
+        );
 
-        var fileClient = `${new Date().getTime()}.xlsx`;
-
-        wb.write(`src/downloads/${fileClient}`);
- */
-
-  
         //planilla admin
         let wbAdmin = new xl.Workbook();
         let ws2 = wbAdmin.addWorksheet(
           "Orden: " + order.orderNumber + " - admin"
         );
-
-        let lastRow;
-
-        const amounts = order.quotations.map(
-          (quotation) => quotation.amount * quotation.quantity
-        );
-
-        const total = amounts.reduce((acum, num) => acum + num);
-
-      
-
         let titles = [
           "Cant",
           "Sistema",
@@ -394,6 +238,7 @@ module.exports = {
           "Comando",
           "Orien. Soporte",
           "Orien. Tela",
+          "Ambiente",
           "Referencia",
           "Observaciones",
           "Precio unitario",
@@ -512,10 +357,11 @@ module.exports = {
         ws2.column(10).setWidth(10); //comando
         ws2.column(11).setWidth(15); //o. soporte
         ws2.column(12).setWidth(15); //o. tela
-        ws2.column(13).setWidth(15); //referencia
-        ws2.column(14).setWidth(20); //observaciones
-        ws2.column(15).setWidth(15); //p. unitario
-        ws2.column(16).setWidth(10); //total
+        ws2.column(13).setWidth(20); //ambiente
+        ws2.column(14).setWidth(15); //referencia
+        ws2.column(15).setWidth(20); //observaciones
+        ws2.column(16).setWidth(15); //p. unitario
+        ws2.column(17).setWidth(10); //total
 
         titles.forEach((title, index) => {
           ws2
@@ -543,18 +389,19 @@ module.exports = {
           ws2.cell(index, 10).string(quotation.command).style(style);
           ws2.cell(index, 11).string(quotation.supportOrientation).style(style);
           ws2.cell(index, 12).string(quotation.clothOrientation).style(style);
-          ws2.cell(index, 13).string(quotation.reference).style(style);
-          ws2.cell(index, 14).string(quotation.observations).style(style);
-          ws2.cell(index, 15).number(quotation.amount).style(style);
+          ws2.cell(index, 13).string(quotation.environment).style(style);
+          ws2.cell(index, 14).string(quotation.reference).style(style);
+          ws2.cell(index, 15).string(quotation.observations).style(style);
+          ws2.cell(index, 16).number(quotation.amount).style(style);
           ws2
-            .cell(index, 16)
+            .cell(index, 17)
             .number(quotation.amount * quotation.quantity)
             .style(style);
           lastRow = index + 1;
         });
 
         ws2
-          .cell(lastRow + 1, 15, lastRow + 1, 15, true)
+          .cell(lastRow, 16, lastRow, 16, true)
           .string(`EMBALAJE: `)
           .style(style)
           .style({
@@ -564,7 +411,7 @@ module.exports = {
             },
           });
         ws2
-          .cell(lastRow + 1, 16, lastRow + 1, 16, true)
+          .cell(lastRow, 17, lastRow, 17, true)
           .number(order.packaging)
           .style(style)
           .style({
@@ -575,7 +422,7 @@ module.exports = {
           });
 
         ws2
-          .cell(lastRow + 2, 15, lastRow + 2, 15, true)
+          .cell(lastRow + 1, 16, lastRow + 1, 16, true)
           .string(`TOTAL:`)
           .style(style)
           .style({
@@ -585,7 +432,7 @@ module.exports = {
             },
           });
         ws2
-          .cell(lastRow + 2, 16, lastRow + 2, 16, true)
+          .cell(lastRow + 1, 17, lastRow + 1, 17, true)
           .number(total + order.packaging)
           .style(style)
           .style({
@@ -632,6 +479,7 @@ module.exports = {
         <td>${quotation.command}</td>
         <td>${quotation.supportOrientation}</td>
         <td>${quotation.clothOrientation}</td>
+        <td>${quotation.environment}</td>
         <td>${quotation.reference}</td>
         <td>${quotation.observations}</td>
         <td style="text-align: right;">${quotation.amount}</td>
@@ -668,6 +516,7 @@ module.exports = {
                     <th scope="col">Comando</th>
                     <th scope="col">Orien. Soporte</th>
                     <th scope="col">Orien. Tela</th>
+                    <th scope="col">Ambiente</th>
                     <th scope="col">Referencia</th>
                     <th scope="col">Observaciones</th>
                     <th scope="col">Precio unitario</th>
@@ -676,11 +525,11 @@ module.exports = {
                 </thead>
                 ${rows}
                 <tr>
-                <td colspan="15" style="text-align: right;">Embalaje: </td>
+                <td colspan="16" style="text-align: right;">Embalaje: </td>
                 <td style="text-align: right;"><span>200</span></td>
                 </tr>
                 <tr>
-                <td colspan="15" style="text-align: right;">Total: </td>
+                <td colspan="16" style="text-align: right;">Total: </td>
                 <td style="text-align: right;"><span>${total}</span></td>
                 </tr>
                 </tbody>
@@ -732,7 +581,11 @@ module.exports = {
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
-           
+              {
+                path: `src/downloads/${order.orderNumber}.pdf`,
+                type: "application/pdf",
+                name: `${order.orderNumber}.pdf`,
+              },
               {
                 path: `src/downloads/${order.orderNumber}.xls`,
                 type: "application/octet-stream",
@@ -759,6 +612,19 @@ module.exports = {
     }
   },
   createExcel: (req, res) => { },
+  download: (req, res) => {
+    
+    const {file, orderNumber} = req.query;
+    db.Order.findOne({
+      where : {orderNumber}
+    }).then(order => {
+      if(file === 'client'){
+        return res.download(path.join(__dirname, "..", "downloads", order.fileClient));
+      }else{
+        return res.download(path.join(__dirname, "..", "downloads", order.fileAdmin)); 
+      }
+    })
+   },
   detail: (req, res) => {
     res.render("orderDetail");
   },
@@ -773,6 +639,108 @@ module.exports = {
   },
   search: (req, res) => {
     res.render("orders");
+  },
+  filter: async (req, res) => {
+    let { order, filter, keywords, active, pages } = req.query;
+    let items = [];
+    let users = [];
+    let total = 0;
+
+      try {
+        users = await db.Quotation.findAll({
+          attributes: ["userId"],
+          include: [{ association: "user" }],
+          group: ["userId"],
+          having: "",
+        });
+        if (filter === "all" || !filter) {
+          total = await db.Order.count({
+            include :[
+              {
+                association : 'quotations',
+                where: {
+                  reference: {
+                    [Op.substring]: keywords,
+                  },
+                },
+                include : [{all:true}]
+              },
+             {association : 'user'} 
+            ],
+          
+          });
+          items = await db.Order.findAll({
+            include :[
+              {
+                association : 'quotations',
+                where: {
+                  reference: {
+                    [Op.substring]: keywords,
+                  },
+                },
+                include : [{all:true}]
+              },
+              {association : 'user'} 
+            ],
+            order: [order || "id"],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            //include: { all: true },
+          });
+        } else {
+          total = await db.Order.count({
+            where: {
+              userId: +filter,
+            },
+            include :[
+              {
+                association : 'quotations',
+                where: {
+                  reference: {
+                    [Op.substring]: keywords,
+                  },
+                },
+                include : [{all:true}]
+              },
+              {association : 'user'} 
+            ],
+          });
+          items = await db.Order.findAll({
+            where: {
+              userId: +filter,
+            },
+            include :[
+              {
+                association : 'quotations',
+                where: {
+                  reference: {
+                    [Op.substring]: keywords,
+                  },
+                },
+                include : [{all:true}]
+              },
+              {association : 'user'} 
+            ],
+            order: [order || "id"],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            //include: { all: true },
+          });
+        }
+        return res.render("orders", {
+          items,
+          total,
+          active,
+          pages,
+          keywords,
+          multiplo: total % 8 === 0 ? 0 : 1,
+          moment,
+          users,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
   },
   /* apis */
 };
