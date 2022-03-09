@@ -3,6 +3,8 @@ const xl = require("excel4node");
 const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
 const { Op } = require("sequelize");
+const pdf = require("pdf-creator-node");
+const fs = require("fs");
 
 const db = require("../database/models");
 
@@ -461,7 +463,78 @@ module.exports = {
 
         //pdf vendedor
 
-      
+        const html = fs.readFileSync(
+          path.resolve(__dirname, "..", "views", "templates", "pdf.html"),
+          "utf8"
+        );
+
+        const options = {
+          format: "Legal",
+          orientation: "landscape",
+          border: "10mm",
+          header: {
+            height: "15mm",
+            contents: `<h3 style="text-align: center;">Cotizador Blancomad - Orden #${order.orderNumber} </h3>`,
+          },
+          footer: {
+            height: "8mm",
+            contents: {
+              first: `Fecha: ${moment().format("DD/MM/YY")}`,
+              default:
+                '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
+              last: "Last Page",
+            },
+          },
+        };
+
+        const quotations = order.quotations.map((quotation) => {
+          return {
+            system: quotation.system.name,
+            cloth: quotation.cloth.name,
+            color: quotation.color.name,
+            clothWidth: quotation.clothWidth,
+            heigth: quotation.heigth,
+            pattern: quotation.pattern.name,
+            chain: quotation.chain.name,
+            support: quotation.support.name,
+            command: quotation.command,
+            supportOrientation: quotation.supportOrientation,
+            clothOrientation: quotation.clothOrientation,
+            environment: quotation.environment,
+            reference: quotation.reference,
+            observations: quotation.observations,
+            amount: quotation.amount,
+            quantity: quotation.quantity,
+            total: quotation.amount * quotation.quantity,
+          };
+        });
+
+        const document = {
+          html,
+          data: {
+            quotations,
+            total,
+            observations: order.observations,
+            references,
+            date: moment().format("DD/MM/YY"),
+            name: order.user.name,
+            surname: order.user.surname,
+            orderNumber: order.orderNumber,
+          },
+          path: path.resolve(
+            __dirname,
+            "..",
+            "downloads",
+            `${order.orderNumber}.pdf`
+          ),
+          type: "",
+        };
+
+        try {
+          await pdf.create(document, options);
+        } catch (error) {
+          console.log(error);
+        }
 
         setTimeout(() => {
           let message2 = new Message({
@@ -471,7 +544,7 @@ module.exports = {
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
-             /*  {
+              {
                 path: path.resolve(
                   __dirname,
                   "..",
@@ -480,7 +553,7 @@ module.exports = {
                 ),
                 type: "application/pdf",
                 name: `${order.orderNumber}.pdf`,
-              }, */
+              },
             ],
           });
           let message = new Message({
@@ -490,7 +563,16 @@ module.exports = {
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
-            
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  `${order.orderNumber}.pdf`
+                ),
+                type: "application/pdf",
+                name: `${order.orderNumber}.pdf`,
+              },
               {
                 path: path.resolve(
                   __dirname,
