@@ -519,7 +519,7 @@ module.exports = {
           surname : order.user.surname,
           orderNumber : order.orderNumber
         },
-        path: `src/downloads/${order.orderNumber}.pdf`,
+        path: path.resolve(__dirname,'..','downloads', `${order.orderNumber}.pdf`),
         type: "",
       };
 
@@ -540,7 +540,7 @@ module.exports = {
             subject: "Orden #" + order.orderNumber,
             attachment: [
               {
-                path: `src/downloads/${order.orderNumber}.pdf`,
+                path: path.resolve(__dirname,'..','downloads', `${order.orderNumber}.pdf`),
                 type: "application/pdf",
                 name: `${order.orderNumber}.pdf`,
               },
@@ -554,7 +554,7 @@ module.exports = {
             subject: "Orden #" + order.orderNumber,
             attachment: [
               {
-                path: `src/downloads/${order.orderNumber}.pdf`,
+                path: path.resolve(__dirname,'..','downloads', `${order.orderNumber}.pdf`),
                 type: "application/pdf",
                 name: `${order.orderNumber}.pdf`,
               },
