@@ -4,12 +4,13 @@
 
   <body>
     <%- include('partials/header') %>
-      <main class="container">
-        <section class="col-12 mt-5 mx-auto">
+      <main class="px-md-3 px-lg-5">
+        <section class="row mt-5 mx-auto">
+          <div class="col-12">
           <article class="card shadow">
             <form action="/orders/send?order=<%= order.id %>" method="POST" id="form-sendOrder">
             <div class="card-header d-flex flex-column flex-md-row justify-content-between">
-                <h4 class="mb-3">Pedido</h4>
+                <h4 class="my-2">Orden | vista previa </h4>
                <!--  <button class="btn btn-outline-dark">Enviar pedido</button> -->
               </div>
             <div class="card-body">
@@ -140,6 +141,7 @@
             </div>
           </form>
           </article>
+        </div>
         </section>
       </main>
       <%- include('partials/footer') %>
