@@ -32,7 +32,6 @@
                   <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit"
                     onclick="handlerSearch()"><i class="fas fa-search"></i></button>
                 </div>
-              </form>
             </div>
 
             <div class="card-body">
@@ -49,7 +48,7 @@
                   <nav aria-label="Page navigation example">
                     <ul class="pagination pagination-sm">
 
-                      <% if (pages> 1) { %>
+                      <% if (pages > 1) { %>
                         <li class="page-item">
                           <button class="page-link text-dark" onclick="blockPagesPrevious('<%= pages %>')"
                             aria-label="Previous">
@@ -58,27 +57,27 @@
                         </li>
                         <% } %>
 
-                          <% for( let i=+pages; i <=(total / 8) + multiplo ; i++ ) { %>
-                            <% if (i <=+pages + 4 ) { %>
+                          <% for( let i = +pages; i <= (total / 8) + multiplo ; i++ ) { %>
+                            <% if (i <= +pages + 4 ) { %>
                               <li class="page-item <%= +active == i && 'active' %> "><button class="page-link"
                                   onclick="changeActive('<%=i%>')">
                                   <%= i %>
                                 </button></li>
                               <% } %>
-                                <% } %>
+                          <% } %>
 
-                                  <input id="active" type="text" value="1" hidden name="active" />
-                                  <input id="pages" type="text" value="<%= pages %>" hidden name="pages" />
-                                  <input type="text" value="" hidden name="keywords" id="keywords">
+                              <input id="active" type="text" value="1" hidden name="active" />
+                              <input id="pages" type="text" value="<%= pages %>" hidden name="pages" />
+                              <input type="text" value="" hidden name="keywords" id="keywords">
 
-                                  <% if (pages < (total / 8) - 4) { %>
-                                    <li class="page-item">
-                                      <button class="page-link text-dark" aria-label="Next"
-                                        onclick="blockPagesNext('<%= pages %>')">
-                                        <span aria-hidden="true">&raquo;</span>
-                                      </button>
-                                    </li>
-                                    <% } %>
+                          <% if (pages < (total / 8) - 4) { %>
+                            <li class="page-item">
+                              <button class="page-link text-dark" aria-label="Next"
+                                onclick="blockPagesNext('<%= pages %>')">
+                                <span aria-hidden="true">&raquo;</span>
+                              </button>
+                            </li>
+                          <% } %>
 
                     </ul>
                   </nav>
@@ -86,9 +85,10 @@
 
                 </div>
 
+              </form>
 
                 <div class="table-responsive">
-                  <% if (items.length> 0) { %>
+                  <% if (items.length > 0) { %>
                     <table class="table table-striped">
                       <thead>
                         <tr>
@@ -149,7 +149,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
-          <script src="/javascripts/tables.js"></script>
+        <script src="/javascripts/tables.js"></script>
 
   </body>
 

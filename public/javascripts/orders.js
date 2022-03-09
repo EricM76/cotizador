@@ -67,15 +67,15 @@ const goBack = (e) => {
 }
 
 
-$('search').addEventListener('keydown', (e) => {
+/* $('search').addEventListener('keydown', (e) => {
     e.key === 'Enter' && e.preventDefault()
-})
+}) */
 
 window.onload = function () {
 
     let query = new URLSearchParams(window.location.search);
 
-    $('search').value = null;
+    //$('search').value = null;
 
     if (sessionStorage.getItem('pathname') !== window.location.pathname && !query.has('keywords')) {
         sessionStorage.setItem('active', 1);

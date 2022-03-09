@@ -30,7 +30,8 @@ module.exports = {
         },
         {association : 'user'}
       ],
-      order : [['createdAt','DESC']]
+      order : [['createdAt','DESC']],
+      limit : 8
     })
     let total = db.Order.count()
     Promise.all(([users,items, total]))
@@ -551,21 +552,11 @@ module.exports = {
           having: "",
         });
         if (filter === "all" || !filter) {
-          total = await db.Order.count({
-            include :[
-              {
-                association : 'quotations',
-                where: {
-                  reference: {
-                    [Op.substring]: keywords,
-                  },
-                },
-                include : [{all:true}]
-              },
-             {association : 'user'} 
-            ],
-          
-          });
+          total = await db.Order.count();
+          console.log('====================================');
+          console.log(total);
+          console.log('====================================');
+
           items = await db.Order.findAll({
             include :[
               {
@@ -588,20 +579,7 @@ module.exports = {
           total = await db.Order.count({
             where: {
               userId: +filter,
-            },
-            include :[
-              {
-                association : 'quotations',
-                where: {
-                  reference: {
-                    [Op.substring]: keywords,
-                  },
-                },
-                include : [{all:true}]
-              },
-              {association : 'user'} 
-            ],
-          });
+            }});
           items = await db.Order.findAll({
             where: {
               userId: +filter,

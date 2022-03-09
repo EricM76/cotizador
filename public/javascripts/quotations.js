@@ -65,14 +65,16 @@ const goBack = (e) => {
 
     window.location = '/quoters'
 }
+if($('btn-generateOrder')){
+    $('btn-generateOrder').addEventListener('click', (e) => {
+        e.preventDefault();
+        //console.log(JSON.parse(localStorage.getItem('selected')));
+    
+        window.location = '/orders/add?quoters=' + localStorage.getItem('selected');
+        //localStorage.removeItem('selected')
+    })
+}
 
-$('btn-generateOrder').addEventListener('click', (e) => {
-    e.preventDefault();
-    //console.log(JSON.parse(localStorage.getItem('selected')));
-
-    window.location = '/orders/add?quoters=' + localStorage.getItem('selected');
-    //localStorage.removeItem('selected')
-})
 
 document.querySelector('.table').addEventListener('click', ({ target }) => {
 
