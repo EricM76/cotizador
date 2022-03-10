@@ -537,23 +537,174 @@ module.exports = {
             },
             {
               text: quotation.amount,
+              alignment : "right"
             },
             {
               text: quotation.amount * quotation.quantity,
+              alignment : "right"
             },
           ]);
         });
 
-        console.log(body);
+        body.push([
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "Embalaje:",
+            alignment : "right"
+          },
+          {
+            text:  "200",
+            alignment : "right"
+          },
+        ]);
+        body.push([
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "",
+          },
+          {
+            text: "Total:",
+            alignment : "right"
+          },
+          {
+            text:  total,
+            alignment : "right"
+          },
+        ]);
 
         const docDefinition = {
           defaultStyle: {
             fontSize: 10,
           },
+          styles: {
+            header: {
+              fontSize: 30,
+              bold: true,
+              alignment: 'center'
+            },
+            anotherStyle: {
+              italics: true,
+              alignment: 'right'
+            }
+          },
+          header: {
+            columns: [
+              {
+                image: path.resolve(__dirname, '..','assets','images','logo-blancomad2.jpg'),
+                width: 100,
+                alignment :'center',
+
+              },
+              {
+                text : `Orden #${order.orderNumber}`, 
+                alignment: 'right',
+                fontSize: 24,
+              },
+            ],
+            margin : [20,30]
+
+          },
+          footer: {
+            columns: [
+              `Observaciones: ${order.observations}`,
+              { 
+                text: `Fecha: ${moment().format("DD/MM/YY")}`, 
+                alignment: 'right' 
+              }
+            ],
+            margin : [30,30],
+            fontSize: 16,
+          },
           pageSize: "LEGAL",
           pageOrientation: "landscape",
           pageMargins: [10, 60, 10, 60],
           content: [
+           
             {
               layout: "lightHorizontalLines", // optional
               table: {
@@ -580,7 +731,10 @@ module.exports = {
                   "auto",
                 ],
                 body,
+
               },
+              margin : [20,50]
+
             },
           ],
         };
@@ -610,7 +764,7 @@ module.exports = {
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
-              /*  {
+               {
                 path: path.resolve(
                   __dirname,
                   "..",
@@ -619,7 +773,7 @@ module.exports = {
                 ),
                 type: "application/pdf",
                 name: `${order.orderNumber}.pdf`,
-              }, */
+              },
             ],
           });
           let message = new Message({
@@ -629,6 +783,16 @@ module.exports = {
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  `${order.orderNumber}.pdf`
+                ),
+                type: "application/pdf",
+                name: `${order.orderNumber}.pdf`,
+              },
               {
                 path: path.resolve(
                   __dirname,
