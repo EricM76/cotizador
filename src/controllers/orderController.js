@@ -4,11 +4,10 @@ const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
 const { Op } = require("sequelize");
 
-const fonts = require('../fonts/Roboto')
-const PdfPrinter = require('pdfmake');
+const fonts = require("../fonts/Roboto");
+const PdfPrinter = require("pdfmake");
 const printer = new PdfPrinter(fonts);
-const fs = require('fs');
-
+const fs = require("fs");
 
 const db = require("../database/models");
 
@@ -466,18 +465,142 @@ module.exports = {
         wbAdmin.write(`src/downloads/${fileAdmin}`);
 
         //pdf vendedor
+
+        const body = [
+          [
+            "Cant",
+            "Sistema",
+            "Tela",
+            "Color",
+            "Ancho",
+            "Alto",
+            "Modelo",
+            "Cadena",
+            "Soporte",
+            "Comando",
+            "Orien. Soporte",
+            "Orien. Tela",
+            "Ambiente",
+            "Referencia",
+            "Observaciones",
+            "Precio unitario",
+            "Total",
+          ],
+        ];
+
+        order.quotations.forEach((quotation) => {
+          body.push([
+            {
+              text: quotation.quantity,
+            },
+            {
+              text: quotation.system.name,
+            },
+            {
+              text: quotation.cloth.name,
+            },
+            {
+              text: quotation.color.name,
+            },
+            {
+              text: quotation.clothWidth,
+            },
+            {
+              text: quotation.heigth,
+            },
+            {
+              text: quotation.pattern.name,
+            },
+            {
+              text: quotation.chain.name,
+            },
+            {
+              text: quotation.support.name,
+            },
+            {
+              text: quotation.command,
+            },
+            {
+              text: quotation.supportOrientation,
+            },
+            {
+              text: quotation.clothOrientation,
+            },
+            {
+              text: quotation.environment,
+            },
+            {
+              text: quotation.reference,
+            },
+            {
+              text: quotation.observations,
+            },
+            {
+              text: quotation.amount,
+            },
+            {
+              text: quotation.amount * quotation.quantity,
+            },
+          ]);
+        });
+
+        console.log(body);
+
         const docDefinition = {
-          // ...
+          defaultStyle: {
+            fontSize: 10,
+          },
+          pageSize: "LEGAL",
+          pageOrientation: "landscape",
+          pageMargins: [10, 60, 10, 60],
+          content: [
+            {
+              layout: "lightHorizontalLines", // optional
+              table: {
+                // headers are automatically repeated if the table spans over multiple pages
+                // you can declare how many rows should be treated as headers
+                headerRows: 1,
+                widths:   [
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                  "auto",
+                ],
+                body,
+              },
+            },
+          ],
         };
-        
+
         const options = {
           // ...
-        }
-        
-        const pdfDoc = printer.createPdfKitDocument(docDefinition, options);
-        pdfDoc.pipe(fs.createWriteStream(path.resolve(__dirname,'..','downloads',`${order.orderNumber}.pdf`)));
+        };
+
+        const pdfDoc = printer.createPdfKitDocument(docDefinition);
+        pdfDoc.pipe(
+          fs.createWriteStream(
+            path.resolve(
+              __dirname,
+              "..",
+              "downloads",
+              `${order.orderNumber}.pdf`
+            )
+          )
+        );
         pdfDoc.end();
-      
 
         setTimeout(() => {
           let message2 = new Message({
@@ -487,7 +610,7 @@ module.exports = {
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
-             /*  {
+              /*  {
                 path: path.resolve(
                   __dirname,
                   "..",
@@ -506,7 +629,6 @@ module.exports = {
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
-            
               {
                 path: path.resolve(
                   __dirname,
