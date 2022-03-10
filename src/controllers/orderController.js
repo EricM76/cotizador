@@ -683,7 +683,7 @@ module.exports = {
               {
                 text : `Orden #${order.orderNumber}`, 
                 alignment: 'right',
-                fontSize: 24,
+                fontSize: 20,
               },
             ],
             margin : [20,30]
