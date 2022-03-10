@@ -4,6 +4,12 @@ const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
 const { Op } = require("sequelize");
 
+const fonts = require('../fonts/Roboto')
+const PdfPrinter = require('pdfmake');
+const printer = new PdfPrinter(fonts);
+const fs = require('fs');
+
+
 const db = require("../database/models");
 
 const client = new SMTPClient({
@@ -460,7 +466,17 @@ module.exports = {
         wbAdmin.write(`src/downloads/${fileAdmin}`);
 
         //pdf vendedor
-
+        const docDefinition = {
+          // ...
+        };
+        
+        const options = {
+          // ...
+        }
+        
+        const pdfDoc = printer.createPdfKitDocument(docDefinition, options);
+        pdfDoc.pipe(fs.createWriteStream(path.resolve(__dirname,'..','downloads',`${order.orderNumber}.pdf`)));
+        pdfDoc.end();
       
 
         setTimeout(() => {
