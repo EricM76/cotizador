@@ -89,13 +89,12 @@
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                            <th scope="col"></th>
+                            <th scope="col" class="text-center">Info</th>
                             <th scope="col">Fecha</th>
                             <th scope="col">Orden</th>
                             <th scope="col">Vendedor</th>
                             <th scope="col">Usuario</th>
                             <th scope="col">Monto</th>
-                            <th scope="col">Enviado</th>
                             <th scope="col">Archivos</th>
                             <th scope="col">Cotizaciones</th>
                         </tr>
@@ -103,8 +102,62 @@
                       <tbody>
                         <% items.forEach((item)=> { %>
                           <tr>
-                            <td class="align-middle">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#orderInfo"  id="btn-createQuotation" class="btn btn-sm btn-primary">más info</button>
+                            <td class="align-middle text-center">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#orderInfo<%= item.id %>"  id="btn-createQuotation" class="btn btn-sm btn-primary"><i class="fas fa-info"></i></button>
+                                <div class="modal fade" id="orderInfo<%= item.id %>" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                      <div class="modal-body">
+                                        <main class="container">
+                                          <section class="col-12 mt-5 mx-auto">
+                                            <article class="card shadow">
+                                              <div class="card-header text-start">
+                                                 INFORMACIÓN
+                                              </div>
+                                              <div class="card-body">
+                                                <div class="row">
+                                                  <div class="col-12 col-md-6">
+                                                    <ul class="list-group list-group-flush">
+                                                      <li class="list-group-item"><b>Vendedor: </b> <%= item.user.name %> <%= item.user.surname %></li>
+                                                      <li class="list-group-item"><b>Nombre de usuario: </b> <%= item.user.username %> </li>
+                                                      <li class="list-group-item"><b>Orden #</b> <%= item.orderNumber %> </li>
+                                                    
+                                                      <li class="list-group-item"><b>Email enviado: </b> <%= item.send ? 'Sí' : 'No' %> </li>
+                                                    
+                                                    </ul>
+                                                  </div>
+                                                  <div class="col-12 col-md-6">
+                                                    <ul class="list-group list-group-flush">
+                                                      <li class="list-group-item"><b>Orden #</b> <%= item.orderNumber %> </li>
+                                                      <li class="list-group-item"><b>Fecha y hora: </b> <%= moment(item.createdAt).format('DD/MM/YY HH:MM') %></li>
+                                                      <li class="list-group-item"><b>Monto total: </b>$ <%= toThousand(item.quotations.map(
+                                                        (quotation) => quotation.amount * quotation.quantity
+                                                      ).reduce((acum, num) => acum + num)) %></li>
+                                                      <li class="list-group-item"><b>Referencias: </b> <%= [...new Set(item.quotations.map((quotation) => quotation.reference))].join(' - ').split(-3)  %> </li>
+                                                    </ul>
+                                                  </div>
+                                                  <div class="col-12">
+                                                    <hr>
+                                                    <ul class="list-group list-group-flush">
+                                                      <li class="list-group-item"><b>Observaciones: </b> <%= item.observations %></li>
+                                                    </ul>
+                                                  </div>
+                                              </div>
+                                              <hr>
+                                              <div class="card-footer text-end">
+                                                <a type="button" class="btn btn-primary py-1" data-bs-dismiss="modal">Cerrar</a>
+                                              </div>
+
+                                                    </div>
+                                                    
+                                              </div>
+                                            </article>
+                                          </section>
+                                        </main>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                             </td>
                             <td class="align-middle">
                                 <%= moment(item.date).format('DD-MM-YY') %>
@@ -122,9 +175,6 @@
                               <td class="align-middle">
                                 <%= item.total %>
                               </td>
-                              <td class="align-middle">
-                                <%= item.send %>
-                            </td>
                             <td class="align-middle">
                                 <a href="/orders/download?file=client&orderNumber=<%= item.orderNumber %>" class="btn btn-sm btn-danger me-1"><i class="fas fa-file-pdf"></i></a>
                                 <a href="/orders/download?file=admin&orderNumber=<%= item.orderNumber %>" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i></a>
@@ -138,15 +188,18 @@
                                   
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#quoterInfo<%= quotation.id %>"  id="btn-createQuotation" class="btn btn-sm btn-primary" style="width: 30px;"><i class="fas fa-info"></i></button>
                                     <span>
-                                        <%= moment(quotation.date).format('DD/MM') %> <b>$<%= quotation.amount * quotation.quantity %></b> - <%= quotation.reference %>
+                                        <%= moment(quotation.date).format('DD/MM') %> - <%= quotation.reference %>
                                     </span>
                                     <div class="modal fade" id="quoterInfo<%= quotation.id %>" tabindex="-1" aria-labelledby="quoterModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">
                                           <div class="modal-content">
                                             <div class="modal-body">
-                                              <main class="container">
+                                              <main class="">
                                                 <section class="col-12 mt-5 mx-auto">
                                                   <article class="card shadow">
+                                                    <div class="card-header">
+                                                      INFORMACIÓN
+                                                    </div>
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col-4 col-md-2 col-lg-2 mb-3">
@@ -245,7 +298,10 @@
                                                               </div>
                                                             
                                                             </div>
-                                                            <a type="button" class="btn btn-primary py-3" data-bs-dismiss="modal">VOLVER</a>
+                                                            <div class="card-footer text-end">
+                                                              <a type="button" class="btn btn-primary py-1" data-bs-dismiss="modal">Cerrar</a>
+
+                                                            </div>
 
                                                           </div>
                                                           

@@ -50,6 +50,7 @@ module.exports = {
           keywords: "",
           multiplo: total % 8 === 0 ? 0 : 1,
           moment,
+          toThousand : (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
         });
       })
       .catch((error) => console.log(error));
@@ -926,6 +927,7 @@ module.exports = {
         multiplo: total % 8 === 0 ? 0 : 1,
         moment,
         users,
+        toThousand : (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
       });
     } catch (error) {
       console.log(error);
