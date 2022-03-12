@@ -18,8 +18,8 @@ module.exports = {
             rolId: 1
          },
          {
-            name: "test",
-            surname: "example",
+            name: "Control",
+            surname: "Blancomad",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
             enabled: true,
@@ -30,8 +30,8 @@ module.exports = {
             rolId: 2
          },
          {
-            name: "test",
-            surname: "example",
+            name: "Medidor",
+            surname: "Blancomad",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
             enabled: true,
@@ -42,7 +42,7 @@ module.exports = {
             rolId: 3
          },
          {
-            name: "test",
+            name: "Test 0%",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
@@ -54,7 +54,7 @@ module.exports = {
             rolId: 4
          },
          {
-            name: "test",
+            name: "Test -5%",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
@@ -66,19 +66,19 @@ module.exports = {
             rolId: 5
          },
          {
-            name: "test",
+            name: "Test -10%",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
             enabled: true,
             createdAt: new Date,
             phone: '11 3401-6900',
-            username: "test",
+            username: "test10",
             password: bcrypt.hashSync('123', 10),
             rolId: 6
          },
          {
-            name: "test",
+            name: "Test -15%",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
@@ -90,7 +90,7 @@ module.exports = {
             rolId: 7
          },
          {
-            name: "test",
+            name: "Test -20%",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
@@ -102,7 +102,7 @@ module.exports = {
             rolId: 8
          },
          {
-            name: "test",
+            name: "Test +80%",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
@@ -114,7 +114,7 @@ module.exports = {
             rolId: 9
          },
          {
-            name: "test",
+            name: "Test Tarjeta",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
@@ -126,7 +126,7 @@ module.exports = {
             rolId: 10
          },
          {
-            name: "test",
+            name: "Test +5%",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,
@@ -138,7 +138,7 @@ module.exports = {
             rolId: 11
          },
          {
-            name: "test",
+            name: "Test Instagram",
             surname: "example",
             email: "menaericdaniel@gmail.com",
             idLocal: 9999,

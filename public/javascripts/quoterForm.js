@@ -277,7 +277,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
                     width: $('width').value.trim(),
                     heigth: $('heigth').value.trim(),
                     reference: $('reference').value.trim(),
-                    rol : $('rol').value
+                    rol : $('rol') ? $('rol').value : 1
                 })
             });
             const result = await response.json();
