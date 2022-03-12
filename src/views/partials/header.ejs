@@ -1,68 +1,215 @@
 <header>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand border rounded bg-white px-3 px-md-4 pt-md-3 pt-sm-3 pb-2 pb-md-3" href="/">
-                <img class="d-inline-block align-top mt-3" src="/images/logo-blancomad2.svg" alt="imagen">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a
+        class="navbar-brand border rounded bg-white px-3 px-md-4 pt-md-3 pt-sm-3 pb-2 pb-md-3"
+        href="/"
+      >
+        <img
+          class="d-inline-block align-top mt-3"
+          src="/images/logo-blancomad2.svg"
+          alt="imagen"
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="collapse navbar-collapse mt-5 mt-lg-4"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="/quotations/add"
+              >Cotizador</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/quoters">Cotizaciones</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Información
             </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse mt-5 mt-lg-4" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/quotations/add">Cotizador</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="/documents/catalogo.pdf"
+                  target="_blank"
+                  >Catálogo</a
+                >
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/quoters">Cotizaciones</a>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="/documents/manual.pdf"
+                  target="_blank"
+                  >Manual de instalación</a
+                >
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Información
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="/documents/catalogo.pdf" target="_blank">Catálogo</a></li>
-                  <li><a class="dropdown-item" href="/documents/manual.pdf" target="_blank">Manual de instalación</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="/information/backout" onclick="checkPath(event,'/information/backout')">Backout</a></li>
-                  <li><a class="dropdown-item" href="/information/cloth-width" onclick="checkPath(event,'/information/cloth-width')">Ancho de telas</a></li>
-                </ul>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="/information/backout"
+                  onclick="checkPath(event,'/information/backout')"
+                  >Backout</a
+                >
               </li>
-              <% if (locals.userLogin.rol === 1) { %>
-               
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  ABMs
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="/chains">Cadenas</a></li>
-                  <li><a class="dropdown-item" href="/colors">Colores</a></li>
-                  <li><a class="dropdown-item" href="/patterns">Modelos</a></li>
-                  <li><a class="dropdown-item" href="/rols">Roles</a></li>
-                  <li><a class="dropdown-item" href="/systems">Sistemas</a></li>
-                  <li><a class="dropdown-item" href="/supports">Soportes</a></li>
-                  <li><a class="dropdown-item" href="/cloths">Telas</a></li>
-                </ul>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="/information/cloth-width"
+                  onclick="checkPath(event,'/information/cloth-width')"
+                  >Ancho de telas</a
+                >
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Precios</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/users">Usuarios</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/orders">Presupuestos</a>
-              </li>
-              <% } %>
             </ul>
-         
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <% if (locals.userLogin) { %>
-                <li class="nav-item">
-                  <a class="nav-link" href="/users/logout">Cerrar sesión</a>
-                </li>
-              <% } %>
-              </ul>
-          </div>
-        </div>
-      </nav>
+          </li>
+          <% if (locals.userLogin.rol === 1) { %>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              ABMs
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="/chains">Cadenas</a></li>
+              <li><a class="dropdown-item" href="/colors">Colores</a></li>
+              <li><a class="dropdown-item" href="/patterns">Modelos</a></li>
+              <li><a class="dropdown-item" href="/rols">Roles</a></li>
+              <li><a class="dropdown-item" href="/systems">Sistemas</a></li>
+              <li><a class="dropdown-item" href="/supports">Soportes</a></li>
+              <li><a class="dropdown-item" href="/cloths">Telas</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Precios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/users">Usuarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/orders">Presupuestos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="updatePackaging(event)">
+              Precio embalaje
+            </a>
+          </li>
+
+          <% } %>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <% if (locals.userLogin) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/users/logout" onclick="cleanStorage()">Cerrar sesión</a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </header>
+
+<script>
+  const getPackaging = async () => {
+    try {
+      let response = await fetch("/information/get-packaging");
+      let result = await response.json();
+      sessionStorage.setItem("packaging", JSON.stringify(result));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (!sessionStorage.getItem("packaging")) {
+    getPackaging();
+  }
+
+  const updatePackaging = async (e) => {
+    e.preventDefault()
+    let packaging = JSON.parse(sessionStorage.getItem("packaging"));
+    try {
+      Swal.fire({
+        title: "Actualizar valor del embalaje",
+        input: "number",
+        inputValue: packaging,
+        inputAttributes: {
+          autocapitalize: "off",
+        },
+        showCancelButton: true,
+        confirmButtonText: "Guardar",
+        confirmButtonColor : "#8B0000",
+        preConfirm: (packaging) => {
+          return fetch("/information/update-packaging", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              packaging,
+            }),
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        },
+      }).then((result) => {
+        console.log(result);
+        if (result.isConfirmed) {
+          sessionStorage.setItem(
+            "packaging",
+            JSON.stringify(result.value.packaging)
+          );
+          Swal.fire({
+            icon: "success",
+            title: "Embalaje actualizado",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const cleanStorage = () => {
+    sessionStorage.removeItem('packaging');
+    sessionStorage.removeItem('pages');
+    sessionStorage.removeItem('active');
+    sessionStorage.removeItem('pathname');
+    sessionStorage.removeItem('orderInProcess');
+    localStorage.removeItem('selected');
+    localStorage.removeItem('dataOrder');
+  }
+</script>

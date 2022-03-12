@@ -1,0 +1,73 @@
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Embalaje</h5>
+        <button
+          id="btn-closeModal-formUpdatePackaging"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-updatePackaging" novalidate class="needs-validation">
+          <div class="d-flex align-items-center justify-content-around">
+            <div class="input-group me-1">
+              <span class="input-group-text">$</span>
+              <input
+                id="input-packaging"
+                type="number"
+                min="0"
+                class="form-control"
+                value=""
+                required
+              />
+            </div>
+            <button
+              type="button"
+              class="btn btn-secondary me-1"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  
+  /*   document
+    .getElementById("form-updatePackaging")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        let response = await fetch("/information/update-packaging", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            packaging: document.getElementById("input-packaging").value,
+          }),
+        });
+        let result = await response.json();
+        console.log(result);
+        document.getElementById('btn-closeModal-formUpdatePackaging').click();
+      } catch (error) {
+        console.error(error);
+      }
+    }); */
+</script>

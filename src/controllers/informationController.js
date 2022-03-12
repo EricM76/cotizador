@@ -1,5 +1,9 @@
+const fs = require('fs');
+const path = require("path");
+
 const db = require("../database/models");
 const { Op } = require("sequelize");
+
 module.exports = {
   backout: (req, res) => {
     res.render("messagePremiumStandard");
@@ -24,4 +28,18 @@ module.exports = {
       total: items.length,
     });
   },
+  updatePackaging : (req,res) => {
+    req.session.packaging = +req.body.packaging;
+    fs.writeFileSync(path.resolve(__dirname,'..','data','packaging.json'),JSON.stringify(req.session.packaging));
+    return res.json({
+      packaging : req.session.packaging
+    })
+  },
+  getPackaging : (req,res) => {
+    req.session.packaging = JSON.parse(fs.readFileSync(path.resolve(__dirname,'..','data','packaging.json')));
+    console.log('====================================');
+    console.log(req.session.packaging);
+    console.log('====================================');
+    return res.json(req.session.packaging);
+  }
 };

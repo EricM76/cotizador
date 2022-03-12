@@ -103,7 +103,7 @@ module.exports = {
       let order = await db.Order.create({
         userId: req.session.userLogin.id,
         send: false,
-        packaging: 200,
+        packaging: fs.readFileSync(path.resolve(__dirname,'..','data','packaging.json')),
       });
 
       for (let i = 0; i < ids.length; i++) {
@@ -598,7 +598,7 @@ module.exports = {
             alignment : "right"
           },
           {
-            text:  "200",
+            text:  req.session.packaging,
             alignment : "right"
           },
         ]);

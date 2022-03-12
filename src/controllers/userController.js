@@ -306,6 +306,9 @@ module.exports = {
                     rol: +user.rolId,
                     coefficient : +user.rol.coefficient
                 }
+
+                req.session.packaging = require('../data/packaging.json')
+
                 return res.redirect('/quoters/add')
 
             } catch (error) {
@@ -318,7 +321,7 @@ module.exports = {
         }
     },
     logout: (req, res) => {
-        req.session.destroy()
+        req.session.destroy();
         res.redirect('/users/login')
     },
     /* APIS */

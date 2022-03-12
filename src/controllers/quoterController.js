@@ -68,6 +68,7 @@ module.exports = {
     }
   },
   add: (req, res) => {
+
     db.System.findAll({
       where: {
         visible: true,

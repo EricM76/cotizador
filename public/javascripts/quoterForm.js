@@ -14,8 +14,10 @@ sessionStorage.getItem('observations') && sessionStorage.removeItem('observation
 localStorage.getItem('selected') && localStorage.removeItem('selected');
 localStorage.getItem('dataOrder') && localStorage.removeItem('dataOrder');
 
+
 window.addEventListener('load', async () => {
 
+  
     try {
 
         let response = await fetch('/systems/api/get-all');

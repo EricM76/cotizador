@@ -43,7 +43,7 @@ app.use(session({
   saveUninitialized: true
 }))
 app.use(methodOverride('_method'));
-app.use(localsUserCheck)
+app.use(localsUserCheck);
 
 app.use(express.static(path.join(__dirname, '..','public')));
 
