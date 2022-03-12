@@ -69,15 +69,18 @@ module.exports = {
   },
   add: (req, res) => {
 
-    db.System.findAll({
+    let systems = db.System.findAll({
       where: {
         visible: true,
       },
       order: ["name"],
     })
-      .then((systems) => {
+    let rols = db.Rol.findAll()
+    Promise.all([systems,rols])
+      .then(([systems,rols]) => {
         return res.render("quoter", {
           systems,
+          rols
         });
       })
       .catch((error) => console.log(error));
@@ -389,34 +392,44 @@ module.exports = {
       console.log(data, req.session.userLogin.coefficient,req.session.userLogin.rol, req.session.userLogin.coefficient !== 0 ? data + data * req.session.userLogin.coefficient : data);
       console.log('====================================');
 
-      data = req.session.userLogin.coefficient !== 0 ? data + data * req.session.userLogin.coefficient : data;      
+      data = req.session.userLogin.coefficient !== 0 ? data + data * req.session.userLogin.coefficient : data;
+      
+      if(req.session.userLogin.rol === 2){
+        let rolSelected = await db.Rol.findByPk(req.body.rol);
+        console.log('====================================');
+        console.log(rolSelected);
+        console.log('====================================');
+        data = data + data * +rolSelected.coefficient;
+        console.log('====================================');
+        console.log(data);
+        console.log('====================================');
+      }
 
       if (data) {
-        /* 
-                const { system, cloth, color, support, pattern, chain, width,heigth,reference} = req.body;
-                */
-        const quotation = await db.Quotation.create({
-          clothWidth: +width,
-          heigth: +heigth,
-          amount: data,
-          date: new Date(),
-          reference,
-          systemId: +system,
-          clothId: +cloth,
-          colorId: +color,
-          supportId: +support,
-          patternId: +pattern,
-          chainId: +chain,
-          userId: req.session.userLogin.id || 85,
-        });
-        if (quotation) {
-          console.log(quotation.id);
+       
+        if(req.session.userLogin.rol > 2){
+          await db.Quotation.create({
+            clothWidth: +width,
+            heigth: +heigth,
+            amount: data,
+            date: new Date(),
+            reference,
+            systemId: +system,
+            clothId: +cloth,
+            colorId: +color,
+            supportId: +support,
+            patternId: +pattern,
+            chainId: +chain,
+            userId: req.session.userLogin.id,
+          });
         }
+
         return res.status(200).json({
           ok: true,
           data,
-          id : quotation.id
+          //id : quotation.id
         });
+
       }else{
         return res.status(200).json({
           ok : false

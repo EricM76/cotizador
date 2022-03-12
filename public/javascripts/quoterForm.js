@@ -252,7 +252,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
         $('width').value = "none"
     }
 
-    for (let i = 0; i < elements.length - 1; i++) {
+    for (let i = 0; i < elements.length - 2; i++) {
 
         if (!elements[i].value) {
             error = true;
@@ -276,7 +276,8 @@ $('form-quoter').addEventListener('submit', async (e) => {
                     chain: $('chains').value,
                     width: $('width').value.trim(),
                     heigth: $('heigth').value.trim(),
-                    reference: $('reference').value.trim()
+                    reference: $('reference').value.trim(),
+                    rol : $('rol').value
                 })
             });
             const result = await response.json();

@@ -35,6 +35,8 @@
               >Cotizador</a
             >
           </li>
+          <% if (locals.userLogin.rol !== 2) { %>
+
           <li class="nav-item">
             <a class="nav-link" href="/quoters">Cotizaciones</a>
           </li>
@@ -85,6 +87,7 @@
               </li>
             </ul>
           </li>
+          <% } %>
           <% if (locals.userLogin.rol === 1) { %>
 
           <li class="nav-item dropdown">

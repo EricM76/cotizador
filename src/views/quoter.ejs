@@ -89,20 +89,32 @@
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
-                      <div class="alert alert-warning">
-                        Todos los campos son obligatorios.
+                      <% if (userLogin.rol !== 2) { %>
+                        <div class="alert alert-warning" >
+                          Todos los campos son obligatorios.
+                        </div>
+                      <% }else{ %>
+                      <div class="form-floating ">
+                        <select class="form-select" id="rol" name="rol">
+                          <% for( let i = 3; i < rols.length; i++ ) { %>
+                            <option value="<%= rols[i].id %>"><%= rols[i].name %></option>
+                          <% } %>
+                        </select>
+                        <label for="systems">Rol</label>
                       </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-4">
+                      <% } %>
+
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
                       <div class="alert alert-success text-center py-2" id="amount-box" hidden>
                        <p id="amount"></p>
                       </div>
                      
-                  </div>
-                  <div class="col-12 col-md-12 col-lg-4 mb-3">
+                   </div>
+                    <div class="col-12 col-md-12 col-lg-4 mb-3">
                    
                     <button class="btn buttons__btn-custom w-100 py-3 ">COTIZAR CORTINA</button>
-                </div>
+                  </div>
                     <div class="col-12 mb-3">
                         <div class="alert alert-info">
                           <h6><i class="fas fa-info-circle"></i> Aclaraciones</h6>
