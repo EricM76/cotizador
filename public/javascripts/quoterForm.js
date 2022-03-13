@@ -288,7 +288,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
                 $('amount-box').removeAttribute('hidden', false)
                 $('amount').classList.remove('h6')
                 $('amount').classList.add('h4')
-                $('amount').innerHTML = `Monto: $ ${result.data}`;
+                $('amount').innerHTML = result.rol !== 3 ? `Monto: $ ${result.data}` : 'Producto encontrado';
             } else {
                 $('amount-box').classList.remove('alert-success')
                 $('amount-box').classList.add('alert-danger')

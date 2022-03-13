@@ -120,6 +120,7 @@
                           <label for="environment">Ambiente</label>
                         </div>
                       </div>
+                      <% if (userLogin.rol !== 3) { %>
                       <div class="col-6 col-md-6 col-lg-2 mb-3">
                         <div class="form-floating mb-3">
                           <input type="text" class="form-control" id="reference" placeholder="referencia" value="<%= reference %>" name="reference" readonly>
@@ -127,15 +128,23 @@
                         </div>
                       </div>
                       <div class="col-6 col-md-6 col-lg-2 mb-3">
-                        <div class="d-flex align-items-center">
-                          <span class="me-2">$</span>
-                          <div class="form-floating mb-3 flex-grow-1">
-                            <input type="text" class="form-control" id="amount" placeholder="monto" value="<%= amount %>" name="amount" readonly>
-                            <label for="amount">Monto</label>
+                          <div class="d-flex align-items-center">
+                            <span class="me-2">$</span>
+                            <div class="form-floating mb-3 flex-grow-1">
+                              <input type="text" class="form-control" id="amount" placeholder="monto" value="<%= amount %>" name="amount" readonly>
+                              <label for="amount">Monto</label>
+                            </div>
+                          </div>
+                      </div>
+                      <% }else{ %>
+                        <div class="col-6 col-md-6 col-lg-4 mb-3">
+                          <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="reference" placeholder="referencia" value="<%= reference %>" name="reference" readonly>
+                            <label for="reference">Referencia</label>
                           </div>
                         </div>
-                      
-                      </div>
+                      <% } %>
+
                       <div class="col-12 mb-3">
                         <div class="form-floating mb-3">
                           <input type="text" class="form-control" id="observations" name="observations">

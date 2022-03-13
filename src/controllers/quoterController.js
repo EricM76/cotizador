@@ -427,7 +427,7 @@ module.exports = {
         return res.status(200).json({
           ok: true,
           data,
-          //id : quotation.id
+          rol : req.session.userLogin.rol
         });
 
       }else{

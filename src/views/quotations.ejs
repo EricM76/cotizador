@@ -106,7 +106,9 @@
                           <th scope="col">Soporte</th>
                           <th scope="col">Modelo</th>
                           <th scope="col">Cadena</th>
-                          <th scope="col">Monto</th>
+                          <% if (locals.userLogin.rol !== 3) { %>
+                            <th scope="col">Monto</th>
+                          <% } %>
                           <% if (locals.userLogin.rol !== 1) { %>
                             <th scope="col"></th>
                           <% } %>
@@ -151,9 +153,11 @@
                             <td>
                               <%= item.chain.name %>
                             </td>
+                            <% if (locals.userLogin.rol !== 3) { %>
                             <td>
                               <%= item.amount %>
                             </td>
+                            <% } %>
                             <% if (locals.userLogin.rol !== 1) { %>
                               <td>
                               <div class="form-check">
