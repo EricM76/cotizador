@@ -200,8 +200,9 @@ $('btn-apply').addEventListener('blur',() => {
 });
 
 $('form-updatePriceGlobal').addEventListener('submit', (e) => {
-    e.preventDefault();
+  
+  if(!e.target.classList.contains('was-validated')){
     $('btn-apply').disabled = true;
-    e.target.submit();
+  }
 })
 

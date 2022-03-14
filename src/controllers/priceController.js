@@ -64,95 +64,103 @@ module.exports = {
 
     try {
       let totalPrices = await db.Price.count();
-
-      for (let i = 1; i <= totalPrices; i++) {
-        let { amount } = await db.Price.findByPk(i, {
+      const Promises = [];
+      for (let id = 1; id <= totalPrices; id++) {
+        let { amount } = await db.Price.findByPk(id, {
           attributes: ["amount"],
         });
-        await db.Price.update(
-          {
-            amount: amount + amount * coefficient,
-          },
-          {
-            where: { id: i },
-          }
+
+        const newPromise = await db.Price.update(
+          { amount: amount + amount * coefficient },
+          { where: { 
+            id,
+            visible : true 
+          } }
         );
+        Promises.push(newPromise);
       }
 
       let totalCloths = await db.Cloth.count();
-      for (let i = 1; i <= totalCloths; i++) {
-        let { price } = await db.Cloth.findByPk(i, {
+      for (let id = 1; id <= totalCloths; id++) {
+        let { price } = await db.Cloth.findByPk(id, {
           attributes: ["price"],
         });
-        await db.Cloth.update(
-          {
-            price: price + price * coefficient,
-          },
-          {
-            where: { id: i },
-          }
+
+        const newPromise = await db.Cloth.update(
+          { price: price + price * coefficient },
+          { where: { 
+            id,
+            visible : true 
+          } }
         );
-      }
+        Promises.push(newPromise);
+      };
 
       let totalChains = await db.Chain.count();
-      for (let i = 1; i <= totalChains; i++) {
-        let { price } = await db.Chain.findByPk(i, {
+      for (let id = 1; id <= totalChains; id++) {
+        let { price } = await db.Chain.findByPk(id, {
           attributes: ["price"],
         });
-        await db.Chain.update(
-          {
-            price: price + price * coefficient,
-          },
-          {
-            where: { id: i },
-          }
+
+        const newPromise = await db.Chain.update(
+          { price: price + price * coefficient },
+          { where: { 
+            id,
+            visible : true 
+          } }
         );
-      }
+        Promises.push(newPromise);
+      };
 
       let totalPatterns = await db.Pattern.count();
-      for (let i = 1; i <= totalPatterns; i++) {
-        let { price } = await db.Pattern.findByPk(i, {
+      for (let id = 1; id <= totalPatterns; id++) {
+        let { price } = await db.Pattern.findByPk(id, {
           attributes: ["price"],
         });
-        await db.Pattern.update(
-          {
-            price: price + price * coefficient,
-          },
-          {
-            where: { id: i },
-          }
+
+        const newPromise = await db.Pattern.update(
+          { price: price + price * coefficient },
+          { where: { 
+            id,
+            visible : true 
+          } }
         );
-      }
+        Promises.push(newPromise);
+      };
 
       let totalSupports = await db.Support.count();
-      for (let i = 1; i <= totalSupports; i++) {
-        let { price } = await db.Support.findByPk(i, {
+      for (let id = 1; id <= totalSupports; id++) {
+        let { price } = await db.Support.findByPk(id, {
           attributes: ["price"],
         });
-        await db.Support.update(
-          {
-            price: price + price * coefficient,
-          },
-          {
-            where: { id: i },
-          }
+
+        const newPromise = await db.Support.update(
+          { price: price + price * coefficient },
+          { where: { 
+            id,
+            visible : true 
+          } }
         );
-      }
+        Promises.push(newPromise);
+      };
 
       let totalSystems = await db.System.count();
-      for (let i = 1; i <= totalSystems; i++) {
-        let { price } = await db.System.findByPk(i, {
+      for (let id = 1; id <= totalSystems; id++) {
+        let { price } = await db.System.findByPk(id, {
           attributes: ["price"],
         });
-        await db.System.update(
-          {
-            price: price + price * coefficient,
-          },
-          {
-            where: { id: i },
-          }
+
+        const newPromise = await db.System.update(
+          { price: price + price * coefficient },
+          { where: { 
+            id,
+            visible : true 
+          } }
         );
-      }
+        Promises.push(newPromise);
+      };
+
+      await Promise.all(Promises);
 
     } catch (error) {
       console.log(error);
