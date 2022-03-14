@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas | Precios" }) %>
+
+  <body>
+    <%- include('partials/header') %>
+      <main class="container">
+        <section class="col-12 col-md-8 col-lg-5 mt-5 mt-lg-4 mx-auto">
+          <article class="card shadow">
+              <div class="card-header">
+                  <h5>Actualización de precios</h5>
+              </div>
+            <div class="card-body">
+                <h5 class="mt-3">General</h5>
+                <hr>
+                <div>
+                    <form action="/prices/update?_method=PUT" class="needs-validation" novalidate id="form-updatePriceGlobal" method="POST">
+                        <div class="row">
+                            <div class="col-12 col-md-9 mb-3">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="coefficient" placeholder="Coeficiente" name="coefficient" required>
+                                    <label for="systems">Coeficiente</label>
+                                </div>
+                            </div>
+                          
+                            <div class="col-12 col-md-3 d-flex justify-content-end align-items-center  mb-3">
+                                <button type="submit" class="btn btn-primary w-100" id="btn-apply">Aplicar</button>
+                            </div>
+                        </div>
+                       
+                    </form>
+                </div>
+                <h5 class="mt-3">Individual</h5>
+                <hr>
+                <form action="/prices/add" class="row needs-validation" method="POST" novalidate>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="systems" aria-label="Floating label select example" name="systemId">
+                            
+                            </select>
+                            <label for="systems">Sistemas</label>
+                          </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="cloths" aria-label="Floating label select example" disabled name="clothId">
+                              <option hidden selected>Seleccionar la tela</option>
+                            
+                            </select>
+                            <label for="cloths">Telas</label>
+                          </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="colors" aria-label="Floating label select example" disabled name="colorId">
+                              <option hidden selected>Seleccionar el color</option>
+                             
+                            </select>
+                            <label for="colors">Colores</label>
+                          </div>
+                    </div>
+                    <div class="col-12 mb-3  text-end">
+                        <button type="button" class="btn btn-primary" id="btn-getPrice" disabled>Consultar</button>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="alert alert-danger " id="errorPrice" hidden>Precio no ingresado en el sistema</div>
+                    </div>
+                    <div id="box-data" class="col-12" hidden>
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3"  id="box-inputPrice">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="inputPrice" placeholder="Precio" name="amount" required>
+                                    <label for="price">Precio</label>
+                                  </div>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <div class="form-floating"  id="box-inputIDLocal">
+                                    <input type="number" class="form-control" id="inputIDLocal" placeholder="ID Local" name="idLocal" required>
+                                    <label for="inputIDLocal">ID Local</label>
+                                  </div>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3 d-flex justify-content-around">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="enabled" name="visible">
+                                    <label class="form-check-label" for="enabled">Visible</label>
+                                  </div>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3 d-flex justify-content-end">
+                                <button type="button" class="btn btn-dark me-4" id="btn-remove"><i class="fas fa-trash-alt"></i></button>
+                                <button type="submit" class="btn btn-primary me-2" id="btn-updatePrice" >Actualizar</button>
+                                <button type="button" class="btn btn-secondary" id="btn-cancel" >Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                 
+                </form>
+              </div>
+          </article>
+        </section>
+      </main>
+      <%- include('partials/footer') %>
+        <%- include('partials/scripts') %>
+      <script src="/javascripts/prices.js"></script>
+  </body>
+
+</html>
