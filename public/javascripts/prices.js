@@ -199,10 +199,23 @@ $('btn-apply').addEventListener('blur',() => {
     $('form-updatePriceGlobal').classList.remove('was-validated')
 });
 
+$('coefficient').addEventListener('focus', () => {
+  $('coefficient').classList.remove('is-invalid')
+
+})
+
+$('coefficient').addEventListener('change', (e) => {
+  e.target.classList.add('is-valid')
+})
+
 $('form-updatePriceGlobal').addEventListener('submit', (e) => {
-  
-  if(!e.target.classList.contains('was-validated')){
+  e.preventDefault()
+  if($('coefficient').value !== ""){
+    $('coefficient').classList.remove('is-invalid');
     $('btn-apply').disabled = true;
+    e.target.submit()
+  }else{
+    $('coefficient').classList.add('is-invalid')
   }
 })
 
