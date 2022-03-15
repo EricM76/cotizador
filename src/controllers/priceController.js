@@ -63,104 +63,79 @@ module.exports = {
     coefficient = +coefficient / 100;
 
     try {
-      let totalPrices = await db.Price.count();
-      const Promises = [];
-      for (let id = 1; id <= totalPrices; id++) {
-        let { amount } = await db.Price.findByPk(id, {
-          attributes: ["amount"],
-        });
+      /* lista de precios */
+      let data = await db.Price.findAll();
+      let prices = data.map((price) => {
+        return {
+          id: price.id,
+          amount: price.amount + price.amount * coefficient,
+        };
+      });
 
-        const newPromise = await db.Price.update(
-          { amount: amount + amount * coefficient },
-          { where: { 
-            id,
-            visible : true 
-          } }
-        );
-        Promises.push(newPromise);
-      }
+      await db.Price.bulkCreate(prices, {
+        updateOnDuplicate: ["amount"],
+      });
 
-      let totalCloths = await db.Cloth.count();
-      for (let id = 1; id <= totalCloths; id++) {
-        let { price } = await db.Cloth.findByPk(id, {
-          attributes: ["price"],
-        });
+      /* precio de telas */
+      data = await db.Cloth.findAll();
+      prices = data.map((item) => {
+        return {
+          id: item.id,
+          price: item.price + item.price * coefficient,
+        };
+      });
 
-        const newPromise = await db.Cloth.update(
-          { price: price + price * coefficient },
-          { where: { 
-            id,
-            visible : true 
-          } }
-        );
-        Promises.push(newPromise);
-      };
+      await db.Cloth.bulkCreate(prices, {
+        updateOnDuplicate: ["price"],
+      });
 
-      let totalChains = await db.Chain.count();
-      for (let id = 1; id <= totalChains; id++) {
-        let { price } = await db.Chain.findByPk(id, {
-          attributes: ["price"],
-        });
+      /* precio de cadenas */
+      data = await db.Chain.findAll();
+      prices = data.map((item) => {
+        return {
+          id: item.id,
+          price: item.price + item.price * coefficient,
+        };
+      });
 
-        const newPromise = await db.Chain.update(
-          { price: price + price * coefficient },
-          { where: { 
-            id,
-            visible : true 
-          } }
-        );
-        Promises.push(newPromise);
-      };
+      await db.Chain.bulkCreate(prices, {
+        updateOnDuplicate: ["price"],
+      });
 
-      let totalPatterns = await db.Pattern.count();
-      for (let id = 1; id <= totalPatterns; id++) {
-        let { price } = await db.Pattern.findByPk(id, {
-          attributes: ["price"],
-        });
+      /* precio de modelos */
+      data = await db.Pattern.findAll();
+      prices = data.map((item) => {
+        return {
+          id: item.id,
+          price: item.price + item.price * coefficient,
+        };
+      });
 
-        const newPromise = await db.Pattern.update(
-          { price: price + price * coefficient },
-          { where: { 
-            id,
-            visible : true 
-          } }
-        );
-        Promises.push(newPromise);
-      };
+      await db.Pattern.bulkCreate(prices, {
+        updateOnDuplicate: ["price"],
+      });
 
-      let totalSupports = await db.Support.count();
-      for (let id = 1; id <= totalSupports; id++) {
-        let { price } = await db.Support.findByPk(id, {
-          attributes: ["price"],
-        });
+      /* precio de soportes */
+      data = await db.Support.findAll();
+      prices = data.map((item) => {
+        return {
+          id: item.id,
+          price: item.price + item.price * coefficient,
+        };
+      });
 
-        const newPromise = await db.Support.update(
-          { price: price + price * coefficient },
-          { where: { 
-            id,
-            visible : true 
-          } }
-        );
-        Promises.push(newPromise);
-      };
+      await db.Support.bulkCreate(prices, {
+        updateOnDuplicate: ["price"],
+      });
 
-      let totalSystems = await db.System.count();
-      for (let id = 1; id <= totalSystems; id++) {
-        let { price } = await db.System.findByPk(id, {
-          attributes: ["price"],
-        });
-
-        const newPromise = await db.System.update(
-          { price: price + price * coefficient },
-          { where: { 
-            id,
-            visible : true 
-          } }
-        );
-        Promises.push(newPromise);
-      };
-
-      await Promise.all(Promises);
+      /* precio de sistemas */
+      data = await db.System.findAll();
+      prices = data.map((item) => {
+        return {
+          id: item.id,
+          price: item.price + item.price * coefficient,
+        };
+      });
 
     } catch (error) {
       console.log(error);
