@@ -90,7 +90,7 @@ module.exports = {
         console.log(itemsUpdated);
         console.log('====================================');
         return res.render("orderAdd", {
-         items: items,
+         items: itemsUpdated,
       })
       }, 2000);
     
