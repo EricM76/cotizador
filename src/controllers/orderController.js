@@ -10,6 +10,7 @@ const printer = new PdfPrinter(fonts);
 const fs = require("fs");
 
 const db = require("../database/models");
+const {quoterUpdate} = require('./quoterController')
 
 const client = new SMTPClient({
   user: "cotizadorblancomad@gmail.com",
@@ -50,7 +51,7 @@ module.exports = {
           keywords: "",
           multiplo: total % 8 === 0 ? 0 : 1,
           moment,
-          toThousand : (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+          toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
         });
       })
       .catch((error) => console.log(error));
@@ -61,22 +62,40 @@ module.exports = {
     }
 
     const quoters = JSON.parse(req.query.quoters).map((quoter) => +quoter);
-    try {
-      let items = await db.Quotation.findAll({
-        where: {
-          id: {
-            [Op.in]: quoters,
-          },
+
+    const items = await db.Quotation.findAll({
+      where: {
+        id: {
+          [Op.in]: quoters,
         },
-        include: [{ all: true }],
+      },
+      include: [{ all: true }],
+    });
+
+    const itemsUpdated = [];
+    
+      items.forEach(async (item) => {
+        const {systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth} = item;
+        let priceUpdated = await quoterUpdate(systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth);
+        priceUpdated = req.session.userLogin.coefficient !== 0 ? priceUpdated + priceUpdated * req.session.userLogin.coefficient : priceUpdated;
+        
+          item.amount = priceUpdated;
+        
+          itemsUpdated.push(item);
+       
       });
 
-      return res.render("orderAdd", {
-        items,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+      setTimeout(() => {
+        console.log('====================================');
+        console.log(itemsUpdated);
+        console.log('====================================');
+        return res.render("orderAdd", {
+         items: items,
+      })
+      }, 2000);
+    
+    
+     
   },
   store: async (req, res) => {
     let {
@@ -103,7 +122,9 @@ module.exports = {
       let order = await db.Order.create({
         userId: req.session.userLogin.id,
         send: false,
-        packaging: fs.readFileSync(path.resolve(__dirname,'..','data','packaging.json')),
+        packaging: fs.readFileSync(
+          path.resolve(__dirname, "..", "data", "packaging.json")
+        ),
       });
 
       for (let i = 0; i < ids.length; i++) {
@@ -538,11 +559,11 @@ module.exports = {
             },
             {
               text: quotation.amount,
-              alignment : "right"
+              alignment: "right",
             },
             {
               text: quotation.amount * quotation.quantity,
-              alignment : "right"
+              alignment: "right",
             },
           ]);
         });
@@ -595,11 +616,11 @@ module.exports = {
           },
           {
             text: "Embalaje:",
-            alignment : "right"
+            alignment: "right",
           },
           {
-            text:  req.session.packaging,
-            alignment : "right"
+            text: req.session.packaging,
+            alignment: "right",
           },
         ]);
         body.push([
@@ -650,11 +671,11 @@ module.exports = {
           },
           {
             text: "Total:",
-            alignment : "right"
+            alignment: "right",
           },
           {
-            text:  total,
-            alignment : "right"
+            text: total,
+            alignment: "right",
           },
         ]);
 
@@ -666,53 +687,56 @@ module.exports = {
             header: {
               fontSize: 30,
               bold: true,
-              alignment: 'center'
+              alignment: "center",
             },
             anotherStyle: {
               italics: true,
-              alignment: 'right'
-            }
+              alignment: "right",
+            },
           },
           header: {
             columns: [
               {
-                image: path.resolve(__dirname, '..','assets','images','logo-blancomad2.jpg'),
+                image: path.resolve(
+                  __dirname,
+                  "..",
+                  "assets",
+                  "images",
+                  "logo-blancomad2.jpg"
+                ),
                 width: 100,
-                alignment :'center',
-
+                alignment: "center",
               },
               {
-                text : `Orden #${order.orderNumber}`, 
-                alignment: 'right',
+                text: `Orden #${order.orderNumber}`,
+                alignment: "right",
                 fontSize: 18,
               },
             ],
-            margin : [20,30]
-
+            margin: [20, 30],
           },
           footer: {
             columns: [
               `Observaciones: ${order.observations}`,
-              { 
-                text: `Fecha: ${moment().format("DD/MM/YY")}`, 
-                alignment: 'right' 
-              }
+              {
+                text: `Fecha: ${moment().format("DD/MM/YY")}`,
+                alignment: "right",
+              },
             ],
-            margin : [30,30],
+            margin: [30, 30],
             fontSize: 16,
           },
           pageSize: "LEGAL",
           pageOrientation: "landscape",
           pageMargins: [10, 60, 10, 60],
           content: [
-           
             {
               layout: "lightHorizontalLines", // optional
               table: {
                 // headers are automatically repeated if the table spans over multiple pages
                 // you can declare how many rows should be treated as headers
                 headerRows: 1,
-                widths:   [
+                widths: [
                   "auto",
                   "auto",
                   "auto",
@@ -732,10 +756,8 @@ module.exports = {
                   "auto",
                 ],
                 body,
-
               },
-              margin : [20,50]
-
+              margin: [20, 50],
             },
           ],
         };
@@ -765,7 +787,7 @@ module.exports = {
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
-               {
+              {
                 path: path.resolve(
                   __dirname,
                   "..",
@@ -927,7 +949,7 @@ module.exports = {
         multiplo: total % 8 === 0 ? 0 : 1,
         moment,
         users,
-        toThousand : (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+        toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
       });
     } catch (error) {
       console.log(error);

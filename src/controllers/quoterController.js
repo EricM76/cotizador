@@ -360,8 +360,10 @@ module.exports = {
 
       let data = null;
 
-      if (price && grid) {
-        data = price.amount + grid.price;
+      if (price) {
+        if(grid){
+          data = price.amount + grid.price;
+        }
         if (priceSystem) {
           data = data + priceSystem.price;
         }
@@ -476,4 +478,82 @@ module.exports = {
         );
     }
   },
+  quoterUpdate : async (systemId, clothId, colorId, supportId, patternId, chainId, width, heigth) => {
+    try {
+     
+      const price = await db.Price.findOne({
+        where: {
+          systemId,
+          clothId,
+          colorId,
+          visible: true,
+        },
+      });
+
+      const grid = await db.Grid.findOne({
+        where: {
+          width,
+          heigth,
+          visible: true,
+        },
+      });
+
+      const priceSystem = await db.System.findOne({
+        where: {
+          id : systemId,
+        },
+      });
+      const priceCloth = await db.Cloth.findOne({
+        where: {
+          id: clothId,
+        },
+      });
+
+      const priceSupport = await db.Support.findOne({
+        where: {
+          id: supportId,
+        },
+      });
+
+      const pricePattern = await db.Pattern.findOne({
+        where: {
+          id: patternId,
+        },
+      });
+
+      const priceChain = await db.Chain.findOne({
+        where: {
+          id: chainId,
+        },
+      });
+
+      let data = null;
+
+      if (price) {
+        if(grid){
+          data = price.amount + grid.price;
+        }
+        if (priceSystem) {
+          data = data + priceSystem.price;
+        }
+        if (priceCloth) {
+          data = data + priceCloth.price;
+        }
+        if (priceSupport) {
+          data = data + priceSupport.price;
+        }
+        if (pricePattern) {
+          data = data + pricePattern.price;
+        }
+        if (priceChain) {
+          data = data + priceChain.price;
+        }
+      }
+      
+      return data
+    
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
