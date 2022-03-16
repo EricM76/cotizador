@@ -86,9 +86,7 @@ module.exports = {
       });
 
       setTimeout(() => {
-        console.log('====================================');
-        console.log(itemsUpdated);
-        console.log('====================================');
+        req.session.itemsUpdated = itemsUpdated;
         return res.render("orderAdd", {
          items: itemsUpdated,
       })
@@ -105,6 +103,7 @@ module.exports = {
       clothOrientation: clothOrientations,
       command: commands,
       environment: environments,
+      amount: amounts,
       observations,
     } = req.body;
 
@@ -116,6 +115,7 @@ module.exports = {
       commands = [commands];
       environments = [environments];
       observations = [observations];
+      amounts = [amounts]
     }
 
     try {
@@ -136,6 +136,7 @@ module.exports = {
             clothOrientation: clothOrientations[i],
             environment: environments[i],
             observations: observations[i],
+            amount: amounts[i]
           },
           {
             where: {
