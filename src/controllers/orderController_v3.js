@@ -1,10 +1,5 @@
 const path = require("path");
-
-const XLSX = require("xlsx");
-const createHTML = require('create-html');
-const toThousand = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-const { JSDOM } = require("jsdom");
-
+const xl = require("excel4node");
 const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
 const { Op } = require("sequelize");
@@ -15,7 +10,7 @@ const printer = new PdfPrinter(fonts);
 const fs = require("fs");
 
 const db = require("../database/models");
-const { quoterUpdate } = require('./quoterController')
+const {quoterUpdate} = require('./quoterController')
 
 const client = new SMTPClient({
   user: "cotizadorblancomad@gmail.com",
@@ -78,27 +73,27 @@ module.exports = {
     });
 
     const itemsUpdated = [];
+    
+      items.forEach(async (item) => {
+        const {systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth} = item;
+        let priceUpdated = await quoterUpdate(systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth);
+        priceUpdated = req.session.userLogin.coefficient !== 0 ? priceUpdated + priceUpdated * req.session.userLogin.coefficient : priceUpdated;
+        
+          item.amount = priceUpdated;
+        
+          itemsUpdated.push(item);
+       
+      });
 
-    items.forEach(async (item) => {
-      const { systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth } = item;
-      let priceUpdated = await quoterUpdate(systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth);
-      priceUpdated = req.session.userLogin.coefficient !== 0 ? priceUpdated + priceUpdated * req.session.userLogin.coefficient : priceUpdated;
-
-      item.amount = priceUpdated;
-
-      itemsUpdated.push(item);
-
-    });
-
-    setTimeout(() => {
-      req.session.itemsUpdated = itemsUpdated;
-      return res.render("orderAdd", {
-        items: itemsUpdated,
+      setTimeout(() => {
+        req.session.itemsUpdated = itemsUpdated;
+        return res.render("orderAdd", {
+         items: itemsUpdated,
       })
-    }, 2000);
-
-
-
+      }, 2000);
+    
+    
+     
   },
   store: async (req, res) => {
     let {
@@ -256,182 +251,243 @@ module.exports = {
           }
         );
 
-        /* PLANILLA ADMINISTRADOR */
-        let table = `
-        <table class="table table-striped">
-        <thead>
-        <tr>
-        <th scope="col">Orden:</th>
-        <th scope="col">${order.orderNumber}</th>
-        </tr>
-        <tr>
-        <th scope="col">Vendedor:</th>
-        <th scope="col">${order.user.name} ${order.user.surname}</th>
-        </tr>
-        <tr>
-        <th scope="col">Pedido para:</th>
-        <th scope="col">${references.join(' - ')}
-        </th>
-        </tr>
-        <tr>
-        <th>Fecha: </th>
-        <th>${moment().format("DD/MM/YY")}</th>
-        </tr>
-        <tr>
-        <th scope="col">Observaciones:</th>
-        <th scope="col">${order.observations}
-        </th>
-        </tr>
-          <tr>
-            <th scope="col">Cant.</th>
-            <th scope="col">Sistema</th>
-            <th scope="col">Tela</th>
-            <th scope="col">Color</th>
-            <th scope="col">Ancho</th>
-            <th scope="col">Alto</th>
-            <th scope="col">Modelo</th>
-            <th scope="col">Cadena</th>
-            <th scope="col">Soporte</th>
-            <th scope="col">Comando</th>
-            <th scope="col">Orien. Soporte</th>
-            <th scope="col">Orien. Tela</th>
-            <th scope="col">Obs.</th>
-            <th scope="col">Ambiente</th>
-            <th scope="col">Referencia</th>
-            <th scope="col">Precio unitario</th>
-            <th scope="col">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-        `
-        order.quotations.forEach((item) => {
-          table += `
-            <tr>
-            <th scope="row">
-              ${item.quantity}
-            </th>
-            <td>
-              ${item.systemId}
-            </td>
-            <td>
-              ${item.clothId}
-            </td>
-            <td>
-              ${item.colorId}
-            </td>
-            <td>
-                ${item.clothWidth}
-              </td>
-              <td>
-                ${item.heigth}
-              </td>
-              <td>
-                ${item.patternId}
-              </td>
-              <td>
-                ${item.chainId}
-              </td>
-              <td>
-                ${item.supportId}
-              </td>
-              <td>
-                ${item.command}
-              </td>
-              <td>
-                ${item.supportOrientation}
-              </td>
-              <td>
-                ${item.clothOrientation}
-              </td>
-              <td>
-                ${item.observations}
-              </td>
-              <td>
-                ${item.environment}
-              </td>
-              <td>
-                ${item.reference}
-              </td>
-              <td style="text-align:right;">
-                    ${toThousand(item.amount)}
-              </td>
-              <td style="text-align:right;">
-                    ${toThousand(item.amount * item.quantity)}
-              </td>
-          </tr>
-          `
+        //planilla admin
+        let wbAdmin = new xl.Workbook();
+        let ws2 = wbAdmin.addWorksheet(
+          "Orden: " + order.orderNumber + " - admin"
+        );
+        let titles = [
+          "Cant",
+          "Sistema",
+          "Tela",
+          "Color",
+          "Ancho",
+          "Alto",
+          "Modelo",
+          "Cadena",
+          "Soporte",
+          "Comando",
+          "Orien. Soporte",
+          "Orien. Tela",
+          "Ambiente",
+          "Referencia",
+          "Observaciones",
+          "Precio unitario",
+          "Total",
+        ];
+
+        let style = wbAdmin.createStyle({
+          font: {
+            color: "#666666",
+            size: 12,
+          },
         });
-          table += `
-                <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td style="text-align:right;">
-                    <b>EMBALAJE:</b> 
-                </td>
-                <td style="text-align:right;">
-                    ${req.session.packaging}
-                </td>
-              </tr>
-              <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-                <td style="text-align:right;">
-                    <b>TOTAL:</b> 
-                </td>
-                <td style="text-align:right;">
-                    ${toThousand(total + req.session.packaging)}
-                </td>
-              </tr>
-          </tbody>
-        </table>
-        `
-       
 
-        const html = createHTML({
-          title: 'Planilla',
-          lang: 'es',
-          body: table,
-        })
+        ws2
+          .cell(1, 1, 1, 2, true)
+          .string(`VENDEDOR:`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
 
-        fs.writeFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), html, function (err) {
-          if (err) console.log(err)
-        })
+        ws2
+          .cell(1, 3, 1, 3, true)
+          .number(order.user.idLocal)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "left",
+            },
+          });
 
-        const html_str = fs.readFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), "utf8");
-        const doc = new JSDOM(html_str).window.document.querySelector("table");
-        const workbook = XLSX.utils.table_to_book(doc);
+        ws2
+          .cell(2, 1, 2, 2, true)
+          .string(`PEDIDO PARA :`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
 
-        XLSX.writeFile(workbook, path.resolve(__dirname, '..', 'downloads', `${order.orderNumber}.xls`), {bookType: "biff8"});
+        ws2
+          .cell(2, 3, 2, 3, true)
+          .string(`${references.join(", ")}`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "left",
+            },
+          });
 
+        ws2
+          .cell(1, 6, 1, 8, true)
+          .string(`OBSERVACIONES PEDIDO:`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
 
+        ws2
+          .cell(1, 9, 1, 9, true)
+          .string(`${order.observations}`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "left",
+            },
+          });
 
-        /* PDF VENDEDOR */
+        ws2
+          .cell(2, 6, 2, 8, true)
+          .string(`FECHA PEDIDO`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+
+        ws2
+          .cell(2, 9, 2, 9, true)
+          .string(`${moment().format("DD/MM/YY")}`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "left",
+            },
+          });
+
+        ws2.row(1).setHeight(30);
+        ws2.row(2).setHeight(30);
+        ws2.column(1).setWidth(5); //cantidad
+        ws2.column(2).setWidth(10); //sistema
+        ws2.column(3).setWidth(10); //tela
+        ws2.column(4).setWidth(10); //color
+        ws2.column(5).setWidth(10); //ancho
+        ws2.column(6).setWidth(10); //alto
+        ws2.column(7).setWidth(10); //modelo
+        ws2.column(8).setWidth(10); //cadena
+        ws2.column(9).setWidth(10); //soporte
+        ws2.column(10).setWidth(10); //comando
+        ws2.column(11).setWidth(15); //o. soporte
+        ws2.column(12).setWidth(15); //o. tela
+        ws2.column(13).setWidth(20); //ambiente
+        ws2.column(14).setWidth(15); //referencia
+        ws2.column(15).setWidth(20); //observaciones
+        ws2.column(16).setWidth(15); //p. unitario
+        ws2.column(17).setWidth(10); //total
+
+        titles.forEach((title, index) => {
+          ws2
+            .cell(3, index + 1)
+            .string(title)
+            .style(style)
+            .style({
+              font: {
+                bold: true,
+              },
+            });
+        });
+
+        order.quotations.forEach((quotation, index) => {
+          index = index + 4;
+          ws2.cell(index, 1).number(quotation.quantity).style(style);
+          ws2.cell(index, 2).number(quotation.systemId).style(style);
+          ws2.cell(index, 3).number(quotation.clothId).style(style);
+          ws2.cell(index, 4).number(quotation.colorId).style(style);
+          ws2.cell(index, 5).number(quotation.clothWidth).style(style);
+          ws2.cell(index, 6).number(quotation.heigth).style(style);
+          ws2.cell(index, 7).number(quotation.patternId).style(style);
+          ws2.cell(index, 8).number(quotation.chainId).style(style);
+          ws2.cell(index, 9).number(quotation.supportId).style(style);
+          ws2.cell(index, 10).string(quotation.command).style(style);
+          ws2.cell(index, 11).string(quotation.supportOrientation).style(style);
+          ws2.cell(index, 12).string(quotation.clothOrientation).style(style);
+          ws2.cell(index, 13).string(quotation.environment).style(style);
+          ws2.cell(index, 14).string(quotation.reference).style(style);
+          ws2.cell(index, 15).string(quotation.observations).style(style);
+          ws2.cell(index, 16).number(quotation.amount).style(style);
+          ws2
+            .cell(index, 17)
+            .number(quotation.amount * quotation.quantity)
+            .style(style);
+          lastRow = index + 1;
+        });
+
+        ws2
+          .cell(lastRow, 16, lastRow, 16, true)
+          .string(`EMBALAJE: `)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+        ws2
+          .cell(lastRow, 17, lastRow, 17, true)
+          .number(order.packaging)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+
+        ws2
+          .cell(lastRow + 1, 16, lastRow + 1, 16, true)
+          .string(`TOTAL:`)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+        ws2
+          .cell(lastRow + 1, 17, lastRow + 1, 17, true)
+          .number(total + order.packaging)
+          .style(style)
+          .style({
+            alignment: {
+              vertical: "center",
+              horizontal: "right",
+            },
+          });
+
+        var fileAdmin = `${order.orderNumber}.xls`;
+        var fileClient = `${order.orderNumber}.pdf`;
+
+        await db.Order.update(
+          {
+            fileClient,
+            fileAdmin,
+          },
+          {
+            where: {
+              id: +req.query.order,
+            },
+          }
+        );
+
+        wbAdmin.write(`src/downloads/${fileAdmin}`);
+
+        //pdf vendedor
 
         const body = [
           [
@@ -724,21 +780,6 @@ module.exports = {
         );
         pdfDoc.end();
 
-        let fileAdmin = `${order.orderNumber}.xls`;
-        let fileClient = `${order.orderNumber}.pdf`;
-
-        await db.Order.update(
-          {
-            fileClient,
-            fileAdmin,
-          },
-          {
-            where: {
-              id: +req.query.order,
-            },
-          }
-        );
-
         setTimeout(() => {
           let message2 = new Message({
             text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
@@ -803,7 +844,7 @@ module.exports = {
       console.log(error);
     }
   },
-  createExcel: (req, res) => { },
+  createExcel: (req, res) => {},
   download: (req, res) => {
     const { file, orderNumber } = req.query;
     db.Order.findOne({
