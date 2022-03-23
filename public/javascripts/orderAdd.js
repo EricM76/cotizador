@@ -11,7 +11,10 @@ let dataOrder = {
   observations: []
 };
 
+let sendForm = false;
+
 window.addEventListener('load', () => {
+
   if (sessionStorage.getItem('orderInProcess')) {
     btnOrdenGenerate.textContent = 'Continuar'
   }
@@ -115,6 +118,7 @@ $('form-generate-order').addEventListener('submit', (e) => {
     }
 
     localStorage.setItem('dataOrder', JSON.stringify(dataOrder));
+    sendForm = true
     e.target.submit()
   }
-})
+});

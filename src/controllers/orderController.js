@@ -266,7 +266,7 @@ module.exports = {
         </tr>
         <tr>
         <th scope="col">Vendedor:</th>
-        <th scope="col">${order.user.name} ${order.user.surname}</th>
+        <th scope="col">2819</th>
         </tr>
         <tr>
         <th scope="col">Pedido para:</th>
@@ -353,10 +353,10 @@ module.exports = {
                 ${item.reference}
               </td>
               <td style="text-align:right;">
-                    ${toThousand(item.amount)}
+                    ${item.amount}
               </td>
               <td style="text-align:right;">
-                    ${toThousand(item.amount * item.quantity)}
+                    ${item.amount * item.quantity}
               </td>
           </tr>
           `
@@ -405,7 +405,7 @@ module.exports = {
                     <b>TOTAL:</b> 
                 </td>
                 <td style="text-align:right;">
-                    ${toThousand(total + req.session.packaging)}
+                    ${total + req.session.packaging}
                 </td>
               </tr>
           </tbody>
@@ -427,7 +427,10 @@ module.exports = {
         const doc = new JSDOM(html_str).window.document.querySelector("table");
         const workbook = XLSX.utils.table_to_book(doc);
 
-        XLSX.writeFile(workbook, path.resolve(__dirname, '..', 'downloads', `${order.orderNumber}.xls`), {bookType: "biff8"});
+        XLSX.writeFile(workbook, path.resolve(__dirname, '..', 'downloads', `${order.orderNumber}.xls`), {
+          bookType: "xlml",
+          sheet : 0
+        });
 
 
 
