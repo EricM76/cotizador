@@ -1,4 +1,6 @@
 const observations = $('observations');
+const btnSubmit = $('btn-submit');
+const btnBack = $('btn-back');
 
 window.addEventListener('load', () => {
 
@@ -31,7 +33,19 @@ document.getElementById('form-sendOrder').addEventListener('submit', (e) => {
             sessionStorage.removeItem('observations');
             localStorage.removeItem('selected');
             localStorage.removeItem('dataOrder');
-            e.target.submit()
+            btnSubmit.disabled = true;
+            btnBack.disabled = true;
+            e.target.submit();
+
+            Swal.fire(
+                {
+                    title : 'Enviando...',
+                    icon :'info',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+               
+              )
         }
     })
 

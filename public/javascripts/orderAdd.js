@@ -13,6 +13,8 @@ let dataOrder = {
 
 let sendForm = false;
 
+
+
 window.addEventListener('load', () => {
 
   if (sessionStorage.getItem('orderInProcess')) {

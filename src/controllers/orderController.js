@@ -266,7 +266,7 @@ module.exports = {
         </tr>
         <tr>
         <th scope="col">Vendedor:</th>
-        <th scope="col">2819</th>
+        <th scope="col">${order.user.idLocal}</th>
         </tr>
         <tr>
         <th scope="col">Pedido para:</th>

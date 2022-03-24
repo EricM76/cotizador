@@ -408,9 +408,9 @@ module.exports = {
       }
 
       if (data) {
-       
+       let quotation;
         if(req.session.userLogin.rol > 2){
-          await db.Quotation.create({
+            quotation = await db.Quotation.create({
             clothWidth: +width,
             heigth: +heigth,
             amount: data,
@@ -429,6 +429,7 @@ module.exports = {
         return res.status(200).json({
           ok: true,
           data,
+          quotation,
           rol : req.session.userLogin.rol
         });
 

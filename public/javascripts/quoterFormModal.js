@@ -287,7 +287,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
                 }else{
                     let query = new URLSearchParams(window.location.search);
                     let ids = JSON.parse(query.get('quoters'));
-                    ids.push(result.id)
+                    ids.push(result.quotation.id)
                     localStorage.setItem('selected', JSON.stringify(ids))
                     console.log(ids)
                     window.location.href = `/orders/add?quoters=[${ids}]`
