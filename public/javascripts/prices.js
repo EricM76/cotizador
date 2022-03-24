@@ -151,7 +151,7 @@ $("inputPrice").addEventListener("focus", ({ target }) => {
 
 $("btn-cancel").addEventListener("click", () => {
   console.log("clean!");
-  window.location.href = "/prices";
+  window.location.href = "/prices/edit/item";
 });
 
 $("btn-remove").addEventListener("click", (e) => {

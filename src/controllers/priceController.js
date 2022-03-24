@@ -4,6 +4,12 @@ module.exports = {
   index: (req, res) => {
     return res.render("prices");
   },
+  editAll: (req, res) => {
+    return res.render("priceAll");
+  },
+  editItem: (req, res) => {
+    return res.render("priceItem");
+  },
   add: (req, res) => {
     res.render("priceAdd");
   },
@@ -31,7 +37,7 @@ module.exports = {
               },
             }
           );
-          return res.redirect("/prices?update=true");
+          return res.redirect("/prices/edit/item?update=true");
         } catch (error) {
           console.log(error);
         }
@@ -141,7 +147,7 @@ module.exports = {
       console.log(error);
     }
 
-    return res.redirect("/prices?updateAll=true");
+    return res.redirect("/prices/edit/all?updateAll=true");
   },
   search: (req, res) => {
     res.render("prices");

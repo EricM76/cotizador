@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const {index,add,store,detail,edit,update,remove, getDataBySystem, getPrice} = require('../controllers/priceController');
+const {index,editAll, editItem, add,store,detail,edit,update,remove, getDataBySystem, getPrice} = require('../controllers/priceController');
 const adminSessionCheck = require('../middlewares/adminSessionCheck');
 
 router
     .get('/', index)
+    .get('/edit/all',editAll)
+    .get('/edit/item',editItem)
     .get('/add',add)
     .post('/add',adminSessionCheck,store)
     .get('/detail/:id',detail)
