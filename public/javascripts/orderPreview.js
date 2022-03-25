@@ -13,6 +13,28 @@ observations.addEventListener('keyup', ({ target }) => {
     console.log(target.value)
     sessionStorage.setItem('observations', target.value);
 
+});
+
+
+$('ticket').addEventListener('change', e => {
+    let regExExt = /(.jpg|.jpeg|.png|.gif|.webp)$/i;
+
+    switch (true) {
+        case !regExExt.exec($('ticket').value):
+            $('ticketError').innerHTML = "Solo imágenes con extensión jpg, jpeg, png, gif, webp"
+           /*  vistaPrevia.src = "" */
+            break;
+
+        default:
+            $('ticketError').innerHTML = "";
+            /*  $('btnTicket').innerHTML = "Reemplar comprobante"
+           let reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0])
+            reader.onload = () => {
+                $('vistaPrevia').src = reader.result
+            } */
+            break;
+    }
 })
 
 document.getElementById('form-sendOrder').addEventListener('submit', (e) => {

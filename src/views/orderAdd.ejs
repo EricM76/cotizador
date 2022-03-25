@@ -11,7 +11,11 @@
 
             <div class="card-header d-flex flex-column flex-md-row justify-content-between">
               <h4 class="mb-3">Nuevo pedido</h4>
-              <button type="button" data-bs-toggle="modal" data-bs-target="#quoterModal"  id="btn-createQuotation" class="btn btn-outline-dark">Nueva cotización</button>            
+              <div class="d-flex flex-column flex-md-row text-start">
+                <div class="mb-2 mx-1">
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#quoterModal"  id="btn-createQuotation" class="btn btn-outline-transparent w-100">Nueva cotización</button>    
+                </div>
+              </div>
             </div>
             <div class="card-body row">
 
@@ -159,9 +163,12 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer text-end">
-              <button type="button" class="btn btn-secondary" onclick="window.location.replace('/quoters')">Volver a cotizaciones</button>
-              <button type="submit" id="btn-orderGenerate" class="btn btn-primary">Generar pedido</button>
+            <div class="card-footer d-flex flex-column flex-md-row justify-content-end">
+              <div class="d-flex flex-column flex-md-row flex-wrap">
+                <button type="button" class="btn btn-secondary w-sm-100 mb-2 mx-1" onclick="window.location.replace('/quoters')">Volver a cotizaciones</button>
+                <button type="submit" id="btn-orderGenerate" class="btn btn-primary w-sm-100 mb-2 mx-1">Generar pedido</button>
+              </div>
+              
             </div>
           </form>
 

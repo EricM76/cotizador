@@ -210,6 +210,7 @@ module.exports = {
             new Date().getTime().toString().slice(-8) +
             "-" +
             new Date().getFullYear().toString().slice(-2),
+          ticket : req.file ? req.file.filename : null
         },
         {
           where: {
@@ -812,15 +813,24 @@ module.exports = {
     db.Order.findOne({
       where: { orderNumber },
     }).then((order) => {
-      if (file === "client") {
-        return res.download(
-          path.join(__dirname, "..", "downloads", order.fileClient)
-        );
-      } else {
-        return res.download(
-          path.join(__dirname, "..", "downloads", order.fileAdmin)
-        );
+
+      switch (file) {
+        case "client":
+          return res.download(
+            path.join(__dirname, "..", "downloads", order.fileClient)
+          );
+        case "admin":
+          return res.download(
+            path.join(__dirname, "..", "downloads", order.fileAdmin)
+          );
+        case "ticket":
+          return res.download(
+            path.join(__dirname, "..", "data","tickets", order.ticket)
+          );
+        default:
+          break;
       }
+
     });
   },
   detail: (req, res) => {

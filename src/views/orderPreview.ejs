@@ -8,10 +8,15 @@
         <section class="row mt-5 mx-auto">
           <div class="col-12">
           <article class="card shadow">
-            <form action="/orders/send?order=<%= order.id %>" method="POST" id="form-sendOrder">
+            <form action="/orders/send?order=<%= order.id %>" method="POST" id="form-sendOrder" enctype="multipart/form-data">
             <div class="card-header d-flex flex-column flex-md-row justify-content-between">
                 <h4 class="my-2">Orden | vista previa </h4>
-               <!--  <button class="btn btn-outline-dark">Enviar pedido</button> -->
+                <div class="d-flex flex-column flex-md-row text-start">
+                  <div class="mb-2 mx-1">
+                    <input class="form-control" type="file" id="ticket" name="ticket">
+                  </div>
+                  <span class="small text-danger" id="ticketError"></span>
+                </div>              
               </div>
             <div class="card-body">
                 <div class="row">
@@ -23,7 +28,7 @@
                         <% }) %> </h6>
                     </div>
                     <div class="col-12 col-md-6">
-                        <textarea class="form-control" name="observations" id="observations" cols="30" rows="2" style="resize: none;" placeholder="Observaciones"></textarea>
+                        <textarea class="form-control" name="observations" id="observations"  rows="2" style="resize: none;" placeholder="Observaciones"></textarea>
                     </div>
                 </div>
              
