@@ -299,6 +299,7 @@ module.exports = {
     }
   },
   quote: async (req, res) => {
+
     try {
       const {
         system,
@@ -308,6 +309,7 @@ module.exports = {
         pattern,
         chain,
         width,
+        railWidth,
         heigth,
         reference,
       } = req.body;
@@ -320,14 +322,17 @@ module.exports = {
           visible: true,
         },
       });
-
-      const grid = await db.Grid.findOne({
-        where: {
-          width: +width,
-          heigth: +heigth,
-          visible: true,
-        },
-      });
+      
+      let grid;
+      if(width !== "none"){
+        grid = await db.Grid.findOne({
+          where: {
+            width: +width,
+            heigth: +heigth,
+            visible: true,
+          },
+        });
+      }
 
       const priceSystem = await db.System.findOne({
         where: {
@@ -358,11 +363,12 @@ module.exports = {
         },
       });
 
-      let data = null;
-
+      let data;
       if (price) {
+        data = price.amount;
+
         if(grid){
-          data = price.amount + grid.price;
+          data = data + grid.price;
         }
         if (priceSystem) {
           data = data + priceSystem.price;
@@ -380,7 +386,9 @@ module.exports = {
           data = data + priceChain.price;
         }
       }
-
+      console.log('====================================');
+      console.log(data, price.amount);
+      console.log('====================================');
       /* console.log(price?.id, '>>>>>>>>>>>>PRECIO', price?.amount)
             console.log(grid?.id, '>>>>>>>>>>>>GRILLA', grid?.price)
             console.log(priceSystem?.id, '>>>>>>>>>>>>SISTEMA', priceSystem?.price)
@@ -390,9 +398,9 @@ module.exports = {
             console.log(priceChain?.id, '>>>>>>>>>>>>CADENA', priceChain?.price) */
 
       /* GUARDAR la cotización, si esta existe */
-      console.log('====================================');
+     /*  console.log('====================================');
       console.log(data, req.session.userLogin.coefficient,req.session.userLogin.rol, req.session.userLogin.coefficient !== 0 ? data + data * req.session.userLogin.coefficient : data);
-      console.log('====================================');
+      console.log('===================================='); */
 
       data = req.session.userLogin.coefficient !== 0 ? data + data * req.session.userLogin.coefficient : data;
       
@@ -407,6 +415,7 @@ module.exports = {
         console.log('====================================');
       }
 
+    
       if (data) {
        let quotation;
         if(req.session.userLogin.rol > 2){
