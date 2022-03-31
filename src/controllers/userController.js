@@ -304,6 +304,7 @@ module.exports = {
                     username : user.username,
                     email : user.email,
                     rol: +user.rolId,
+                    rolName : user.rol.name.toLowerCase(),
                     coefficient : +user.rol.coefficient
                 }
 

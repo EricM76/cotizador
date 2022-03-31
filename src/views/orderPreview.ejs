@@ -12,24 +12,34 @@
             <div class="card-header d-flex flex-column flex-md-row justify-content-between">
                 <h4 class="my-2">Orden | vista previa </h4>
                 <div class=" mb-2">
-                    <label for="ticket" class="btn btn-outline-sm-dark" id="btnTicket">Comprobante depósito</label>
-                    <input class="" type="file" id="ticket" name="ticket" hidden>
-                    <span class="small text-danger" id="ticketError"></span>
-                    <img src="" alt="" id="vistaPrevia" height="50px">
+                   
+                  
                 </div>              
               </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-4">
                         <h5>Vendedor: <span><%= user.name %> <%= user.surname %>  </span></h5>
                         <hr>
                         <h6>Pedido para: <% references.forEach((reference,index) => { %>
                          <span><%= reference %> <%= index < references.length - 1 ? ',' : null %>  </span>
                         <% }) %> </h6>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-8">
+                      <div class="d-flex">
                         <textarea class="form-control" name="observations" id="observations"  rows="2" style="resize: none;" placeholder="Observaciones"></textarea>
-                    </div>
+                        <div class="ms-2 ">
+                          <span class="small text-danger" id="ticketError"></span>
+                          <div class="position-relative">
+                            <img src="" alt="" id="vistaPrevia" height="80px">
+                            <a href="" class="text-danger h6 position-absolute top-0 end-0" id="btnDeletePreview"></a>
+                          </div>
+                       
+                        </div>
+                      </div>
+                      </div>
+                     
+                   
                 </div>
              
            
@@ -52,8 +62,10 @@
                           <th scope="col">Obs.</th>
                           <th scope="col">Ambiente</th>
                           <th scope="col">Referencia</th>
-                          <th scope="col">Precio unitario</th>
-                          <th scope="col">Total</th>
+                          <% if (locals.userLogin.rolName !== "medidor") { %>
+                            <th scope="col">Precio unitario</th>
+                            <th scope="col">Total</th>
+                          <% } %>
                         </tr>
                       </thead>
                       <tbody>
@@ -104,6 +116,7 @@
                               <td>
                                 <%= item.reference %>
                               </td>
+                              <% if (locals.userLogin.rolName !== "medidor") { %>
                               <td>
                                   <div class="d-flex justify-content-around">
                                     <span>$</span><span><%= toThousand(item.amount) %></span> 
@@ -114,8 +127,10 @@
                                     <span>$</span><span><%= toThousand(item.amount * item.quantity) %></span> 
                                 </div>
                               </td>
+                              <% } %>
                           </tr>
                           <% }) %>
+                          <% if (locals.userLogin.rolName !== "medidor") { %>
                           <tr>
                             <td colspan="16" class="text-end">
                                 <b>EMBALAJE:</b> 
@@ -136,15 +151,22 @@
                                 $<%= toThousand(total + order.packaging)  %>
                             </td>
                           </tr>
+                          <% } %>
                       </tbody>
                     </table>
                   </div>
             </div>
-            <div class="card-footer text-end">
-              <button type="button" class="btn btn-secondary mx-1" onclick="window.history.back()" id="btn-back">Volver atrás</button>
-              <button type="submit" class="btn btn-primary mx-1" id="btn-submit">Enviar pedido</button>
+            <div class="card-footer d-flex flex-column flex-md-row justify-content-end">
+              <button type="button" class="btn btn-secondary mb-2 ms-2" onclick="window.history.back()" id="btn-back">Volver atrás</button>
+              <% if (locals.userLogin.rolName !== "medidor") { %>
+              <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
+              <input class="" type="file" id="ticket" name="ticket" hidden>   
+              <% } %>           
+              <button type="submit" class="btn btn-primary mb-2 ms-2" id="btn-submit">Enviar pedido</button>
             </div>
           </form>
+        
+          
           </article>
         </div>
         </section>

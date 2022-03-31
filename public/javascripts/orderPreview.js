@@ -21,13 +21,14 @@ $('ticket').addEventListener('change', e => {
 
     switch (true) {
         case $('ticket').value !== "" && !regExExt.exec($('ticket').value):
-            $('ticketError').innerHTML = "Solo imágenes con extensión jpg, jpeg, png, gif, webp"
+            $('ticketError').innerHTML = "El comprobante debe ser una imagen (jpg, jpeg, png, gif, webp)"
             vistaPrevia.src = ""
             break;
 
         default:
             $('ticketError').innerHTML = "";
              $('btnTicket').innerHTML = "Reemplar comprobante"
+             $('btnDeletePreview').innerHTML = "<i class='fas fa-times-circle bg-white rounded-circle'></i>"
            let reader = new FileReader();
             reader.readAsDataURL(e.target.files[0])
             reader.onload = () => {
@@ -35,6 +36,15 @@ $('ticket').addEventListener('change', e => {
             }
             break;
     }
+});
+
+$('btnDeletePreview').addEventListener('click', (e) => {
+    e.preventDefault();
+    $('ticket').files[0] = null;
+    $('vistaPrevia').src = null;
+    $('btnDeletePreview').innerHTML = null;
+    $('btnTicket').innerHTML = "Comprobante depósito"
+
 })
 
 document.getElementById('form-sendOrder').addEventListener('submit', (e) => {

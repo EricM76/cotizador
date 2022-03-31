@@ -1,1 +1,0 @@
-comprobantes de depósito

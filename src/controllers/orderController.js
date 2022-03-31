@@ -210,7 +210,7 @@ module.exports = {
             new Date().getTime().toString().slice(-8) +
             "-" +
             new Date().getFullYear().toString().slice(-2),
-          ticket : req.file ? req.file.filename : null
+          ticket: req.file ? req.file.filename : 'no-transfer.png'
         },
         {
           where: {
@@ -238,7 +238,6 @@ module.exports = {
         ],
       });
       if (order) {
-        let lastRow;
         const names = order.quotations.map((quotation) => quotation.reference);
         const references = [...new Set(names)];
         const amounts = order.quotations.map(
@@ -362,7 +361,7 @@ module.exports = {
           </tr>
           `
         });
-          table += `
+        table += `
                 <tr>
                 <td></td>
                 <td></td>
@@ -412,7 +411,7 @@ module.exports = {
           </tbody>
         </table>
         `
-       
+
 
         const html = createHTML({
           title: 'Planilla',
@@ -430,286 +429,194 @@ module.exports = {
 
         XLSX.writeFile(workbook, path.resolve(__dirname, '..', 'downloads', `${order.orderNumber}.xls`), {
           bookType: "xlml",
-          sheet : 0
+          sheet: 0
         });
 
 
 
-        /* PDF VENDEDOR */
+        /* PDF VENDEDOR/ADMIN/CONTROL */
+        let docDefinition;
+        if (req.session.userLogin.rol !== 3) {
 
-        const body = [
-          [
-            "Cant",
-            "Sistema",
-            "Tela",
-            "Color",
-            "Ancho",
-            "Alto",
-            "Modelo",
-            "Cadena",
-            "Soporte",
-            "Comando",
-            "Orien. Soporte",
-            "Orien. Tela",
-            "Ambiente",
-            "Referencia",
-            "Observaciones",
-            "Precio unitario",
-            "Total",
-          ],
-        ];
+          const body = [
+            ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
+          ];
 
-        order.quotations.forEach((quotation) => {
+          order.quotations.forEach((quotation) => {
+            body.push([{ text: quotation.quantity }, { text: quotation.system.name }, { text: quotation.cloth.name }, { text: quotation.color.name }, { text: quotation.clothWidth }, { text: quotation.heigth }, { text: quotation.pattern.name }, { text: quotation.chain.name }, { text: quotation.support.name }, { text: quotation.command }, { text: quotation.supportOrientation }, { text: quotation.clothOrientation }, { text: quotation.environment }, { text: quotation.reference }, { text: quotation.observations }, { text: quotation.amount, alignment: "right" }, { text: quotation.amount * quotation.quantity, alignment: "right" }]);
+          });
+
           body.push([
+            { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
             {
-              text: quotation.quantity,
-            },
-            {
-              text: quotation.system.name,
-            },
-            {
-              text: quotation.cloth.name,
-            },
-            {
-              text: quotation.color.name,
-            },
-            {
-              text: quotation.clothWidth,
-            },
-            {
-              text: quotation.heigth,
-            },
-            {
-              text: quotation.pattern.name,
-            },
-            {
-              text: quotation.chain.name,
-            },
-            {
-              text: quotation.support.name,
-            },
-            {
-              text: quotation.command,
-            },
-            {
-              text: quotation.supportOrientation,
-            },
-            {
-              text: quotation.clothOrientation,
-            },
-            {
-              text: quotation.environment,
-            },
-            {
-              text: quotation.reference,
-            },
-            {
-              text: quotation.observations,
-            },
-            {
-              text: quotation.amount,
+              text: "Embalaje:",
               alignment: "right",
             },
             {
-              text: quotation.amount * quotation.quantity,
+              text: req.session.packaging,
               alignment: "right",
             },
           ]);
-        });
-
-        body.push([
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "Embalaje:",
-            alignment: "right",
-          },
-          {
-            text: req.session.packaging,
-            alignment: "right",
-          },
-        ]);
-        body.push([
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "",
-          },
-          {
-            text: "Total:",
-            alignment: "right",
-          },
-          {
-            text: total,
-            alignment: "right",
-          },
-        ]);
-
-        const docDefinition = {
-          defaultStyle: {
-            fontSize: 10,
-          },
-          styles: {
-            header: {
-              fontSize: 30,
-              bold: true,
-              alignment: "center",
-            },
-            anotherStyle: {
-              italics: true,
+          body.push([
+            { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+            {
+              text: "Total:",
               alignment: "right",
             },
-          },
-          header: {
-            columns: [
-              {
-                image: path.resolve(
-                  __dirname,
-                  "..",
-                  "assets",
-                  "images",
-                  "logo-blancomad2.jpg"
-                ),
-                width: 100,
+            {
+              text: total,
+              alignment: "right",
+            },
+          ]);
+
+          docDefinition = {
+            defaultStyle: {
+              fontSize: 10,
+            },
+            styles: {
+              header: {
+                fontSize: 30,
+                bold: true,
                 alignment: "center",
               },
-              {
-                text: `Orden #${order.orderNumber}`,
-                alignment: "right",
-                fontSize: 18,
-              },
-            ],
-            margin: [20, 30],
-          },
-          footer: {
-            columns: [
-              `Observaciones: ${order.observations}`,
-              {
-                text: `Fecha: ${moment().format("DD/MM/YY")}`,
+              anotherStyle: {
+                italics: true,
                 alignment: "right",
               },
-            ],
-            margin: [30, 30],
-            fontSize: 16,
-          },
-          pageSize: "LEGAL",
-          pageOrientation: "landscape",
-          pageMargins: [10, 60, 10, 60],
-          content: [
-            {
-              layout: "lightHorizontalLines", // optional
-              table: {
-                // headers are automatically repeated if the table spans over multiple pages
-                // you can declare how many rows should be treated as headers
-                headerRows: 1,
-                widths: [
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                  "auto",
-                ],
-                body,
-              },
-              margin: [20, 50],
             },
-          ],
-        };
+            header: {
+              columns: [
+                {
+                  image: path.resolve(
+                    __dirname,
+                    "..",
+                    "assets",
+                    "images",
+                    "logo-blancomad2.jpg"
+                  ),
+                  width: 100,
+                  alignment: "center",
+                },
+                {
+                  text: `Orden #${order.orderNumber}`,
+                  alignment: "right",
+                  fontSize: 18,
+                },
+              ],
+              margin: [20, 30],
+            },
+            footer: {
+              columns: [
+                `Observaciones: ${order.observations}`,
+                {
+                  text: `Fecha: ${moment().format("DD/MM/YY")}`,
+                  alignment: "right",
+                },
+              ],
+              margin: [30, 30],
+              fontSize: 16,
+            },
+            pageSize: "LEGAL",
+            pageOrientation: "landscape",
+            pageMargins: [10, 60, 10, 60],
+            content: [
+              {
+                layout: "lightHorizontalLines", // optional
+                table: {
+                  headerRows: 1,
+                  widths: [
+                    "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"
+                  ],
+                  body,
+                },
+                margin: [20, 50],
+              },
+            ],
+          };
+
+        } else {
+
+          /* PDF MEDIDOR */
+
+          const body = [
+            ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones"],
+          ];
+
+          order.quotations.forEach((quotation) => {
+            body.push([{ text: quotation.quantity }, { text: quotation.system.name }, { text: quotation.cloth.name }, { text: quotation.color.name }, { text: quotation.clothWidth }, { text: quotation.heigth }, { text: quotation.pattern.name }, { text: quotation.chain.name }, { text: quotation.support.name }, { text: quotation.command }, { text: quotation.supportOrientation }, { text: quotation.clothOrientation }, { text: quotation.environment }, { text: quotation.reference }, { text: quotation.observations }]);
+          });
+
+          body.push([
+            { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+          ]);
+          body.push([
+            { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+          ]);
+
+          docDefinition = {
+            defaultStyle: {
+              fontSize: 10,
+            },
+            styles: {
+              header: {
+                fontSize: 30,
+                bold: true,
+                alignment: "center",
+              },
+              anotherStyle: {
+                italics: true,
+                alignment: "right",
+              },
+            },
+            header: {
+              columns: [
+                {
+                  image: path.resolve(
+                    __dirname,
+                    "..",
+                    "assets",
+                    "images",
+                    "logo-blancomad2.jpg"
+                  ),
+                  width: 100,
+                  alignment: "center",
+                },
+                {
+                  text: `Orden #${order.orderNumber}`,
+                  alignment: "right",
+                  fontSize: 18,
+                },
+              ],
+              margin: [20, 30],
+            },
+            footer: {
+              columns: [
+                `Observaciones: ${order.observations}`,
+                {
+                  text: `Fecha: ${moment().format("DD/MM/YY")}`,
+                  alignment: "right",
+                },
+              ],
+              margin: [30, 30],
+              fontSize: 16,
+            },
+            pageSize: "LEGAL",
+            pageOrientation: "landscape",
+            pageMargins: [10, 60, 10, 60],
+            content: [
+              {
+                layout: "lightHorizontalLines", // optional
+                table: {
+                  headerRows: 1,
+                  widths: [
+                    "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
+                  body,
+                },
+                margin: [20, 50],
+              },
+            ],
+          };
+        }
 
         const options = {
           // ...
@@ -790,6 +697,16 @@ module.exports = {
                 type: "application/octet-stream",
                 name: `${order.orderNumber}.xls`,
               },
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  order.ticket || ''
+                ),
+                type: "image",
+                name: order.ticket,
+              }
             ],
           });
 
@@ -825,7 +742,7 @@ module.exports = {
           );
         case "ticket":
           return res.download(
-            path.join(__dirname, "..", "data","tickets", order.ticket)
+            path.join(__dirname, "..", "data", "tickets", order.ticket)
           );
         default:
           break;
