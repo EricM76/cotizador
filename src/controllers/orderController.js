@@ -436,7 +436,7 @@ module.exports = {
 
         /* PDF VENDEDOR/ADMIN/CONTROL */
         let docDefinition;
-        if (req.session.userLogin.rol !== 3) {
+        if (req.session.userLogin.rolName !== "medidor") {
 
           const body = [
             ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
