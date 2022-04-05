@@ -100,12 +100,42 @@ $('systems').addEventListener('change', async ({ target }) => {
 
     getData(target);
 
-    if(target.value == 112 || target.value == 179){
-        $('width-box').classList.add('box-hidden')
-        $('railWidth-box').classList.remove('box-hidden')
+    /* 114: Guias (laterales?) 127: Cenefa */
+    if(target.value == 114 || target.value == 127){
+
+        $('large-box').classList.remove('box-hidden');
+        $('railWidth-box').classList.add('box-hidden');
+
+        $('width-box').classList.add('box-hidden');
+        $('cloths-box').classList.add('box-hidden');
+        $('colors-box').classList.add('box-hidden');
+        $('supports-box').classList.add('box-hidden');
+        $('patterns-box').classList.add('box-hidden');
+        $('chains-box').classList.add('box-hidden');
+        $('heigth-box').classList.add('box-hidden');
+        /* 179: Bandas Verticales */
+    }else if(target.value == 179){
+        $('railWidth-box').classList.remove('box-hidden');
+        $('large-box').classList.add('box-hidden');
+
+        $('width-box').classList.add('box-hidden');
+        $('cloths-box').classList.add('box-hidden');
+        $('colors-box').classList.add('box-hidden');
+        $('supports-box').classList.add('box-hidden');
+        $('patterns-box').classList.add('box-hidden');
+        $('chains-box').classList.add('box-hidden');
+        $('heigth-box').classList.add('box-hidden');
     }else{
-        $('width-box').classList.remove('box-hidden')
-        $('railWidth-box').classList.add('box-hidden')
+        $('railWidth-box').classList.add('box-hidden');
+        $('large-box').classList.add('box-hidden');
+
+        $('width-box').classList.remove('box-hidden');
+        $('cloths-box').classList.remove('box-hidden');
+        $('colors-box').classList.remove('box-hidden');
+        $('supports-box').classList.remove('box-hidden');
+        $('patterns-box').classList.remove('box-hidden');
+        $('chains-box').classList.remove('box-hidden');
+        $('heigth-box').classList.remove('box-hidden');
     }
 
 });
@@ -251,14 +281,25 @@ $('form-quoter').addEventListener('submit', async (e) => {
     if($('width-box').classList.contains('box-hidden')){
         $('width').value = "none"
     }
+    if ($('systems').value == 114 || $('systems').value == 127) {
+
+        $('cloths').value = 626; //tela: ninguno
+        $('colors').value = 17; //color: blanco
+        $('supports').value = 18 //soporte: ninguno;
+        $('patterns').value = 6; //modelo: ninguno
+        $('chains').value = 6; //cadena: 0.0
+        $('heigth').value = "none";
+
+    }
 
     for (let i = 0; i < elements.length - 2; i++) {
 
         if (!elements[i].value) {
             error = true;
             elements[i].classList.add('is-invalid');
-          
         }
+        console.log(elements[i].name ,elements[i].value)
+
     }
     if (!error) {
         try {
@@ -281,7 +322,6 @@ $('form-quoter').addEventListener('submit', async (e) => {
                 })
             });
             const result = await response.json();
-
             if (result.ok) {
                 $('amount-box').classList.add('alert-success')
                 $('amount-box').classList.remove('alert-danger')

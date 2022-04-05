@@ -366,7 +366,7 @@ module.exports = {
       let data;
       if (price) {
         data = price.amount;
-
+        console.log('<<<<>>>>>>>>>>>>>>>',data)
         if(grid){
           data = data + grid.price;
         }
