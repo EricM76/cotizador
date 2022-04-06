@@ -93,12 +93,47 @@ $('systems').addEventListener('change', async ({ target }) => {
 
     getData(target);
 
-    if(target.value == 112 || target.value == 179){
-        $('width-box').classList.add('box-hidden')
-        $('railWidth-box').classList.remove('box-hidden')
+    if(target.value == 114 || target.value == 127){
+        $('large-box').classList.remove('box-hidden');
+        
+        $('railWidth-box').classList.add('box-hidden');
+        $('width-box').classList.add('box-hidden');
+        $('cloths-box').classList.add('box-hidden');
+        $('colors-box').classList.add('box-hidden');
+        $('supports-box').classList.add('box-hidden');
+        $('patterns-box').classList.add('box-hidden');
+        $('chains-box').classList.add('box-hidden');
+        $('heigth-box').classList.add('box-hidden');
+
+        $('large').value = null;
+
+        /* 179: Bandas Verticales */
+    }else if(target.value == 179){
+        $('railWidth-box').classList.remove('box-hidden');
+        $('large-box').classList.remove('box-hidden');
+        $('cloths-box').classList.remove('box-hidden');
+        $('colors-box').classList.remove('box-hidden');
+
+        $('width-box').classList.add('box-hidden');
+        $('supports-box').classList.add('box-hidden');
+        $('patterns-box').classList.add('box-hidden');
+        $('chains-box').classList.add('box-hidden');
+        $('heigth-box').classList.add('box-hidden');
+        
+        $('large').value = null;
+        $('railWidth').value = null;
+
     }else{
-        $('width-box').classList.remove('box-hidden')
-        $('railWidth-box').classList.add('box-hidden')
+        $('width-box').classList.remove('box-hidden');
+        $('cloths-box').classList.remove('box-hidden');
+        $('colors-box').classList.remove('box-hidden');
+        $('supports-box').classList.remove('box-hidden');
+        $('patterns-box').classList.remove('box-hidden');
+        $('chains-box').classList.remove('box-hidden');
+        $('heigth-box').classList.remove('box-hidden');
+
+        $('railWidth-box').classList.add('box-hidden');
+        $('large-box').classList.add('box-hidden');
     }
 
 });
@@ -238,11 +273,26 @@ $('form-quoter').addEventListener('submit', async (e) => {
     let elements = e.target.elements
     let error = false;
 
-    if($('railWidth-box').classList.contains('box-hidden')){
-        $('railWidth').value = "none"
-    }
-    if($('width-box').classList.contains('box-hidden')){
-        $('width').value = "none"
+    if ($('systems').value == 114 || $('systems').value == 127) {
+
+        $('cloths').value = 626; //tela: ninguno
+        $('colors').value = 17; //color: ninguno
+        $('supports').value = 18 //soporte: ninguno;
+        $('patterns').value = 6; //modelo: ninguno
+        $('chains').value = 6; //cadena: 0.0
+        $('heigth').value = 0;
+        $('width').value = 0;
+        $('railWidth').value = 0;
+
+    }else if($('systems').value == 179){
+        $('supports').value = 18 //soporte: ninguno;
+        $('patterns').value = 6; //modelo: ninguno
+        $('chains').value = 6; //cadena: 0.0
+        $('heigth').value = 0;
+        $('width').value = 0;
+    }else{
+        $('large').value = 0;
+        $('railWidth').value = 0;
     }
 
     for (let i = 0; i < elements.length - 1; i++) {
@@ -252,6 +302,8 @@ $('form-quoter').addEventListener('submit', async (e) => {
             elements[i].classList.add('is-invalid');
           
         }
+        console.log(elements[i].name,elements[i].value)
+
     }
     if (!error) {
         try {
@@ -269,7 +321,9 @@ $('form-quoter').addEventListener('submit', async (e) => {
                     chain: $('chains').value,
                     width: $('width').value.trim(),
                     heigth: $('heigth').value.trim(),
-                    reference: $('referenceQuoter').value.trim()
+                    reference: $('referenceQuoter').value.trim(),
+                    rol : $('rol') ? $('rol').value : 1,
+                    large : $('large').value
                 })
             });
             const result = await response.json();
@@ -280,10 +334,23 @@ $('form-quoter').addEventListener('submit', async (e) => {
                 $('amountQuoter-box').removeAttribute('hidden', false)
                 $('amountQuoter').classList.remove('h6')
                 $('amountQuoter').classList.add('h4')
-                $('amountQuoter').innerHTML = `Monto: $ ${result.data}`;
+                $('amountQuoter').innerHTML = result.rol !== 3 ? `Monto: $ ${result.data}` : 'Producto encontrado';
 
                 if(window.location.pathname === '/quoters'){
-                    window.location.reload()
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Agregando a sus cotizaciones...',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        didClose : () => {
+                            window.location.reload()
+
+                        }
+                      })
+                   
+
                 }else{
                     let query = new URLSearchParams(window.location.search);
                     let ids = JSON.parse(query.get('quoters'));

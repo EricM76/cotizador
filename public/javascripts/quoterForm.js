@@ -281,16 +281,10 @@ $('form-quoter').addEventListener('submit', async (e) => {
     let elements = e.target.elements
     let error = false;
 
-  /*   if($('railWidth-box').classList.contains('box-hidden')){
-        $('railWidth').value = "none"
-    }
-    if($('width-box').classList.contains('box-hidden')){
-        $('width').value = "none"
-    } */
     if ($('systems').value == 114 || $('systems').value == 127) {
 
         $('cloths').value = 626; //tela: ninguno
-        $('colors').value = 17; //color: blanco
+        $('colors').value = 17; //color: ninguno
         $('supports').value = 18 //soporte: ninguno;
         $('patterns').value = 6; //modelo: ninguno
         $('chains').value = 6; //cadena: 0.0

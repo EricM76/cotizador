@@ -19,64 +19,74 @@
                         <label for="systems">Sistema</label>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3"  id="cloths-box">
 
                       <div class="form-floating">
-                        <select class="form-select" id="cloths" required>
+                        <select class="form-select" id="cloths" name="cloths"  required>
                           
                         </select>
                         <label for="cloths">Tela</label>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3" id="colors-box">
 
                       <div class="form-floating">
-                        <select class="form-select" id="colors" required>
+                        <select class="form-select" id="colors" name="colors" required>
                        
                         </select>
                         <label for="colors">Color</label>
                       </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3" id="supports-box">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="supports" required>
+                        <select class="form-select" id="supports" name="supports" required>
                          
                         </select>
                         <label for="supports">Soporte</label>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3"  id="patterns-box">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="patterns" required>
+                        <select class="form-select" id="patterns" name="patterns" required>
                          
                         </select>
                         <label for="patterns">Modelo</label>
                       </div>
                     </div>
 
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3"  id="chains-box">
 
                       <div class="form-floating ">
-                        <select class="form-select" id="chains" required>
+                        <select class="form-select" id="chains" name="chains" required>
                          
                         </select>
                         <label for="chains">Cadena</label>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                      <div class="form-floating mb-3" id="width-box">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3" id="width-box">
+                      <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="width" name="width" required>
                         <label for="width">Ancho de paño (cm)</label>
                       </div>
-                      <div class="form-floating mb-3 box-hidden" id="railWidth-box">
+                     
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3  box-hidden" id="railWidth-box">
+                      <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="railWidth" name="railWidth" required>
                         <label for="railWidth">Ancho de riel (cm)</label>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                    <div class="col-12 col-md-6 col-lg-4 mb-3 box-hidden" id="large-box">
+                      <div class="form-floating mb-3 " >
+                        <input type="text" class="form-control" id="large" name="large" required>
+                        <label for="large">Largo</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 mb-3" id="heigth-box">
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="heigth" name="heigth" required>
                         <label for="heigth">Alto (cm)</label>
@@ -97,7 +107,7 @@
                   </div>
                     <div class="d-flex flex-column flex-md-row justify-content-end flex-wrap">
                       <a type="button" class="btn btn-secondary w-sm-100 m-1" data-bs-dismiss="modal">CANCELAR</a>
-                      <button type="submit" class="btn buttons__btn-custom w-sm-100 m-1">COTIZAR CORTINA</button>
+                      <button type="submit" class="btn buttons__btn-custom w-sm-100 my-1">COTIZAR CORTINA</button>
                     </div>
                   </form>
                 </div>
