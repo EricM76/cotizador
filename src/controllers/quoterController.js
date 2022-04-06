@@ -312,6 +312,7 @@ module.exports = {
         railWidth,
         heigth,
         reference,
+        large
       } = req.body;
 
       const price = await db.Price.findOne({
@@ -324,7 +325,7 @@ module.exports = {
       });
       
       let grid;
-      if(width !== "none"){
+      if(width !== 0){
         grid = await db.Grid.findOne({
           where: {
             width: +width,
@@ -366,7 +367,6 @@ module.exports = {
       let data;
       if (price) {
         data = price.amount;
-        console.log('<<<<>>>>>>>>>>>>>>>',data)
         if(grid){
           data = data + grid.price;
         }
@@ -384,6 +384,10 @@ module.exports = {
         }
         if (priceChain) {
           data = data + priceChain.price;
+        }
+        if(system == 114 || system == 127){
+          console.log('>>>>>>>>',large);
+          data = data * (+large / 100)
         }
       }
       console.log('====================================');

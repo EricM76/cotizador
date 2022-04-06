@@ -102,10 +102,9 @@ $('systems').addEventListener('change', async ({ target }) => {
 
     /* 114: Guias (laterales?) 127: Cenefa */
     if(target.value == 114 || target.value == 127){
-
         $('large-box').classList.remove('box-hidden');
+        
         $('railWidth-box').classList.add('box-hidden');
-
         $('width-box').classList.add('box-hidden');
         $('cloths-box').classList.add('box-hidden');
         $('colors-box').classList.add('box-hidden');
@@ -113,22 +112,26 @@ $('systems').addEventListener('change', async ({ target }) => {
         $('patterns-box').classList.add('box-hidden');
         $('chains-box').classList.add('box-hidden');
         $('heigth-box').classList.add('box-hidden');
+
+        $('large').value = null;
+
         /* 179: Bandas Verticales */
     }else if(target.value == 179){
         $('railWidth-box').classList.remove('box-hidden');
-        $('large-box').classList.add('box-hidden');
+        $('large-box').classList.remove('box-hidden');
+        $('cloths-box').classList.remove('box-hidden');
+        $('colors-box').classList.remove('box-hidden');
 
         $('width-box').classList.add('box-hidden');
-        $('cloths-box').classList.add('box-hidden');
-        $('colors-box').classList.add('box-hidden');
         $('supports-box').classList.add('box-hidden');
         $('patterns-box').classList.add('box-hidden');
         $('chains-box').classList.add('box-hidden');
         $('heigth-box').classList.add('box-hidden');
-    }else{
-        $('railWidth-box').classList.add('box-hidden');
-        $('large-box').classList.add('box-hidden');
+        
+        $('large').value = null;
+        $('railWidth').value = null;
 
+    }else{
         $('width-box').classList.remove('box-hidden');
         $('cloths-box').classList.remove('box-hidden');
         $('colors-box').classList.remove('box-hidden');
@@ -136,6 +139,9 @@ $('systems').addEventListener('change', async ({ target }) => {
         $('patterns-box').classList.remove('box-hidden');
         $('chains-box').classList.remove('box-hidden');
         $('heigth-box').classList.remove('box-hidden');
+
+        $('railWidth-box').classList.add('box-hidden');
+        $('large-box').classList.add('box-hidden');
     }
 
 });
@@ -275,12 +281,12 @@ $('form-quoter').addEventListener('submit', async (e) => {
     let elements = e.target.elements
     let error = false;
 
-    if($('railWidth-box').classList.contains('box-hidden')){
+  /*   if($('railWidth-box').classList.contains('box-hidden')){
         $('railWidth').value = "none"
     }
     if($('width-box').classList.contains('box-hidden')){
         $('width').value = "none"
-    }
+    } */
     if ($('systems').value == 114 || $('systems').value == 127) {
 
         $('cloths').value = 626; //tela: ninguno
@@ -288,17 +294,28 @@ $('form-quoter').addEventListener('submit', async (e) => {
         $('supports').value = 18 //soporte: ninguno;
         $('patterns').value = 6; //modelo: ninguno
         $('chains').value = 6; //cadena: 0.0
-        $('heigth').value = "none";
+        $('heigth').value = 0;
+        $('width').value = 0;
+        $('railWidth').value = 0;
 
+    }else if($('systems').value == 179){
+        $('supports').value = 18 //soporte: ninguno;
+        $('patterns').value = 6; //modelo: ninguno
+        $('chains').value = 6; //cadena: 0.0
+        $('heigth').value = 0;
+        $('width').value = 0;
+    }else{
+        $('large').value = 0;
+        $('railWidth').value = 0;
     }
 
-    for (let i = 0; i < elements.length - 2; i++) {
+    for (let i = 0; i < elements.length - 1; i++) {
 
         if (!elements[i].value) {
             error = true;
             elements[i].classList.add('is-invalid');
         }
-        console.log(elements[i].name ,elements[i].value)
+        console.log(elements[i].name,elements[i].value)
 
     }
     if (!error) {
@@ -318,7 +335,8 @@ $('form-quoter').addEventListener('submit', async (e) => {
                     width: $('width').value.trim(),
                     heigth: $('heigth').value.trim(),
                     reference: $('reference').value.trim(),
-                    rol : $('rol') ? $('rol').value : 1
+                    rol : $('rol') ? $('rol').value : 1,
+                    large : $('large').value
                 })
             });
             const result = await response.json();
