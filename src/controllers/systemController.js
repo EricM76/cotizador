@@ -190,7 +190,6 @@ module.exports = {
 
     Promise.all([system, cloths, colors, supports, patterns, chains])
       .then(([system, cloths, colors, supports, patterns, chains]) => {
-        //return res.send(system)
         return res.render("systemEdit", {
           system,
           cloths,

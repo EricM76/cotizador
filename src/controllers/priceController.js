@@ -51,7 +51,9 @@ module.exports = {
             idLocal,
             visible: visible ? true : false,
           });
-          return res.redirect("/prices?create=true");
+          //return res.redirect("/prices?create=true");
+          return res.redirect("/prices/edit/item?update=true");
+
         } catch (error) {
           console.log(error);
         }
@@ -189,9 +191,12 @@ module.exports = {
         },
       });
 
-      console.log("====================================");
-      console.log(price);
-      console.log("====================================");
+      console.log('====================================');
+      console.log('SISTEMA', systemId);
+      console.log('COLOR', colorId);
+      console.log('TELA', clothId);
+      console.log('PRECIO', price);
+      console.log('====================================');
 
       if (price) {
         return res.json({

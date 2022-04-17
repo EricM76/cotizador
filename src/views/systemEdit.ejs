@@ -48,7 +48,7 @@
                   <div class="row">
                     <div class="col-12 col-md-6">
                       <% cloths.forEach((cloth,index)=> { %>
-                        <% if (index < cloths.length / 2) { %>
+                        <% if (index < (cloths.length / 2).toFixed(0)) { %>
                           <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="<%= cloth.id %>"
                               id="cloths<%= cloth.id %>" <%=clothsIds.includes(cloth.id) && 'checked' %> name="cloths">
@@ -61,15 +61,18 @@
                             <% }) %>
                     </div>
                     <div class="col-12 col-md-6 ">
-                      <% for( let i=cloths.length / 2; i < cloths.length; i++ ) { %>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="<%= cloths[i].id %>"
-                            id="cloths<%= cloths[i].id %>" <%=clothsIds.includes(cloths[i].id) && 'checked' %>
-                          name="cloths">
-                          <label class="form-check-label" for="cloths<%= cloths[i].id %>">
-                            <%= cloths[i].name %>
-                          </label>
-                        </div>
+                      <% for( let i=(cloths.length / 2).toFixed(0); i < cloths.length; i++ ) { %>
+                        <% if (cloths[i]) { %>
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="<%= cloths[i].id %>"
+                              id="cloths<%= cloths[i].id %>" <%=clothsIds.includes(cloths[i].id) && 'checked' %>
+                            name="cloths">
+                            <label class="form-check-label" for="cloths<%= cloths[i].id %>">
+                              <%= cloths[i].name %>
+                            </label>
+                          </div>
+                        <% } %>
+                     
                         <% } %>
                     </div>
                   </div>
