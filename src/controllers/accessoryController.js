@@ -4,20 +4,20 @@ const { Op } = require("sequelize");
 module.exports = {
   index: async (req, res) => {
     let total = await db.System.count({
-      where: { 
+      where: {
         visible: true,
-        accessory : false,
+        accessory: true,
       },
     });
     db.System.findAll({
       where: {
         visible: true,
-        accessory : false,
+        accessory: true,
       },
       limit: 8,
     })
       .then((items) =>
-        res.render("systems", {
+        res.render("accessories", {
           items,
           total,
           active: 1,
@@ -62,7 +62,7 @@ module.exports = {
 
     Promise.all([cloths, colors, supports, patterns, chains])
       .then(([cloths, colors, supports, patterns, chains]) => {
-        return res.render("systemAdd", {
+        return res.render("accessoryAdd", {
           cloths,
           colors,
           supports,
@@ -150,10 +150,10 @@ module.exports = {
       console.log(error);
     }
 
-    res.redirect("/systems");
+    res.redirect("/accessories");
   },
   detail: (req, res) => {
-    res.render("systemDetail");
+    res.render("accessoryDetail");
   },
   edit: (req, res) => {
     const system = db.System.findByPk(req.params.id, {
@@ -194,7 +194,7 @@ module.exports = {
 
     Promise.all([system, cloths, colors, supports, patterns, chains])
       .then(([system, cloths, colors, supports, patterns, chains]) => {
-        return res.render("systemEdit", {
+        return res.render("accessoryEdit", {
           system,
           cloths,
           colors,
@@ -215,49 +215,9 @@ module.exports = {
       name,
       price,
       idLocal,
-      cloths,
-      colors,
-      supports,
-      patterns,
-      chains,
       visible,
+      accessory,
     } = req.body;
-    cloths = typeof cloths === "string" ? cloths.split() : cloths;
-    colors = typeof colors === "string" ? colors.split() : colors;
-    supports = typeof supports === "string" ? supports.split() : supports;
-    patterns = typeof patterns === "string" ? patterns.split() : patterns;
-    chains = typeof chains === "string" ? chains.split() : chains;
-
-    cloths =
-      cloths &&
-      cloths.map((cloth) => ({
-        systemId: req.params.id,
-        clothId: cloth,
-      }));
-    colors =
-      colors &&
-      colors.map((color) => ({
-        systemId: req.params.id,
-        colorId: color,
-      }));
-    supports =
-      supports &&
-      supports.map((support) => ({
-        systemId: req.params.id,
-        supportId: support,
-      }));
-    patterns =
-      patterns &&
-      patterns.map((pattern) => ({
-        systemId: req.params.id,
-        patternId: pattern,
-      }));
-    chains =
-      chains &&
-      chains.map((chain) => ({
-        systemId: req.params.id,
-        chainId: chain,
-      }));
 
     try {
       await db.System.update(
@@ -266,47 +226,23 @@ module.exports = {
           price,
           idLocal,
           visible: visible ? true : false,
+          accessory: accessory ? true : false,
         },
         {
           where: { id: req.params.id },
         }
       );
-      await db.SystemCloth.destroy({
-        where: { systemId: req.params.id },
-      });
-      cloths && (await db.SystemCloth.bulkCreate(cloths, { validate: true }));
 
-      await db.SystemColor.destroy({
-        where: { systemId: req.params.id },
-      });
-      colors && (await db.SystemColor.bulkCreate(colors, { validate: true }));
-
-      await db.SystemSupport.destroy({
-        where: { systemId: req.params.id },
-      });
-      supports &&
-        (await db.SystemSupport.bulkCreate(supports, { validate: true }));
-
-      await db.SystemPattern.destroy({
-        where: { systemId: req.params.id },
-      });
-      patterns &&
-        (await db.SystemPattern.bulkCreate(patterns, { validate: true }));
-
-      await db.SystemChain.destroy({
-        where: { systemId: req.params.id },
-      });
-      chains && (await db.SystemChain.bulkCreate(chains, { validate: true }));
     } catch (error) {
       console.log(error);
     }
 
-    return res.redirect("/systems");
+    return res.redirect("/accessories");
   },
   remove: async (req, res) => {
     try {
-      await db.System.destroy({ where: { id: req.params.id }});
-      res.redirect("/systems");
+      await db.System.destroy({ where: { id: req.params.id } });
+      res.redirect("/accessories");
     } catch (error) {
       console.log(error);
     }
@@ -322,7 +258,6 @@ module.exports = {
             name: {
               [Op.substring]: keywords,
             },
-            accessory : false,
           },
         });
         items = await db.System.findAll({
@@ -330,7 +265,6 @@ module.exports = {
             name: {
               [Op.substring]: keywords,
             },
-            accessory : false,
           },
           order: [order || "id"],
           limit: 8,
@@ -340,7 +274,7 @@ module.exports = {
         total = await db.System.count({
           where: {
             visible: filter || true,
-            accessory : false,
+            accessory: true,
             name: {
               [Op.substring]: keywords,
             },
@@ -349,7 +283,7 @@ module.exports = {
         items = await db.System.findAll({
           where: {
             visible: filter || true,
-            accessory : false,
+            accessory: true,
             name: {
               [Op.substring]: keywords,
             },
@@ -359,7 +293,7 @@ module.exports = {
           offset: active && +active * 8 - 8,
         });
       }
-      return res.render("systems", {
+      return res.render("accessories", {
         items,
         total,
         active,

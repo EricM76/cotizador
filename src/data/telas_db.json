@@ -4194,7 +4194,7 @@
   },
   {
     "idLocal": 600,
-    "name": "Blackout STD.",
+    "name": "Blackout Standard",
     "price": 0,
     "visible": 1,
     "width":0
@@ -4523,7 +4523,7 @@
   },
   {
     "idLocal": 647,
-    "name": "Voile escoces",
+    "name": "Voile Escoces",
     "price": 0,
     "visible": 1,
     "width":0
@@ -4586,9 +4586,9 @@
   },
   {
     "idLocal": 656,
-    "name": "PREMIUM BKO",
+    "name": "Blackout Premium",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4600,7 +4600,7 @@
   },
   {
     "idLocal": 658,
-    "name": "BKO Textil",
+    "name": "Blackout Textil",
     "price": 0,
     "visible": 1,
     "width":0
@@ -4677,7 +4677,7 @@
   },
   {
     "idLocal": 669,
-    "name": "kenia",
+    "name": "Kenia",
     "price": 0,
     "visible": 1,
     "width":0
@@ -5113,7 +5113,7 @@
     "idLocal": 731,
     "name": "Blackout Premium",
     "price": 0,
-    "visible": 1,
+    "visible": 0,
     "width":0
   },
   {

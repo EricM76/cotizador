@@ -17,6 +17,9 @@ module.exports = {
       visible:{
         type: Sequelize.BOOLEAN
       },
+      accessory:{
+        type: Sequelize.BOOLEAN
+      },
       idLocal :{
         type: Sequelize.INTEGER
       },

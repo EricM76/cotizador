@@ -472,22 +472,18 @@ module.exports = {
           console.log('ANCHO TOTAL', width);
           console.log('====================================');
 
-          let priceCenefa = await db.Price.findOne({
+          let priceCenefa = await db.System.findOne({
             where: {
-              systemId: 127, //cenefa
-              clothId: 626, //ninguno
-              colorId: 17, //ninguno
-              visible: true,
+              id: 335, //eclipse cenefa
             },
-            include: { all: true }
           })
 
           console.log('====================================');
           console.log('PRECIO', amount);
           console.log('ANCHO CENEFA', width);
-          console.log('PRECIO CENEFA', priceCenefa.amount);
+          console.log('PRECIO CENEFA', priceCenefa.price);
           console.log('====================================');
-          amount = width < 1 ? amount + priceCenefa.amount : amount + (width * priceCenefa.amount)
+          amount = width < 1 ? amount + priceCenefa.price : amount + (width * priceCenefa.price)
         }
 
       }

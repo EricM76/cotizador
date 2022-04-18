@@ -59,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     price: DataTypes.INTEGER,
     visible : DataTypes.BOOLEAN,
+    accessory: DataTypes.BOOLEAN,
     idLocal : DataTypes.INTEGER,
   }, {
     sequelize,
