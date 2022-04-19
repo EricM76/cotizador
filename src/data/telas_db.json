@@ -4210,21 +4210,21 @@
     "idLocal": 602,
     "name": "BKO USA",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
     "idLocal": 603,
     "name": "Madraz Liviano",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
     "idLocal": 604,
     "name": "Congo",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4322,7 +4322,7 @@
     "idLocal": 618,
     "name": "Crepe",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4553,7 +4553,7 @@
     "idLocal": 651,
     "name": "Impresa Microperforada",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4595,7 +4595,7 @@
     "idLocal": 657,
     "name": "Amazonia",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4630,14 +4630,14 @@
     "idLocal": 662,
     "name": "Botone",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
     "idLocal": 663,
     "name": "Crash",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4665,7 +4665,7 @@
     "idLocal": 667,
     "name": "Impreso Blackout",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4700,7 +4700,7 @@
     "idLocal": 672,
     "name": "Gaza de Voile",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4756,7 +4756,7 @@
     "idLocal": 680,
     "name": "Angola",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4840,7 +4840,7 @@
     "idLocal": 692,
     "name": "Angolabko",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -4917,14 +4917,14 @@
     "idLocal": 703,
     "name": "Color Gross",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
     "idLocal": 704,
     "name": "Color Tapicero Madraz",
     "price": 180,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -5029,21 +5029,21 @@
     "idLocal": 719,
     "name": "7% Screen",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
     "idLocal": 720,
     "name": "ML Palermo",
     "price": 140,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
     "idLocal": 721,
     "name": "ML Voile",
     "price": 130,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
@@ -5204,7 +5204,7 @@
     "idLocal": 744,
     "name": "2da Screen",
     "price": 0,
-    "visible": 0,
+    "visible": 1,
     "width":0
   },
   {
