@@ -327,9 +327,13 @@ module.exports = {
       });
 
       let amount = price && price.amount;
-
+      console.log('====================================');
+      console.log('RESULTADO:::::',amount);
+      console.log('====================================');
       if (!amount) {
-        return null
+        return res.status(200).json({
+          ok: false
+        })
       }
 
       console.log('====================================');
