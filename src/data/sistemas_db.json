@@ -2511,5 +2511,12 @@
         "price": 0,
         "visible": 0,
         "accessory" : 0
+    },
+    {
+        "idLocal": 360,
+        "name": "Riel Europeo",
+        "price": 1600,
+        "visible": 1,
+        "accessory" : 1
     }
 ]

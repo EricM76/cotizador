@@ -45,7 +45,7 @@ const getData = async (target) => {
 
         const response = await fetch(`/quoters/api/load/${target.value}`);
         const result = await response.json();
-        console.error(result)
+        console.log(result)
 
         $('cloths').disabled = false;
         $('colors').disabled = false;
@@ -57,7 +57,13 @@ const getData = async (target) => {
         $('reference').disabled = false;
         $('spinner').hidden = true;
 
-        const { cloths, colors, supports, patterns, chains } = result.data;
+        let { cloths, colors, supports, patterns, chains } = result.data;
+
+        cloths = cloths.sort((a,b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
+
+        console.log('====================================');
+        console.log(cloths);
+        console.log('====================================');
 
         $('cloths').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
         cloths.forEach(cloth => {
@@ -100,14 +106,14 @@ $('systems').addEventListener('change', async ({ target }) => {
 
     getData(target);
 
-    /* 114: Guias (laterales?) 127: Cenefa */
-    if (target.value == 114 || target.value == 127) {
+    /* 114: GUIAS */
+    if (target.value == 114) {
         $('large-box').classList.remove('box-hidden');
+        $('colors-box').classList.remove('box-hidden');
 
         $('railWidth-box').classList.add('box-hidden');
         $('width-box').classList.add('box-hidden');
         $('cloths-box').classList.add('box-hidden');
-        $('colors-box').classList.add('box-hidden');
         $('supports-box').classList.add('box-hidden');
         $('patterns-box').classList.add('box-hidden');
         $('chains-box').classList.add('box-hidden');
@@ -115,7 +121,22 @@ $('systems').addEventListener('change', async ({ target }) => {
 
         $('large').value = null;
 
-        /* 179: Bandas Verticales */
+    /* 127: CENEFA */
+    }else if(target.value == 127){
+        $('large-box').classList.remove('box-hidden');
+        $('colors-box').classList.remove('box-hidden');
+        $('supports-box').classList.remove('box-hidden');
+
+        $('railWidth-box').classList.add('box-hidden');
+        $('width-box').classList.add('box-hidden');
+        $('cloths-box').classList.add('box-hidden');
+        $('patterns-box').classList.add('box-hidden');
+        $('chains-box').classList.add('box-hidden');
+        $('heigth-box').classList.add('box-hidden');
+
+        $('large').value = null;
+
+        /* 179: BANDAS */
     } else if (target.value == 179) {
         $('railWidth-box').classList.remove('box-hidden');
         $('large-box').classList.remove('box-hidden');
@@ -415,10 +436,9 @@ $('form-quoter').addEventListener('submit', async (e) => {
     let elements = e.target.elements
     let error = false;
 
-    if ($('systems').value == 114 || $('systems').value == 127) {
+    if ($('systems').value == 114) {
 
         $('cloths').value = 626; //tela: ninguno
-        $('colors').value = 1; //color: blanco
         $('supports').value = 18 //soporte: ninguno;
         $('patterns').value = 6; //modelo: ninguno
         $('chains').value = 6; //cadena: 0.0
@@ -426,6 +446,14 @@ $('form-quoter').addEventListener('submit', async (e) => {
         $('width').value = 0;
         $('railWidth').value = 0;
 
+    } else if ($('systems').value == 127){
+        $('cloths').value = 626; //tela: ninguno
+        $('patterns').value = 6; //modelo: ninguno
+        $('chains').value = 6; //cadena: 0.0
+        $('heigth').value = 0;
+        $('width').value = 0;
+        $('railWidth').value = 0;
+    
     } else if ($('systems').value == 179) {
         $('large').value = 0;
         $('width').value = 0;
@@ -436,7 +464,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
 
     for (let i = 0; i < elements.length - 1; i++) {
 
-        if (!elements[i].value) {
+        if (!elements[i].value || elements[i].classList.contains('is-invalid')) {
             error = true;
             elements[i].classList.add('is-invalid');
         }

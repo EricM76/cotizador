@@ -9,7 +9,7 @@
     "idLocal": 2,
     "name": 2.5,
     "price": 40,
-    "visible": 0
+    "visible": 1
   },
   {
     "idLocal": 3,
@@ -21,7 +21,7 @@
     "idLocal": 4,
     "name": 3.5,
     "price": 120,
-    "visible": 0
+    "visible": 1
   },
   {
     "idLocal": 5,
@@ -33,6 +33,6 @@
     "idLocal": 6,
     "name": 0,
     "price": 0,
-    "visible": 0
+    "visible": 1
   }
 ]
