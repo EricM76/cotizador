@@ -62,10 +62,10 @@ const getData = async (target) => {
         let { cloths, colors, supports, patterns, chains } = result.data;
 
         cloths = cloths.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
-
-        console.log('====================================');
-        console.log(cloths);
-        console.log('====================================');
+        colors = colors.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
+        supports = supports.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
+        patterns = patterns.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
+        chains = chains.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
 
         $('cloths').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
         cloths.forEach(cloth => {
