@@ -36,6 +36,8 @@ window.addEventListener('load', async () => {
 
 const getData = async (target) => {
     $('amount-box').setAttribute('hidden', true)
+    $('errorHeigth').innerHTML = null;
+    $('errorWidth').innerHTML = null
 
 
     try {
