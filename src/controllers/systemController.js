@@ -157,38 +157,47 @@ module.exports = {
   },
   edit: (req, res) => {
     const system = db.System.findByPk(req.params.id, {
-      include: {
-        all: true,
-      },
+      include: [
+        { association: "chains", attributes: ["id", "name"] },
+        { association: "cloths", attributes: ["id", "name"] },
+        { association: "colors", attributes: ["id", "name"] },
+        { association: "patterns", attributes: ["id", "name"] },
+        { association: "supports", attributes: ["id", "name"] },
+      ],
     });
     const cloths = db.Cloth.findAll({
       where: {
         visible: true,
       },
+      attributes : ['id','name'],
       order: ["name"],
     });
     const colors = db.Color.findAll({
       where: {
         visible: true,
       },
+      attributes : ['id','name'],
       order: ["name"],
     });
     const supports = db.Support.findAll({
       where: {
         visible: true,
       },
+      attributes : ['id','name'],
       order: ["name"],
     });
     const patterns = db.Pattern.findAll({
       where: {
         visible: true,
       },
+      attributes : ['id','name'],
       order: ["name"],
     });
     const chains = db.Chain.findAll({
       where: {
         visible: true,
       },
+      attributes : ['id','name'],
       order: ["name"],
     });
 

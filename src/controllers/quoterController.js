@@ -462,6 +462,9 @@ module.exports = {
       if (amount) {
         let quotation;
         if (req.session.userLogin.rol > 2) {
+          console.log('====================================');
+          console.log(+width);
+          console.log('====================================');
           quotation = await db.Quotation.create({
             clothWidth: +width,
             heigth: +heigth,
@@ -533,6 +536,17 @@ module.exports = {
   },
   quoterUpdate: async (systemId, clothId, colorId, supportId, patternId, chainId, width, heigth) => {
 
+    console.log('====================================');
+    console.log('SYSTEM',systemId);
+    console.log('CLOTH',clothId);
+    console.log('COLOR',supportId);
+    console.log('SUPPORT',supportId);
+    console.log('PATTERN',patternId);
+    console.log('CHAIN',chainId);
+    console.log('WIDTH',width);
+    console.log('HEIGTH',heigth);
+    console.log('====================================');
+    
     let system = systemId;
     let cloth = clothId;
     let color = colorId;
