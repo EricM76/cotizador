@@ -59,7 +59,7 @@ const getData = async (target) => {
 
         let { cloths, colors, supports, patterns, chains } = result.data;
 
-        cloths = cloths.sort((a,b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
+        cloths = cloths.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
 
         console.log('====================================');
         console.log(cloths);
@@ -121,8 +121,8 @@ $('systems').addEventListener('change', async ({ target }) => {
 
         $('large').value = null;
 
-    /* 127: CENEFA */
-    }else if(target.value == 127){
+        /* 127: CENEFA */
+    } else if (target.value == 127) {
         $('large-box').classList.remove('box-hidden');
         $('colors-box').classList.remove('box-hidden');
         $('supports-box').classList.remove('box-hidden');
@@ -146,12 +146,24 @@ $('systems').addEventListener('change', async ({ target }) => {
         $('supports-box').classList.remove('box-hidden');
         $('patterns-box').classList.remove('box-hidden');
         $('chains-box').classList.remove('box-hidden');
-        
+
         $('width-box').classList.add('box-hidden');
         $('large-box').classList.add('box-hidden');
 
         $('heigth').value = null;
         $('railWidth').value = null;
+
+    } else if (target.value == 112 || target.value == 116 || target.value == 129 || target.value == 130) {
+        $('width-box').classList.remove('box-hidden');
+        $('cloths-box').classList.remove('box-hidden');
+        $('colors-box').classList.remove('box-hidden');
+        $('supports-box').classList.remove('box-hidden');
+        $('patterns-box').classList.remove('box-hidden');
+        $('heigth-box').classList.remove('box-hidden');
+
+        $('railWidth-box').classList.add('box-hidden');
+        $('large-box').classList.add('box-hidden');
+        $('chains-box').classList.add('box-hidden');
 
     } else {
         $('width-box').classList.remove('box-hidden');
@@ -273,7 +285,7 @@ $('width').addEventListener('blur', ({ target }) => {
             if (+target.value > 270) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 target.classList.remove('is-invalid')
@@ -284,7 +296,7 @@ $('width').addEventListener('blur', ({ target }) => {
             if (+target.value > 170) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 170 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorWidth').innerHTML = null
@@ -295,7 +307,7 @@ $('width').addEventListener('blur', ({ target }) => {
             if (+target.value > 350) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 350 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorWidth').innerHTML = null;
@@ -306,7 +318,7 @@ $('width').addEventListener('blur', ({ target }) => {
             if (+target.value > 280) {
                 $('errorHeigth').innerHTML = `El ancho máximo permitido es de 280 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -317,7 +329,7 @@ $('width').addEventListener('blur', ({ target }) => {
             if (+target.value > 280) {
                 $('errorHeigth').innerHTML = `El ancho máximo permitido es de 280 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -328,7 +340,7 @@ $('width').addEventListener('blur', ({ target }) => {
             if (+target.value > 300) {
                 $('errorHeigth').innerHTML = `El ancho máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -338,18 +350,18 @@ $('width').addEventListener('blur', ({ target }) => {
         default:
             break;
     }
-  
+
 })
 //guias (laterales)
-$('large').addEventListener('blur', ({target}) => {
-    if(+target.value > 280){
+$('large').addEventListener('blur', ({ target }) => {
+    if (+target.value > 280) {
         target.classList.add('is-invalid')
-    }else if(!target.value){
+    } else if (!target.value) {
         target.classList.add('is-invalid')
-    }else{
+    } else {
         target.classList.remove('is-invalid')
     }
-   })
+})
 
 $('railWidth').addEventListener('blur', ({ target }) => {
     if (!target.value) {
@@ -364,7 +376,7 @@ $('heigth').addEventListener('blur', ({ target }) => {
             if (+target.value > 300) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -375,7 +387,7 @@ $('heigth').addEventListener('blur', ({ target }) => {
             if (+target.value > 260) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 260 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -386,7 +398,7 @@ $('heigth').addEventListener('blur', ({ target }) => {
             if (+target.value > 310) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 310 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -399,7 +411,7 @@ $('heigth').addEventListener('blur', ({ target }) => {
             if (+target.value > 250) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -410,7 +422,7 @@ $('heigth').addEventListener('blur', ({ target }) => {
             if (+target.value > 250) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -429,15 +441,29 @@ $('reference').addEventListener('blur', ({ target }) => {
     }
 })
 
+$('rol') && $('rol').addEventListener('change', async () => {
+    
+    if ($('systems').value) {
+
+        await sendForm()
+
+    } 
+})
+
 /* enviar formulario */
 
 $('form-quoter').addEventListener('submit', async (e) => {
+   
     e.preventDefault();
-    let elements = e.target.elements
+    await sendForm();
+
+})
+
+const sendForm = async () => {
+    let elements = $('form-quoter').elements;
     let error = false;
 
     if ($('systems').value == 114) {
-
         $('cloths').value = 626; //tela: ninguno
         $('supports').value = 18 //soporte: ninguno;
         $('patterns').value = 6; //modelo: ninguno
@@ -446,17 +472,25 @@ $('form-quoter').addEventListener('submit', async (e) => {
         $('width').value = 0;
         $('railWidth').value = 0;
 
-    } else if ($('systems').value == 127){
+    } else if ($('systems').value == 127) {
         $('cloths').value = 626; //tela: ninguno
         $('patterns').value = 6; //modelo: ninguno
         $('chains').value = 6; //cadena: 0.0
         $('heigth').value = 0;
         $('width').value = 0;
         $('railWidth').value = 0;
-    
+
     } else if ($('systems').value == 179) {
         $('large').value = 0;
         $('width').value = 0;
+    } else if($('systems').value == 112){
+        $('large').value = 0;
+        $('railWidth').value = 0;
+        $('chains').value = 6; //cadena: 0.0
+    } else if($('systems').value == 116 || $('systems').value == 129 || $('systems').value == 130){
+        $('chains').value = 6; //cadena: 0.0
+        $('large').value = 0;
+        $('railWidth').value = 0;
     } else {
         $('large').value = 0;
         $('railWidth').value = 0;
@@ -486,6 +520,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
                     pattern: $('patterns').value,
                     chain: $('chains').value,
                     width: $('width').value.trim(),
+                    railWidth: $('railWidth').value.trim(),
                     heigth: $('heigth').value.trim(),
                     reference: $('reference').value.trim(),
                     rol: $('rol') ? $('rol').value : 1,
@@ -494,6 +529,9 @@ $('form-quoter').addEventListener('submit', async (e) => {
             });
             const result = await response.json();
             if (result.ok) {
+                console.log('====================================');
+                console.log('RESPUESTA DE LA API',result.ok);
+                console.log('====================================');
                 $('amount-box').classList.add('alert-success')
                 $('amount-box').classList.remove('alert-danger')
                 $('amount-box').removeAttribute('hidden', false)
@@ -513,5 +551,4 @@ $('form-quoter').addEventListener('submit', async (e) => {
             console.error(error)
         }
     }
-})
-
+}

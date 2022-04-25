@@ -3,6 +3,16 @@ const moment = require("moment");
 const { Op } = require("sequelize");
 const { sequelize } = require("../database/models");
 
+/* calculadores de precio */
+
+const getPriceRoller = require('../helpers/getPriceRoller');
+const getPriceRomanas = require("../helpers/getPriceRomanas");
+const getPricePaneles = require("../helpers/getPricePaneles");
+const getPricePellizcos = require("../helpers/getPricePellizcos");
+const getPriceCenefa = require("../helpers/getPriceCenefa");
+const getPriceGuias = require("../helpers/getPriceGuias");
+const getPriceBandas = require("../helpers/getPriceBandas");
+
 module.exports = {
   index: async (req, res) => {
     if (req.session.userLogin.rol === 1) {
@@ -328,10 +338,10 @@ module.exports = {
 
       let amount = price && price.amount;
       console.log('====================================');
-      console.log('RESULTADO:::::',amount);
+      console.log('RESULTADO:::::', amount);
       console.log('====================================');
       if (!amount) {
-          return res.status(200).json({
+        return res.status(200).json({
           ok: false
         })
       }
@@ -348,152 +358,11 @@ module.exports = {
       /* ************************************************ */
 
       if (+system === 113) {
-        /* si el ancho y el alto son menores que 100 los fijo en 100 */
-        width = +width < 100 ? 100 : +width;
-        heigth = +heigth < 100 ? 100 : +heigth;
 
+        amount = await getPriceRoller(width, heigth, amount, cloth, pattern, support, chain)
         console.log('====================================');
-        console.log('ANCHO MINIMO', width);
-        console.log('ALTO MINIMO', heigth);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
-
-        /* sumo 20 cm al alto y se multiplica ancho y por precio */
-        amount = (+width / 100) * ((+heigth + 20) / 100) * amount;
-
-        console.log('====================================');
-        console.log('ANCHO', +width / 100);
-        console.log('ALTO', (+heigth + 20) / 100);
-        console.log('PRECIO X M2', amount.toFixed(0));
-        console.log('====================================');
-
-        /* obtengo el precio del modelo de cadena y lo sumo al monto */
-        const pricePattern = await db.Pattern.findOne({
-          where: {
-            id: +pattern,
-          },
-        });
-        amount = pricePattern && amount + pricePattern.price;
-
-        console.log('====================================');
-        console.log('MODELO', pricePattern.price);
-        console.log('PRECIO + MODELO', amount);
-        console.log('====================================');
-
-        /* obtengo el precio del soporte y lo sumo al monto */
-        const priceSupport = await db.Support.findOne({
-          where: {
-            id: +support,
-          },
-        });
-        amount = priceSupport && amount + priceSupport.price;
-
-        console.log('====================================');
-        console.log('SOPORTE', priceSupport.price);
-        console.log('PRECIO + SOPORTE', amount);
-        console.log('====================================');
-
-        /* obtengo el precio del largo de la cadena y lo sumo al monto */
-        const priceChain = await db.Chain.findOne({
-          where: {
-            id: +chain,
-          },
-        });
-        amount = priceChain ? amount + priceChain.price : amount;
-
-        console.log('====================================');
-        console.log('CADENA', priceChain.price);
-        console.log('PRECIO + CADENA', amount);
-        console.log('====================================');
-
-        /* obtengo el precio de la grilla de medidas extras */
-        //const priceGrid = await sequelize.query(`SELECT MAX(price) as price FROM Grids where width <= ${width} and heigth <= ${heigth};`);
-        const priceGrid = await db.Grid.findOne({
-          attributes: [[sequelize.fn('max', sequelize.col('price')), 'price']],
-          where: {
-            width,
-            heigth
-          },
-          raw: true,
-        });
-
-        amount = priceGrid && amount + priceGrid.price;
-        console.log('====================================');
-        console.log('EXCEDENTE TAMAÑO', priceGrid.price);
-        console.log('PRECIO MAS EXCEDENTE', amount);
-        console.log('====================================');
-
-        /* 
-        ======================================================
-        SI LA TELA ES ECLIPSE SE LE SUMA EL VALOR DE LA CENEFA 
-        ======================================================
-        */
-
-        if (+cloth === 632) {
-          /* divido el ancho por 100 para obtener decimales */
-          widthByMeter = +width / 100;
-          widthDecimal = widthByMeter.toString().slice(2)[0];
-          widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-          let decimal;
-          let entero;
-          /* segun el decimal determino el ancho */
-          switch (widthDecimal) {
-            case '1':
-            case '2':
-              decimal = 2
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '3':
-            case '4':
-              decimal = 4
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '5':
-            case '6':
-              decimal = 6
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '7':
-            case '8':
-              decimal = 8
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '9':
-              decimal = 0
-              entero = Math.trunc(widthByMeter);
-              width = entero + 1;
-              break
-            case '0':
-              decimal = 0
-              entero = Math.trunc(widthByMeter);
-              width = entero;
-              break
-            default:
-              break;
-          }
-          console.log('====================================');
-          console.log('ANCHO EN METROS:', widthByMeter);
-          console.log('DECIMAL', widthDecimal);
-          console.log('ANCHO TOTAL', width);
-          console.log('====================================');
-
-          let priceCenefa = await db.System.findOne({
-            where: {
-              id: 335, //eclipse cenefa
-            },
-          })
-
-          console.log('====================================');
-          console.log('PRECIO', amount);
-          console.log('ANCHO CENEFA', width);
-          console.log('PRECIO CENEFA', priceCenefa.price);
-          console.log('====================================');
-          amount = width < 1 ? amount + priceCenefa.price : amount + (width * priceCenefa.price)
-        }
 
       }
 
@@ -502,149 +371,12 @@ module.exports = {
       /* ************************************************ */
 
       if (+system === 111) {
-        let area;
-        /* agrego 20 al ancho original, para hacer el cálculo del ancho mímino */
-        width = +width + 20 < 120 ? 100 : +width;
 
-        /* si el ancho es mayor o igual que 120, el ancho queda como viene */
-        heigth = +heigth < 120 ? 100 : +heigth;
-
-        /* sumo 20 al ancho y al alto y los multiplico */
-        area = ((width + 20) / 100) * ((heigth + 20) / 100);
-
+        amount = await getPriceRomanas(width, heigth, amount, pattern, chain);
         console.log('====================================');
-        console.log('AREA', area);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
 
-        /* si la superficie es menor a dos, lo fijo en dos o queda se redondea el decimal en cinco o se suma un entero */
-        if (area < 2) {
-          area = 2
-        } else {
-          area = area.toFixed(1);
-          console.log('====================================');
-          console.log('AREA SUPERIOR A 2 m', area);
-          console.log('====================================');
-          /* extraigo el decimal */
-          areaDecimal = area.toString().slice(2)[0];
-          console.log('====================================');
-          console.log('DECIMAL DEL AREA', areaDecimal);
-          console.log('====================================');
-          /* si existe un decimal en el area */
-          let decimal;
-          let entero;
-          if (areaDecimal) {
-            if (+areaDecimal <= 5) {
-              decimal = 5;
-              entero = Math.trunc(+areaDecimal);
-              area = entero + decimal / 10;
-              console.log('====================================');
-              console.log('DECIMAL REDONDEADO EN 5', area);
-              console.log('====================================');
-            } else {
-              decimal = 0;
-              entero = Math.trunc(+area);
-              area = entero + 1;
-              console.log('====================================');
-              console.log('SIGUIENTE ENTERO', entero, area);
-              console.log('====================================');
-            }
-          }
-        }
-        /* calculo el precio multiplicando el area por el precio de base */
-        amount = amount * area;
-        console.log('====================================');
-        console.log('PRECIO x AREA', amount);
-        console.log('====================================');
-
-        if (+pattern === 1 || +pattern === 2) {
-
-          /* divido el ancho por 100 para obtener decimales */
-          let widthByMeter = +width / 100;
-          widthDecimal = widthByMeter.toString().slice(2)[0];
-          widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-          switch (widthDecimal) {
-            case '1':
-            case '2':
-              decimal = 2
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '3':
-            case '4':
-              decimal = 4
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '5':
-            case '6':
-              decimal = 6
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '7':
-            case '8':
-              decimal = 8
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '9':
-              decimal = 0
-              entero = Math.trunc(widthByMeter);
-              width = entero + 1;
-              break
-            case '0':
-              decimal = 0
-              entero = Math.trunc(widthByMeter);
-              width = entero;
-              break
-            default:
-              break;
-          }
-
-          console.log('====================================');
-          console.log('ANCHO EN METROS:', widthByMeter);
-          console.log('DECIMAL', widthDecimal);
-          console.log('ANCHO TOTAL', width);
-          console.log('====================================');
-
-          /* cual sea el ancho?? se multiplica por 1.50 el monto */
-          if (width < 1) {
-            amount = amount * 1.50;
-          } else {
-            amount = amount * 1.50;
-          }
-
-          console.log('====================================');
-          console.log('EL PRECIO SE MULTIPLICA x 1.50:', amount);
-          console.log('====================================');
-
-          /* obtengo el precio del modelo de cadena y lo sumo al monto */
-          const pricePattern = await db.Pattern.findOne({
-            where: {
-              id: +pattern,
-            },
-          });
-          amount = pricePattern && amount + pricePattern.price;
-
-          console.log('====================================');
-          console.log('SOPORTE', pricePattern.price);
-          console.log('PRECIO + MODELO', amount);
-          console.log('====================================');
-
-          /* obtengo el precio del largo de la cadena y lo sumo al monto */
-          const priceChain = await db.Chain.findOne({
-            where: {
-              id: +chain,
-            },
-          });
-          amount = priceChain ? amount + priceChain.price : amount;
-
-          console.log('====================================');
-          console.log('SOPORTE', priceChain.price);
-          console.log('PRECIO + LARGO CADENA', amount);
-          console.log('====================================');
-        }
       }
       /* ************************************************ */
       /*              PANELES ORIENTALES                  */
@@ -652,107 +384,11 @@ module.exports = {
 
       if (+system === 112) {
 
-        /* segun el ancho calculo la cantidad de paños */
-        let quantity = +width < 210 ? 3 : +width >= 210 && +width < 300 ? 4 : 5;
+        amount = await getPricePaneles(width, heigth, amount);
         console.log('====================================');
-        console.log('CANTIDAD DE PAÑOS', quantity);
-        console.log('====================================');
-
-        /* calculo el ancho de paño, dividiendo el ancho por la cantidad de paños */
-        let widthPanel = +width / quantity;
-        console.log('====================================');
-        console.log('ANCHO DEL PANEL', widthPanel);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
 
-        /* si el ancho de paño es menor a 100, lo fijo en 100 */
-        widthPanel = widthPanel < 100 ? 100 : widthPanel;
-        console.log('====================================');
-        console.log('ANCHO MINIMO DEL PANEL', widthPanel);
-        console.log('====================================');
-
-        /* si el alto de paño es menor a 150, lo fijo en 150 */
-        let heightPanel = +heigth < 150 ? 150 : +heigth;
-        console.log('====================================');
-        console.log('ALTO MINIMO DEL PANEL', widthPanel);
-        console.log('====================================');
-
-        /* sumo 20 al alto del panel */
-        heightPanel = heightPanel + 20;
-        console.log('====================================');
-        console.log('ALTO + 20', heightPanel);
-        console.log('====================================');
-
-        /* calculo los metros cuadrados */
-        let area = (heightPanel / 100) * (widthPanel / 100)
-        console.log('====================================');
-        console.log('AREA EN M2', area);
-        console.log('====================================');
-
-        /* calculo el precio */
-        amount = amount * area * quantity;
-        console.log('====================================');
-        console.log('PRECIO x AREA x CANTIDAD DE PANELES', amount);
-        console.log('====================================');
-
-        /* calculo de ancho de riel */
-        let widthByMeter = +width / 100;
-        widthDecimal = widthByMeter.toString().slice(2)[0];
-        widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-        switch (widthDecimal) {
-          case '1':
-          case '2':
-            decimal = 2
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '3':
-          case '4':
-            decimal = 4
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '5':
-          case '6':
-            decimal = 6
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '7':
-          case '8':
-            decimal = 8
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '9':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero + 1;
-            break
-          case '0':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero;
-            break
-          default:
-            break;
-        }
-
-        /* obtengo el precio del riel panel (id 336 system) */
-
-        let priceRail = await db.System.findByPk(336);
-
-        console.log('====================================');
-        console.log('PRECIO DEL RIEL', priceRail.price);
-        console.log('====================================');
-
-        /* sumo al monto el valor del riel. El mismo es el resultado del ancho obtenido x el valor del riel */
-        amount = amount + (width * priceRail.price);
-        console.log('====================================');
-        console.log('ANCHO FINAL', width);
-        console.log('PRECIO RIELES (ANCHO x PRECIO DEL RIEL)', width * priceRail.price);
-        console.log('PRECIO FINAL (PRECIO + PRECIO RIELES)', amount)
-        console.log('====================================');
       }
       /* ************************************************ */
       /* TRIPLE PELLIZCO, PELLIZCO SIMPLE, PELLIZCO DOBLE */
@@ -760,96 +396,11 @@ module.exports = {
 
       if (+system === 116 || +system === 129 || +system === 130) {
 
-        /* 
-        falta fijar un alto mínimo
-        */
-
-        /* si el ancho es menor a 100, lo fijo en 100 */
-        width = +width < 100 ? 100 : +width;
+        amount = await getPricePellizcos(system, width, heigth, amount);
         console.log('====================================');
-        console.log('ANCHO MINIMO', width);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
 
-        /* redondeo del decimal el ancho */
-        let widthByMeter = +width / 100;
-        widthDecimal = widthByMeter.toString().slice(2)[0];
-        widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-        switch (widthDecimal) {
-          case '1':
-          case '2':
-            decimal = 2
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '3':
-          case '4':
-            decimal = 4
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '5':
-          case '6':
-            decimal = 6
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '7':
-          case '8':
-            decimal = 8
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '9':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero + 1;
-            break
-          case '0':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero;
-            break
-          default:
-            break;
-        }
-
-        /* si es pellizco simple o triple el ancho se multiplica por 3 y si es pellizco doble se multplica por 2 */
-        width = +system === 129 || +system === 116 ? (width * 3) : (width * 2);
-
-        console.log('====================================');
-        console.log('ANCHO MULTIPLICADO SEGÚN SISTEMA', width);
-        console.log('====================================');
-
-        /* 
-        falta calcular la superficie
-        */
-
-        /*  */
-        /* let area = width * (heigth / 100);
-        console.log('====================================');
-        console.log('SUPERFICIE TOTAL', area);
-        console.log('===================================='); */
-
-        /* si el ancho es menor que un metro se le suma el precio del riel (HAY QUE ACTUALILZARLO), de lo contrario, si es mayor que un metro se multiplica el ancho por el precio del riel (HAY QUE ACTUALIZARLO) + el precio */
-
-        /* obtengo el precio del riel europeo */
-        const railPrice = await db.System.findByPk(360);
-
-        /* AGREGAR A LA TABLA SISTEMA EL PRECIO DE RIEL EUROPEO CON VALOR: (ADMINISTRABLE)*/
-        amount = width < 1 ? amount + railPrice.price : amount + (width * railPrice.price);
-
-        console.log('====================================');
-        console.log('VALOR DEL RIEL', railPrice.price);
-        console.log('PRECIO + VALOR DEL RIEL', amount);
-        console.log('====================================');
-        /* 
-        calculo el precio final
-        */
-        //amount = amount * area;
-        console.log('====================================');
-        console.log('PRECIO FINAL', amount);
-        console.log('====================================');
       }
 
       /* ************************************************ */
@@ -859,58 +410,10 @@ module.exports = {
 
       if (+system === 127) {
 
-        /* si el ancho es menor a 100, lo fijo en 100 */
-        large = +large < 100 ? 100 : +large;
+        amount = await getPriceCenefa(large, amount);
         console.log('====================================');
-        console.log('LARGO MINIMO', large);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
-
-        /* redondeo del decimal el ancho */
-        let largeByMeter = +large / 100;
-        largeDecimal = largeByMeter.toString().slice(2)[0];
-        largeDecimal = !largeDecimal ? '0' : largeDecimal;
-
-        switch (largeDecimal) {
-          case '1':
-          case '2':
-            decimal = 2
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '3':
-          case '4':
-            decimal = 4
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '5':
-          case '6':
-            decimal = 6
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '7':
-          case '8':
-            decimal = 8
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '9':
-            decimal = 0
-            entero = Math.trunc(largeByMeter);
-            large = entero + 1;
-            break
-          case '0':
-            decimal = 0
-            entero = Math.trunc(largeByMeter);
-            large = entero;
-            break
-          default:
-            break;
-        }
-
-        /* calculo el precio multiplicando el ancho obtenido por el precio */
-        amount = large * amount;
 
       }
 
@@ -920,60 +423,10 @@ module.exports = {
 
       if (+system === 114) {
 
-        /* 
-        fijo el largo mímino
-        */
-        large = +large < 100 ? 100 : +large;
+        amount = await getPriceGuias(large, amount);
         console.log('====================================');
-        console.log('LARGO MINIMO', large);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
-
-        /* redondeo del decimal el alto */
-        let largeByMeter = +large / 100;
-        largeDecimal = largeByMeter.toString().slice(2)[0];
-        largeDecimal = !largeDecimal ? '0' : largeDecimal;
-
-        switch (largeDecimal) {
-          case '1':
-          case '2':
-            decimal = 2
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '3':
-          case '4':
-            decimal = 4
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '5':
-          case '6':
-            decimal = 6
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '7':
-          case '8':
-            decimal = 8
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '9':
-            decimal = 0
-            entero = Math.trunc(largeByMeter);
-            large = entero + 1;
-            break
-          case '0':
-            decimal = 0
-            entero = Math.trunc(largeByMeter);
-            large = entero;
-            break
-          default:
-            break;
-        }
-
-        /* calculo el precio multiplicando el alto obtenido por el precio */
-        amount = large * amount;
 
       }
 
@@ -983,87 +436,26 @@ module.exports = {
 
       if (+system === 179) {
 
-        /* si el ancho es menor a 100, lo fijo en 100 */
-        width = width < 100 ? 100 : width;
+        amount = await getPriceBandas(railWidth, heigth, amount, chain);
         console.log('====================================');
-        console.log('ANCHO MINIMO', width);
-        console.log('====================================');
-
-        /* si el alto es menor a 150, lo fijo en 150 */
-        heigth = +heigth < 150 ? 150 : +heigth;
-        console.log('====================================');
-        console.log('ALTO MINIMO', heigth);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
 
-        /* sumo a 5 cm al ancho y al alto */
-        width = width + 5;
-        heigth = heigth + 5;
-
-        /* calculo la superficie y lo expreso en m2 */
-        let area = (width / 100) * (heigth / 100);
-
-        /* si la superficie es menor a dos, lo fijo en dos o queda se redondea el decimal en cinco o se suma un entero */
-        if (area < 2) {
-          area = 2
-        } else {
-          area = area.toFixed(1);
-          console.log('====================================');
-          console.log('AREA SUPERIOR A 2 m', area);
-          console.log('====================================');
-          /* extraigo el decimal */
-          areaDecimal = area.toString().slice(2)[0];
-          console.log('====================================');
-          console.log('DECIMAL DEL AREA', areaDecimal);
-          console.log('====================================');
-          /* si existe un decimal en el area */
-          let decimal;
-          let entero;
-          if (areaDecimal) {
-            if (+areaDecimal <= 5) {
-              decimal = 5;
-              entero = Math.trunc(+areaDecimal);
-              area = entero + decimal / 10;
-              console.log('====================================');
-              console.log('DECIMAL REDONDEADO EN 5', area);
-              console.log('====================================');
-            } else {
-              decimal = 0;
-              entero = Math.trunc(+area);
-              area = entero + 1;
-              console.log('====================================');
-              console.log('SIGUIENTE ENTERO', entero, area);
-              console.log('====================================');
-            }
-          }
-        }
-        /* calculo el precio multiplicando precio x superficie */
-        amount = amount * area;
-
-        /* obtengo el precio del largo de la cadena y lo sumo al monto */
-        const priceChain = await db.Chain.findOne({
-          where: {
-            id: +chain,
-          },
-        });
-        amount = priceChain ? amount + priceChain.price : amount;
-
-        console.log('====================================');
-        console.log('CADENA', priceChain.price);
-        console.log('PRECIO + CADENA', amount);
-        console.log('====================================');
       }
 
       /* CALCULO SEGÚN EL ROL DEL VENDEDOR */
       amount = req.session.userLogin.coefficient !== 0 ? amount + amount * req.session.userLogin.coefficient : amount;
-
-      if (req.session.userLogin.rol === 2) {
+      let data;
+      if (+req.session.userLogin.rol === 2) {
         let rolSelected = await db.Rol.findByPk(req.body.rol);
         console.log('====================================');
-        console.log(rolSelected);
+        console.log('ID ROL',req.body.rol);
+        console.log('COEFICIENTE',rolSelected.coefficient);
         console.log('====================================');
         data = amount + amount * +rolSelected.coefficient;
         console.log('====================================');
-        console.log(amount);
+        console.log('PRECIO NORMAL',amount);
+        console.log('PRECIO SEGÚN ROL',data);
         console.log('====================================');
       }
 
@@ -1088,7 +480,7 @@ module.exports = {
 
         return res.status(200).json({
           ok: true,
-          data: amount.toFixed(0),
+          data: data ? data.toFixed(0) : amount.toFixed(0),
           quotation,
           rol: req.session.userLogin.rol
         });
@@ -1139,91 +531,16 @@ module.exports = {
         );
     }
   },
-  quoterUpdate: async (systemId, clothId, colorId, supportId = support, patternId = pattern, chainId = chain, width, heigth) => {
+  quoterUpdate: async (systemId, clothId, colorId, supportId, patternId, chainId, width, heigth) => {
 
     let system = systemId;
     let cloth = clothId;
     let color = colorId;
     let support = supportId;
+    let pattern = patternId;
+    let chain = chainId
 
-   /*  try {
-
-      const price = await db.Price.findOne({
-        where: {
-          systemId,
-          clothId,
-          colorId,
-          visible: true,
-        },
-      });
-
-      const grid = await db.Grid.findOne({
-        where: {
-          width,
-          heigth,
-          visible: true,
-        },
-      });
-
-      const priceSystem = await db.System.findOne({
-        where: {
-          id: systemId,
-        },
-      });
-      const priceCloth = await db.Cloth.findOne({
-        where: {
-          id: clothId,
-        },
-      });
-
-      const priceSupport = await db.Support.findOne({
-        where: {
-          id: supportId,
-        },
-      });
-
-      const pricePattern = await db.Pattern.findOne({
-        where: {
-          id: patternId,
-        },
-      });
-
-      const priceChain = await db.Chain.findOne({
-        where: {
-          id: chainId,
-        },
-      });
-
-      let data = null;
-
-      if (price) {
-        if (grid) {
-          data = price.amount + grid.price;
-        }
-        if (priceSystem) {
-          data = data + priceSystem.price;
-        }
-        if (priceCloth) {
-          data = data + priceCloth.price;
-        }
-        if (priceSupport) {
-          data = data + priceSupport.price;
-        }
-        if (pricePattern) {
-          data = data + pricePattern.price;
-        }
-        if (priceChain) {
-          data = data + priceChain.price;
-        }
-      }
-
-      return data
-
-    } catch (error) {
-      console.log(error);
-    } */
     try {
-      
 
       const price = await db.Price.findOne({
         where: {
@@ -1237,9 +554,9 @@ module.exports = {
 
       let amount = price && price.amount;
       console.log('====================================');
-      console.log('RESULTADO:::::',amount);
+      console.log('RESULTADO:::::', amount);
       console.log('====================================');
-      
+
       if (!amount) {
         return null
       }
@@ -1256,147 +573,11 @@ module.exports = {
       /* ************************************************ */
 
       if (+system === 113) {
-        /* si el ancho y el alto son menores que 100 los fijo en 100 */
-        width = +width < 100 ? 100 : +width;
-        heigth = +heigth < 100 ? 100 : +heigth;
 
+        amount = await getPriceRoller(width, heigth, amount, cloth, pattern, support, chain)
         console.log('====================================');
-        console.log('ANCHO MINIMO', width);
-        console.log('ALTO MINIMO', heigth);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
-
-        /* sumo 20 cm al alto y se multiplica ancho y por precio */
-        amount = (+width / 100) * ((+heigth + 20) / 100) * amount;
-
-        console.log('====================================');
-        console.log('ANCHO', +width / 100);
-        console.log('ALTO', (+heigth + 20) / 100);
-        console.log('PRECIO X M2', amount.toFixed(0));
-        console.log('====================================');
-
-        /* obtengo el precio del modelo de cadena y lo sumo al monto */
-        const pricePattern = await db.Pattern.findOne({
-          where: {
-            id: +pattern,
-          },
-        });
-        amount = pricePattern && amount + pricePattern.price;
-
-        console.log('====================================');
-        console.log('MODELO', pricePattern.price);
-        console.log('PRECIO + MODELO', amount);
-        console.log('====================================');
-
-        /* obtengo el precio del soporte y lo sumo al monto */
-        const priceSupport = await db.Support.findOne({
-          where: {
-            id: +support,
-          },
-        });
-        amount = priceSupport && amount + priceSupport.price;
-
-        console.log('====================================');
-        console.log('SOPORTE', priceSupport.price);
-        console.log('PRECIO + SOPORTE', amount);
-        console.log('====================================');
-
-        /* obtengo el precio del largo de la cadena y lo sumo al monto */
-        const priceChain = await db.Chain.findOne({
-          where: {
-            id: +chain,
-          },
-        });
-        amount = priceChain ? amount + priceChain.price : amount;
-
-        console.log('====================================');
-        console.log('CADENA', priceChain.price);
-        console.log('PRECIO + CADENA', amount);
-        console.log('====================================');
-
-        /* obtengo el precio de la grilla de medidas extras */
-        //const priceGrid = await sequelize.query(`SELECT MAX(price) as price FROM Grids where width <= ${width} and heigth <= ${heigth};`);
-        const priceGrid = await db.Grid.findOne({
-          attributes: [[sequelize.fn('max', sequelize.col('price')), 'price']],
-          where: {
-            width,
-            heigth
-          },
-          raw: true,
-        });
-
-        amount = priceGrid && amount + priceGrid.price;
-        console.log('====================================');
-        console.log('EXCEDENTE TAMAÑO', priceGrid.price);
-        console.log('PRECIO MAS EXCEDENTE', amount);
-        console.log('====================================');
-
-        /* si la tela es eclipse se le suma el valor de la CENEFA */
-        if (+cloth === 632) {
-          /* divido el ancho por 100 para obtener decimales */
-          widthByMeter = +width / 100;
-          widthDecimal = widthByMeter.toString().slice(2)[0];
-          widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-          let decimal;
-          let entero;
-          /* segun el decimal determino el ancho */
-          switch (widthDecimal) {
-            case '1':
-            case '2':
-              decimal = 2
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '3':
-            case '4':
-              decimal = 4
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '5':
-            case '6':
-              decimal = 6
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '7':
-            case '8':
-              decimal = 8
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '9':
-              decimal = 0
-              entero = Math.trunc(widthByMeter);
-              width = entero + 1;
-              break
-            case '0':
-              decimal = 0
-              entero = Math.trunc(widthByMeter);
-              width = entero;
-              break
-            default:
-              break;
-          }
-          console.log('====================================');
-          console.log('ANCHO EN METROS:', widthByMeter);
-          console.log('DECIMAL', widthDecimal);
-          console.log('ANCHO TOTAL', width);
-          console.log('====================================');
-
-          let priceCenefa = await db.System.findOne({
-            where: {
-              id: 335, //eclipse cenefa
-            },
-          })
-
-          console.log('====================================');
-          console.log('PRECIO', amount);
-          console.log('ANCHO CENEFA', width);
-          console.log('PRECIO CENEFA', priceCenefa.price);
-          console.log('====================================');
-          amount = width < 1 ? amount + priceCenefa.price : amount + (width * priceCenefa.price)
-        }
 
       }
 
@@ -1405,149 +586,12 @@ module.exports = {
       /* ************************************************ */
 
       if (+system === 111) {
-        let area;
-        /* agrego 20 al ancho original, para hacer el cálculo del ancho mímino */
-        width = +width + 20 < 120 ? 100 : +width;
 
-        /* si el ancho es mayor o igual que 120, el ancho queda como viene */
-        heigth = +heigth < 120 ? 100 : +heigth;
-
-        /* sumo 20 al ancho y al alto y los multiplico */
-        area = ((width + 20) / 100) * ((heigth + 20) / 100);
-
+        amount = await getPriceRomanas(width, heigth, amount, pattern, chain);
         console.log('====================================');
-        console.log('AREA', area);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
 
-        /* si la superficie es menor a dos, lo fijo en dos o queda se redondea el decimal en cinco o se suma un entero */
-        if (area < 2) {
-          area = 2
-        } else {
-          area = area.toFixed(1);
-          console.log('====================================');
-          console.log('AREA SUPERIOR A 2 m', area);
-          console.log('====================================');
-          /* extraigo el decimal */
-          areaDecimal = area.toString().slice(2)[0];
-          console.log('====================================');
-          console.log('DECIMAL DEL AREA', areaDecimal);
-          console.log('====================================');
-          /* si existe un decimal en el area */
-          let decimal;
-          let entero;
-          if (areaDecimal) {
-            if (+areaDecimal <= 5) {
-              decimal = 5;
-              entero = Math.trunc(+areaDecimal);
-              area = entero + decimal / 10;
-              console.log('====================================');
-              console.log('DECIMAL REDONDEADO EN 5', area);
-              console.log('====================================');
-            } else {
-              decimal = 0;
-              entero = Math.trunc(+area);
-              area = entero + 1;
-              console.log('====================================');
-              console.log('SIGUIENTE ENTERO', entero, area);
-              console.log('====================================');
-            }
-          }
-        }
-        /* calculo el precio multiplicando el area por el precio de base */
-        amount = amount * area;
-        console.log('====================================');
-        console.log('PRECIO x AREA', amount);
-        console.log('====================================');
-
-        if (+pattern === 1 || +pattern === 2) {
-
-          /* divido el ancho por 100 para obtener decimales */
-          let widthByMeter = +width / 100;
-          widthDecimal = widthByMeter.toString().slice(2)[0];
-          widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-          switch (widthDecimal) {
-            case '1':
-            case '2':
-              decimal = 2
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '3':
-            case '4':
-              decimal = 4
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '5':
-            case '6':
-              decimal = 6
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '7':
-            case '8':
-              decimal = 8
-              entero = Math.trunc(widthByMeter);
-              width = entero + decimal / 10;
-              break;
-            case '9':
-              decimal = 0
-              entero = Math.trunc(widthByMeter);
-              width = entero + 1;
-              break
-            case '0':
-              decimal = 0
-              entero = Math.trunc(widthByMeter);
-              width = entero;
-              break
-            default:
-              break;
-          }
-
-          console.log('====================================');
-          console.log('ANCHO EN METROS:', widthByMeter);
-          console.log('DECIMAL', widthDecimal);
-          console.log('ANCHO TOTAL', width);
-          console.log('====================================');
-
-          /* cual sea el ancho?? se multiplica por 1.50 el monto */
-          if (width < 1) {
-            amount = amount * 1.50;
-          } else {
-            amount = amount * 1.50;
-          }
-
-          console.log('====================================');
-          console.log('EL PRECIO SE MULTIPLICA x 1.50:', amount);
-          console.log('====================================');
-
-          /* obtengo el precio del modelo de cadena y lo sumo al monto */
-          const pricePattern = await db.Pattern.findOne({
-            where: {
-              id: +pattern,
-            },
-          });
-          amount = pricePattern && amount + pricePattern.price;
-
-          console.log('====================================');
-          console.log('SOPORTE', pricePattern.price);
-          console.log('PRECIO + MODELO', amount);
-          console.log('====================================');
-
-          /* obtengo el precio del largo de la cadena y lo sumo al monto */
-          const priceChain = await db.Chain.findOne({
-            where: {
-              id: +chain,
-            },
-          });
-          amount = priceChain ? amount + priceChain.price : amount;
-
-          console.log('====================================');
-          console.log('SOPORTE', priceChain.price);
-          console.log('PRECIO + LARGO CADENA', amount);
-          console.log('====================================');
-        }
       }
       /* ************************************************ */
       /*              PANELES ORIENTALES                  */
@@ -1555,99 +599,11 @@ module.exports = {
 
       if (+system === 112) {
 
-        /* segun el ancho calculo la cantidad de paños */
-        let quantity = +width < 210 ? 3 : +width >= 210 && +width < 300 ? 4 : 5;
+        amount = await getPricePaneles(width, heigth, amount);
         console.log('====================================');
-        console.log('CANTIDAD DE PAÑOS', quantity);
-        console.log('====================================');
-
-        /* calculo el ancho de paño, dividiendo el ancho por la cantidad de paños */
-        let widthPanel = +width / quantity;
-        console.log('====================================');
-        console.log('ANCHO DEL PANEL', widthPanel);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
 
-        /* si el ancho de paño es menor a 100, lo fijo en 100 */
-        widthPanel = widthPanel < 100 ? 100 : widthPanel;
-        console.log('====================================');
-        console.log('ANCHO MINIMO DEL PANEL', widthPanel);
-        console.log('====================================');
-
-        /* si el alto de paño es menor a 150, lo fijo en 150 */
-        let heightPanel = +heigth < 150 ? 150 : +heigth;
-        console.log('====================================');
-        console.log('ALTO MINIMO DEL PANEL', widthPanel);
-        console.log('====================================');
-
-        /* sumo 20 al alto del panel */
-        heightPanel = heightPanel + 20;
-        console.log('====================================');
-        console.log('ALTO + 20', heightPanel);
-        console.log('====================================');
-
-        /* calculo los metros cuadrados */
-        let area = (heightPanel / 100) * (widthPanel / 100)
-        console.log('====================================');
-        console.log('AREA EN M2', area);
-        console.log('====================================');
-
-        /* calculo el precio */
-        amount = amount * area * quantity;
-        console.log('====================================');
-        console.log('PRECIO x AREA x CANTIDAD DE PANELES', amount);
-        console.log('====================================');
-
-        /* calculo de ancho de riel */
-        let widthByMeter = +width / 100;
-        widthDecimal = widthByMeter.toString().slice(2)[0];
-        widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-        switch (widthDecimal) {
-          case '1':
-          case '2':
-            decimal = 2
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '3':
-          case '4':
-            decimal = 4
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '5':
-          case '6':
-            decimal = 6
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '7':
-          case '8':
-            decimal = 8
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '9':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero + 1;
-            break
-          case '0':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero;
-            break
-          default:
-            break;
-        }
-
-        /* sumo al monto el valor del riel. El mismo es el resultado del ancho obtenido x 463 */
-        amount = amount + (width * 463);
-        console.log('====================================');
-        console.log('ANCHO FINAL', width);
-        console.log('PRECIO RIELES (ANCHO x 463)', width * 463); //ADMINISTRAR EL PRECIO DEL RIEL PANEL
-        console.log('PRECIO FINAL (PRECIO + PRECIO RIELES)', amount)
-        console.log('====================================');
       }
       /* ************************************************ */
       /* TRIPLE PELLIZCO, PELLIZCO SIMPLE, PELLIZCO DOBLE */
@@ -1655,92 +611,11 @@ module.exports = {
 
       if (+system === 116 || +system === 129 || +system === 130) {
 
-        /* 
-        falta fijar un alto mínimo
-        */
-
-        /* si el ancho es menor a 100, lo fijo en 100 */
-        width = +width < 100 ? 100 : +width;
+        amount = await getPricePellizcos(system, width, heigth, amount);
         console.log('====================================');
-        console.log('ANCHO MINIMO', width);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
 
-        /* redondeo del decimal el ancho */
-        let widthByMeter = +width / 100;
-        widthDecimal = widthByMeter.toString().slice(2)[0];
-        widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-        switch (widthDecimal) {
-          case '1':
-          case '2':
-            decimal = 2
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '3':
-          case '4':
-            decimal = 4
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '5':
-          case '6':
-            decimal = 6
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '7':
-          case '8':
-            decimal = 8
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '9':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero + 1;
-            break
-          case '0':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero;
-            break
-          default:
-            break;
-        }
-
-        /* si es pellizco simple o triple el ancho se multiplica por 3 y si es pellizco doble se multplica por 2 */
-        width = +system === 129 || +system === 116 ? (width * 3) : (width * 2);
-
-        console.log('====================================');
-        console.log('ANCHO MULTIPLICADO SEGÚN SISTEMA', width);
-        console.log('====================================');
-
-        /* 
-        falta calcular la superficie
-        */
-
-        let area = width * (heigth / 100);
-        console.log('====================================');
-        console.log('SUPERFICIE TOTAL', area);
-        console.log('====================================');
-
-        /* si el ancho es menor que un metro se le suma el precio del riel (HAY QUE ACTUALILZARLO), de lo contrario, si es mayor que un metro se multiplica el ancho por el precio del riel (HAY QUE ACTUALIZARLO) + el precio */
-
-        const railPrice = 50;
-        amount = width < 1 ? amount + railPrice : amount + (width * railPrice);
-
-        console.log('====================================');
-        console.log('VALOR DEL RIEL', railPrice);
-        console.log('PRECIO + VALOR DEL RIEL', amount);
-        console.log('====================================');
-        /* 
-        calculo el precio final
-        */
-        amount = amount * area;
-        console.log('====================================');
-        console.log('PRECIO FINAL', amount);
-        console.log('====================================');
       }
 
       /* ************************************************ */
@@ -1750,58 +625,10 @@ module.exports = {
 
       if (+system === 127) {
 
-        /* si el ancho es menor a 100, lo fijo en 100 */
-        width = +width < 100 ? 100 : +width;
+        amount = await getPriceCenefa(large, amount);
         console.log('====================================');
-        console.log('ANCHO MINIMO', width);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
-
-        /* redondeo del decimal el ancho */
-        let widthByMeter = +width / 100;
-        widthDecimal = widthByMeter.toString().slice(2)[0];
-        widthDecimal = !widthDecimal ? '0' : widthDecimal;
-
-        switch (widthDecimal) {
-          case '1':
-          case '2':
-            decimal = 2
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '3':
-          case '4':
-            decimal = 4
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '5':
-          case '6':
-            decimal = 6
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '7':
-          case '8':
-            decimal = 8
-            entero = Math.trunc(widthByMeter);
-            width = entero + decimal / 10;
-            break;
-          case '9':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero + 1;
-            break
-          case '0':
-            decimal = 0
-            entero = Math.trunc(widthByMeter);
-            width = entero;
-            break
-          default:
-            break;
-        }
-
-        /* calculo el precio multiplicando el ancho obtenido por el precio */
-        amount = width * amount;
 
       }
 
@@ -1811,60 +638,10 @@ module.exports = {
 
       if (+system === 114) {
 
-        /* 
-        fijo el largo mímino
-        */
-        large = +large < 100 ? 100 : +large;
+        amount = await getPriceGuias(large, amount);
         console.log('====================================');
-        console.log('LARGO MINIMO', large);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
-
-        /* redondeo del decimal el alto */
-        let largeByMeter = +large / 100;
-        largeDecimal = largeByMeter.toString().slice(2)[0];
-        largeDecimal = !largeDecimal ? '0' : largeDecimal;
-
-        switch (largeDecimal) {
-          case '1':
-          case '2':
-            decimal = 2
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '3':
-          case '4':
-            decimal = 4
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '5':
-          case '6':
-            decimal = 6
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '7':
-          case '8':
-            decimal = 8
-            entero = Math.trunc(largeByMeter);
-            large = entero + decimal / 10;
-            break;
-          case '9':
-            decimal = 0
-            entero = Math.trunc(largeByMeter);
-            large = entero + 1;
-            break
-          case '0':
-            decimal = 0
-            entero = Math.trunc(largeByMeter);
-            large = entero;
-            break
-          default:
-            break;
-        }
-
-        /* calculo el precio multiplicando el alto obtenido por el precio */
-        amount = large * amount;
 
       }
 
@@ -1874,74 +651,11 @@ module.exports = {
 
       if (+system === 179) {
 
-        /* si el ancho es menor a 100, lo fijo en 100 */
-        width = width < 100 ? 100 : width;
+        amount = await getPriceBandas(railWidth, heigth, amount, chain);
         console.log('====================================');
-        console.log('ANCHO MINIMO', width);
+        console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
-
-        /* si el alto es menor a 150, lo fijo en 150 */
-        heigth = +heigth < 150 ? 150 : +heigth;
-        console.log('====================================');
-        console.log('ALTO MINIMO', heigth);
-        console.log('====================================');
-
-        /* sumo a 5 cm al ancho y al alto */
-        width = width + 5;
-        heigth = heigth + 5;
-
-        /* calculo la superficie y lo expreso en m2 */
-        let area = (width / 100) * (heigth / 100);
-
-        /* si la superficie es menor a dos, lo fijo en dos o queda se redondea el decimal en cinco o se suma un entero */
-        if (area < 2) {
-          area = 2
-        } else {
-          area = area.toFixed(1);
-          console.log('====================================');
-          console.log('AREA SUPERIOR A 2 m', area);
-          console.log('====================================');
-          /* extraigo el decimal */
-          areaDecimal = area.toString().slice(2)[0];
-          console.log('====================================');
-          console.log('DECIMAL DEL AREA', areaDecimal);
-          console.log('====================================');
-          /* si existe un decimal en el area */
-          let decimal;
-          let entero;
-          if (areaDecimal) {
-            if (+areaDecimal <= 5) {
-              decimal = 5;
-              entero = Math.trunc(+areaDecimal);
-              area = entero + decimal / 10;
-              console.log('====================================');
-              console.log('DECIMAL REDONDEADO EN 5', area);
-              console.log('====================================');
-            } else {
-              decimal = 0;
-              entero = Math.trunc(+area);
-              area = entero + 1;
-              console.log('====================================');
-              console.log('SIGUIENTE ENTERO', entero, area);
-              console.log('====================================');
-            }
-          }
-        }
-        /* calculo el precio multiplicando precio x superficie */
-        amount = amount * area;
-
-        /* obtengo el precio del largo de la cadena y lo sumo al monto */
-        const priceChain = await db.Chain.findOne({
-          where: {
-            id: +chain,
-          },
-        });
-        amount = priceChain ? amount + priceChain.price : amount;
-
-        console.log('====================================');
-        console.log('CADENA', priceChain.price);
-        console.log('PRECIO + CADENA', amount);
-        console.log('====================================');
+        
       }
 
       /* CALCULO SEGÚN EL ROL DEL VENDEDOR */
@@ -1958,7 +672,7 @@ module.exports = {
         console.log('====================================');
       }
 
-    return amount
+      return amount
 
     } catch (error) {
       console.log(error);
