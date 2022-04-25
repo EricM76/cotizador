@@ -81,10 +81,10 @@ module.exports = {
 
     items.forEach(async (item) => {
       const { systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth } = item;
-      let priceUpdated = await quoterUpdate(systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth);
+      let priceUpdated = await quoterUpdate(req,systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth);
       priceUpdated = req.session.userLogin.coefficient !== 0 ? priceUpdated + priceUpdated * req.session.userLogin.coefficient : priceUpdated;
 
-      item.amount = priceUpdated;
+      item.amount = +priceUpdated.toFixed(0);
 
       itemsUpdated.push(item);
 

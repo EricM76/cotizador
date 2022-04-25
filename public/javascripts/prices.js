@@ -195,20 +195,20 @@ $("btn-remove").addEventListener("click", (e) => {
   });
 });
 
-$('btn-apply').addEventListener('blur',() => {
+$('btn-apply') && $('btn-apply').addEventListener('blur',() => {
     $('form-updatePriceGlobal').classList.remove('was-validated')
 });
 
-$('coefficient').addEventListener('focus', () => {
+$('coefficient') && $('coefficient').addEventListener('focus', () => {
   $('coefficient').classList.remove('is-invalid')
 
 })
 
-$('coefficient').addEventListener('change', (e) => {
+$('coefficient') && $('coefficient') && $('coefficient').addEventListener('change', (e) => {
   e.target.classList.add('is-valid')
 })
 
-$('form-updatePriceGlobal').addEventListener('submit', (e) => {
+$('form-updatePriceGlobal') && $('form-updatePriceGlobal').addEventListener('submit', (e) => {
   e.preventDefault()
   if($('coefficient').value !== ""){
     $('coefficient').classList.remove('is-invalid');

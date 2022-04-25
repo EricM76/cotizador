@@ -501,6 +501,8 @@ const sendForm = async () => {
         if (!elements[i].value || elements[i].classList.contains('is-invalid')) {
             error = true;
             elements[i].classList.add('is-invalid');
+        
+            $('amount-box').setAttribute('hidden', true)
         }
         console.log(elements[i].name, elements[i].value)
 
@@ -532,6 +534,7 @@ const sendForm = async () => {
                 console.log('====================================');
                 console.log('RESPUESTA DE LA API',result.ok);
                 console.log('====================================');
+
                 $('amount-box').classList.add('alert-success')
                 $('amount-box').classList.remove('alert-danger')
                 $('amount-box').removeAttribute('hidden', false)

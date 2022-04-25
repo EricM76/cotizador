@@ -534,7 +534,7 @@ module.exports = {
         );
     }
   },
-  quoterUpdate: async (systemId, clothId, colorId, supportId, patternId, chainId, width, heigth) => {
+  quoterUpdate: async (req,systemId, clothId, colorId, supportId, patternId, chainId, width, heigth) => {
 
     console.log('====================================');
     console.log('SYSTEM',systemId);
@@ -546,7 +546,7 @@ module.exports = {
     console.log('WIDTH',width);
     console.log('HEIGTH',heigth);
     console.log('====================================');
-    
+
     let system = systemId;
     let cloth = clothId;
     let color = colorId;
