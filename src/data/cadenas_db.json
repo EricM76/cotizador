@@ -34,5 +34,41 @@
     "name": 0,
     "price": 0,
     "visible": 1
+  },
+  {
+    "idLocal": 7,
+    "name": 1,
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 8,
+    "name": 1.5,
+    "price": 0,
+    "visible": 1
+  },
+  {
+    "idLocal": 9,
+    "name": 4.5,
+    "price": 200,
+    "visible": 1
+  },
+  {
+    "idLocal": 10,
+    "name": 5,
+    "price": 240,
+    "visible": 1
+  },
+  {
+    "idLocal": 11,
+    "name": 5.5,
+    "price": 280,
+    "visible": 1
+  },
+  {
+    "idLocal": 12,
+    "name": 6,
+    "price": 320,
+    "visible": 1
   }
 ]

@@ -466,7 +466,7 @@ module.exports = {
           console.log(+width);
           console.log('====================================');
           quotation = await db.Quotation.create({
-            clothWidth: +width,
+            clothWidth: +large !== 0 ? +large : +width,
             heigth: +heigth,
             amount: amount.toFixed(0),
             date: new Date(),
@@ -639,7 +639,7 @@ module.exports = {
 
       if (+system === 127) {
 
-        amount = await getPriceCenefa(large, amount);
+        amount = await getPriceCenefa(width, amount);
         console.log('====================================');
         console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
@@ -652,7 +652,7 @@ module.exports = {
 
       if (+system === 114) {
 
-        amount = await getPriceGuias(large, amount);
+        amount = await getPriceGuias(width, amount);
         console.log('====================================');
         console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
