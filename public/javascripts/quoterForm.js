@@ -67,6 +67,8 @@ const getData = async (target) => {
         patterns = patterns.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
         chains = chains.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
 
+        sessionStorage.setItem('chains',JSON.stringify(chains));
+
         $('cloths').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
         cloths.forEach(cloth => {
             $('cloths').innerHTML += `<option value="${cloth.id}">${cloth.name}</option>`
@@ -190,7 +192,6 @@ $('systems').addEventListener('focus', async (e) => {
         elements[index].classList.remove('is-invalid')
     }
 
-
 })
 
 /* validar datos */
@@ -274,9 +275,26 @@ $('patterns').addEventListener('blur', ({ target }) => {
         target.classList.remove('is-invalid')
     }
 })
+
+$('patterns').addEventListener('change', ({target}) => {
+    if(+target.value === 3){
+        $('chains').disabled = true;
+        $('chains').classList.remove('is-invalid');
+        $('chains').innerHTML = `<option value="6">0</option>`;
+    }else{
+        $('chains').disabled = false;
+        $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
+        
+        JSON.parse(sessionStorage.getItem('chains')).forEach(chain => {
+            $('chains').innerHTML += `<option value="${chain.id}">${chain.name}</option>`
+        })
+    }
+})
+
 $('chains').addEventListener('blur', ({ target }) => {
     if (!target.value) {
-        target.classList.add('is-invalid')
+        target.classList.add('is-invalid');
+
     } else {
         target.classList.remove('is-invalid')
     }
@@ -498,6 +516,14 @@ const sendForm = async () => {
         $('railWidth').value = 0;
     }
 
+    /* si el sistema esromana y el modelo de cadena el cordon, el largo de la cadena es 0 */
+  /*   if($('systems').value == 111 && $('patterns').value == 3){
+        $('chains').value = 0;
+        console.log('====================================');
+        console.log($('chains').value);
+        console.log('====================================');
+    } */
+
     for (let i = 0; i < elements.length - 1; i++) {
 
         if (!elements[i].value || elements[i].classList.contains('is-invalid')) {
@@ -543,6 +569,9 @@ const sendForm = async () => {
                 $('amount').classList.remove('h6')
                 $('amount').classList.add('h4')
                 $('amount').innerHTML = result.rol !== 3 ? `Monto: $ ${result.data}` : 'Producto encontrado';
+
+                sessionStorage.removeItem('chains');
+
             } else {
                 $('amount-box').classList.remove('alert-success')
                 $('amount-box').classList.add('alert-danger')

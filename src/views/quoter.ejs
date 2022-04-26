@@ -66,6 +66,12 @@
                         <label for="chains">Cadena</label>
                       </div>
                     </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="reference" name="reference" required>
+                        <label for="reference">Nombre de referencia</label>
+                      </div>
+                    </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3" id="width-box">
                       <div class="form-floating" >
                         <input type="text" class="form-control" id="width" name="width" required>
@@ -94,12 +100,7 @@
                       </div>
                       <span id="errorHeigth" class="text-danger ms-3"></span>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                      <div class="form-floating">
-                        <input type="text" class="form-control" id="reference" name="reference" required>
-                        <label for="reference">Nombre de referencia</label>
-                      </div>
-                    </div>
+            
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                       <% if (userLogin.rol !== 2) { %>
                         <div class="alert alert-warning" >
