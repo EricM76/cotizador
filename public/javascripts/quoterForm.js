@@ -99,6 +99,7 @@ const getData = async (target) => {
 
         }
         $('width').value = null;
+        $('large').value = null;
         $('heigth').value = null;
         $('reference').value = null;
     } catch (error) {
