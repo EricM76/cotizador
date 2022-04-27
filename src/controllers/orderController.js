@@ -463,7 +463,7 @@ module.exports = {
               alignment: "right",
             },
             {
-              text: total,
+              text: total + req.session.packaging,
               alignment: "right",
             },
           ]);
