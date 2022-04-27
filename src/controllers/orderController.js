@@ -671,6 +671,16 @@ module.exports = {
                 type: "application/pdf",
                 name: `${order.orderNumber}.pdf`,
               },
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  order.ticket || ''
+                ),
+                type: "image",
+                name: order.ticket,
+              }
             ],
           });
           let message = new Message({
