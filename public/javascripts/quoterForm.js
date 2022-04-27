@@ -90,9 +90,9 @@ const getData = async (target) => {
         })
 
         if (chains.length > 0) {
-            $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
+            /* $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
             chains.forEach(chain => {
-                $('chains').innerHTML += `<option value="${chain.id}">${chain.name}</option>`
+                $('chains').innerHTML += `<option ${chain.id === 1 && 'selected'} value="${chain.id}">${chain.name}</option>`
             })
         } else {
             $('chains').innerHTML = `<option value="0">0</option>`;
@@ -281,13 +281,14 @@ $('patterns').addEventListener('change', ({target}) => {
     if(+target.value === 3){
         $('chains').disabled = true;
         $('chains').classList.remove('is-invalid');
+        $('chains').innerHTML = null;
         $('chains').innerHTML = `<option value="6">0</option>`;
     }else{
         $('chains').disabled = false;
-        $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
-        
+       /*  $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
+       $('chains').innerHTML = null;
         JSON.parse(sessionStorage.getItem('chains')).forEach(chain => {
-            $('chains').innerHTML += `<option value="${chain.id}">${chain.name}</option>`
+            $('chains').innerHTML += `<option ${chain.id === 1 && 'selected'} value="${chain.id}">${chain.name}</option>`
         })
     }
 })
