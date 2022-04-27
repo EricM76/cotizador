@@ -16,7 +16,7 @@ observations.addEventListener('keyup', ({ target }) => {
 });
 
 
-$('ticket').addEventListener('change', e => {
+$('ticket') && $('ticket').addEventListener('change', e => {
     let regExExt = /(.jpg|.jpeg|.png|.gif|.webp)$/i;
 
     switch (true) {

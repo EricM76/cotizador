@@ -122,6 +122,10 @@ module.exports = {
       amounts = [amounts]
     }
 
+    console.log('====================================');
+    console.log(clothOrientations);
+    console.log('====================================');
+
     try {
       let order = await db.Order.create({
         userId: req.session.userLogin.id,
@@ -140,7 +144,7 @@ module.exports = {
             clothOrientation: clothOrientations[i],
             environment: environments[i],
             observations: observations[i],
-            amount: amounts[i]
+            amount: amounts && amounts[i]
           },
           {
             where: {

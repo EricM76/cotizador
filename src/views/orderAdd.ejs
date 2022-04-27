@@ -100,20 +100,28 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-2 mb-3">
                         <div class="form-floating">
-                        <select class="form-select" id="cloth-orientation" name="clothOrientation" onchange="this.classList.remove('is-invalid')">
-                          <option selected hidden value="">Seleccione...</option>
-                          <option value="POR DELANTE">Por delante</option>
-                          <option value="POR DETRÁS">Por detrás</option>
+                        <select class="form-select" id="cloth-orientation" name="clothOrientation" onchange="this.classList.remove('is-invalid')"  >
+                          <% if (system.id == 127 || system.id == 114) { %>
+                            <option selected value="NO APLICA">No aplica</option>
+                          <% }else{ %>
+                            <option selected hidden value="">Seleccione...</option>
+                            <option value="POR DELANTE">Por delante</option>
+                            <option value="POR DETRÁS">Por detrás</option>
+                          <% } %>
                         </select>
                         <label for="cloth orientation">Orientación tela</label>
                       </div>
                       </div>
                       <div class="col-12 col-md-6 col-lg-2 mb-3">
                         <div class="form-floating">
-                        <select class="form-select" id="command" name="command" onchange="this.classList.remove('is-invalid')">
+                        <select class="form-select" id="command" name="command" onchange="this.classList.remove('is-invalid')" >
+                          <% if (system.id == 127 || system.id == 114) { %>
+                            <option selected value="NO APLICA">No aplica</option>
+                          <% }else{ %>
                           <option selected hidden value="">Seleccione...</option>
                           <option value="DER">Derecho</option>
                           <option value="IZQ">Izquierdo</option>
+                          <% } %>
                         </select>
                         <label for="command">Comando</label>
                       </div>

@@ -3,6 +3,7 @@ let clothOrientations = document.querySelectorAll('#cloth-orientation');
 let commands = document.querySelectorAll('#command');
 let observations = document.querySelectorAll('#observations');
 let btnOrdenGenerate = document.getElementById('btn-orderGenerate');
+let systems = document.querySelectorAll('#system')
 
 let dataOrder = {
   supportOrientations: [],
