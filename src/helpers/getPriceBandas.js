@@ -1,7 +1,7 @@
 const db = require('../database/models');
 const getRoundedArea = require('./getRoundedArea');
 
-module.exports = async (width, heigth, amount, chain) => {
+module.exports = async (width, heigth, amount, chain, pattern) => {
   console.log('====================================');
   console.log('ANCHO RECIBIDO', width);
   console.log('====================================');
