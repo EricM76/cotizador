@@ -665,7 +665,7 @@ module.exports = {
 
       if (+system === 179) {
 
-        amount = await getPriceBandas(railWidth, heigth, amount, chain);
+        amount = await getPriceBandas(width, heigth, amount, chain);
         console.log('====================================');
         console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');

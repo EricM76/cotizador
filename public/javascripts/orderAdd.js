@@ -3,7 +3,8 @@ let clothOrientations = document.querySelectorAll('#cloth-orientation');
 let commands = document.querySelectorAll('#command');
 let observations = document.querySelectorAll('#observations');
 let btnOrdenGenerate = document.getElementById('btn-orderGenerate');
-let systems = document.querySelectorAll('#system')
+let systems = document.querySelectorAll('#system');
+let accordions = document.querySelectorAll('#accordion-button')
 
 let dataOrder = {
   supportOrientations: [],
@@ -46,6 +47,22 @@ window.addEventListener('load', () => {
 
 })
 
+const verifyErrors = () => {
+  for (let i = 0; i < accordions.length; i++) {
+    if(
+    commands[i].classList.contains('is-invalid') ||
+    supportOrientations[i].classList.contains('is-invalid') ||
+    clothOrientations[i].classList.contains('is-invalid')
+    ){
+      accordions[i].classList.add('bg-danger');
+      $('msg-error').hidden = false;
+    }else{
+      accordions[i].classList.remove('bg-danger');
+      $('msg-error').hidden = true;
+    }
+  }
+};
+
 $('form-generate-order').addEventListener('submit', (e) => {
   e.preventDefault();
   let empty = false;
@@ -68,9 +85,11 @@ $('form-generate-order').addEventListener('submit', (e) => {
   for (let i = 0; i < commands.length; i++) {
     if (commands[i].value === "") {
       empty = true
-      commands[i].classList.add('is-invalid')
+      commands[i].classList.add('is-invalid');
     }
   }
+
+ verifyErrors();
 
   if (!empty) {
 

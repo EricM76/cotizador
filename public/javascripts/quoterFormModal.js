@@ -33,6 +33,8 @@ const getData = async (target) => {
     $('errorHeigth').innerHTML = null;
     $('errorWidth').innerHTML = null
 
+    sessionStorage.removeItem('chains');
+
     try {
       
         $('spinner').hidden = false;
@@ -82,9 +84,9 @@ const getData = async (target) => {
         })
 
         if (chains.length > 0) {
-            $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
+            /* $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
             chains.forEach(chain => {
-                $('chains').innerHTML += `<option value="${chain.id}">${chain.name}</option>`
+                $('chains').innerHTML += `<option ${chain.id === 1 && 'selected'} value="${chain.id}">${chain.name}</option>`
             })
         } else {
             $('chains').innerHTML = `<option value="0">0</option>`;
@@ -158,10 +160,14 @@ $('systems').addEventListener('change', async ({ target }) => {
         $('supports-box').classList.remove('box-hidden');
         $('patterns-box').classList.remove('box-hidden');
         $('heigth-box').classList.remove('box-hidden');
+        $('chains-box').classList.remove('box-hidden');
 
         $('railWidth-box').classList.add('box-hidden');
         $('large-box').classList.add('box-hidden');
-        $('chains-box').classList.add('box-hidden');
+
+        $('chains').classList.remove('is-invalid');
+        $('chains').innerHTML = null;
+        $('chains').disabled = true;
 
     } else {
         $('width-box').classList.remove('box-hidden');
@@ -272,16 +278,17 @@ $('cloths').addEventListener('blur', ({target}) => {
    });
 
    $('patterns').addEventListener('change', ({target}) => {
-    if(+target.value === 3){
+    if(+target.value === 3 || +target.value === 4){
         $('chains').disabled = true;
         $('chains').classList.remove('is-invalid');
+        $('chains').innerHTML = null;
         $('chains').innerHTML = `<option value="6">0</option>`;
     }else{
         $('chains').disabled = false;
-        $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
-        
+       /*  $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
+       $('chains').innerHTML = null;
         JSON.parse(sessionStorage.getItem('chains')).forEach(chain => {
-            $('chains').innerHTML += `<option value="${chain.id}">${chain.name}</option>`
+            $('chains').innerHTML += `<option ${chain.id === 1 && 'selected'} value="${chain.id}">${chain.name}</option>`
         })
     }
 })

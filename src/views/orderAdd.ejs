@@ -20,11 +20,13 @@
             <div class="card-body row">
 
               <div class="accordion" id="accordionExample">
+                <div class="alert alert-danger" id="msg-error" hidden>Commplete los campos señalados</div>
+
                 <% items.forEach(({id,system,cloth,color, clothWidth, heigth, pattern, chain,support, reference, amount},index) => { %>
 
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="heading<%= id %>">
-                    <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= id %>" aria-expanded=<%= index === 0 ? 'true' : false %>  aria-controls="collapse<%= id %>">
+                    <button class="accordion-button text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= id %>" aria-expanded=<%= index === 0 ? 'true' : false %>  aria-controls="collapse<%= id %>" id="accordion-button">
                       Cotización <%= index + 1 %> | <%= reference %>  
                     </button>
                   </h2>
@@ -90,7 +92,7 @@
                    
                       <div class="col-12 col-md-6 col-lg-3 mb-3">
                         <div class="form-floating">
-                        <select class="form-select" id="support-orientation" name="supportOrientation" onchange="this.classList.remove('is-invalid')">
+                        <select class="form-select" id="support-orientation" name="supportOrientation" onchange="this.classList.remove('is-invalid'); verifyErrors()">
                           <option selected hidden value="">Seleccione...</option>
                           <option value="PARED">Pared</option>
                           <option value="TECHO">Techo</option>
@@ -100,7 +102,7 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-2 mb-3">
                         <div class="form-floating">
-                        <select class="form-select" id="cloth-orientation" name="clothOrientation" onchange="this.classList.remove('is-invalid')"  >
+                        <select class="form-select" id="cloth-orientation" name="clothOrientation" onchange="this.classList.remove('is-invalid'); verifyErrors()"  >
                           <% if (system.id == 127 || system.id == 114) { %>
                             <option selected value="NO APLICA">No aplica</option>
                           <% }else{ %>
@@ -114,7 +116,7 @@
                       </div>
                       <div class="col-12 col-md-6 col-lg-2 mb-3">
                         <div class="form-floating">
-                        <select class="form-select" id="command" name="command" onchange="this.classList.remove('is-invalid')" >
+                        <select class="form-select" id="command" name="command" onchange="this.classList.remove('is-invalid'); verifyErrors()" >
                           <% if (system.id == 127 || system.id == 114) { %>
                             <option selected value="NO APLICA">No aplica</option>
                           <% }else{ %>
