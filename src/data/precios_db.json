@@ -10,7 +10,7 @@
     {
       "idLocal": "2",
       "systemId": "113",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "1",
       "amount": "3081",
       "visible": 1
@@ -18,7 +18,7 @@
     {
       "idLocal": "3",
       "systemId": "113",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "3",
       "amount": "3438",
       "visible": 1
@@ -26,7 +26,7 @@
     {
       "idLocal": "4",
       "systemId": "113",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "2",
       "amount": "3438",
       "visible": 1
@@ -34,7 +34,7 @@
     {
       "idLocal": "5",
       "systemId": "113",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "16",
       "amount": "4141",
       "visible": 1
@@ -490,7 +490,7 @@
     {
       "idLocal": "70",
       "systemId": "112",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "1",
       "amount": "2798",
       "visible": 1
@@ -498,7 +498,7 @@
     {
       "idLocal": "71",
       "systemId": "112",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "3",
       "amount": "3183",
       "visible": 1
@@ -506,7 +506,7 @@
     {
       "idLocal": "72",
       "systemId": "112",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "2",
       "amount": "3183",
       "visible": 1
@@ -1082,7 +1082,7 @@
     {
       "idLocal": "150",
       "systemId": "179",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "1",
       "amount": "7319",
       "visible": 1
@@ -1090,7 +1090,7 @@
     {
       "idLocal": "151",
       "systemId": "179",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "3",
       "amount": "7319",
       "visible": 1
@@ -1098,7 +1098,7 @@
     {
       "idLocal": "152",
       "systemId": "179",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "2",
       "amount": "7319",
       "visible": 1
@@ -1106,7 +1106,7 @@
     {
       "idLocal": "153",
       "systemId": "179",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "16",
       "amount": "7686",
       "visible": 1
@@ -1498,7 +1498,7 @@
     {
       "idLocal": "209",
       "systemId": "112",
-      "clothId": "656",
+      "clothId": "731",
       "colorId": "16",
       "amount": "3484",
       "visible": 1

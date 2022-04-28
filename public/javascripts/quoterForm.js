@@ -39,6 +39,7 @@ const getData = async (target) => {
     $('errorHeigth').innerHTML = null;
     $('errorWidth').innerHTML = null
 
+    sessionStorage.removeItem('chains');
 
     try {
 
@@ -165,10 +166,15 @@ $('systems').addEventListener('change', async ({ target }) => {
         $('supports-box').classList.remove('box-hidden');
         $('patterns-box').classList.remove('box-hidden');
         $('heigth-box').classList.remove('box-hidden');
+        $('chains-box').classList.remove('box-hidden');
 
         $('railWidth-box').classList.add('box-hidden');
         $('large-box').classList.add('box-hidden');
-        $('chains-box').classList.add('box-hidden');
+
+        $('chains').classList.remove('is-invalid');
+        $('chains').innerHTML = null;
+        $('chains').disabled = true;
+
 
     } else {
         $('width-box').classList.remove('box-hidden');
@@ -278,7 +284,7 @@ $('patterns').addEventListener('blur', ({ target }) => {
 })
 
 $('patterns').addEventListener('change', ({target}) => {
-    if(+target.value === 3){
+    if(+target.value === 3 || +target.value === 4){
         $('chains').disabled = true;
         $('chains').classList.remove('is-invalid');
         $('chains').innerHTML = null;
@@ -572,7 +578,6 @@ const sendForm = async () => {
                 $('amount').classList.add('h4')
                 $('amount').innerHTML = result.rol !== 3 ? `Monto: $ ${result.data}` : 'Producto encontrado';
 
-                sessionStorage.removeItem('chains');
 
             } else {
                 $('amount-box').classList.remove('alert-success')
