@@ -40,6 +40,7 @@ const getData = async (target) => {
     $('errorWidth').innerHTML = null
 
     sessionStorage.removeItem('chains');
+    sessionStorage.removeItem('chainSelected');
 
     try {
 
@@ -294,9 +295,13 @@ $('patterns').addEventListener('change', ({target}) => {
        /*  $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
        $('chains').innerHTML = null;
         JSON.parse(sessionStorage.getItem('chains')).forEach(chain => {
-            $('chains').innerHTML += `<option ${chain.id === 1 && 'selected'} value="${chain.id}">${chain.name}</option>`
+            $('chains').innerHTML += `<option ${sessionStorage.getItem('chainSelected') && sessionStorage.getItem('chainSelected') == chain.id ? 'selected' : chain.id === 1 ? 'selected' : null} value="${chain.id}">${chain.name}</option>`
         })
     }
+})
+
+$('chains').addEventListener('change', ({target}) => {
+    sessionStorage.setItem('chainSelected',target.value)
 })
 
 $('chains').addEventListener('blur', ({ target }) => {
