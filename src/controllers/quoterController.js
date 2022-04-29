@@ -26,6 +26,7 @@ module.exports = {
 
       db.Quotation.findAll({
         limit: 8,
+        order : [['date','DESC']],
         include: { all: true },
       })
         .then((items) => {
@@ -61,6 +62,7 @@ module.exports = {
           userId: req.session.userLogin.id,
         },
         limit: 8,
+        order : [['date','DESC']],
         include: { all: true },
       })
         .then((items) => {
