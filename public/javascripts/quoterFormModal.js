@@ -18,9 +18,18 @@ window.addEventListener('load', async () => {
 
         $('systems').innerHTML = null;
         $('systems').innerHTML += `<option value="" selected hidden>Seleccione...</option>`
-        result.data.forEach(item => {
+       /*  result.data.forEach(item => {
             $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>`
-        })
+        }) */
+        $('systems').innerHTML += `<option value="113">Roller</option>`
+        $('systems').innerHTML += `<option value="111">Romanas</option>`
+        $('systems').innerHTML += `<option value="112">Paneles Orientales</option>`
+        $('systems').innerHTML += `<option value="179">Bandas Verticales</option>`
+        $('systems').innerHTML += `<option value="129">Pellizco Simple</option>`
+        $('systems').innerHTML += `<option value="130">Pellizco Doble</option>`
+        $('systems').innerHTML += `<option value="116">Triple Pellizco</option>`
+        $('systems').innerHTML += `<option value="127">Cenefa</option>`
+        $('systems').innerHTML += `<option value="114">Guías</option>`
 
     } catch (error) {
         console.error(error)
