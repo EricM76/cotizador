@@ -17,7 +17,7 @@
                 ID: <b>
                   <%= system.id %>
                 </b>
-                <form action="/systems/update/<%= system.id %>?_method=PUT" method="POST">
+                <form action="/systems/update/<%= system.id %>?_method=PUT" method="POST" id="form-system">
 
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="1" id="visible" <%=system.visible && 'checked'
@@ -42,6 +42,7 @@
                 <div class="col-12 col-md-4 mb-3">
                   <label for="idLocal" class="form-label">ID Local</label>
                   <input type="number" class="form-control" id="idLocal" value=<%=system.idLocal %> name="idLocal"/>
+                  <span id="msg-error" class="text-danger text-small ms-2" hidden>El ID está en uso</span>
                 </div>
                 <div class="col-12 col-md-4">
                   <label class="form-label"><b>Telas</b></label>
@@ -144,6 +145,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
+        <script src="/javascripts/systems.js"></script>
 
   </body>
 

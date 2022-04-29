@@ -11,7 +11,7 @@
                             Editar Color
                         </div>
                         <div class="card-body">
-                            <form action="/colors/update/<%=item.id%>?_method=PUT" method="POST" class="row needs-validation" novalidate>
+                            <form action="/colors/update/<%=item.id%>?_method=PUT" method="POST" class="row needs-validation" novalidate id="form-color">
 
                                 <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
                                     <div class="form-floating">
@@ -29,15 +29,20 @@
 
 
                                 <div class="col-12 col-md-6 d-flex justify-content-between my-2">
-                                    <div class="form-floating w-50">
-                                        <input type="text" class="form-control" id="idLocal" name="idLocal"
-                                            placeholder="ID Local" value="<%=item.idLocal %>" required>
-                                        <label for="idLocal">ID Local</label>
+                                        <div class="form-floating w-50">
+                                            <input type="text" class="form-control" id="idLocal" name="idLocal"
+                                                placeholder="ID Local" value="<%=item.idLocal %>" required>
+                                            <label for="idLocal">ID Local</label>
+
                                     </div>
+                                 
+                                    <span id="msg-error" class="text-danger text-small ms-2" hidden>El ID está en uso</span>
+
                                     <div class="form-check form-switch mx-auto">
                                         <input class="form-check-input" type="checkbox" id="enabled" name="enabled" <%=item.visible && 'checked' %>>
                                         <label class="form-check-label" for="enabled">Visibilizar</label>
                                     </div>
+
                                 </div>
 
 
@@ -53,6 +58,7 @@
             </main>
             <%- include('partials/footer') %>
                 <%- include('partials/scripts') %>
+                <script src="/javascripts/colors.js"></script>
 
     </body>
 

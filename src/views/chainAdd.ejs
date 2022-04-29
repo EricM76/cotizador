@@ -11,7 +11,7 @@
               Nueva Cadena
             </div>
             <div class="card-body">
-              <form action="/chains/add" method="POST" class="row needs-validation" novalidate>
+              <form action="/chains/add" method="POST" class="row needs-validation" novalidate id="form-chain">
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
                     <div class="form-floating">
@@ -45,6 +45,7 @@
                   <span class="ms-1 text-danger">
                     <%= locals.errors && errors.idLocal && errors.idLocal.msg %>
                   </span>
+                  <span id="msg-error" class="text-danger text-small ms-2" hidden>El ID está en uso</span>
                   <div class="invalid-feedback">
                     El ID Local es requerido
                   </div>
@@ -61,6 +62,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
+        <script src="/javascripts/chains.js"></script>
 
   </body>
 

@@ -1,35 +1,11 @@
-console.log('userAdd connected success');
-
 window.addEventListener('load', () => {
     $('idLocal').value != 0 && sessionStorage.setItem('idLocal', $('idLocal').value);
-})
-
-const verifyUsername = async (username) => {
-  
-    let response = await fetch('/users/api/verify-username',{
-        method : 'POST',
-        headers:{
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify({
-            username
-        })
-    });
-    let result = await response.json();
-
-    document.getElementById('error-username').innerHTML = !result.ok ? result.msg : null 
-
-}
-
-document.getElementById('username').addEventListener('keyup', ({target}) => {
-
- verifyUsername(target.value)
 })
 
 $('idLocal').addEventListener('keydown', async ({ target }) => {
     try {
 
-        let response = await fetch('/users/api/get-ids-local');
+        let response = await fetch('/patterns/api/get-ids-local');
         let result = await response.json();
 
         if ((result.ids).includes(+target.value) && target.value != sessionStorage.getItem('idLocal')) {
@@ -45,7 +21,7 @@ $('idLocal').addEventListener('keydown', async ({ target }) => {
     }
 })
 
-$('form-user').addEventListener('submit', (e) => {
+$('form-pattern').addEventListener('submit', (e) => {
     e.preventDefault();
 
     if(!$('idLocal').value){

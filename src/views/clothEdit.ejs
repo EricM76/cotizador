@@ -12,7 +12,7 @@
             </div>
             <div class="card-body">
               <form action="/cloths/update/<%=item.id%>?_method=PUT" method="POST" class="row needs-validation"
-                novalidate>
+                novalidate id="form-cloth">
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
                   <div class="form-floating">
                     <input type="text" class="form-control" id="name" name="name" placeholder="Nombre"
@@ -42,8 +42,8 @@
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="width" name="width" placeholder="Ancho"
-                      value="<%=item.width%>" required>
+                    <input type="number" class="form-control" id="width" name="width" placeholder="Ancho"
+                      value="<%=item.width%>" max="9.99" step="0.10" required>
                     <label for="width">Ancho</label>
                   </div>
                   <span class="ms-1 text-danger">
@@ -63,6 +63,7 @@
                   <span class="ms-1 text-danger">
                     <%= locals.errors && errors.idLocal && errors.idLocal.msg %>
                   </span>
+                  <span id="msg-error" class="text-danger text-small ms-2" hidden>El ID está en uso</span>
                   <div class="invalid-feedback">
                     El ID Local es requerido
                   </div>
@@ -79,6 +80,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
+        <script src="/javascripts/cloths.js"></script>
 
   </body>
 

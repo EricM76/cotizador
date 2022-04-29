@@ -130,6 +130,7 @@ module.exports = {
       console.log(error);
     }
   },
+  /* APIS */
   visibility: async (req, res) => {
     const { id, visibility } = req.params;
 
@@ -146,5 +147,31 @@ module.exports = {
       });
     }
   },
+  getIdsLocal : async (req,res) => {
+    try {
+      let idsLocal = await db.Chain.findAll({
+        attributes : ['idLocal']
+      });
+      let ids = idsLocal.map(id => id.idLocal);
+      console.log('====================================');
+      console.log(ids);
+      console.log('====================================');
+      return res.json({
+        ok: true,
+        ids 
+      });
+    } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+      return res
+        .status(error.status || 500)
+        .json(
+          error.status === 500
+            ? "Comuníquese con el administrador del sitio"
+            : error.message
+        );
+    }
+  }
 };
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {index,add,store,detail,edit,update,remove,filter,visibility, getAll} = require('../controllers/systemController');
+const {index,add,store,detail,edit,update,remove,filter,visibility, getAll, getIdsLocal} = require('../controllers/systemController');
 const adminSessionCheck = require('../middlewares/adminSessionCheck');
 
 router
@@ -13,8 +13,9 @@ router
     .put('/update/:id',adminSessionCheck,update)
     .delete('/remove/:id',adminSessionCheck,remove)
     .get('/filter',filter)
+    /* apis */
     .post('/api/visibility/:id/:visibility',adminSessionCheck,visibility)
-    //apis
     .get('/api/get-all',getAll)
+    .get('/api/get-ids-local',adminSessionCheck,getIdsLocal)
 
 module.exports = router;

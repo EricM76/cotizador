@@ -246,5 +246,12 @@ $('inputIDLocal') && $('inputIDLocal').addEventListener('keydown', async ({targe
   } catch (error) {
     console.error(error)
   }
+});
+
+$('form-priceItem') && $('form-priceItem').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if(!$('inputIDLocal').classList.contains('is-invalid')){
+    e.target.submit();
+  }
 })
 
