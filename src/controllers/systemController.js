@@ -98,6 +98,7 @@ module.exports = {
           price,
           idLocal,
           visible: visible ? true : false,
+          accessory : false
         },
         {
           where: { id: req.params.id },

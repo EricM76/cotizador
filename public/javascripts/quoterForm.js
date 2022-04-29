@@ -313,7 +313,7 @@ $('chains').addEventListener('blur', ({ target }) => {
     }
 })
 
-$('large').addEventListener('blur', ({target}) => {
+$('large').addEventListener('change', ({target}) => {
     switch ($('systems').value) {
         case '127': //cenefa
         if (+target.value > 280) {
@@ -332,7 +332,7 @@ $('large').addEventListener('blur', ({target}) => {
     }
 })
 
-$('width').addEventListener('blur', ({ target }) => {
+$('width').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
             if (+target.value > 270) {
@@ -396,7 +396,7 @@ $('width').addEventListener('blur', ({ target }) => {
 
 })
 //guias (laterales)
-$('large').addEventListener('blur', ({ target }) => {
+$('large').addEventListener('change', ({ target }) => {
     if (+target.value > 280) {
         target.classList.add('is-invalid')
     } else if (!target.value) {
@@ -413,7 +413,7 @@ $('railWidth').addEventListener('blur', ({ target }) => {
         target.classList.remove('is-invalid')
     }
 })
-$('heigth').addEventListener('blur', ({ target }) => {
+$('heigth').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
             if (+target.value > 300) {

@@ -300,7 +300,7 @@ $('cloths').addEventListener('blur', ({target}) => {
     }
    })
 
-   $('large').addEventListener('blur', ({target}) => {
+   $('large').addEventListener('change', ({target}) => {
     switch ($('systems').value) {
         case '127': //cenefa
         if (+target.value > 280) {
@@ -321,7 +321,7 @@ $('cloths').addEventListener('blur', ({target}) => {
 
 
 
-   $('width').addEventListener('blur', ({target}) => {
+   $('width').addEventListener('change', ({target}) => {
     switch ($('systems').value) {
         case '113': //roller
             if (+target.value > 270) {
@@ -385,7 +385,7 @@ $('cloths').addEventListener('blur', ({target}) => {
    })
 
    /* GUIAS */
-   $('large').addEventListener('blur', ({target}) => {
+   $('large').addEventListener('change', ({target}) => {
     if(+target.value > 280){
         target.classList.add('is-invalid')
     }else if(!target.value){
@@ -403,7 +403,7 @@ $('cloths').addEventListener('blur', ({target}) => {
     }
    })
 
-   $('heigth').addEventListener('blur', ({target}) => {
+   $('heigth').addEventListener('change', ({target}) => {
     switch ($('systems').value) {
         case '113': //roller
             if (+target.value > 300) {

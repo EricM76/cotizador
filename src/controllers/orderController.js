@@ -654,74 +654,128 @@ module.exports = {
         );
 
         setTimeout(() => {
-          let message2 = new Message({
-            text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
-            from: "cotizadorblancomad@gmail.com",
-            to: req.session.userLogin.email,
-            cc: " ",
-            subject: "Orden #" + order.orderNumber,
-            attachment: [
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  `${order.orderNumber}.pdf`
-                ),
-                type: "application/pdf",
-                name: `${order.orderNumber}.pdf`,
-              },
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  order.ticket || ''
-                ),
-                type: "image",
-                name: order.ticket,
-              }
-            ],
-          });
-          let message = new Message({
-            text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
-            from: "cotizadorblancomad@gmail.com",
-            to: "cotizadorblancomad@gmail.com",
-            cc: " ",
-            subject: "Orden #" + order.orderNumber,
-            attachment: [
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  `${order.orderNumber}.pdf`
-                ),
-                type: "application/pdf",
-                name: `${order.orderNumber}.pdf`,
-              },
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  `${order.orderNumber}.xls`
-                ),
-                type: "application/octet-stream",
-                name: `${order.orderNumber}.xls`,
-              },
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  order.ticket || ''
-                ),
-                type: "image",
-                name: order.ticket,
-              }
-            ],
-          });
+          let message;
+          let message2;
+          if(order.ticket !== "no-transfer.png"){
+             message2 = new Message({
+              text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
+              from: "cotizadorblancomad@gmail.com",
+              to: req.session.userLogin.email,
+              cc: " ",
+              subject: "Orden #" + order.orderNumber,
+              attachment: [
+                {
+                  path: path.resolve(
+                    __dirname,
+                    "..",
+                    "downloads",
+                    `${order.orderNumber}.pdf`
+                  ),
+                  type: "application/pdf",
+                  name: `${order.orderNumber}.pdf`,
+                },
+                {
+                  path: path.resolve(
+                    __dirname,
+                    "..",
+                    "downloads",
+                    order.ticket || ''
+                  ),
+                  type: "image",
+                  name: order.ticket,
+                }
+              ],
+            });
+            message = new Message({
+              text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
+              from: "cotizadorblancomad@gmail.com",
+              to: "cotizadorblancomad@gmail.com",
+              cc: " ",
+              subject: "Orden #" + order.orderNumber,
+              attachment: [
+                {
+                  path: path.resolve(
+                    __dirname,
+                    "..",
+                    "downloads",
+                    `${order.orderNumber}.pdf`
+                  ),
+                  type: "application/pdf",
+                  name: `${order.orderNumber}.pdf`,
+                },
+                {
+                  path: path.resolve(
+                    __dirname,
+                    "..",
+                    "downloads",
+                    `${order.orderNumber}.xls`
+                  ),
+                  type: "application/octet-stream",
+                  name: `${order.orderNumber}.xls`,
+                },
+                {
+                  path: path.resolve(
+                    __dirname,
+                    "..",
+                    "downloads",
+                    order.ticket || ''
+                  ),
+                  type: "image",
+                  name: order.ticket,
+                }
+              ],
+            });
+          }else{
+            message2 = new Message({
+              text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
+              from: "cotizadorblancomad@gmail.com",
+              to: req.session.userLogin.email,
+              cc: " ",
+              subject: "Orden #" + order.orderNumber,
+              attachment: [
+                {
+                  path: path.resolve(
+                    __dirname,
+                    "..",
+                    "downloads",
+                    `${order.orderNumber}.pdf`
+                  ),
+                  type: "application/pdf",
+                  name: `${order.orderNumber}.pdf`,
+                },
+              ],
+            });
+            message = new Message({
+              text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
+              from: "cotizadorblancomad@gmail.com",
+              to: "cotizadorblancomad@gmail.com",
+              cc: " ",
+              subject: "Orden #" + order.orderNumber,
+              attachment: [
+                {
+                  path: path.resolve(
+                    __dirname,
+                    "..",
+                    "downloads",
+                    `${order.orderNumber}.pdf`
+                  ),
+                  type: "application/pdf",
+                  name: `${order.orderNumber}.pdf`,
+                },
+                {
+                  path: path.resolve(
+                    __dirname,
+                    "..",
+                    "downloads",
+                    `${order.orderNumber}.xls`
+                  ),
+                  type: "application/octet-stream",
+                  name: `${order.orderNumber}.xls`,
+                },
+              ],
+            });
+          }
+          
 
           client.send(message, (err, message) => {
             console.log(err || message);
