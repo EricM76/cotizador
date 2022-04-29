@@ -755,7 +755,7 @@ module.exports = {
           );
         case "ticket":
           return res.download(
-            path.join(__dirname, "..", "data", "tickets", order.ticket)
+            path.join(__dirname, "..", "downloads", order.ticket)
           );
         default:
           break;

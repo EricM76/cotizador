@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {index,editAll, editItem, add,store,detail,edit,update,remove, getDataBySystem, getPrice} = require('../controllers/priceController');
+const {index,editAll, editItem, add,store,detail,edit,update,remove, getDataBySystem, getPrice, getIdsLocal} = require('../controllers/priceController');
 const adminSessionCheck = require('../middlewares/adminSessionCheck');
 
 router
@@ -17,6 +17,7 @@ router
     .delete('/api/remove',adminSessionCheck,remove)
     .get('/api/get-data-by-system/:system',adminSessionCheck,getDataBySystem)
     .post('/api/get-price',adminSessionCheck,getPrice)
+    .get('/api/get-ids-local',adminSessionCheck,getIdsLocal)
 
 
 module.exports = router;

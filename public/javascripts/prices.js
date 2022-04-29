@@ -32,21 +32,24 @@ window.addEventListener("load", async () => {
     let response = await fetch("/systems/api/get-all");
     let result = await response.json();
 
-    $("systems").innerHTML = null;
-    $(
-      "systems"
-    ).innerHTML += `<option value="" selected hidden>Seleccione el sistema...</option>`;
-    result.data.forEach((item) => {
+    if($('systems')){
+      $("systems").innerHTML = null;
       $(
         "systems"
-      ).innerHTML += `<option value="${item.id}">${item.name}</option>`;
-    });
+      ).innerHTML += `<option value="" selected hidden>Seleccione el sistema...</option>`;
+      result.data.forEach((item) => {
+        $(
+          "systems"
+        ).innerHTML += `<option value="${item.id}">${item.name}</option>`;
+      });
+    }
+  
   } catch (error) {
     console.error(error);
   }
 });
 
-$("systems").addEventListener("change", async (e) => {
+$('systems') && $("systems").addEventListener("change", async (e) => {
   $("box-data").hidden = true;
   try {
     let response = await fetch(
@@ -86,22 +89,23 @@ $("systems").addEventListener("change", async (e) => {
   }
 });
 
-$("cloths").addEventListener("change", ({ target }) => {
+$("cloths") && $("cloths").addEventListener("change", ({ target }) => {
   if ($("colors").value !== "" && target.value !== "") {
     $("btn-getPrice").disabled = false;
   }
   $("box-data").hidden = true;
 });
 
-$("colors").addEventListener("change", ({ target }) => {
+$("colors") && $("colors").addEventListener("change", ({ target }) => {
   if ($("cloths").value !== "" && target.value !== "") {
     $("btn-getPrice").disabled = false;
   }
   $("box-data").hidden = true;
 });
 
-$("btn-getPrice").addEventListener("click", async (e) => {
+$("btn-getPrice") && $("btn-getPrice").addEventListener("click", async (e) => {
   e.preventDefault();
+  sessionStorage.removeItem('idLocal');
 
   try {
     let response = await fetch("/prices/api/get-price", {
@@ -131,6 +135,9 @@ $("btn-getPrice").addEventListener("click", async (e) => {
       $("inputIDLocal").value = result.data.idLocal;
       $("enabled").checked = result.data.visible ? true : false;
       $("btn-remove").hidden = false;
+
+      sessionStorage.setItem('idLocal',result.data.idLocal);
+
     } else {
       $("inputPrice").value = null;
       $("inputIDLocal").value = null;
@@ -143,18 +150,18 @@ $("btn-getPrice").addEventListener("click", async (e) => {
   }
 });
 
-$("inputPrice").addEventListener("focus", ({ target }) => {
+$("inputPrice") && $("inputPrice").addEventListener("focus", ({ target }) => {
   $("errorPrice").hidden = true;
 
   target.select();
 });
 
-$("btn-cancel").addEventListener("click", () => {
+$("btn-cancel") && $("btn-cancel").addEventListener("click", () => {
   console.log("clean!");
   window.location.href = "/prices/edit/item";
 });
 
-$("btn-remove").addEventListener("click", (e) => {
+$("btn-remove") && $("btn-remove").addEventListener("click", (e) => {
   e.preventDefault();
   Swal.fire({
     title: "¿Está seguro que quiere eliminar este precio?",
@@ -216,6 +223,28 @@ $('form-updatePriceGlobal') && $('form-updatePriceGlobal').addEventListener('sub
     e.target.submit()
   }else{
     $('coefficient').classList.add('is-invalid')
+  }
+})
+
+$('inputIDLocal') && $('inputIDLocal').addEventListener('keydown', async ({target}) => {
+  try {
+    
+    let response = await fetch('/prices/api/get-ids-local');
+    let result = await response.json();
+    console.log('====================================');
+    console.log(sessionStorage.getItem('idLocal'));
+    console.log('====================================');
+   
+    if((result.ids).includes(+target.value) && target.value != sessionStorage.getItem('idLocal')){
+      $('msg-error').hidden = false;
+      target.classList.add('is-invalid');
+    }else{
+      $('msg-error').hidden = true;
+      target.classList.remove('is-invalid');
+    }
+
+  } catch (error) {
+    console.error(error)
   }
 })
 

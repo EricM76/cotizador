@@ -111,7 +111,7 @@ const getData = async (target) => {
 
 $('systems').addEventListener('change', async ({ target }) => {
 
-    getData(target);
+    await getData(target);
 
     /* 114: GUIAS */
     if (target.value == 114) {
@@ -312,6 +312,26 @@ $('chains').addEventListener('blur', ({ target }) => {
         target.classList.remove('is-invalid')
     }
 })
+
+$('large').addEventListener('blur', ({target}) => {
+    switch ($('systems').value) {
+        case '127': //cenefa
+        if (+target.value > 280) {
+            $('errorLarge').innerHTML = `El ancho máximo permitido es de 280 cm`;
+            target.classList.add('is-invalid')
+        } else if (!target.value) {
+            target.classList.add('is-invalid')
+        } else {
+            $('errorLarge').innerHTML = null;
+            target.classList.remove('is-invalid')
+        }
+        break
+    
+        default:
+            break;
+    }
+})
+
 $('width').addEventListener('blur', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
@@ -347,17 +367,7 @@ $('width').addEventListener('blur', ({ target }) => {
                 target.classList.remove('is-invalid')
             }
             break;
-        case '127': //cenefa
-            if (+target.value > 280) {
-                $('errorHeigth').innerHTML = `El ancho máximo permitido es de 280 cm`;
-                target.classList.add('is-invalid')
-            } else if (!target.value) {
-                target.classList.add('is-invalid')
-            } else {
-                $('errorHeigth').innerHTML = null;
-                target.classList.remove('is-invalid')
-            }
-            break
+      
         case '114': //guias (laterales)
             if (+target.value > 280) {
                 $('errorHeigth').innerHTML = `El ancho máximo permitido es de 280 cm`;
