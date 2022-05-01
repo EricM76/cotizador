@@ -827,9 +827,9 @@
     },
     {
         "idLocal": 119,
-        "name": "visillo",
+        "name": "Visillo",
         "price": 0,
-        "visible": 0,
+        "visible": 1,
         "accessory" : 0
     },
     {

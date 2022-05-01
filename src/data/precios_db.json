@@ -192,6 +192,198 @@
       "visible": 1
     },
     {
+      "idLocal": "1",
+      "systemId": "119",
+      "clothId": "600",
+      "colorId": "1",
+      "amount": "2627",
+      "visible": 1
+    },
+    {
+      "idLocal": "2",
+      "systemId": "119",
+      "clothId": "731",
+      "colorId": "1",
+      "amount": "3081",
+      "visible": 1
+    },
+    {
+      "idLocal": "3",
+      "systemId": "119",
+      "clothId": "731",
+      "colorId": "3",
+      "amount": "3438",
+      "visible": 1
+    },
+    {
+      "idLocal": "4",
+      "systemId": "119",
+      "clothId": "731",
+      "colorId": "2",
+      "amount": "3438",
+      "visible": 1
+    },
+    {
+      "idLocal": "5",
+      "systemId": "119",
+      "clothId": "731",
+      "colorId": "16",
+      "amount": "4141",
+      "visible": 1
+    },
+    {
+      "idLocal": "6",
+      "systemId": "119",
+      "clothId": "599",
+      "colorId": "1",
+      "amount": "4202",
+      "visible": 1
+    },
+    {
+      "idLocal": "7",
+      "systemId": "119",
+      "clothId": "599",
+      "colorId": "3",
+      "amount": "4524",
+      "visible": 1
+    },
+    {
+      "idLocal": "8",
+      "systemId": "119",
+      "clothId": "599",
+      "colorId": "16",
+      "amount": "4524",
+      "visible": 1
+    },
+    {
+      "idLocal": "9",
+      "systemId": "119",
+      "clothId": "599",
+      "colorId": "2",
+      "amount": "4524",
+      "visible": 1
+    },
+    {
+      "idLocal": "10",
+      "systemId": "119",
+      "clothId": "670",
+      "colorId": "1",
+      "amount": "4978",
+      "visible": 1
+    },
+    {
+      "idLocal": "11",
+      "systemId": "119",
+      "clothId": "670",
+      "colorId": "3",
+      "amount": "4978",
+      "visible": 1
+    },
+    {
+      "idLocal": "12",
+      "systemId": "119",
+      "clothId": "657",
+      "colorId": "1",
+      "amount": "6565",
+      "visible": 1
+    },
+    {
+      "idLocal": "13",
+      "systemId": "119",
+      "clothId": "604",
+      "colorId": "4",
+      "amount": "6565",
+      "visible": 1
+    },
+    {
+      "idLocal": "14",
+      "systemId": "119",
+      "clothId": "604",
+      "colorId": "3",
+      "amount": "6565",
+      "visible": 1
+    },
+    {
+      "idLocal": "15",
+      "systemId": "119",
+      "clothId": "669",
+      "colorId": "3",
+      "amount": "5348",
+      "visible": 1
+    },
+    {
+      "idLocal": "16",
+      "systemId": "119",
+      "clothId": "669",
+      "colorId": "1",
+      "amount": "5348",
+      "visible": 1
+    },
+    {
+      "idLocal": "17",
+      "systemId": "119",
+      "clothId": "667",
+      "colorId": "1",
+      "amount": "5341",
+      "visible": 1
+    },
+    {
+      "idLocal": "18",
+      "systemId": "119",
+      "clothId": "651",
+      "colorId": "1",
+      "amount": "6450",
+      "visible": 1
+    },
+    {
+      "idLocal": "19",
+      "systemId": "119",
+      "clothId": "599",
+      "colorId": "4",
+      "amount": "6185",
+      "visible": 1
+    },
+    {
+      "idLocal": "20",
+      "systemId": "119",
+      "clothId": "632",
+      "colorId": "1",
+      "amount": "10861",
+      "visible": 1
+    },
+    {
+      "idLocal": "22",
+      "systemId": "119",
+      "clothId": "632",
+      "colorId": "26",
+      "amount": "10861",
+      "visible": 1
+    },
+    {
+      "idLocal": "23",
+      "systemId": "119",
+      "clothId": "692",
+      "colorId": "3",
+      "amount": "7397",
+      "visible": 1
+    },
+    {
+      "idLocal": "24",
+      "systemId": "119",
+      "clothId": "676",
+      "colorId": "1",
+      "amount": "6450",
+      "visible": 1
+    },
+    {
+      "idLocal": "26",
+      "systemId": "119",
+      "clothId": "676",
+      "colorId": "26",
+      "amount": "6450",
+      "visible": 1
+    },
+    {
       "idLocal": "27",
       "systemId": "111",
       "clothId": "605",
@@ -1152,6 +1344,22 @@
       "visible": 1
     },
     {
+      "idLocal": "159",
+      "systemId": "119",
+      "clothId": "680",
+      "colorId": "3",
+      "amount": "5348",
+      "visible": 1
+    },
+    {
+      "idLocal": "158",
+      "systemId": "119",
+      "clothId": "644",
+      "colorId": "3",
+      "amount": "5348",
+      "visible": 1
+    },
+    {
       "idLocal": "161",
       "systemId": "130",
       "clothId": "610",
@@ -1170,6 +1378,14 @@
     {
       "idLocal": "164",
       "systemId": "113",
+      "clothId": "713",
+      "colorId": "26",
+      "amount": "6565",
+      "visible": 1
+    },
+    {
+      "idLocal": "164",
+      "systemId": "119",
       "clothId": "713",
       "colorId": "26",
       "amount": "6565",
@@ -1202,6 +1418,14 @@
     {
       "idLocal": "168",
       "systemId": "113",
+      "clothId": "719",
+      "colorId": "1",
+      "amount": "3690",
+      "visible": 1
+    },
+    {
+      "idLocal": "168",
+      "systemId": "119",
       "clothId": "719",
       "colorId": "1",
       "amount": "3690",
@@ -1272,6 +1496,30 @@
       "visible": 1
     },
     {
+      "idLocal": "174",
+      "systemId": "119",
+      "clothId": "730",
+      "colorId": "3",
+      "amount": "6565",
+      "visible": 1
+    },
+    {
+      "idLocal": "175",
+      "systemId": "119",
+      "clothId": "730",
+      "colorId": "51",
+      "amount": "6565",
+      "visible": 1
+    },
+    {
+      "idLocal": "176",
+      "systemId": "119",
+      "clothId": "730",
+      "colorId": "4",
+      "amount": "6565",
+      "visible": 1
+    },
+    {
       "idLocal": "177",
       "systemId": "112",
       "clothId": "730",
@@ -1282,6 +1530,14 @@
     {
       "idLocal": "180",
       "systemId": "113",
+      "clothId": "670",
+      "colorId": "4",
+      "amount": "6565",
+      "visible": 1
+    },
+    {
+      "idLocal": "180",
+      "systemId": "119",
       "clothId": "670",
       "colorId": "4",
       "amount": "6565",
@@ -1306,6 +1562,14 @@
     {
       "idLocal": "183",
       "systemId": "113",
+      "clothId": "744",
+      "colorId": "1",
+      "amount": "3567",
+      "visible": 1
+    },
+    {
+      "idLocal": "183",
+      "systemId": "119",
       "clothId": "744",
       "colorId": "1",
       "amount": "3567",
@@ -1378,6 +1642,14 @@
     {
       "idLocal": "193",
       "systemId": "113",
+      "clothId": "744",
+      "colorId": "3",
+      "amount": "3850",
+      "visible": 1
+    },
+    {
+      "idLocal": "193",
+      "systemId": "119",
       "clothId": "744",
       "colorId": "3",
       "amount": "3850",
@@ -1490,6 +1762,46 @@
     {
       "idLocal": "208",
       "systemId": "113",
+      "clothId": "746",
+      "colorId": "3",
+      "amount": "5348",
+      "visible": 1
+    },
+    {
+      "idLocal": "204",
+      "systemId": "119",
+      "clothId": "747",
+      "colorId": "1",
+      "amount": "4620",
+      "visible": 1
+    },
+    {
+      "idLocal": "205",
+      "systemId": "119",
+      "clothId": "748",
+      "colorId": "1",
+      "amount": "5348",
+      "visible": 1
+    },
+    {
+      "idLocal": "206",
+      "systemId": "119",
+      "clothId": "745",
+      "colorId": "1",
+      "amount": "4202",
+      "visible": 1
+    },
+    {
+      "idLocal": "207",
+      "systemId": "119",
+      "clothId": "746",
+      "colorId": "1",
+      "amount": "5348",
+      "visible": 1
+    },
+    {
+      "idLocal": "208",
+      "systemId": "119",
       "clothId": "746",
       "colorId": "3",
       "amount": "5348",

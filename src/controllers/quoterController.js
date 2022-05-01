@@ -368,6 +368,20 @@ module.exports = {
 
       }
 
+        /* ************************************************ */
+      /*                     VISILLO                       */
+      /* ************************************************ */
+
+      if (+system === 119) {
+
+        amount = await getPriceRoller(width, heigth, amount, cloth, pattern, support, chain);
+        amount = amount - (amount * 0.06)
+        console.log('====================================');
+        console.log('RESULTADO FUNCIÓN', amount)
+        console.log('====================================');
+
+      }
+
       /* ************************************************ */
       /*                    ROMANAS                       */
       /* ************************************************ */
