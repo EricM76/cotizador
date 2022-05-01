@@ -368,26 +368,39 @@ $('cloths').addEventListener('blur', ({target}) => {
     
         case '114': //guias (laterales)
             if (+target.value > 280) {
-                $('errorHeigth').innerHTML = `El ancho máximo permitido es de 280 cm`;
+                $('errorWidth').innerHTML = `El ancho máximo permitido es de 280 cm`;
                 target.classList.add('is-invalid')
             } else if(!target.value) {
                 target.classList.add('is-invalid')
             } else {
-                $('errorHeigth').innerHTML = null;
+                $('errorWidth').innerHTML = null;
                 target.classList.remove('is-invalid')
             }
             break
         case '179': //bandas verticales
             if (+target.value > 300) {
-                $('errorHeigth').innerHTML = `El ancho máximo permitido es de 300 cm`;
+                $('errorWidth').innerHTML = `El ancho máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
             } else if(!target.value) {
                 target.classList.add('is-invalid')
             } else {
-                $('errorHeigth').innerHTML = null;
+                $('errorWidth').innerHTML = null;
                 target.classList.remove('is-invalid')
             }
             break
+        case '116': //triple pellizco
+        case '129': //pellizco simple
+        case '130': //pellizco doble
+                if (+target.value > 270) {
+                    $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
+                    target.classList.add('is-invalid')
+                } else if (!target.value) {
+                    target.classList.add('is-invalid')
+                } else {
+                    $('errorWidth').innerHTML = null;
+                    target.classList.remove('is-invalid')
+                }
+                break
         default:
             break;
     }
