@@ -368,7 +368,7 @@ module.exports = {
 
       }
 
-        /* ************************************************ */
+      /* ************************************************ */
       /*                     VISILLO                       */
       /* ************************************************ */
 
@@ -411,6 +411,19 @@ module.exports = {
       /* ************************************************ */
 
       if (+system === 116 || +system === 129 || +system === 130) {
+
+        amount = await getPricePellizcos(system, width, heigth, amount);
+        console.log('====================================');
+        console.log('RESULTADO FUNCIÓN', amount)
+        console.log('====================================');
+
+      }
+
+      /* ********************************* */
+      /* TABLA ENCONTRADA, CABEZAL PLIZADO */
+      /* ********************************* */
+
+      if (+system === 133 || +system === 18) {
 
         amount = await getPricePellizcos(system, width, heigth, amount);
         console.log('====================================');
@@ -612,6 +625,20 @@ module.exports = {
       }
 
       /* ************************************************ */
+      /*                     VISILLO                       */
+      /* ************************************************ */
+
+      if (+system === 119) {
+
+        amount = await getPriceRoller(width, heigth, amount, cloth, pattern, support, chain);
+        amount = amount - (amount * 0.06)
+        console.log('====================================');
+        console.log('RESULTADO FUNCIÓN', amount)
+        console.log('====================================');
+
+      }
+
+      /* ************************************************ */
       /*                    ROMANAS                       */
       /* ************************************************ */
 
@@ -640,6 +667,19 @@ module.exports = {
       /* ************************************************ */
 
       if (+system === 116 || +system === 129 || +system === 130) {
+
+        amount = await getPricePellizcos(system, width, heigth, amount);
+        console.log('====================================');
+        console.log('RESULTADO FUNCIÓN', amount)
+        console.log('====================================');
+
+      }
+
+      /* ********************************* */
+      /* TABLA ENCONTRADA, CABEZAL PLIZADO */
+      /* ********************************* */
+
+      if (+system === 133 || +system === 18) {
 
         amount = await getPricePellizcos(system, width, heigth, amount);
         console.log('====================================');

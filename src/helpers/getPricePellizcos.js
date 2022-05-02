@@ -62,7 +62,7 @@ module.exports = async (system, width, heigth, amount) => {
     }
 
     /* si es pellizco simple o triple el ancho se multiplica por 3 y si es pellizco doble se multplica por 2 para obtener el ancho extendido */
-    widthExt = +system === 129 || +system === 116 ? (width * 3) : (width * 2);
+    widthExt = +system === 129 || +system === 116 || +system === 18 || +system === 133 ? (width * 3) : (width * 2);
 
     console.log('====================================');
     console.log('ANCHO MULTIPLICADO SEGÚN SISTEMA', width);

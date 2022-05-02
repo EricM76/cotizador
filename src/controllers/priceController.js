@@ -1,17 +1,54 @@
 const db = require("../database/models");
+const { Op } = require('sequelize');
 
 module.exports = {
-  index: (req, res) => {
-    return res.render("prices");
+  index: async (req, res) => {
+    let systems = await db.System.findAll({
+      where: {
+        visible: true,
+        accessory: false,
+      },
+      order: ['name']
+    });
+    let total = await db.Price.count({
+      where: { visible: true }
+    })
+    db.Price.findAll({
+      include: { all: true }
+    })
+      .then(items => res.render('prices', {
+        systems,
+        items,
+        total,
+        active: 1,
+        pages: 1,
+        keywords: "",
+        multiplo: total % 8 === 0 ? 0 : 1
+      }))
+      .catch(error => console.log(error))
   },
   editAll: (req, res) => {
     return res.render("priceAll");
   },
   editItem: (req, res) => {
-    return res.render("priceItem");
+    db.Price.findOne({
+      where :{
+        id : req.params.id
+      },
+      include : {all : true}
+    })
+      .then(item => {
+        return res.render("priceEditItem",{
+          item
+        });
+      })
+      .catch(error => console.log(error))
   },
   add: (req, res) => {
     res.render("priceAdd");
+  },
+  edit : (req,res) => {
+    return res.render("priceItem");
   },
   store: (req, res) => {
     const { systemId, clothId, colorId, amount, idLocal, visible } = req.body;
@@ -63,9 +100,7 @@ module.exports = {
   detail: (req, res) => {
     res.render("priceDetail");
   },
-  edit: (req, res) => {
-    res.render("priceEdit");
-  },
+
   update: async (req, res) => {
     let { coefficient } = req.body;
     coefficient = +coefficient / 100;
@@ -150,6 +185,22 @@ module.exports = {
     }
 
     return res.redirect("/prices/edit/all?updateAll=true");
+  },
+  updateItem : (req,res) => {
+    const {amount, idLocal} = req.body;
+  db.Price.update(
+        {
+          amount,
+          idLocal,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      ).then( () => {
+        return res.redirect("/prices");
+      }).catch(error => console.log(error))
   },
   search: (req, res) => {
     res.render("prices");
@@ -250,10 +301,145 @@ module.exports = {
         );
     }
   },
-  getIdsLocal : async (req,res) => {
+  removeItem: async (req, res) => {
+    const { id } = req.body;
+
+    try {
+      await db.Price.destroy({
+        where: {
+          id
+        },
+      });
+      return res.json({
+        ok: true,
+      });
+    } catch (error) {
+      return res
+        .status(error.status || 500)
+        .json(
+          error.status === 500
+            ? "Comuníquese con el administrador del sitio"
+            : error.message
+        );
+    }
+  },
+  filter: async (req, res) => {
+
+    let { system, cloth, color } = req.params;
+    let items = [];
+    let total = 0;
+    try {
+      if (system !== "undefined" && cloth !== "undefined" && color !== "undefined") {
+        total = await db.Price.count({
+          where: {
+            systemId: system,
+            clothId: cloth,
+            colorId: color
+          },
+        })
+        items = await db.Price.findAll({
+          where: {
+            systemId: system,
+            clothId: cloth,
+            colorId: color
+          },
+          include: { all: true },
+          order: ['id'],
+
+        })
+      } else if (system !== "undefined" && cloth !== "undefined") {
+        total = await db.Price.count({
+          where: {
+            systemId: system,
+            clothId: cloth,
+          },
+        })
+        items = await db.Price.findAll({
+          where: {
+            systemId: system,
+            clothId: cloth,
+          },
+          include: { all: true },
+          order: ['id'],
+
+        })
+      } else if(system !== "undefined") {
+        total = await db.Price.count({
+          where: {
+            systemId: system,
+          },
+        })
+        items = await db.Price.findAll({
+          where: {
+            systemId: system,
+          },
+          include: { all: true },
+          order: ['id'],
+
+        })
+      }else {
+        total = await db.Price.count()
+        items = await db.Price.findAll({
+          include: { all: true },
+          order: ['id'],
+
+        })
+      }
+
+      return total !== 0 
+      ? res.json({
+        ok: true,
+        data: {
+          total,
+          items
+        }
+      }) 
+      : res.json({
+        ok: false,
+        data : {
+          total
+        }
+      })
+
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(error.status || 500)
+        .json(
+          error.status === 500
+            ? "Comuníquese con el administrador del sitio"
+            : error.message
+        );
+    }
+  },
+  /* apis */
+  visibility: async (req, res) => {
+
+    const { id } = req.params;
+    try {
+
+      let price = await db.Price.findOne({
+        where : {
+          id
+        }
+      })
+      await db.Price.update(
+        { visible: +!price.visible },
+        { where: { id } }
+      )
+
+    } catch (error) {
+      console.log(error)
+      return res.status(error.status || 500).json({
+        ok: false,
+        msg: error.msg
+      })
+    }
+  },
+  getIdsLocal: async (req, res) => {
     try {
       let idsLocal = await db.Price.findAll({
-        attributes : ['idLocal']
+        attributes: ['idLocal']
       });
       let ids = idsLocal.map(id => id.idLocal);
       console.log('====================================');
@@ -261,7 +447,7 @@ module.exports = {
       console.log('====================================');
       return res.json({
         ok: true,
-        ids 
+        ids
       });
     } catch (error) {
       console.log('====================================');

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas | Precios" }) %>
+
+  <body>
+    <%- include('partials/header') %>
+      <main class="container">
+        <section class="col-12 col-md-8 col-lg-5 mt-5 mt-lg-4 mx-auto">
+          <article class="card shadow">
+              <div class="card-header">
+                  <h5>Editar precio</h5>
+              </div>
+            <div class="card-body">
+                <form action="/prices/update/<%= item.id %>?_method=PUT" class="row needs-validation" method="POST" novalidate id="form-priceItem">
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="systems" aria-label="Floating label select example" name="systemId" disabled>
+                            <option value="<%= item.systemId %>"><%= item.system.name %> </option>
+                            </select>
+                            <label for="systems">Sistema</label>
+                          </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="cloths" aria-label="Floating label select example" disabled name="clothId">
+                                <option value="<%= item.clothId %>"><%= item.cloth.name %> </option>
+                            </select>
+                            <label for="cloths">Tela</label>
+                          </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="colors" aria-label="Floating label select example" disabled name="colorId">
+                                <option value="<%= item.colorId %>"><%= item.color.name %> </option>
+                            </select>
+                            <label for="colors">Color</label>
+                          </div>
+                    </div>
+                    <div id="box-data" class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3"  id="box-inputPrice">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="inputPrice" placeholder="Precio" name="amount" required value="<%= item.amount %>">
+                                    <label for="price">Precio</label>
+                                  </div>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <div class="form-floating"  id="box-inputIDLocal">
+                                    <input type="number" class="form-control" id="inputIDLocal" placeholder="ID Local" name="idLocal" required value="<%= item.idLocal %>">
+                                    <label for="inputIDLocal">ID Local</label>
+                                  </div>
+                                  <span id="msg-error" class="text-danger text-small ms-2" hidden>El ID está en uso</span>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary me-2" id="btn-updatePrice" >Actualizar</button>
+                                    <a href="/prices" type="button" class="btn btn-secondary" id="btn-cancel" >Cancelar</a>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                 
+                </form>
+              </div>
+          </article>
+        </section>
+      </main>
+      <%- include('partials/footer') %>
+        <%- include('partials/scripts') %>
+        <script src="/javascripts/pricesEdit.js"></script>
+  </body>
+
+</html>
