@@ -120,9 +120,9 @@
     },
     {
         "idLocal": 18,
-        "name": "plizadas",
+        "name": "Cabezal Plizado",
         "price": 0,
-        "visible": 0,
+        "visible": 1,
         "accessory" : 0
     },
     {
@@ -925,9 +925,9 @@
     },
     {
         "idLocal": 133,
-        "name": "tabla encontrada",
+        "name": "Tabla Encontrada",
         "price": 0,
-        "visible": 0,
+        "visible": 1,
         "accessory" : 0
     },
     {
