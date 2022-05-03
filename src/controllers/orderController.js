@@ -164,6 +164,14 @@ module.exports = {
     }
   },
   preview: async (req, res) => {
+
+    let accessories = await db.System.findAll({
+      where : {
+        accessory : true,
+        visible : true
+      }
+    })
+
     db.Order.findOne({
       where: {
         id: +req.query.order,
@@ -191,6 +199,7 @@ module.exports = {
         const total = amounts.reduce((acum, num) => acum + num);
 
         return res.render("orderPreview", {
+          accessories,
           order,
           user: order.user,
           quotations: order.quotations,
@@ -200,6 +209,55 @@ module.exports = {
         });
       })
       .catch((error) => console.log(error));
+  },
+  addAccessories : async (req,res) => {
+    try {
+
+      const {accessories, order} = req.body;
+      console.log('====================================');
+      console.log(req.body);
+      console.log('====================================');
+
+      accessories.forEach(async ({id,price}) => {
+          await db.Quotation.create({
+            clothWidth: 0,
+            heigth: 0,
+            amount: +price,
+            date: new Date(),
+            reference : req.session.userLogin.name,
+            systemId: +id,
+            clothId: 626,
+            colorId: 17,
+            supportId: 18,
+            patternId: 6,
+            chainId: 6,
+            userId: req.session.userLogin.id,
+          });
+
+          await db.OrderQuotation.create({
+            quotationId: +id,
+            orderId: +order,
+          });
+
+      });
+    
+      return res.status(200).json({
+        ok : true,
+        data : req.body
+      })
+      
+    } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+      return res
+        .status(error.status || 500)
+        .json(
+          error.status === 500
+            ? "Comuníquese con el administrador del sitio"
+            : error.message
+        );
+    }
   },
   send: async (req, res) => {
     try {

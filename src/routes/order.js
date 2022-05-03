@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const {index,add,preview,store,send,detail,edit,update,remove, download, filter} = require('../controllers/orderController');
+const {index,add,preview,store,send,detail,edit,update,remove, download, filter, addAccessories} = require('../controllers/orderController');
 const adminSessionCheck = require('../middlewares/adminSessionCheck');
 const upLoadTicket = require('../middlewares/upLoadTicket')
 
+/* /orders */
 router
     .get('/', index)
     .get('/add',add)
@@ -17,6 +18,8 @@ router
     .delete('/remove/:id',adminSessionCheck,remove)
     .get('/download',adminSessionCheck, download)
     .get('/filter',adminSessionCheck, filter)
+    /* apis */
+    .post('/api/add-accessories',addAccessories)
 
 
 module.exports = router;

@@ -38,11 +38,7 @@
                         </div>
                       </div>
                       </div>
-                     
-                   
                 </div>
-             
-           
                 <div class="table-responsive">
                     <table class="table table-striped">
                       <thead>
@@ -64,7 +60,7 @@
                           <th scope="col">Referencia</th>
                           <% if (locals.userLogin.rolName !== "medidor") { %>
                             <th scope="col">Precio unitario</th>
-                            <th scope="col">Total</th>
+                            <th scope="col">Subtotal</th>
                           <% } %>
                         </tr>
                       </thead>
@@ -145,6 +141,18 @@
                           </tr>
                           <tr>
                             <td colspan="16" class="text-end">
+                                <b>ACCESORIOS:</b> 
+                            </td>
+                            <td colspan="1" class="text-end">
+                                <div class="d-flex flex-column">
+                                    <div id="totalAccessory">
+                                       <span ></span>
+                                    </div>
+                                </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="16" class="text-end">
                                 <b>TOTAL:</b> 
                             </td>
                             <td colspan="1" class="text-end">
@@ -158,6 +166,7 @@
             </div>
             <div class="card-footer d-flex flex-column flex-md-row justify-content-end">
               <button type="button" class="btn btn-secondary mb-2 ms-2" onclick="window.history.back()" id="btn-back">Volver atrás</button>
+              <button type="button" class="btn btn-outline-dark mb-2 ms-2" id="btn-accessory" data-bs-toggle="modal" data-bs-target="#accessoryModal">Agregar accesorios</button>
               <% if (locals.userLogin.rolName !== "medidor") { %>
               <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
               <input class="" type="file" id="ticket" name="ticket" hidden>   
@@ -174,6 +183,8 @@
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
 <script src="/javascripts/orderPreview.js"></script>
+<%- include('./modals/addAccessory') %>
+
   </body>
 
 </html>
