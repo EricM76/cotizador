@@ -211,53 +211,61 @@ module.exports = {
       .catch((error) => console.log(error));
   },
   addAccessories : async (req,res) => {
-    try {
 
       const {accessories, order} = req.body;
       console.log('====================================');
       console.log(req.body);
       console.log('====================================');
 
-      accessories.forEach(async ({id,price}) => {
-          await db.Quotation.create({
-            clothWidth: 0,
-            heigth: 0,
-            amount: +price,
-            date: new Date(),
-            reference : req.session.userLogin.name,
-            systemId: +id,
-            clothId: 626,
-            colorId: 17,
-            supportId: 18,
-            patternId: 6,
-            chainId: 6,
-            userId: req.session.userLogin.id,
-          });
+        try {
+          accessories.forEach(async ({id,price}) => {
 
-          await db.OrderQuotation.create({
-            quotationId: +id,
-            orderId: +order,
-          });
+            try {
+              let quotation = await db.Quotation.create({
+                clothWidth: 0,
+                heigth: 0,
+                amount: +price,
+                date: new Date(),
+                reference : req.session.userLogin.name,
+                systemId: +id,
+                clothId: 626,
+                colorId: 17,
+                supportId: 18,
+                patternId: 6,
+                chainId: 6,
+                userId: req.session.userLogin.id,
+              })
+              await db.OrderQuotation.create({
+                quotationId: quotation.id,
+                orderId: +order,
+              });
+            } catch (error) {
+              console.log('====================================');
+              console.log(error);
+              console.log('====================================');
+            }
+        })
 
-      });
+          return res.status(200).json({
+            ok : true,
+            data : req.body
+          })
+
+        }
+        catch (error) {
+          console.log('====================================');
+          console.log(error);
+          console.log('====================================');
+          return res
+            .status(error.status || 500)
+            .json(
+              error.status === 500
+                ? "Comuníquese con el administrador del sitio"
+                : error.message
+            );
+        }
     
-      return res.status(200).json({
-        ok : true,
-        data : req.body
-      })
-      
-    } catch (error) {
-      console.log('====================================');
-      console.log(error);
-      console.log('====================================');
-      return res
-        .status(error.status || 500)
-        .json(
-          error.status === 500
-            ? "Comuníquese con el administrador del sitio"
-            : error.message
-        );
-    }
+    
   },
   send: async (req, res) => {
     try {

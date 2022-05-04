@@ -126,6 +126,9 @@
                               <% } %>
                           </tr>
                           <% }) %>
+                          <tbody id="accessories">
+                           
+                          </tbody>
                           <% if (locals.userLogin.rolName !== "medidor") { %>
                           <tr>
                             <td colspan="16" class="text-end">
@@ -135,18 +138,6 @@
                                 <div class="d-flex flex-column">
                                     <div>
                                        $<%= order.packaging %>
-                                    </div>
-                                </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="16" class="text-end">
-                                <b>ACCESORIOS:</b> 
-                            </td>
-                            <td colspan="1" class="text-end">
-                                <div class="d-flex flex-column">
-                                    <div id="totalAccessory">
-                                       <span ></span>
                                     </div>
                                 </div>
                             </td>

@@ -35,7 +35,9 @@
                   onchange="updateSubotal('<%=accessory.id%>')"
                 />
               </th>
-              <td class="fw-bold" id="accessory<%= accessory.id %>"><%= accessory.name %></td>
+              <td class="fw-bold" id="accessory<%= accessory.id %>">
+                <%= accessory.name %>
+              </td>
               <td>
                 <div class="d-flex justify-content-between">
                   <span>$</span
@@ -73,20 +75,12 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Cerrar
         </button>
-        <button
-        id="btn-cancel"
-        type="button"
-        class="btn btn-dark"
-      >
-        Limpiar
-      </button>
+        <button id="btn-cancel" type="button" class="btn btn-dark">
+          Limpiar
+        </button>
         <button id="btn-add" type="button" class="btn btn-primary">
           Agregar
         </button>
@@ -96,7 +90,8 @@
 </div>
 
 <script>
-let quantities = document.querySelectorAll('.quantity');
+  const toThousand = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  let quantities = document.querySelectorAll(".quantity");
   let subtotales = document.querySelectorAll(".subtotal");
   let btnCancel = document.getElementById("btn-cancel");
   let btnAdd = document.getElementById("btn-add");
@@ -110,45 +105,49 @@ let quantities = document.querySelectorAll('.quantity');
       +document.getElementById("input" + id).value *
       +document.getElementById("price" + id).innerText;
     let noFound = true;
-   
-    let accessoriesUpdated = accessories.map(element => {
-        if(element.name === document.getElementById('accessory' + id).innerText){
-            element = {
-                id : id,
-                name : document.getElementById('accessory' + id).innerText,
-                price : +document.getElementById("price" + id).innerText,
-                quantity : +document.getElementById('input' + id).value,
-                subtotal :  +document.getElementById("subtotal" + id).innerText
-            }
-            noFound = false
-            return element
-        }
-        return element
+
+    let accessoriesUpdated = accessories.map((element) => {
+      if (
+        element.name === document.getElementById("accessory" + id).innerText
+      ) {
+        element = {
+          id: id,
+          name: document.getElementById("accessory" + id).innerText,
+          price: +document.getElementById("price" + id).innerText,
+          quantity: +document.getElementById("input" + id).value,
+          subtotal: +document.getElementById("subtotal" + id).innerText,
+        };
+        noFound = false;
+        return element;
+      }
+      return element;
     });
 
-    accessoriesUpdated = accessoriesUpdated.filter(element => element.quantity !== 0)
+    accessoriesUpdated = accessoriesUpdated.filter(
+      (element) => element.quantity !== 0
+    );
 
     accessories = accessories !== accessoriesUpdated && accessoriesUpdated;
-  
-      if(noFound){
-        Object.defineProperty(accessory, "id", {
-            value : +id
-        })
-        Object.defineProperty(accessory, "name", {
-            value : document.getElementById('accessory' + id).innerText
-        })
-        Object.defineProperty(accessory, "quantity", {
-            value : +document.getElementById('input' + id).value
-        })
-        Object.defineProperty(accessory, "price", {
-            value :  +document.getElementById("price" + id).innerText
-        })
-        Object.defineProperty(accessory, "subtotal", {
-            value :  +document.getElementById("subtotal" + id).innerText
-        })
-        accessories.push(accessory)
-      }
-       
+
+    if (noFound) {
+      Object.defineProperty(accessory, "id", {
+        value: +id,
+      });
+      Object.defineProperty(accessory, "name", {
+        value: document.getElementById("accessory" + id).innerText,
+      });
+      Object.defineProperty(accessory, "quantity", {
+        value: +document.getElementById("input" + id).value,
+      });
+      Object.defineProperty(accessory, "price", {
+        value: +document.getElementById("price" + id).innerText,
+      });
+      Object.defineProperty(accessory, "subtotal", {
+        value: +document.getElementById("subtotal" + id).innerText,
+      });
+      accessories.push(accessory);
+    }
+
     updateTotal();
   }
 
@@ -160,7 +159,7 @@ let quantities = document.querySelectorAll('.quantity');
     total.innerHTML = prices.reduce((acum, sum) => acum + sum);
   }
 
-  btnCancel.addEventListener('click',() => {
+  btnCancel.addEventListener("click", () => {
     for (let i = 0; i < quantities.length; i++) {
       quantities[i].value = null;
     }
@@ -169,29 +168,91 @@ let quantities = document.querySelectorAll('.quantity');
     }
     total.innerHTML = null;
     accessories = [];
-    
-  })
+  });
 
-  btnAdd.addEventListener('click',async () => {
+  btnAdd.addEventListener("click", async () => {
+    console.log(accessories)
+   /*  let query = new URLSearchParams(location.search);
 
-    let query = new URLSearchParams(location.search);
-    
     const response = await fetch(`/orders/api/add-accessories`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    order : +query.get('order'),
-                    accessories
-                })
-            });
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order: +query.get("order"),
+        accessories,
+      }),
+    });
     const result = await response.json();
     if (result.ok) {
-        console.log('====================================');
-        console.log(result.data);
-        console.log('====================================');
-    }
-  })
+      console.log(result.data);
+    } */
+    $('accessories').innerHTML = null;
+
+    accessories.forEach(({quantity,name,price}) => {
+        $('accessories').innerHTML += `
+        
+        <tr>
+                            <th scope="row">
+                              ${quantity}
+                            </th>
+                            <td>
+                              ${name}
+                            </td>
+                            <td>
+                              -
+                            </td>
+                            <td>
+                              -
+                            </td>
+                            <td>
+                                -
+                              </td>
+                              <td>
+                                -
+                              </td>
+                              <td>
+                                -
+                              </td>
+                              <td>
+                                -
+                              </td>
+                              <td>
+                                -
+                              </td>
+                              <td>
+                                -
+                              </td>
+                              <td>
+                               -
+                              </td>
+                              <td>
+                                -
+                              </td>
+                              <td>
+                               -
+                              </td>
+                              <td>
+                                -
+                              </td>
+                              <td>
+                                -
+                              </td>
+                              <td>
+                                  <div class="d-flex justify-content-around">
+                                    <span>$</span><span>${toThousand(price)}</span> 
+                                  </div>
+                              </td>
+                              <td>
+                                <div class="d-flex justify-content-around">
+                                    <span>$</span><span>${toThousand(price * quantity)}</span> 
+                                </div>
+                              </td>
+                          </tr>
+
+        `
+    })
+  });
 
 </script>
