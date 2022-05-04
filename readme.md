@@ -1,4 +1,5 @@
 # COTIZADOR DE CORTINAS
+> Developed by Eric for Blancomad
 ## Indice
 - [COTIZADOR DE CORTINAS](#cotizador-de-cortinas)
   - [Indice](#indice)
@@ -7,13 +8,17 @@
   - [Dependencias](#dependencias)
   - [Instalación](#instalación)
   - [Base de datos](#base-de-datos)
-  - [Collaboration](#collaboration)
-  - [FAQs](#faqs)
+    - [Crear la base de datos con **migraciones**](#crear-la-base-de-datos-con-migraciones)
+    - [Crear la base de datos ejecutando un script](#crear-la-base-de-datos-ejecutando-un-script)
+  - [Deploy](#deploy)
 ### Información General
 ***
 Siio web creado con Node y Express que tiene como finalidad generar cotizaciones de cortinas, según el sitema, tela y color elegido. El usuario administrador puede registrar usuarios con distintos roles: control, medidor, vendedor y asignarles un coeficiente que incidirá en el precio final de la cotización.
 ### Screenshot
-![Image text](https://www.united-internet.de/fileadmin/user_upload/Brands/Downloads/Logo_IONOS_by.jpg)
+
+![Home](./public/images/login.png)
+![Home](./public/images/home.png)
+
 ## Dependencias
 ***
 Dependencias utilizadas en el proyecto:
@@ -40,49 +45,46 @@ Dependencias utilizadas en el proyecto:
     [xlsx](https://www.npmjs.com/package/xlsx): "^0.18.4"
 ## Instalación
 ***
-Clonar el proyecto y 
+Clonar el proyecto e instalar las dependencias
 ```
 $ git clone https://github.com/EricM76/cotizador
 $ cd cotizador
 $ npm install
-$ npm start
+
 ```
-Correr migraciones y seeders
+Renombrar el arhivo <code>.env.example</code> por <code>.env</code> y darle valor a las variables de entorno según corresponda.
 ```
-$ git clone https://github.com/EricM76/cotizador
-$ cd cotizador
-$ npm install
-$ npm start
+DB_DEV_USERNAME=
+DB_DEV_PASSWORD=
+DB_DEV_DATABASE=
+DB_DEV_HOST=
+DB_DEV_PORT=
+
+DB_PROD_USERNAME=
+DB_PROD_PASSWORD=
+DB_PROD_DATABASE=
+DB_PROD_HOST=
+DB_PROD_PORT=
+
+NODE_ENV=development
+
 ```
 ## Base de datos
 ***
-Levantar el servidor de forma local
+### Crear la base de datos con **migraciones**
+Es necesario tener instalado [sequelize-cli](https://www.npmjs.com/package/sequelize-cli)
 ```
-$ git clone https://github.com/EricM76/cotizador
-$ cd cotizador
-$ npm install
-$ npm start
+$ npm install --save-dev sequelize-cli
 ```
-Side information: To use the application in a special environment use ```lorem ipsum``` to start
-## Collaboration
+Correr migraciones y seeders
+```
+$ sequelize db:migrate
+$ sequelize db:seed:all
+```
+### Crear la base de datos ejecutando un script
+Correr el script de SQL: <code>/src/data/cotizador.sql</code> para crear la estructura y cargar los datos.
+## Deploy
 ***
-Give instructions on how to collaborate with your project.
-> Maybe you want to write a quote in this part. 
-> It should go over several rows?
-> This is how you do it.
-## FAQs
-***
-A list of frequently asked questions
-1. **This is a question in bold**
-Answer of the first question with _italic words_. 
-2. __Second question in bold__ 
-To answer this question we use an unordered list:
-* First point
-* Second Point
-* Third point
-3. **Third question in bold**
-Answer of the third question with *italic words*.
-4. **Fourth question in bold**
-| Headline 1 in the tablehead | Headline 2 in the tablehead | Headline 3 in the tablehead |
-|:--------------|:-------------:|--------------:|
-| text-align left | text-align center | text-align right |
+Es necesario habilitar el acceso de *escritura* a las siguientes carpetas:
+- <code>/src/data</code> 
+- <code>/src/downloads</code>
