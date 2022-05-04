@@ -272,9 +272,11 @@ module.exports = {
     let {
       name,
       price,
-      quantity
+      quantity,
+      id
     } = req.body;
 
+    id = typeof id === "string" ? id.split() : id;
     name = typeof name === "string" ? name.split() : name;
     price = typeof price === "string" ? price.split() : price;
     quantity = typeof quantity === "string" ? quantity.split() : quantity;
@@ -284,6 +286,7 @@ module.exports = {
       for (let i = 0; i < name.length; i++) {
       
         accessories.push({
+          id : id[i],
           quantity : quantity[i] > 5 ? 5 : quantity[i],
           name : name[i],
           price : price[i]
@@ -465,14 +468,14 @@ module.exports = {
           </tr>
           `
         });
-        accessories.forEach(({quantity,name,price}) => {
+        accessories.forEach(({id,quantity,name,price}) => {
           table += `
             <tr>
             <th scope="row">
               ${quantity}
             </th>
             <td>
-              ${name}
+              ${id}
             </td>
             <td>
              -

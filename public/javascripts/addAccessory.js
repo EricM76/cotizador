@@ -111,7 +111,7 @@
 
     totalLast.innerHTML =toThousand(+totalQuoter.innerText + prices.reduce((acum, sum) => acum + sum))
 
-    accessories.forEach(({quantity,name,price}) => {
+    accessories.forEach(({id,quantity,name,price}) => {
 
         $('accessories').innerHTML += `
         
@@ -125,7 +125,8 @@
             <input name="name" value="${name}" hidden/>
           </td>
           <td>
-              
+          <input name="id" value="${id}" hidden/>
+
             </td>
             <td>
               

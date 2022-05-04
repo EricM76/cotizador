@@ -11,21 +11,24 @@
 
 
               <form action="/quoters/filter" class="row" id="form-items">
-
-                <div class="col-12 col-md-4 col-lg-4 mb-2">
-                  <% if (locals.userLogin.rol === 1) { %>
-                    <select class="form-select" id="filter" name="filter" onchange="resetValues()">
-                      <option value="" selected hidden>Filtrar por vendedor</option>
-                      <% users.forEach(item=> { %>
-                        <option id="user<%= item.userId %>" value=<%=item.userId %> ><%= item.user.username %>
-                        </option>
-                        <% }) %>
-                          <option id="all" value="all">Todos</option>
-                    </select>
-                  <% }else{ %>
-                    <button id="btn-generateOrder" class="btn btn-outline-dark disabled w-100">Preparar pedido</button>
-                   
-                  <% } %>
+                <div class="col-12 col-md-1 mb-2">
+                  <button class="btn btn-outline-dark w-100 px-1 border-0"><i class="fas fa-cart-plus"></i></button>
+                </div>
+                <div class="col-12 col-md-3 col-lg-3 mb-2">
+                    <% if (locals.userLogin.rol === 1) { %>
+                      <select class="form-select" id="filter" name="filter" onchange="resetValues()">
+                        <option value="" selected hidden>Filtrar por vendedor</option>
+                        <% users.forEach(item=> { %>
+                          <option id="user<%= item.userId %>" value=<%=item.userId %> ><%= item.user.username %>
+                          </option>
+                          <% }) %>
+                            <option id="all" value="all">Todos</option>
+                      </select>
+                    <% }else{ %>
+                      <button id="btn-generateOrder" class="btn btn-outline-dark disabled w-100">Preparar pedido</button>
+                     
+                    <% } %>
+               
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-2">
                   <button type="button" data-bs-toggle="modal" data-bs-target="#quoterModal"  id="btn-createQuotation" class="btn btn-outline-dark w-100">Nueva cotización</button>

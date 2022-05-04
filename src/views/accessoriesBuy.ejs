@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
+
+  <body>
+    <%- include('partials/header') %>
+      <main class="px-md-1 px-lg-1">
+        <section class="row mt-5 mx-auto">
+          <div class="col-12">
+          <article class="card shadow">
+            <form action="/orders/send?order=<%= order.id %>" method="POST" id="form-sendOrder" enctype="multipart/form-data">
+            <div class="card-header d-flex flex-column flex-md-row justify-content-between">
+                <h4 class="my-2">Orden | vista previa </h4>
+                <div class=" mb-2">
+                   
+                  
+                </div>              
+              </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <h5>Vendedor: <span><%= user.name %> <%= user.surname %>  </span></h5>
+                        <hr>
+                        <h6>Pedido para: <% references.forEach((reference,index) => { %>
+                         <span><%= reference %> <%= index < references.length - 1 ? ',' : null %>  </span>
+                        <% }) %> </h6>
+                    </div>
+                    <div class="col-12 col-md-8">
+                      <div class="d-flex">
+                        <textarea class="form-control" name="observations" id="observations"  rows="2" style="resize: none;" placeholder="Observaciones"></textarea>
+                        <div class="ms-2 ">
+                          <span class="small text-danger" id="ticketError"></span>
+                          <div class="position-relative">
+                            <img src="" alt="" id="vistaPrevia" height="80px">
+                            <a href="" class="text-danger h6 position-absolute top-0 end-0" id="btnDeletePreview"></a>
+                          </div>
+                       
+                        </div>
+                      </div>
+                      </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Cant.</th>
+                          <th scope="col">Sistema</th>
+                          <th scope="col">Tela</th>
+                          <th scope="col">Color</th>
+                          <th scope="col">Ancho</th>
+                          <th scope="col">Alto</th>
+                          <th scope="col">Modelo</th>
+                          <th scope="col">Cadena</th>
+                          <th scope="col">Soporte</th>
+                          <th scope="col">Comando</th>
+                          <th scope="col">Orien. Soporte</th>
+                          <th scope="col">Orien. Tela</th>
+                          <th scope="col">Obs.</th>
+                          <th scope="col">Ambiente</th>
+                          <th scope="col">Referencia</th>
+                          <% if (locals.userLogin.rolName !== "medidor") { %>
+                            <th scope="col">Precio unitario</th>
+                            <th scope="col">Subtotal</th>
+                          <% } %>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <tbody id="accessories">
+                           
+                          </tbody>
+                          <% if (locals.userLogin.rolName !== "medidor") { %>
+                          <tr>
+                            <td colspan="16" class="text-end">
+                                <b>EMBALAJE:</b> 
+                            </td>
+                            <td colspan="1" class="text-end">
+                                <div class="d-flex justify-content-between">
+                                       <span>$</span><span><%= order.packaging %></span>
+                                </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="16" class="text-end">
+                                <b>TOTAL:</b> 
+                            </td>
+                            <td colspan="1" class="d-flex justify-content-between">
+                                <span>$</span><span id="totalLast"><%= toThousand(total + order.packaging) %></span> 
+                                <span id="totalQuoter" hidden><%= total + order.packaging  %> </span>
+                            </td>
+                          </tr>
+                          <% } %>
+                      </tbody>
+                    </table>
+                  </div>
+            </div>
+            <div class="card-footer d-flex flex-column flex-md-row justify-content-end">
+              <button type="button" class="btn btn-secondary mb-2 ms-2" onclick="window.history.back()" id="btn-back">Volver atrás</button>
+              <button type="button" class="btn btn-outline-dark mb-2 ms-2" id="btn-accessory" data-bs-toggle="modal" data-bs-target="#accessoryModal">Accesorios</button>
+              <% if (locals.userLogin.rolName !== "medidor") { %>
+              <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
+              <input class="" type="file" id="ticket" name="ticket" hidden>   
+              <% } %>           
+              <button type="submit" class="btn btn-primary mb-2 ms-2" id="btn-submit">Enviar pedido</button>
+            </div>
+          </form>
+        
+          
+          </article>
+        </div>
+        </section>
+      </main>
+      <%- include('partials/footer') %>
+        <%- include('partials/scripts') %>
+<%- include('./modals/addAccessory') %>
+
+  </body>
+
+</html>
