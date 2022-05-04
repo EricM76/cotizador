@@ -135,10 +135,8 @@
                                 <b>EMBALAJE:</b> 
                             </td>
                             <td colspan="1" class="text-end">
-                                <div class="d-flex flex-column">
-                                    <div>
-                                       $<%= order.packaging %>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                       <span>$</span><span><%= order.packaging %></span>
                                 </div>
                             </td>
                           </tr>
@@ -146,8 +144,9 @@
                             <td colspan="16" class="text-end">
                                 <b>TOTAL:</b> 
                             </td>
-                            <td colspan="1" class="text-end">
-                                $<%= toThousand(total + order.packaging)  %>
+                            <td colspan="1" class="d-flex justify-content-between">
+                                <span>$</span><span id="totalLast"><%= toThousand(total + order.packaging) %></span> 
+                                <span id="totalQuoter" hidden><%= total + order.packaging  %> </span>
                             </td>
                           </tr>
                           <% } %>
@@ -157,7 +156,7 @@
             </div>
             <div class="card-footer d-flex flex-column flex-md-row justify-content-end">
               <button type="button" class="btn btn-secondary mb-2 ms-2" onclick="window.history.back()" id="btn-back">Volver atrás</button>
-              <button type="button" class="btn btn-outline-dark mb-2 ms-2" id="btn-accessory" data-bs-toggle="modal" data-bs-target="#accessoryModal">Agregar accesorios</button>
+              <button type="button" class="btn btn-outline-dark mb-2 ms-2" id="btn-accessory" data-bs-toggle="modal" data-bs-target="#accessoryModal">Accesorios</button>
               <% if (locals.userLogin.rolName !== "medidor") { %>
               <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
               <input class="" type="file" id="ticket" name="ticket" hidden>   
