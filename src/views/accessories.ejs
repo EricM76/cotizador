@@ -95,6 +95,7 @@
                         <th scope="col">ID</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Precio</th>
+                        <th scope="col">Venta</th>
                         <th scope="col">IDLocal</th>
                         <th scope="col">Acciones</th>
                         <th scope="col">Visible</th>
@@ -113,7 +114,9 @@
                           <td>
                             <%= item.price %>
                           </td>
-
+                          <td>
+                            <%= item.salePrice %>
+                          </td>
                           <td>
                             <%= item.idLocal %>
                           </td>

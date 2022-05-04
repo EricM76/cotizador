@@ -58,6 +58,7 @@ module.exports = (sequelize, DataTypes) => {
   System.init({
     name: DataTypes.STRING,
     price: DataTypes.INTEGER,
+    salePrice: DataTypes.INTEGER,
     visible : DataTypes.BOOLEAN,
     accessory: DataTypes.BOOLEAN,
     idLocal : DataTypes.INTEGER,

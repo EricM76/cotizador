@@ -77,19 +77,9 @@ module.exports = {
       name,
       price,
       idLocal,
-      cloths,
-      colors,
-      supports,
-      patterns,
-      chains,
       visible,
+      salePrice
     } = req.body;
-
-    cloths = typeof cloths === "string" ? cloths.split() : cloths;
-    colors = typeof colors === "string" ? colors.split() : colors;
-    supports = typeof supports === "string" ? supports.split() : supports;
-    patterns = typeof patterns === "string" ? patterns.split() : patterns;
-    chains = typeof chains === "string" ? chains.split() : chains;
 
     try {
       const system = await db.System.create(
@@ -97,55 +87,14 @@ module.exports = {
           name: name.trim(),
           price,
           idLocal,
+          salePrice,
           visible: visible ? true : false,
+          accessory : true
         },
         {
           where: { id: req.params.id },
         }
       );
-
-      cloths =
-        cloths &&
-        cloths.map((cloth) => ({
-          systemId: system.id,
-          clothId: cloth,
-        }));
-
-      colors =
-        colors &&
-        colors.map((color) => ({
-          systemId: system.id,
-          colorId: color,
-        }));
-
-      supports =
-        supports &&
-        supports.map((support) => ({
-          systemId: system.id,
-          supportId: support,
-        }));
-
-      patterns =
-        patterns &&
-        patterns.map((pattern) => ({
-          systemId: system.id,
-          patternId: pattern,
-        }));
-
-      chains =
-        chains &&
-        chains.map((chain) => ({
-          systemId: system.id,
-          chainId: chain,
-        }));
-
-      cloths && (await db.SystemCloth.bulkCreate(cloths, { validate: true }));
-      colors && (await db.SystemColor.bulkCreate(colors, { validate: true }));
-      supports &&
-        (await db.SystemSupport.bulkCreate(supports, { validate: true }));
-      patterns &&
-        (await db.SystemPattern.bulkCreate(patterns, { validate: true }));
-      chains && (await db.SystemChain.bulkCreate(chains, { validate: true }));
     } catch (error) {
       console.log(error);
     }
@@ -216,6 +165,7 @@ module.exports = {
       price,
       idLocal,
       visible,
+      salePrice,
       accessory,
     } = req.body;
 
@@ -225,6 +175,7 @@ module.exports = {
           name: name.trim(),
           price,
           idLocal,
+          salePrice,
           visible: visible ? true : false,
           accessory: accessory ? true : false,
         },

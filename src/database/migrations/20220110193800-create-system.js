@@ -14,6 +14,9 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER
       },
+      salePrice: {
+        type: Sequelize.INTEGER
+      },
       visible:{
         type: Sequelize.BOOLEAN
       },

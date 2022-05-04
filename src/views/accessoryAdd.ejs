@@ -7,7 +7,7 @@
       <main class="container">
         <section class="col-12 mt-5 mx-auto">
           <article class="card shadow">
-            <form action="/accessories/add" method="POST" class="needs-validation" novalidate>
+            <form action="/accessories/add" method="POST" id="form-system" class="needs-validation" novalidate>
 
             <div class="card-header d-flex justify-content-between">
               <h5>
@@ -26,27 +26,23 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-12 col-md-4 mb-3">
+                <div class="col-12 col-md-3 mb-3">
                   <label for="name" class="form-label">Nombre</label>
                   <input type="text" class="form-control" id="name"
                     name="name" required/>
-                    <div class="invalid-feedback">
-                      El nombre es requerido
-                    </div>
                 </div>
-                <div class="col-12 col-md-4 mb-3">
+                <div class="col-12 col-md-3 mb-3">
                   <label for="price" class="form-label">Precio</label>
                   <input type="number" class="form-control" id="price" name="price" required/>
-                  <div class="invalid-feedback">
-                    El precio es requerido
-                  </div>
                 </div>
-                <div class="col-12 col-md-4 mb-3">
+                <div class="col-12 col-md-3 mb-3">
+                  <label for="salePrice" class="form-label">Precio de venta</label>
+                  <input type="number" class="form-control" id="salePrice" name="salePrice" required/>
+                </div>
+                <div class="col-12 col-md-3 mb-3">
                   <label for="idLocal" class="form-label">ID Local</label>
                   <input type="number" class="form-control" id="idLocal" name="idLocal" required/>
-                  <div class="invalid-feedback">
-                    El ID local es requerido
-                  </div>
+                  <span id="msg-error" class="text-danger text-small ms-2" hidden>El ID está en uso</span>
                 </div>
 
                 <div class="text-end">
@@ -62,6 +58,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
+        <script src="/javascripts/accessories.js"></script>
 
   </body>
 
