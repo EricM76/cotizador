@@ -60,6 +60,9 @@ module.exports = {
       db.Quotation.findAll({
         where: {
           userId: req.session.userLogin.id,
+          date : {
+            [Op.gte]: moment().subtract(30, 'days').toDate()
+          }
         },
         limit: 8,
         order : [['date','DESC']],

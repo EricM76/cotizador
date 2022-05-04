@@ -57,8 +57,8 @@ window.addEventListener('load', async () => {
         result.data.forEach(item => {
             item.id == 119 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
         })
-        result.data.forEach(({id, name}) => {
-            id != 113 && id != 111 && id != 112 && id != 179 && id != 129 && id != 130 && id != 116 && id != 127 && id != 114 && id != 119  ? $('systems').innerHTML += `<option value="${id}">${name}</option>` : null
+        result.data.forEach(({ id, name }) => {
+            id != 113 && id != 111 && id != 112 && id != 179 && id != 129 && id != 130 && id != 116 && id != 127 && id != 114 && id != 119 ? $('systems').innerHTML += `<option value="${id}">${name}</option>` : null
         })
 
     } catch (error) {
@@ -102,7 +102,7 @@ const getData = async (target) => {
         patterns = patterns.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
         chains = chains.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
 
-        sessionStorage.setItem('chains',JSON.stringify(chains));
+        sessionStorage.setItem('chains', JSON.stringify(chains));
 
         $('cloths').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
         cloths.forEach(cloth => {
@@ -223,6 +223,72 @@ $('systems').addEventListener('change', async ({ target }) => {
         $('large-box').classList.add('box-hidden');
     }
 
+    switch (target.value) {
+        case "113": //roller
+            $('clarifications').innerHTML =
+            `
+            <h5>Roller</h5>
+            <li>
+                La cadena de 2m seria una cadena de 1 metro de caida
+            </li>
+            <li>
+                Soporte Corto: Te separa 2,5cm de la pared
+            </li>
+            <li>
+                Soporte Largo: Te separa 5,5cm de la pared
+            </li>
+            <li>
+                Ancho: Las medidas que ingreses son de tela. De sop. a sop. va a medir cada paño 3cm. mas.
+            </li>
+            <li>
+                Alto: Las medidas que ingreses son desde arriba del soporte hasta el fin del zocalo de abajo.
+            </li>
+            `
+            break;
+        case "111" : //romanas
+            $('clarifications').innerHTML =
+            `
+            <h5>Romanas</h5>
+            <li>
+                Ancho: Un paño en romana se puede hacer hasta 1.70 de ancho
+            </li>
+            <li>
+            "Otras telas" agrupa las telas del muestrario que no se encuentran en la lista. Por ejemplo el Voile Lino Natural Codigo 900-21
+            </li>
+            `
+        break
+        case "112" : //paneles
+            $('clarifications').innerHTML =
+            `
+            <h5>Paneles Orientales</h5>
+            <li>
+            Ancho menor a 210: Se hace en 3 paños
+            </li>
+            <li>
+            Ancho mayor a 210 y menor a 300: Se hace en 4 paños
+            </li>
+            <li>
+            Ancho mayor a 300 y menor a 350: Se hace en 5 paños
+            </li>
+            <li>
+            "Otras telas" agrupa las telas del muestrario que no se encuentran en la lista. Por ejemplo el Voile Lino Natural Codigo 900-21
+            </li>
+            `
+        break
+        case '116': //triple pellizco
+        case '129': //pellizco simple
+        case '130': //pellizco doble
+        $('clarifications').innerHTML =
+            `
+            <h5>Tradicionales</h5>
+            <li>
+            En caso de tener que instalar con orientación a pared, se utilizan "ELES", consulte el costo de cada ELE y que cantidad es necesaria en base al ancho.
+            `
+        break
+        default:
+            break;
+    }
+
 });
 
 $('systems').addEventListener('focus', async (e) => {
@@ -317,24 +383,24 @@ $('patterns').addEventListener('blur', ({ target }) => {
     }
 })
 
-$('patterns').addEventListener('change', ({target}) => {
-    if(+target.value === 3 || +target.value === 4){
+$('patterns').addEventListener('change', ({ target }) => {
+    if (+target.value === 3 || +target.value === 4) {
         $('chains').disabled = true;
         $('chains').classList.remove('is-invalid');
         $('chains').innerHTML = null;
         $('chains').innerHTML = `<option value="6">0</option>`;
-    }else{
+    } else {
         $('chains').disabled = false;
-       /*  $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
-       $('chains').innerHTML = null;
+        /*  $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
+        $('chains').innerHTML = null;
         JSON.parse(sessionStorage.getItem('chains')).forEach(chain => {
             $('chains').innerHTML += `<option ${sessionStorage.getItem('chainSelected') && sessionStorage.getItem('chainSelected') == chain.id ? 'selected' : chain.id === 1 ? 'selected' : null} value="${chain.id}">${chain.name}</option>`
         })
     }
 })
 
-$('chains').addEventListener('change', ({target}) => {
-    sessionStorage.setItem('chainSelected',target.value)
+$('chains').addEventListener('change', ({ target }) => {
+    sessionStorage.setItem('chainSelected', target.value)
 })
 
 $('chains').addEventListener('blur', ({ target }) => {
@@ -346,20 +412,20 @@ $('chains').addEventListener('blur', ({ target }) => {
     }
 })
 
-$('large').addEventListener('change', ({target}) => {
+$('large').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '127': //cenefa
-        if (+target.value > 280) {
-            $('errorLarge').innerHTML = `El ancho máximo permitido es de 280 cm`;
-            target.classList.add('is-invalid')
-        } else if (!target.value) {
-            target.classList.add('is-invalid')
-        } else {
-            $('errorLarge').innerHTML = null;
-            target.classList.remove('is-invalid')
-        }
-        break
-    
+            if (+target.value > 280) {
+                $('errorLarge').innerHTML = `El ancho máximo permitido es de 280 cm`;
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorLarge').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break
+
         default:
             break;
     }
@@ -400,7 +466,7 @@ $('width').addEventListener('change', ({ target }) => {
                 target.classList.remove('is-invalid')
             }
             break;
-      
+
         case '114': //guias (laterales)
             if (+target.value > 280) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 280 cm`;
@@ -530,18 +596,18 @@ $('reference').addEventListener('blur', ({ target }) => {
 })
 
 $('rol') && $('rol').addEventListener('change', async () => {
-    
+
     if ($('systems').value) {
 
         await sendForm()
 
-    } 
+    }
 })
 
 /* enviar formulario */
 
 $('form-quoter').addEventListener('submit', async (e) => {
-   
+
     e.preventDefault();
     await sendForm();
 
@@ -571,11 +637,11 @@ const sendForm = async () => {
     } else if ($('systems').value == 179) {
         $('large').value = 0;
         $('width').value = 0;
-    } else if($('systems').value == 112){
+    } else if ($('systems').value == 112) {
         $('large').value = 0;
         $('railWidth').value = 0;
         $('chains').value = 6; //cadena: 0.0
-    } else if($('systems').value == 116 || $('systems').value == 129 || $('systems').value == 130){
+    } else if ($('systems').value == 116 || $('systems').value == 129 || $('systems').value == 130) {
         $('chains').value = 6; //cadena: 0.0
         $('large').value = 0;
         $('railWidth').value = 0;
@@ -585,19 +651,19 @@ const sendForm = async () => {
     }
 
     /* si el sistema esromana y el modelo de cadena el cordon, el largo de la cadena es 0 */
-  /*   if($('systems').value == 111 && $('patterns').value == 3){
-        $('chains').value = 0;
-        console.log('====================================');
-        console.log($('chains').value);
-        console.log('====================================');
-    } */
+    /*   if($('systems').value == 111 && $('patterns').value == 3){
+          $('chains').value = 0;
+          console.log('====================================');
+          console.log($('chains').value);
+          console.log('====================================');
+      } */
 
     for (let i = 0; i < elements.length - 1; i++) {
 
         if (!elements[i].value || elements[i].classList.contains('is-invalid')) {
             error = true;
             elements[i].classList.add('is-invalid');
-        
+
             $('amount-box').setAttribute('hidden', true)
         }
         console.log(elements[i].name, elements[i].value)
@@ -628,7 +694,7 @@ const sendForm = async () => {
             const result = await response.json();
             if (result.ok) {
                 console.log('====================================');
-                console.log('RESPUESTA DE LA API',result.ok);
+                console.log('RESPUESTA DE LA API', result.ok);
                 console.log('====================================');
 
                 $('amount-box').classList.add('alert-success')
