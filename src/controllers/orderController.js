@@ -284,7 +284,7 @@ module.exports = {
     for (let i = 0; i < name.length; i++) {
       
       accessories.push({
-        quantity : quantity[i],
+        quantity : quantity[i] > 5 ? 5 : quantity[i],
         name : name[i],
         price : price[i]
       })
