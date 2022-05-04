@@ -2491,9 +2491,9 @@
         "idLocal": 312,
         "name": "Kit sistema 32",
         "price": 0,
-        "visible": 0,
-        "accessory" : 0,
-        "salePrice" : 0
+        "visible": 1,
+        "accessory" : 1,
+        "salePrice" : 1440
     },
     {
         "idLocal": 313,
@@ -2619,9 +2619,9 @@
         "idLocal": 328,
         "name": "Kit sistema 38",
         "price": 0,
-        "visible": 0,
-        "accessory" : 0,
-        "salePrice" : 0
+        "visible": 1,
+        "accessory" : 1,
+        "salePrice" : 1800
     },
     {
         "idLocal": 329,

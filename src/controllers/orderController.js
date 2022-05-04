@@ -280,16 +280,18 @@ module.exports = {
     quantity = typeof quantity === "string" ? quantity.split() : quantity;
 
     const accessories = [];
-
-    for (let i = 0; i < name.length; i++) {
+    if(name){
+      for (let i = 0; i < name.length; i++) {
       
-      accessories.push({
-        quantity : quantity[i] > 5 ? 5 : quantity[i],
-        name : name[i],
-        price : price[i]
-      })
-      
+        accessories.push({
+          quantity : quantity[i] > 5 ? 5 : quantity[i],
+          name : name[i],
+          price : price[i]
+        })
+        
+      }
     }
+  
 
     try {
       await db.Order.update(
@@ -335,10 +337,17 @@ module.exports = {
         const amounts = order.quotations.map(
           (quotation) => quotation.amount * quotation.quantity
         );
-        const prices = accessories.map(
-          (accessory) => +accessory.price * +accessory.quantity 
-        )
-        const total = amounts.reduce((acum, num) => acum + num) + prices.reduce((acum, num) => acum + num);
+
+        let priceAccessory = 0;
+
+        if(accessories.length > 0){
+          const prices = accessories.map(
+            (accessory) => +accessory.price * +accessory.quantity 
+          )
+          priceAccessory = prices.reduce((acum, num) => acum + num)
+        }
+     
+        const total = amounts.reduce((acum, num) => acum + num) + priceAccessory;
 
         await db.Order.update(
           {
