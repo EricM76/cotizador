@@ -118,9 +118,11 @@
         <tr>
           <th scope="row">
             ${quantity}
+            <input name="quantity" value="${quantity}" hidden/>
           </th>
           <td colspan="3">
             ${name}
+            <input name="name" value="${name}" hidden/>
           </td>
           <td>
               
@@ -158,6 +160,7 @@
             <td>
                 <div class="d-flex justify-content-around">
                   <span>$</span><span>${toThousand(price)}</span> 
+                  <input name="price" value="${price}" hidden/>
                 </div>
             </td>
             <td>

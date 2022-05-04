@@ -268,6 +268,29 @@ module.exports = {
     
   },
   send: async (req, res) => {
+
+    let {
+      name,
+      price,
+      quantity
+    } = req.body;
+
+    name = typeof name === "string" ? name.split() : name;
+    price = typeof price === "string" ? price.split() : price;
+    quantity = typeof quantity === "string" ? quantity.split() : quantity;
+
+    const accessories = [];
+
+    for (let i = 0; i < name.length; i++) {
+      
+      accessories.push({
+        quantity : quantity[i],
+        name : name[i],
+        price : price[i]
+      })
+      
+    }
+
     try {
       await db.Order.update(
         {
@@ -312,7 +335,10 @@ module.exports = {
         const amounts = order.quotations.map(
           (quotation) => quotation.amount * quotation.quantity
         );
-        const total = amounts.reduce((acum, num) => acum + num);
+        const prices = accessories.map(
+          (accessory) => +accessory.price * +accessory.quantity 
+        )
+        const total = amounts.reduce((acum, num) => acum + num) + prices.reduce((acum, num) => acum + num);
 
         await db.Order.update(
           {
@@ -430,6 +456,63 @@ module.exports = {
           </tr>
           `
         });
+        accessories.forEach(({quantity,name,price}) => {
+          table += `
+            <tr>
+            <th scope="row">
+              ${quantity}
+            </th>
+            <td>
+              ${name}
+            </td>
+            <td>
+             -
+            </td>
+            <td>
+             -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td style="text-align:right;">
+                  ${price}
+            </td>
+            <td style="text-align:right;">
+                  ${+price * +quantity}
+            </td>
+        </tr>
+          `
+        });
         table += `
                 <tr>
                 <td></td>
@@ -513,6 +596,10 @@ module.exports = {
 
           order.quotations.forEach((quotation) => {
             body.push([{ text: quotation.quantity }, { text: quotation.system.name }, { text: quotation.cloth.name }, { text: quotation.color.name }, { text: quotation.clothWidth }, { text: quotation.heigth }, { text: quotation.pattern.name }, { text: quotation.chain.name }, { text: quotation.support.name }, { text: quotation.command }, { text: quotation.supportOrientation }, { text: quotation.clothOrientation }, { text: quotation.environment }, { text: quotation.reference }, { text: quotation.observations }, { text: quotation.amount, alignment: "right" }, { text: quotation.amount * quotation.quantity, alignment: "right" }]);
+          });
+
+          accessories.forEach(({quantity, name, price}) => {
+            body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: +price, alignment: "right" }, { text: +price * +quantity, alignment: "right" }]);
           });
 
           body.push([
@@ -613,6 +700,10 @@ module.exports = {
 
           order.quotations.forEach((quotation) => {
             body.push([{ text: quotation.quantity }, { text: quotation.system.name }, { text: quotation.cloth.name }, { text: quotation.color.name }, { text: quotation.clothWidth }, { text: quotation.heigth }, { text: quotation.pattern.name }, { text: quotation.chain.name }, { text: quotation.support.name }, { text: quotation.command }, { text: quotation.supportOrientation }, { text: quotation.clothOrientation }, { text: quotation.environment }, { text: quotation.reference }, { text: quotation.observations }]);
+          });
+
+          accessories.forEach(({quantity, name, price}) => {
+            body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }]);
           });
 
           body.push([
