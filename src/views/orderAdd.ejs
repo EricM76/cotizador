@@ -22,7 +22,7 @@
               <div class="accordion" id="accordionExample">
                 <div class="alert alert-danger" id="msg-error" hidden>Complete los campos señalados</div>
 
-                <% items.forEach(({id,system,cloth,color, clothWidth, heigth, pattern, chain,support, reference, amount},index) => { %>
+                <% items.forEach(({id,system,cloth,color, clothWidth, heigth, pattern, chain,support, reference, amount, quantity},index) => { %>
 
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="heading<%= id %>">
@@ -36,7 +36,7 @@
                       <input type="text" value="<%= id %>" name="id" hidden>
                       <div class="col-4 col-md-2 col-lg-2 mb-3">
                         <div class="form-floating mb-3">
-                          <input type="number" min="1" class="form-control" id="quantity" placeholder="cantidad" value="1" name="quantity" required>
+                          <input type="number" min="1" class="form-control" id="quantity" placeholder="cantidad" value="<%= quantity %>" name="quantity" onkeyup="updateTotal('<%= id %>','<%=amount%>',event)" required>
                           <label for="quantity">Cant.</label>
                         </div>
                       </div>
@@ -145,8 +145,8 @@
                           <div class="d-flex align-items-center">
                             <span class="me-2">$</span>
                             <div class="form-floating mb-3 flex-grow-1">
-                              <input type="text" class="form-control" id="amount" placeholder="monto" value="<%= amount %>" name="amount" readonly>
-                              <label for="amount">Monto</label>
+                              <input type="text" class="form-control" id="amount<%= id %>" placeholder="monto" value="<%= amount %>" name="amount" readonly>
+                              <label for="amount<%= id %>">Monto</label>
                             </div>
                           </div>
                       </div>
@@ -189,6 +189,7 @@
         <%- include('partials/scripts') %>
 
       <script src="/javascripts/orderAdd.js"></script>
+       
       <%- include('modals/quoter') %>
 
   </body>

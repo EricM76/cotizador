@@ -47,6 +47,13 @@ window.addEventListener('load', () => {
 
 })
 
+const updateTotal = (id,amount,event) => {
+  if(+event.target.value !== 0){
+    $('amount'+id).value = +event.target.value * +amount;
+    console.log(id, amount,+event.target.value);
+  }
+}
+
 const verifyErrors = () => {
   for (let i = 0; i < accordions.length; i++) {
     if(
@@ -143,4 +150,6 @@ $('form-generate-order').addEventListener('submit', (e) => {
     sendForm = true
     e.target.submit()
   }
+
+ 
 });
