@@ -144,7 +144,7 @@ module.exports = {
             clothOrientation: clothOrientations[i],
             environment: environments[i],
             observations: observations[i],
-            amount: amounts && amounts[i]
+            //amount: amounts && amounts[i]
           },
           {
             where: {
