@@ -34,6 +34,7 @@
                   max="5"
                   onchange="updateSubotal('<%=accessory.id%>')"
                 />
+                <span class="text-danger small" id="error<%=accessory.id%>" hidden>Máx. 5 unid.</span>
               </th>
               <td class="fw-bold" id="accessory<%= accessory.id %>">
                 <%= accessory.name %>

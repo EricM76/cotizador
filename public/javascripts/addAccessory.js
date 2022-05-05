@@ -9,6 +9,7 @@
   let accessories = [];
 
   function updateSubotal(id) {
+    if(+document.getElementById("input" + id).value <= 5){
     let accessory = {};
 
     document.getElementById("subtotal" + id).innerHTML =
@@ -57,8 +58,16 @@
       });
       accessories.push(accessory);
     }
+    $('error'+id).hidden = true;
+    $('input'+id).classList.remove('is-invalid');
+    btnAdd.disabled = false
 
     updateTotal();
+  }else{
+    $('error'+id).hidden = false;
+    $('input'+id).classList.add('is-invalid');
+    btnAdd.disabled = true
+  }
   }
 
   function updateTotal() {
@@ -84,23 +93,9 @@
   });
 
   btnAdd.addEventListener("click", async () => {
-    console.log(accessories)
-   /*  let query = new URLSearchParams(location.search);
 
-    const response = await fetch(`/orders/api/add-accessories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        order: +query.get("order"),
-        accessories,
-      }),
-    });
-    const result = await response.json();
-    if (result.ok) {
-      console.log(result.data);
-    } */
+    console.log(accessories)
+  
     $('accessories').innerHTML = null;
     $('accessories').innerHTML = ' <tr> </tr>';
 
