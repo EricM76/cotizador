@@ -5,12 +5,12 @@
   <body>
     <%- include('partials/header') %>
       <main class="px-md-1 px-lg-1">
-        <section class="row mt-5 mx-auto">
-          <div class="col-12">
+        <section class="row mt-5">
+          <div class="col-12 col-md-8 mx-auto">
           <article class="card shadow">
-            <form action="/orders/send?order=<%= order.id %>" method="POST" id="form-sendOrder" enctype="multipart/form-data">
+            <form action="/accessories/send-buy" method="POST" id="form-sendOrder" enctype="multipart/form-data">
             <div class="card-header d-flex flex-column flex-md-row justify-content-between">
-                <h4 class="my-2">Orden | vista previa </h4>
+                <h4 class="my-2">Pedido de accesorios</h4>
                 <div class=" mb-2">
                    
                   
@@ -19,15 +19,15 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-md-4">
-                        <h5>Vendedor: <span><%= user.name %> <%= user.surname %>  </span></h5>
-                        <hr>
-                        <h6>Pedido para: <% references.forEach((reference,index) => { %>
-                         <span><%= reference %> <%= index < references.length - 1 ? ',' : null %>  </span>
-                        <% }) %> </h6>
+                        <p>Vendedor: <span><%= user.name %> <%= user.surname %>  </span></p>
                     </div>
                     <div class="col-12 col-md-8">
                       <div class="d-flex">
-                        <textarea class="form-control" name="observations" id="observations"  rows="2" style="resize: none;" placeholder="Observaciones"></textarea>
+                        <div class="w-100">
+                          <input type="text" name="reference" class="form-control w-100 mb-2" placeholder="Referencia">
+                          <input class="form-control w-100" name="observations" id="observations" placeholder="Observaciones"></input>
+                        </div>
+                       
                         <div class="ms-2 ">
                           <span class="small text-danger" id="ticketError"></span>
                           <div class="position-relative">
@@ -38,69 +38,98 @@
                         </div>
                       </div>
                       </div>
+                      <p class="col-12 alert alert-danger my-1 py-0 px-5" id="maxError" hidden>
+                        Máximo 5 unidades por acccesorio.
+                      </p>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped">
+                <div class="row">
+                 
+                  <div class="col-12 px-4">
+                    <table class="table mt-3">
                       <thead>
                         <tr>
                           <th scope="col">Cant.</th>
-                          <th scope="col">Sistema</th>
-                          <th scope="col">Tela</th>
-                          <th scope="col">Color</th>
-                          <th scope="col">Ancho</th>
-                          <th scope="col">Alto</th>
-                          <th scope="col">Modelo</th>
-                          <th scope="col">Cadena</th>
-                          <th scope="col">Soporte</th>
-                          <th scope="col">Comando</th>
-                          <th scope="col">Orien. Soporte</th>
-                          <th scope="col">Orien. Tela</th>
-                          <th scope="col">Obs.</th>
-                          <th scope="col">Ambiente</th>
-                          <th scope="col">Referencia</th>
-                          <% if (locals.userLogin.rolName !== "medidor") { %>
-                            <th scope="col">Precio unitario</th>
-                            <th scope="col">Subtotal</th>
-                          <% } %>
+                          <th scope="col">Accesorio</th>
+                          <th scope="col" class="col-1">Precio</th>
+                          <th scope="col" class="col-1">Subtotal</th>
                         </tr>
                       </thead>
                       <tbody>
-                          <tbody id="accessories">
-                           
-                          </tbody>
-                          <% if (locals.userLogin.rolName !== "medidor") { %>
-                          <tr>
-                            <td colspan="16" class="text-end">
-                                <b>EMBALAJE:</b> 
-                            </td>
-                            <td colspan="1" class="text-end">
-                                <div class="d-flex justify-content-between">
-                                       <span>$</span><span><%= order.packaging %></span>
-                                </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="16" class="text-end">
-                                <b>TOTAL:</b> 
-                            </td>
-                            <td colspan="1" class="d-flex justify-content-between">
-                                <span>$</span><span id="totalLast"><%= toThousand(total + order.packaging) %></span> 
-                                <span id="totalQuoter" hidden><%= total + order.packaging  %> </span>
-                            </td>
-                          </tr>
-                          <% } %>
+                        <% accessories.forEach(accessory => { %>
+                        <tr>
+                          <th scope="row" class="col-2">
+                            <input
+                              id="input<%= accessory.id %>"
+                              class="form-control border-0"
+                              type="number"
+                              min="0"
+                              max="5"
+                              onchange="updateSubotal('<%=accessory.id%>')"
+                              name="quantities"
+                            />
+                            <span id="error<%= accessory.id %>" class="text-danger small" hidden>Máx. 5 unid.</span>
+                          </th>
+                          <td class="fw-bold" id="accessory<%= accessory.id %>">
+                            <%= accessory.name %>
+                            <input type="text" name="ids" value="<%= accessory.id %>" hidden>
+                            <input type="text" name="names" value="<%= accessory.name %>" hidden>
+                          </td>
+                          <td>
+                            <div class="d-flex justify-content-between">
+                              <span>$</span
+                              ><span id="price<%= accessory.id %>"
+                                ><%= accessory.salePrice %></span
+                              >
+                              <input type="text" name="prices" value="<%= accessory.salePrice %>" hidden>
+                            </div>
+                          </td>
+                          <td>
+                            <div
+                              class="d-flex justify-content-between"
+                              id="box-subtotal<%= accessory.id %>"
+                            >
+                              <span>$</span
+                              ><span class="subtotal" id="subtotal<%= accessory.id %>"
+                                >0</span
+                              >
+                            </div>
+                          </td>
+                        </tr>
+                        <% }) %>
                       </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colspan="3" class="text-end">
+                              <b>EMBALAJE:</b> 
+                          </td>
+                          <td colspan="1" class="text-end">
+                              <div class="d-flex justify-content-between">
+                                     <span>$</span><span id="packaging"><%= packaging %></span>
+                              </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="3" class="text-end">
+                              <b>TOTAL:</b> 
+                          </td>
+                          <td colspan="1" class="d-flex justify-content-between">
+                              <span>$</span><span id="total"><%= toThousand(packaging) %></span> 
+                          </td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
-            </div>
+                
+                </div>
+                   
+             
             <div class="card-footer d-flex flex-column flex-md-row justify-content-end">
-              <button type="button" class="btn btn-secondary mb-2 ms-2" onclick="window.history.back()" id="btn-back">Volver atrás</button>
-              <button type="button" class="btn btn-outline-dark mb-2 ms-2" id="btn-accessory" data-bs-toggle="modal" data-bs-target="#accessoryModal">Accesorios</button>
+              <a href="/" class="btn btn-secondary mb-2 ms-2" id="btn-back">Cancelar pedido</a>
               <% if (locals.userLogin.rolName !== "medidor") { %>
               <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
               <input class="" type="file" id="ticket" name="ticket" hidden>   
               <% } %>           
-              <button type="submit" class="btn btn-primary mb-2 ms-2" id="btn-submit">Enviar pedido</button>
+              <button type="submit" class="btn btn-primary mb-2 ms-2" id="btn-submit" disabled>Enviar pedido</button>
             </div>
           </form>
         
@@ -111,8 +140,7 @@
       </main>
       <%- include('partials/footer') %>
         <%- include('partials/scripts') %>
-<%- include('./modals/addAccessory') %>
-
+<script src="/javascripts/accesoriesBuy.js"></script>
   </body>
 
 </html>

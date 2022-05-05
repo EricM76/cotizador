@@ -1,5 +1,28 @@
 const db = require("../database/models");
+
+const path = require("path");
+
+const XLSX = require("xlsx");
+const createHTML = require('create-html');
+const { JSDOM } = require("jsdom");
+
+const moment = require("moment");
+const { SMTPClient, Message } = require("emailjs");
 const { Op } = require("sequelize");
+
+const fonts = require("../fonts/Roboto");
+const PdfPrinter = require("pdfmake");
+const printer = new PdfPrinter(fonts);
+const fs = require("fs");
+
+
+const client = new SMTPClient({
+  user: "cotizadorblancomad@gmail.com",
+  password: "cotizador2022",
+  host: "smtp.gmail.com",
+  ssl: true,
+  timeout: 10000,
+});
 
 module.exports = {
   index: async (req, res) => {
@@ -89,7 +112,7 @@ module.exports = {
           idLocal,
           salePrice,
           visible: visible ? true : false,
-          accessory : true
+          accessory: true
         },
         {
           where: { id: req.params.id },
@@ -256,6 +279,22 @@ module.exports = {
       console.log(error);
     }
   },
+  buy: (req, res) => {
+    db.System.findAll({
+      where: {
+        visible: true,
+        accessory: true
+      }
+    }).then(accessories => {
+      return res.render("accessoriesBuy", {
+        accessories,
+        user: req.session.userLogin,
+        packaging: JSON.parse(require('../data/packaging.json')),
+        toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      })
+    }).catch(error => console.log(error))
+
+  },
   /* APIS */
   visibility: async (req, res) => {
     const { id, visibility } = req.params;
@@ -298,4 +337,496 @@ module.exports = {
         );
     }
   },
+  sendBuy: (req, res) => {
+
+    const {quantities, names, prices, ids, observations, reference} = req.body;
+    const accessories = [];
+
+    for (let i = 0; i < quantities.length; i++) {
+
+      if(quantities[i] !== '' && quantities[i] !== '0'){
+        accessories.push({
+          id : +ids[i],
+          quantity : +quantities[i],
+          name : names[i],
+          price : +prices[i],
+          subtotal : +prices[i] * +quantities[i]
+        })
+      }
+    }
+    const subtotales = accessories.map(accessory => accessory.subtotal);
+    const total = subtotales.reduce((acum,sum) => acum + sum);
+
+    const orderNumber =
+    req.session.userLogin.id +
+    "-" +
+    new Date().getTime().toString().slice(-8) +
+    "-" +
+    new Date().getFullYear().toString().slice(-2)
+
+    const ticket = req.file ? req.file.filename : 'no-transfer.png'
+
+     /* PLANILLA ADMINISTRADOR */
+     let table = `
+     <table class="table table-striped">
+     <thead>
+     <tr>
+     <th scope="col">Orden:</th>
+     <th scope="col">${orderNumber}</th>
+     </tr>
+     <tr>
+     <th scope="col">Vendedor:</th>
+     <th scope="col">${req.session.userLogin.name}</th>
+     </tr>
+     <tr>
+     <th scope="col">Pedido para:</th>
+     <th scope="col">${reference}
+     </th>
+     </tr>
+     <tr>
+     <th>Fecha: </th>
+     <th>${moment().format("DD/MM/YY")}</th>
+     </tr>
+     <tr>
+     <th scope="col">Observaciones:</th>
+     <th scope="col">${observations}
+     </th>
+     </tr>
+       <tr>
+         <th scope="col">Cant.</th>
+         <th scope="col">Sistema</th>
+         <th scope="col">Tela</th>
+         <th scope="col">Color</th>
+         <th scope="col">Ancho</th>
+         <th scope="col">Alto</th>
+         <th scope="col">Modelo</th>
+         <th scope="col">Cadena</th>
+         <th scope="col">Soporte</th>
+         <th scope="col">Comando</th>
+         <th scope="col">Orien. Soporte</th>
+         <th scope="col">Orien. Tela</th>
+         <th scope="col">Obs.</th>
+         <th scope="col">Ambiente</th>
+         <th scope="col">Referencia</th>
+         <th scope="col">Precio unitario</th>
+         <th scope="col">Total</th>
+       </tr>
+     </thead>
+     <tbody>
+     `
+    
+     accessories.forEach(({id,quantity,name,price}) => {
+       table += `
+         <tr>
+         <th scope="row">
+           ${quantity}
+         </th>
+         <td>
+           ${id}
+         </td>
+         <td>
+          -
+         </td>
+         <td>
+          -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td>
+           -
+         </td>
+         <td style="text-align:right;">
+               ${price}
+         </td>
+         <td style="text-align:right;">
+               ${+price * +quantity}
+         </td>
+     </tr>
+       `
+     });
+     table += `
+             <tr>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td style="text-align:right;">
+                 <b>EMBALAJE:</b> 
+             </td>
+             <td style="text-align:right;">
+                 ${req.session.packaging}
+             </td>
+           </tr>
+           <tr>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+             <td style="text-align:right;">
+                 <b>TOTAL:</b> 
+             </td>
+             <td style="text-align:right;">
+                 ${total + req.session.packaging}
+             </td>
+           </tr>
+       </tbody>
+     </table>
+     `
+
+
+     const html = createHTML({
+       title: 'Planilla',
+       lang: 'es',
+       body: table,
+     })
+
+     fs.writeFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), html, function (err) {
+       if (err) console.log(err)
+     })
+
+     const html_str = fs.readFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), "utf8");
+     const doc = new JSDOM(html_str).window.document.querySelector("table");
+     const workbook = XLSX.utils.table_to_book(doc);
+
+     XLSX.writeFile(workbook, path.resolve(__dirname, '..', 'downloads', `${orderNumber}.xls`), {
+       bookType: "xlml",
+       sheet: 0
+     });
+
+
+
+     /* PDF VENDEDOR/ADMIN/CONTROL */
+     let docDefinition;
+     if (req.session.userLogin.rolName !== "medidor") {
+
+       const body = [
+         ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
+       ];
+
+       accessories.forEach(({quantity, name, price}) => {
+         body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: +price, alignment: "right" }, { text: +price * +quantity, alignment: "right" }]);
+       });
+
+       body.push([
+         { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+         {
+           text: "Embalaje:",
+           alignment: "right",
+         },
+         {
+           text: req.session.packaging,
+           alignment: "right",
+         },
+       ]);
+       body.push([
+         { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+         {
+           text: "Total:",
+           alignment: "right",
+         },
+         {
+           text: total + req.session.packaging,
+           alignment: "right",
+         },
+       ]);
+
+       docDefinition = {
+         defaultStyle: {
+           fontSize: 10,
+         },
+         styles: {
+           header: {
+             fontSize: 30,
+             bold: true,
+             alignment: "center",
+           },
+           anotherStyle: {
+             italics: true,
+             alignment: "right",
+           },
+         },
+         header: {
+           columns: [
+             {
+               image: path.resolve(
+                 __dirname,
+                 "..",
+                 "assets",
+                 "images",
+                 "logo-blancomad2.jpg"
+               ),
+               width: 100,
+               alignment: "center",
+             },
+             {
+               text: `Orden #${orderNumber}`,
+               alignment: "right",
+               fontSize: 18,
+             },
+           ],
+           margin: [20, 30],
+         },
+         footer: {
+           columns: [
+             `Observaciones: ${observations}`,
+             {
+               text: `Fecha: ${moment().format("DD/MM/YY")}`,
+               alignment: "right",
+             },
+           ],
+           margin: [30, 30],
+           fontSize: 16,
+         },
+         pageSize: "LEGAL",
+         pageOrientation: "landscape",
+         pageMargins: [10, 60, 10, 60],
+         content: [
+           {
+             layout: "lightHorizontalLines", // optional
+             table: {
+               headerRows: 1,
+               widths: [
+                 "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"
+               ],
+               body,
+             },
+             margin: [20, 50],
+           },
+         ],
+       };
+
+     } else {
+
+       /* PDF MEDIDOR */
+
+       const body = [
+         ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones"],
+       ];
+
+       accessories.forEach(({quantity, name, price}) => {
+         body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }]);
+       });
+
+       body.push([
+         { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+       ]);
+       body.push([
+         { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+       ]);
+
+       docDefinition = {
+         defaultStyle: {
+           fontSize: 10,
+         },
+         styles: {
+           header: {
+             fontSize: 30,
+             bold: true,
+             alignment: "center",
+           },
+           anotherStyle: {
+             italics: true,
+             alignment: "right",
+           },
+         },
+         header: {
+           columns: [
+             {
+               image: path.resolve(
+                 __dirname,
+                 "..",
+                 "assets",
+                 "images",
+                 "logo-blancomad2.jpg"
+               ),
+               width: 100,
+               alignment: "center",
+             },
+             {
+               text: `Orden #${orderNumber}`,
+               alignment: "right",
+               fontSize: 18,
+             },
+           ],
+           margin: [20, 30],
+         },
+         footer: {
+           columns: [
+             `Observaciones: ${observations}`,
+             {
+               text: `Fecha: ${moment().format("DD/MM/YY")}`,
+               alignment: "right",
+             },
+           ],
+           margin: [30, 30],
+           fontSize: 16,
+         },
+         pageSize: "LEGAL",
+         pageOrientation: "landscape",
+         pageMargins: [10, 60, 10, 60],
+         content: [
+           {
+             layout: "lightHorizontalLines", // optional
+             table: {
+               headerRows: 1,
+               widths: [
+                 "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
+               body,
+             },
+             margin: [20, 50],
+           },
+         ],
+       };
+     }
+
+     const options = {
+       // ...
+     };
+
+     const pdfDoc = printer.createPdfKitDocument(docDefinition);
+     pdfDoc.pipe(
+       fs.createWriteStream(
+         path.resolve(
+           __dirname,
+           "..",
+           "downloads",
+           `${orderNumber}.pdf`
+         )
+       )
+     );
+     pdfDoc.end();
+
+     setTimeout(() => {
+       let message;
+       let message2;
+          message2 = new Message({
+           text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
+           from: "cotizadorblancomad@gmail.com",
+           to: req.session.userLogin.email,
+           cc: " ",
+           subject: "Orden #" + orderNumber,
+           attachment: [
+             {
+               path: path.resolve(
+                 __dirname,
+                 "..",
+                 "downloads",
+                 `${orderNumber}.pdf`
+               ),
+               type: "application/pdf",
+               name: `${orderNumber}.pdf`,
+             },
+             {
+               path: path.resolve(
+                 __dirname,
+                 "..",
+                 "downloads",
+                 ticket || ''
+               ),
+               type: "image",
+               name: ticket,
+             }
+           ],
+         });
+         message = new Message({
+           text: `Se adjunta planilla de la orden #${orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
+           from: "cotizadorblancomad@gmail.com",
+           to: "cotizadorblancomad@gmail.com",
+           cc: " ",
+           subject: "Orden #" + orderNumber,
+           attachment: [
+             {
+               path: path.resolve(
+                 __dirname,
+                 "..",
+                 "downloads",
+                 `${orderNumber}.pdf`
+               ),
+               type: "application/pdf",
+               name: `${orderNumber}.pdf`,
+             },
+             {
+               path: path.resolve(
+                 __dirname,
+                 "..",
+                 "downloads",
+                 `${orderNumber}.xls`
+               ),
+               type: "application/octet-stream",
+               name: `${orderNumber}.xls`,
+             },
+             {
+               path: path.resolve(
+                 __dirname,
+                 "..",
+                 "downloads",
+                 ticket || ''
+               ),
+               type: "image",
+               name: ticket,
+             }
+           ],
+         });  
+
+       client.send(message, (err, message) => {
+         console.log(err || message);
+       });
+
+       client.send(message2, (err, message) => {
+         console.log(err || message);
+       });
+       return res.redirect("/response/send-order");
+     }, 2000);
+   }
+  
 };
