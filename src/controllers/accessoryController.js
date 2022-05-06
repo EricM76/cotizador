@@ -534,11 +534,11 @@ module.exports = {
       body: table,
     })
 
-    fs.writeFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), html, function (err) {
+    fs.writeFileSync(path.resolve(__dirname, '..', 'data', req.session.userLogin.id + '.html'), html, function (err) {
       if (err) console.log(err)
     })
 
-    const html_str = fs.readFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), "utf8");
+    const html_str = fs.readFileSync(path.resolve(__dirname, '..', 'data', req.session.userLogin.id + '.html'), "utf8");
     const doc = new JSDOM(html_str).window.document.querySelector("table");
     const workbook = XLSX.utils.table_to_book(doc);
 
