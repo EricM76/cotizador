@@ -130,9 +130,7 @@
                                                     <ul class="list-group list-group-flush">
                                                       <li class="list-group-item"><b>Orden #</b> <%= item.orderNumber %> </li>
                                                       <li class="list-group-item"><b>Fecha y hora: </b> <%= moment(item.createdAt).format('DD/MM/YY HH:MM') %></li>
-                                                      <li class="list-group-item"><b>Monto total: </b>$ <%= toThousand(item.quotations.map(
-                                                        (quotation) => quotation.amount * quotation.quantity
-                                                      ).reduce((acum, num) => acum + num)) %></li>
+                                                      <li class="list-group-item"><b>Monto total: </b>$ <%= item.total ? toThousand(item.total) : 0 %></li>
                                                       <li class="list-group-item"><b>Referencias: </b> <%= [...new Set(item.quotations.map((quotation) => quotation.reference))].join(' - ').split(-3)  %> </li>
                                                     </ul>
                                                   </div>
@@ -184,8 +182,10 @@
                             </td>
                            
                             <td class="d-flex flex-column">
-                                <ul class="list-group list-group-flush">
+                              <% if (item.quotations.length > 0) { %>
 
+                                <ul class="list-group list-group-flush">
+                                 
                               <% item.quotations.forEach(quotation => { %>
                                 <li class="list-group-item bg-transparent">
                                   
@@ -318,7 +318,22 @@
                                       </div>
                                 </li>         
                               <% }) %>
+                            </ul>
+
+                              <% }else{%>
+                                <ul class="list-group list-group-flush">
+
+                                <li class="list-group-item bg-transparent">
+                                  <button type="button" class="btn btn-sm btn-secondary" style="width: 30px;" disabled><i class="fas fa-info"></i></button>
+                                  <span>
+                                      Sin cotizaciones
+                                  </span>
+                                </li>
                               </ul>
+
+                                  <% }%>
+
+
                             </td>
                           
                           

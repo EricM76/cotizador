@@ -135,8 +135,6 @@ module.exports = {
       amounts = [amounts]
     }
 
-    req.session.idsQuotations = ids;
-
     console.log('====================================');
     console.log(clothOrientations);
     console.log('====================================');
@@ -145,7 +143,7 @@ module.exports = {
       let order = await db.Order.create({
         userId: req.session.userLogin.id,
         send: false,
-        packaging: fs.readFileSync(
+        packaging: +fs.readFileSync(
           path.resolve(__dirname, "..", "data", "packaging.json")
         ),
       });
@@ -283,7 +281,7 @@ module.exports = {
     
   },
   send: async (req, res) => {
-    const packaging = fs.readFileSync(
+    const packaging = +fs.readFileSync(
       path.resolve(__dirname, "..", "data", "packaging.json")
     )
     let {
@@ -335,19 +333,6 @@ module.exports = {
         where: { send: 0 },
         force: true,
       });
-
-      for (let i = 0; i < req.session.idsQuotations.length; i++) {
-        await db.Quotation.update(
-          {
-            quantity: 1,
-          },
-          {
-            where: {
-              id: +req.session.idsQuotations[i],
-            },
-          }
-        );
-        }
 
       let order = await db.Order.findOne({
         where: {

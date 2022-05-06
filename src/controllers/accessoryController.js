@@ -339,46 +339,38 @@ module.exports = {
   },
   sendBuy: async (req, res) => {
 
-    const packaging = fs.readFileSync(
+    const packaging = +fs.readFileSync(
       path.resolve(__dirname, "..", "data", "packaging.json")
     );
-    const {quantities, names, prices, ids, observations, reference} = req.body;
+    const { quantities, names, prices, ids, observations, reference } = req.body;
     const accessories = [];
 
     for (let i = 0; i < quantities.length; i++) {
 
-      if(quantities[i] !== '' && quantities[i] !== '0'){
+      if (quantities[i] !== '' && quantities[i] !== '0') {
         accessories.push({
-          id : +ids[i],
-          quantity : +quantities[i],
-          name : names[i],
-          price : +prices[i],
-          subtotal : +prices[i] * +quantities[i]
+          id: +ids[i],
+          quantity: +quantities[i],
+          name: names[i],
+          price: +prices[i],
+          subtotal: +prices[i] * +quantities[i]
         })
       }
     }
     const subtotales = accessories.map(accessory => accessory.subtotal);
-    const total = subtotales.reduce((acum,sum) => acum + sum);
+    const total = subtotales.reduce((acum, sum) => acum + sum);
 
     const orderNumber =
-    req.session.userLogin.id +
-    "-" +
-    new Date().getTime().toString().slice(-8) +
-    "-" +
-    new Date().getFullYear().toString().slice(-2)
+      req.session.userLogin.id +
+      "-" +
+      new Date().getTime().toString().slice(-8) +
+      "-" +
+      new Date().getFullYear().toString().slice(-2)
 
     const ticket = req.file ? req.file.filename : 'no-transfer.png';
 
-    await db.Order.create({
-      userId: req.session.userLogin.id,
-      send: true,
-      packaging: fs.readFileSync(
-        path.resolve(__dirname, "..", "data", "packaging.json")
-      ),
-    })
-
-     /* PLANILLA ADMINISTRADOR */
-     let table = `
+    /* PLANILLA ADMINISTRADOR */
+    let table = `
      <table class="table table-striped">
      <thead>
      <tr>
@@ -425,9 +417,9 @@ module.exports = {
      </thead>
      <tbody>
      `
-    
-     accessories.forEach(({id,quantity,name,price}) => {
-       table += `
+
+    accessories.forEach(({ id, quantity, name, price }) => {
+      table += `
          <tr>
          <th scope="row">
            ${quantity}
@@ -482,8 +474,8 @@ module.exports = {
          </td>
      </tr>
        `
-     });
-     table += `
+    });
+    table += `
              <tr>
              <td></td>
              <td></td>
@@ -535,137 +527,137 @@ module.exports = {
      `
 
 
-     const html = createHTML({
-       title: 'Planilla',
-       lang: 'es',
-       body: table,
-     })
+    const html = createHTML({
+      title: 'Planilla',
+      lang: 'es',
+      body: table,
+    })
 
-     fs.writeFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), html, function (err) {
-       if (err) console.log(err)
-     })
+    fs.writeFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), html, function (err) {
+      if (err) console.log(err)
+    })
 
-     const html_str = fs.readFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), "utf8");
-     const doc = new JSDOM(html_str).window.document.querySelector("table");
-     const workbook = XLSX.utils.table_to_book(doc);
+    const html_str = fs.readFileSync(path.resolve(__dirname, '..', 'data', 'table.html'), "utf8");
+    const doc = new JSDOM(html_str).window.document.querySelector("table");
+    const workbook = XLSX.utils.table_to_book(doc);
 
-     XLSX.writeFile(workbook, path.resolve(__dirname, '..', 'downloads', `${orderNumber}.xls`), {
-       bookType: "xlml",
-       sheet: 0
-     });
+    XLSX.writeFile(workbook, path.resolve(__dirname, '..', 'downloads', `${orderNumber}.xls`), {
+      bookType: "xlml",
+      sheet: 0
+    });
 
 
 
-     /* PDF VENDEDOR/ADMIN/CONTROL */
-     let docDefinition;
-     if (req.session.userLogin.rolName !== "medidor") {
+    /* PDF VENDEDOR/ADMIN/CONTROL */
+    let docDefinition;
+    if (req.session.userLogin.rolName !== "medidor") {
 
-       const body = [
-         ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
-       ];
-
-       accessories.forEach(({quantity, name, price}) => {
-         body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: +price, alignment: "right" }, { text: +price * +quantity, alignment: "right" }]);
-       });
-
-       body.push([
-         { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
-         {
-           text: "Embalaje:",
-           alignment: "right",
-         },
-         {
-           text: packaging,
-           alignment: "right",
-         },
-       ]);
-       body.push([
-         { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
-         {
-           text: "Total:",
-           alignment: "right",
-         },
-         {
-           text: total + packaging,
-           alignment: "right",
-         },
-       ]);
-
-       docDefinition = {
-         defaultStyle: {
-           fontSize: 10,
-         },
-         styles: {
-           header: {
-             fontSize: 30,
-             bold: true,
-             alignment: "center",
-           },
-           anotherStyle: {
-             italics: true,
-             alignment: "right",
-           },
-         },
-         header: {
-           columns: [
-             {
-               image: path.resolve(
-                 __dirname,
-                 "..",
-                 "assets",
-                 "images",
-                 "logo-blancomad2.jpg"
-               ),
-               width: 100,
-               alignment: "center",
-             },
-             {
-               text: `Orden #${orderNumber}`,
-               alignment: "right",
-               fontSize: 18,
-             },
-           ],
-           margin: [20, 30],
-         },
-         footer: {
-           columns: [
-             `Observaciones: ${observations}`,
-             {
-               text: `Fecha: ${moment().format("DD/MM/YY")}`,
-               alignment: "right",
-             },
-           ],
-           margin: [30, 30],
-           fontSize: 16,
-         },
-         pageSize: "LEGAL",
-         pageOrientation: "landscape",
-         pageMargins: [10, 60, 10, 60],
-         content: [
-           {
-             layout: "lightHorizontalLines", // optional
-             table: {
-               headerRows: 1,
-               widths: [
-                 "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"
-               ],
-               body,
-             },
-             margin: [20, 50],
-           },
-         ],
-       };
-
-     } else {
-
-       /* PDF MEDIDOR */
-
-       const body = [
+      const body = [
         ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
       ];
 
-      accessories.forEach(({quantity, name, price}) => {
-        body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "", alignment: "right" }, { text: "" , alignment: "right" }]);
+      accessories.forEach(({ quantity, name, price }) => {
+        body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: +price, alignment: "right" }, { text: +price * +quantity, alignment: "right" }]);
+      });
+
+      body.push([
+        { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+        {
+          text: "Embalaje:",
+          alignment: "right",
+        },
+        {
+          text: packaging,
+          alignment: "right",
+        },
+      ]);
+      body.push([
+        { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+        {
+          text: "Total:",
+          alignment: "right",
+        },
+        {
+          text: total + packaging,
+          alignment: "right",
+        },
+      ]);
+
+      docDefinition = {
+        defaultStyle: {
+          fontSize: 10,
+        },
+        styles: {
+          header: {
+            fontSize: 30,
+            bold: true,
+            alignment: "center",
+          },
+          anotherStyle: {
+            italics: true,
+            alignment: "right",
+          },
+        },
+        header: {
+          columns: [
+            {
+              image: path.resolve(
+                __dirname,
+                "..",
+                "assets",
+                "images",
+                "logo-blancomad2.jpg"
+              ),
+              width: 100,
+              alignment: "center",
+            },
+            {
+              text: `Orden #${orderNumber}`,
+              alignment: "right",
+              fontSize: 18,
+            },
+          ],
+          margin: [20, 30],
+        },
+        footer: {
+          columns: [
+            `Observaciones: ${observations}`,
+            {
+              text: `Fecha: ${moment().format("DD/MM/YY")}`,
+              alignment: "right",
+            },
+          ],
+          margin: [30, 30],
+          fontSize: 16,
+        },
+        pageSize: "LEGAL",
+        pageOrientation: "landscape",
+        pageMargins: [10, 60, 10, 60],
+        content: [
+          {
+            layout: "lightHorizontalLines", // optional
+            table: {
+              headerRows: 1,
+              widths: [
+                "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"
+              ],
+              body,
+            },
+            margin: [20, 50],
+          },
+        ],
+      };
+
+    } else {
+
+      /* PDF MEDIDOR */
+
+      const body = [
+        ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
+      ];
+
+      accessories.forEach(({ quantity, name, price }) => {
+        body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "", alignment: "right" }, { text: "", alignment: "right" }]);
       });
 
       body.push([
@@ -755,106 +747,122 @@ module.exports = {
           },
         ],
       };
-     }
+    }
 
-     const options = {
-       // ...
-     };
+    const options = {
+      // ...
+    };
 
-     const pdfDoc = printer.createPdfKitDocument(docDefinition);
-     pdfDoc.pipe(
-       fs.createWriteStream(
-         path.resolve(
-           __dirname,
-           "..",
-           "downloads",
-           `${orderNumber}.pdf`
-         )
-       )
-     );
-     pdfDoc.end();
+    const pdfDoc = printer.createPdfKitDocument(docDefinition);
+    pdfDoc.pipe(
+      fs.createWriteStream(
+        path.resolve(
+          __dirname,
+          "..",
+          "downloads",
+          `${orderNumber}.pdf`
+        )
+      )
+    );
+    pdfDoc.end();
 
-     setTimeout(() => {
-       let message;
-       let message2;
-          message2 = new Message({
-           text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
-           from: "cotizadorblancomad@gmail.com",
-           to: req.session.userLogin.email,
-           cc: " ",
-           subject: "Orden #" + orderNumber,
-           attachment: [
-             {
-               path: path.resolve(
-                 __dirname,
-                 "..",
-                 "downloads",
-                 `${orderNumber}.pdf`
-               ),
-               type: "application/pdf",
-               name: `${orderNumber}.pdf`,
-             },
-             {
-               path: path.resolve(
-                 __dirname,
-                 "..",
-                 "downloads",
-                 ticket || ''
-               ),
-               type: "image",
-               name: ticket,
-             }
-           ],
-         });
-         message = new Message({
-           text: `Se adjunta planilla de la orden #${orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
-           from: "cotizadorblancomad@gmail.com",
-           to: "cotizadorblancomad@gmail.com",
-           cc: " ",
-           subject: "Orden #" + orderNumber,
-           attachment: [
-             {
-               path: path.resolve(
-                 __dirname,
-                 "..",
-                 "downloads",
-                 `${orderNumber}.pdf`
-               ),
-               type: "application/pdf",
-               name: `${orderNumber}.pdf`,
-             },
-             {
-               path: path.resolve(
-                 __dirname,
-                 "..",
-                 "downloads",
-                 `${orderNumber}.xls`
-               ),
-               type: "application/octet-stream",
-               name: `${orderNumber}.xls`,
-             },
-             {
-               path: path.resolve(
-                 __dirname,
-                 "..",
-                 "downloads",
-                 ticket || ''
-               ),
-               type: "image",
-               name: ticket,
-             }
-           ],
-         });  
+    let fileAdmin = `${orderNumber}.xls`;
+    let fileClient = `${orderNumber}.pdf`;
 
-       client.send(message, (err, message) => {
-         console.log(err || message);
-       });
+    await db.Order.create({
+      userId: req.session.userLogin.id,
+      send: true,
+      packaging: +fs.readFileSync(
+        path.resolve(__dirname, "..", "data", "packaging.json")
+      ),
+      orderNumber,
+      ticket,
+      fileClient,
+      fileAdmin,
+      total 
+    })
 
-       client.send(message2, (err, message) => {
-         console.log(err || message);
-       });
-       return res.redirect("/response/send-order");
-     }, 2000);
-   }
-  
+    setTimeout(() => {
+      let message;
+      let message2;
+      message2 = new Message({
+        text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
+        from: "cotizadorblancomad@gmail.com",
+        to: req.session.userLogin.email,
+        cc: " ",
+        subject: "Orden #" + orderNumber,
+        attachment: [
+          {
+            path: path.resolve(
+              __dirname,
+              "..",
+              "downloads",
+              `${orderNumber}.pdf`
+            ),
+            type: "application/pdf",
+            name: `${orderNumber}.pdf`,
+          },
+          {
+            path: path.resolve(
+              __dirname,
+              "..",
+              "downloads",
+              ticket || ''
+            ),
+            type: "image",
+            name: ticket,
+          }
+        ],
+      });
+      message = new Message({
+        text: `Se adjunta planilla de la orden #${orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
+        from: "cotizadorblancomad@gmail.com",
+        to: "cotizadorblancomad@gmail.com",
+        cc: " ",
+        subject: "Orden #" + orderNumber,
+        attachment: [
+          {
+            path: path.resolve(
+              __dirname,
+              "..",
+              "downloads",
+              `${orderNumber}.pdf`
+            ),
+            type: "application/pdf",
+            name: `${orderNumber}.pdf`,
+          },
+          {
+            path: path.resolve(
+              __dirname,
+              "..",
+              "downloads",
+              `${orderNumber}.xls`
+            ),
+            type: "application/octet-stream",
+            name: `${orderNumber}.xls`,
+          },
+          {
+            path: path.resolve(
+              __dirname,
+              "..",
+              "downloads",
+              ticket || ''
+            ),
+            type: "image",
+            name: ticket,
+          }
+        ],
+      });
+
+      client.send(message, (err, message) => {
+        console.log(err || message);
+      });
+
+      client.send(message2, (err, message) => {
+        console.log(err || message);
+      });
+      return res.redirect("/response/send-order");
+    }, 2000);
+  }
+
 };
