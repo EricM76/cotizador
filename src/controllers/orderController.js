@@ -68,6 +68,19 @@ module.exports = {
 
     const quoters = JSON.parse(req.query.quoters).map((quoter) => +quoter);
 
+    await db.Quotation.update(
+      {
+        quantity : 1
+      },
+      {
+        where: {
+          id: {
+            [Op.in]: quoters,
+          },
+        },
+      }
+    )
+
     const items = await db.Quotation.findAll({
       where: {
         id: {

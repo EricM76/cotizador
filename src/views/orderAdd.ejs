@@ -103,7 +103,7 @@
                       <div class="col-12 col-md-6 col-lg-2 mb-3">
                         <div class="form-floating">
                         <select class="form-select" id="cloth-orientation" name="clothOrientation" onchange="this.classList.remove('is-invalid'); verifyErrors()"  >
-                          <% if (system.id == 127 || system.id == 114) { %>
+                          <% if (system.id !== 113) { %>
                             <option selected value="NO APLICA">No aplica</option>
                           <% }else{ %>
                             <option selected hidden value="">Seleccione...</option>

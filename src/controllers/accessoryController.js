@@ -375,7 +375,7 @@ module.exports = {
      </tr>
      <tr>
      <th scope="col">Vendedor:</th>
-     <th scope="col">${req.session.userLogin.name}</th>
+     <th scope="col">${req.session.userLogin.id}</th>
      </tr>
      <tr>
      <th scope="col">Pedido para:</th>
