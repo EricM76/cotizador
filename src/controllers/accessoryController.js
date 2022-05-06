@@ -283,8 +283,9 @@ module.exports = {
     db.System.findAll({
       where: {
         visible: true,
-        accessory: true
-      }
+        accessory: true,
+      },
+      order : [['name']]
     }).then(accessories => {
       return res.render("accessoriesBuy", {
         accessories,

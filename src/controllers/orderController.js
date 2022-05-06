@@ -182,7 +182,8 @@ module.exports = {
       where : {
         accessory : true,
         visible : true
-      }
+      },
+      order : [['name']]
     })
 
     db.Order.findOne({
