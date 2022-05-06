@@ -122,6 +122,8 @@ module.exports = {
       amounts = [amounts]
     }
 
+    req.session.idsQuotations = ids;
+
     console.log('====================================');
     console.log(clothOrientations);
     console.log('====================================');
@@ -295,7 +297,6 @@ module.exports = {
       }
     }
   
-
     try {
       await db.Order.update(
         {
@@ -319,6 +320,20 @@ module.exports = {
         where: { send: 0 },
         force: true,
       });
+
+      for (let i = 0; i < req.session.idsQuotations.length; i++) {
+        await db.Quotation.update(
+          {
+            quantity: 1,
+          },
+          {
+            where: {
+              id: +req.session.idsQuotations[i],
+            },
+          }
+        );
+        }
+
       let order = await db.Order.findOne({
         where: {
           id: +req.query.order,
