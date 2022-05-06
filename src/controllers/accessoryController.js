@@ -425,43 +425,43 @@ module.exports = {
            ${id}
          </td>
          <td>
-          -
+          626
          </td>
          <td>
-          -
+          17
          </td>
          <td>
-           -
+           0
          </td>
          <td>
-           -
+           0
          </td>
          <td>
-           -
+           6
          </td>
          <td>
-           -
+           6
          </td>
          <td>
-           -
+           18
          </td>
          <td>
-           -
+           no aplica
          </td>
          <td>
-           -
+          no aplica
          </td>
          <td>
-           -
+           no aplica
          </td>
          <td>
-           -
+           no aplica
          </td>
          <td>
-           -
+           no aplica
          </td>
          <td>
-           -
+           no aplica
          </td>
          <td style="text-align:right;">
                ${price}
