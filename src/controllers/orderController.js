@@ -283,7 +283,9 @@ module.exports = {
     
   },
   send: async (req, res) => {
-
+    const packaging = fs.readFileSync(
+      path.resolve(__dirname, "..", "data", "packaging.json")
+    )
     let {
       name,
       price,
@@ -574,7 +576,7 @@ module.exports = {
                     <b>EMBALAJE:</b> 
                 </td>
                 <td style="text-align:right;">
-                    ${req.session.packaging}
+                    ${packaging}
                 </td>
               </tr>
               <tr>
@@ -597,7 +599,7 @@ module.exports = {
                     <b>TOTAL:</b> 
                 </td>
                 <td style="text-align:right;">
-                    ${total + req.session.packaging}
+                    ${total + packaging}
                 </td>
               </tr>
           </tbody>
@@ -649,7 +651,7 @@ module.exports = {
               alignment: "right",
             },
             {
-              text: req.session.packaging,
+              text: packaging,
               alignment: "right",
             },
           ]);
@@ -660,7 +662,7 @@ module.exports = {
               alignment: "right",
             },
             {
-              text: total + req.session.packaging,
+              text: total + packaging,
               alignment: "right",
             },
           ]);

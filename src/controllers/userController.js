@@ -308,7 +308,7 @@ module.exports = {
                     coefficient : +user.rol.coefficient
                 }
 
-                req.session.packaging = require('../data/packaging.json')
+                /* req.session.packaging = require('../data/packaging.json') */
 
                 return res.redirect('/quoters/add')
 
