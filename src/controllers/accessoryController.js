@@ -338,7 +338,6 @@ module.exports = {
     }
   },
   sendBuy: (req, res) => {
-
     const {quantities, names, prices, ids, observations, reference} = req.body;
     const accessories = [];
 
@@ -650,83 +649,100 @@ module.exports = {
        /* PDF MEDIDOR */
 
        const body = [
-         ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones"],
-       ];
+        ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
+      ];
 
-       accessories.forEach(({quantity, name, price}) => {
-         body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }]);
-       });
+      accessories.forEach(({quantity, name, price}) => {
+        body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "", alignment: "right" }, { text: "" , alignment: "right" }]);
+      });
 
-       body.push([
-         { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
-       ]);
-       body.push([
-         { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
-       ]);
+      body.push([
+        { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+        {
+          text: "Embalaje:",
+          alignment: "right",
+        },
+        {
+          text: "",
+          alignment: "right",
+        },
+      ]);
+      body.push([
+        { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+        {
+          text: "Total:",
+          alignment: "right",
+        },
+        {
+          text: "",
+          alignment: "right",
+        },
+      ]);
 
-       docDefinition = {
-         defaultStyle: {
-           fontSize: 10,
-         },
-         styles: {
-           header: {
-             fontSize: 30,
-             bold: true,
-             alignment: "center",
-           },
-           anotherStyle: {
-             italics: true,
-             alignment: "right",
-           },
-         },
-         header: {
-           columns: [
-             {
-               image: path.resolve(
-                 __dirname,
-                 "..",
-                 "assets",
-                 "images",
-                 "logo-blancomad2.jpg"
-               ),
-               width: 100,
-               alignment: "center",
-             },
-             {
-               text: `Orden #${orderNumber}`,
-               alignment: "right",
-               fontSize: 18,
-             },
-           ],
-           margin: [20, 30],
-         },
-         footer: {
-           columns: [
-             `Observaciones: ${observations}`,
-             {
-               text: `Fecha: ${moment().format("DD/MM/YY")}`,
-               alignment: "right",
-             },
-           ],
-           margin: [30, 30],
-           fontSize: 16,
-         },
-         pageSize: "LEGAL",
-         pageOrientation: "landscape",
-         pageMargins: [10, 60, 10, 60],
-         content: [
-           {
-             layout: "lightHorizontalLines", // optional
-             table: {
-               headerRows: 1,
-               widths: [
-                 "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-               body,
-             },
-             margin: [20, 50],
-           },
-         ],
-       };
+      docDefinition = {
+        defaultStyle: {
+          fontSize: 10,
+        },
+        styles: {
+          header: {
+            fontSize: 30,
+            bold: true,
+            alignment: "center",
+          },
+          anotherStyle: {
+            italics: true,
+            alignment: "right",
+          },
+        },
+        header: {
+          columns: [
+            {
+              image: path.resolve(
+                __dirname,
+                "..",
+                "assets",
+                "images",
+                "logo-blancomad2.jpg"
+              ),
+              width: 100,
+              alignment: "center",
+            },
+            {
+              text: `Orden #${orderNumber}`,
+              alignment: "right",
+              fontSize: 18,
+            },
+          ],
+          margin: [20, 30],
+        },
+        footer: {
+          columns: [
+            `Observaciones: ${observations}`,
+            {
+              text: `Fecha: ${moment().format("DD/MM/YY")}`,
+              alignment: "right",
+            },
+          ],
+          margin: [30, 30],
+          fontSize: 16,
+        },
+        pageSize: "LEGAL",
+        pageOrientation: "landscape",
+        pageMargins: [10, 60, 10, 60],
+        content: [
+          {
+            layout: "lightHorizontalLines", // optional
+            table: {
+              headerRows: 1,
+              widths: [
+                "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"
+              ],
+              body,
+            },
+            margin: [20, 50],
+          },
+        ],
+      };
      }
 
      const options = {

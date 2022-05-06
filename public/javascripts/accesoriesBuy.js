@@ -7,17 +7,18 @@ const btnSubmit = $('btn-submit');
 const btnBack = $('btn-back');
 const formData = new FormData()
 let accessories = [];
+let accessoriesUpdated = [];
 
 function updateSubotal(id) {
     if(+document.getElementById("input" + id).value <= 5){
     let accessory = {};
 
-    document.getElementById("subtotal" + id).innerHTML =
+    document.getElementById("subtotal" + id).innerHTML = !isNaN(+document.getElementById("subtotal" + id).innerHTML) ?
         +document.getElementById("input" + id).value *
-        +document.getElementById("price" + id).innerText;
+        +document.getElementById("price" + id).innerText : "-";
     let noFound = true;
 
-    let accessoriesUpdated = accessories.map((element) => {
+    accessoriesUpdated = accessories.map((element) => {
         if (
             element.name === document.getElementById("accessory" + id).innerText
         ) {
@@ -69,11 +70,18 @@ function updateSubotal(id) {
 
 function updateTotal() {
     let prices = [];
+    let unities = [];
+
     for (let i = 0; i < subtotales.length; i++) {
         prices.push(+subtotales[i].innerHTML);
     }
-    total.innerHTML = toThousand((prices.reduce((acum, sum) => acum + sum)) + packaging);
-    btnSubmit.disabled = total.innerHTML != packaging ? false : true;
+    for (let i = 0; i < quantities.length; i++) {
+        unities.push(+quantities[i].value);
+    }
+    let totalFinal = prices.reduce((acum, sum) => acum + sum) + packaging
+    console.log(unities.reduce((acum, sum) => acum + sum));
+    total.innerHTML = !isNaN(totalFinal) ? toThousand(totalFinal) : "-";
+    btnSubmit.disabled =  (unities.reduce((acum, sum) => acum + sum)) > 0 ? false : true;
 }
 
 $('ticket') && $('ticket').addEventListener('change', e => {
@@ -139,7 +147,7 @@ $('form-sendOrder').addEventListener('submit', (e) => {
 
 })
 
-$('ticket').addEventListener('change', (e) => {
+$('ticket') && $('ticket').addEventListener('change', (e) => {
     const files = e.target.files
     formData.append('ticket', files[0])
 }) 

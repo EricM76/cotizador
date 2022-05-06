@@ -60,7 +60,7 @@
                           <th scope="row" class="col-2">
                             <input
                               id="input<%= accessory.id %>"
-                              class="form-control border-0"
+                              class="form-control border-0 quantity"
                               type="number"
                               min="0"
                               max="5"
@@ -74,11 +74,12 @@
                             <input type="text" name="ids" value="<%= accessory.id %>" hidden>
                             <input type="text" name="names" value="<%= accessory.name %>" hidden>
                           </td>
+
                           <td>
                             <div class="d-flex justify-content-between">
                               <span>$</span
                               ><span id="price<%= accessory.id %>"
-                                ><%= accessory.salePrice %></span
+                                > <%= (locals.userLogin.rolName !== "medidor") ? accessory.salePrice : "-" %></span
                               >
                               <input type="text" name="prices" value="<%= accessory.salePrice %>" hidden>
                             </div>
@@ -90,10 +91,11 @@
                             >
                               <span>$</span
                               ><span class="subtotal" id="subtotal<%= accessory.id %>"
-                                >0</span
+                                ><%= (locals.userLogin.rolName !== "medidor") ? 0 : "-" %></span
                               >
                             </div>
                           </td>
+
                         </tr>
                         <% }) %>
                       </tbody>
@@ -104,7 +106,7 @@
                           </td>
                           <td colspan="1" class="text-end">
                               <div class="d-flex justify-content-between">
-                                     <span>$</span><span id="packaging"><%= packaging %></span>
+                                     <span>$</span><span id="packaging"><%= (locals.userLogin.rolName !== "medidor") ? packaging : "-" %></span>
                               </div>
                           </td>
                         </tr>
@@ -113,7 +115,7 @@
                               <b>TOTAL:</b> 
                           </td>
                           <td colspan="1" class="d-flex justify-content-between">
-                              <span>$</span><span id="total"><%= toThousand(packaging) %></span> 
+                              <span>$</span><span id="total"><%= (locals.userLogin.rolName !== "medidor") ? toThousand(packaging) : "-" %></span> 
                           </td>
                         </tr>
                       </tfoot>

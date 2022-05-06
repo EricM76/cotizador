@@ -707,24 +707,36 @@ module.exports = {
           /* PDF MEDIDOR */
 
           const body = [
-            ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones"],
+            ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
           ];
-
-          order.quotations.forEach((quotation) => {
-            body.push([{ text: quotation.quantity }, { text: quotation.system.name }, { text: quotation.cloth.name }, { text: quotation.color.name }, { text: quotation.clothWidth }, { text: quotation.heigth }, { text: quotation.pattern.name }, { text: quotation.chain.name }, { text: quotation.support.name }, { text: quotation.command }, { text: quotation.supportOrientation }, { text: quotation.clothOrientation }, { text: quotation.environment }, { text: quotation.reference }, { text: quotation.observations }]);
-          });
-
+    
           accessories.forEach(({quantity, name, price}) => {
-            body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }]);
+            body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "", alignment: "right" }, { text: "" , alignment: "right" }]);
           });
-
+    
           body.push([
             { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+            {
+              text: "Embalaje:",
+              alignment: "right",
+            },
+            {
+              text: "",
+              alignment: "right",
+            },
           ]);
           body.push([
             { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
+            {
+              text: "Total:",
+              alignment: "right",
+            },
+            {
+              text: "",
+              alignment: "right",
+            },
           ]);
-
+    
           docDefinition = {
             defaultStyle: {
               fontSize: 10,
@@ -754,7 +766,7 @@ module.exports = {
                   alignment: "center",
                 },
                 {
-                  text: `Orden #${order.orderNumber}`,
+                  text: `Orden #${orderNumber}`,
                   alignment: "right",
                   fontSize: 18,
                 },
@@ -763,7 +775,7 @@ module.exports = {
             },
             footer: {
               columns: [
-                `Observaciones: ${order.observations}`,
+                `Observaciones: ${observations}`,
                 {
                   text: `Fecha: ${moment().format("DD/MM/YY")}`,
                   alignment: "right",
@@ -781,7 +793,8 @@ module.exports = {
                 table: {
                   headerRows: 1,
                   widths: [
-                    "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
+                    "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"
+                  ],
                   body,
                 },
                 margin: [20, 50],
