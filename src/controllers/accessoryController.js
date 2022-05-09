@@ -347,12 +347,12 @@ module.exports = {
     const packaging = +fs.readFileSync(
       path.resolve(__dirname, "..", "data", "packaging.json")
     );
-    const { quantities, names, prices, ids, observations, reference } = req.body;
+    const { quantities, names, prices, ids, observations, reference, limits} = req.body;
     const accessories = [];
 
     for (let i = 0; i < quantities.length; i++) {
 
-      if (quantities[i] !== '' && quantities[i] !== '0') {
+      if (quantities[i] !== '' && quantities[i] !== '0' && quantities[i] <= limits[i]) {
         accessories.push({
           id: +ids[i],
           quantity: +quantities[i],

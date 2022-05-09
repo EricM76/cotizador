@@ -69,7 +69,7 @@
                               name="quantities"
                               value="0"
                             />
-                            <input type="text" id="limit" value="<%= accessory.limit %>" hidden>
+                            <input type="text" id="limit<%= accessory.id %>" value="<%= accessory.limit %>" name="limits" hidden>
                             <span id="error<%= accessory.id %>" class="text-danger small" hidden>Máx. <%= accessory.limit %>  unid.</span>
                           </th>
                           <td class="fw-bold" id="accessory<%= accessory.id %>">

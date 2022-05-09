@@ -1,10 +1,16 @@
 <!-- Modal -->
+<style>
+  .quantity::-webkit-inner-spin-button {
+    opacity: 1
+}
+</style>
 <div
   class="modal fade"
   id="accessoryModal"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
+  data-bs-backdrop="static"
 >
   <div class="modal-dialog">
     <div class="modal-content">
@@ -31,10 +37,12 @@
                   class="form-control border-0 quantity"
                   type="number"
                   min="0"
-                  max="5"
+                  max="<%= accessory.limit %>"
+                  value="0"
                   onchange="updateSubotal('<%=accessory.id%>')"
                 />
-                <span class="text-danger small" id="error<%=accessory.id%>" hidden>Máx. 5 unid.</span>
+                <input type="text" value="<%= accessory.limit %>" id="limit<%= accessory.id %>" hidden>
+                <span class="text-danger small" id="error<%=accessory.id%>" hidden>Máx. <%= accessory.limit %>  unid.</span>
               </th>
               <td class="fw-bold" id="accessory<%= accessory.id %>">
                 <%= accessory.name %>

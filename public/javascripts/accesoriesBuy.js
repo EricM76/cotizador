@@ -10,7 +10,7 @@ let accessories = [];
 let accessoriesUpdated = [];
 
 function updateSubotal(id) {
-    if(+document.getElementById("input" + id).value <= +document.getElementById('limit').value){
+    if(+document.getElementById("input" + id).value <= +document.getElementById('limit'+id).value){
     let accessory = {};
 
     document.getElementById("subtotal" + id).innerHTML = !isNaN(+document.getElementById("subtotal" + id).innerHTML) ?

@@ -9,7 +9,9 @@
   let accessories = [];
 
   function updateSubotal(id) {
-    if(+document.getElementById("input" + id).value <= 5){
+    let error = false
+
+    if(+document.getElementById("input" + id).value <= +document.getElementById('limit'+id).value){
     let accessory = {};
 
     document.getElementById("subtotal" + id).innerHTML =
@@ -60,15 +62,22 @@
     }
     $('error'+id).hidden = true;
     $('input'+id).classList.remove('is-invalid');
-    btnAdd.disabled = false
 
     updateTotal();
   }else{
     $('error'+id).hidden = false;
     $('input'+id).classList.add('is-invalid');
-    btnAdd.disabled = true
+    for (let i = 0; i < quantities.length; i++) {
+      quantities[i].classList.contains('is-invalid')
+      error = true
+    }
+    btnAdd.disabled = error === true ? true : false
+    }
+  
+    btnAdd.disabled = error === true ? true : false
+
   }
-  }
+ 
 
   function updateTotal() {
     let prices = [];

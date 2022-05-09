@@ -289,13 +289,15 @@ module.exports = {
       name,
       price,
       quantity,
-      id
+      id,
+      limit
     } = req.body;
 
     id = typeof id === "string" ? id.split() : id;
     name = typeof name === "string" ? name.split() : name;
     price = typeof price === "string" ? price.split() : price;
     quantity = typeof quantity === "string" ? quantity.split() : quantity;
+    limit = typeof limit === "string" ? limit.split() : limit;
 
     const accessories = [];
     if(name){
@@ -303,7 +305,7 @@ module.exports = {
       
         accessories.push({
           id : id[i],
-          quantity : quantity[i] > 5 ? 5 : quantity[i],
+          quantity : quantity[i] > limit[i] ? limit[i] : quantity[i],
           name : name[i],
           price : price[i]
         })
