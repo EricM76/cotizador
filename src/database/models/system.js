@@ -61,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
     salePrice: DataTypes.INTEGER,
     visible : DataTypes.BOOLEAN,
     accessory: DataTypes.BOOLEAN,
+    limit: DataTypes.INTEGER,
     idLocal : DataTypes.INTEGER,
   }, {
     sequelize,

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <%- include('partials/head',{ title : "Cotizador de cortinas" }) %>
-
+<style>
+  input[type=number]::-webkit-inner-spin-button {
+    opacity: 1
+}
+</style>
   <body>
     <%- include('partials/header') %>
       <main class="px-md-1 px-lg-1">
@@ -38,9 +42,6 @@
                         </div>
                       </div>
                       </div>
-                      <p class="col-12 alert alert-danger my-1 py-0 px-5" id="maxError" hidden>
-                        Máximo 5 unidades por acccesorio.
-                      </p>
                 </div>
                 <div class="row">
                  
@@ -63,11 +64,13 @@
                               class="form-control border-0 quantity"
                               type="number"
                               min="0"
-                              max="5"
+                              max="<%= accessory.limit %>"
                               onchange="updateSubotal('<%=accessory.id%>')"
                               name="quantities"
+                              value="0"
                             />
-                            <span id="error<%= accessory.id %>" class="text-danger small" hidden>Máx. 5 unid.</span>
+                            <input type="text" id="limit" value="<%= accessory.limit %>" hidden>
+                            <span id="error<%= accessory.id %>" class="text-danger small" hidden>Máx. <%= accessory.limit %>  unid.</span>
                           </th>
                           <td class="fw-bold" id="accessory<%= accessory.id %>">
                             <%= accessory.name %>

@@ -1,7 +1,7 @@
 'use strict';
 const sistemas = require('../../data/sistemas_db.json');
 
-const systems = sistemas.map(({name,visible,accessory,salePrice,idLocal,price} )=> {
+const systems = sistemas.map(({name,visible,accessory,limit,salePrice,idLocal,price} )=> {
   return {
     name,
     price,
@@ -9,6 +9,7 @@ const systems = sistemas.map(({name,visible,accessory,salePrice,idLocal,price} )
     visible,
     accessory,
     salePrice,
+    limit,
     createdAt : new Date,
   }
 })

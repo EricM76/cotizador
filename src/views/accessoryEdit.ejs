@@ -9,7 +9,7 @@
           <article class="card shadow">
             <div class="card-header d-flex justify-content-between">
               <h5>
-                Editando: <b>
+                Editando accesorio: <b>
                   <%= system.name %>
                 </b>
               </h5>
@@ -37,26 +37,28 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-12 col-md-3 mb-3">
+                <div class="col-12 col-md-6 col-lg-4 mb-3">
                   <label for="name" class="form-label">Nombre</label>
                   <input type="text" class="form-control" id="name" value="<%= system.name %>" placeholder="nombre"
                     name="name" />
                 </div>
-                <div class="col-12 col-md-3 mb-3">
+                <div class="col-12 col-md-3 col-lg-2 mb-3">
                   <label for="price" class="form-label">Precio</label>
                   <input type="number" class="form-control" id="price" value=<%=system.price %> name="price"/>
                 </div>
-                <div class="col-12 col-md-3 mb-3">
+                <div class="col-12 col-md-3 col-lg-2 mb-3">
                   <label for="salePrice" class="form-label">Precio de venta</label>
                   <input type="number" class="form-control" id="salePrice" value=<%=system.salePrice %> name="salePrice"/>
                 </div>
-                <div class="col-12 col-md-3 mb-3">
+                <div class="col-12 col-md-3 col-lg-2 mb-3">
                   <label for="idLocal" class="form-label">ID Local</label>
                   <input type="number" class="form-control" id="idLocal" value=<%=system.idLocal %> name="idLocal"/>
                   <span id="msg-error" class="text-danger text-small ms-2" hidden>El ID está en uso</span>
-
                 </div>
-
+                <div class="col-12 col-md-3 col-lg-2 mb-3">
+                  <label for="limit" class="form-label">Límite</label>
+                  <input type="number" class="form-control" id="limit" name="limit" value="<%=system.limit%>" required/>
+                </div>
                   
 
                 <div class="text-end">

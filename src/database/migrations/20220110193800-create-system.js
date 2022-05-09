@@ -23,6 +23,9 @@ module.exports = {
       accessory:{
         type: Sequelize.BOOLEAN
       },
+      limit : {
+        type : Sequelize.INTEGER
+      },
       idLocal :{
         type: Sequelize.INTEGER
       },

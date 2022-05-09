@@ -101,6 +101,7 @@ module.exports = {
       price,
       idLocal,
       visible,
+      limit,
       salePrice
     } = req.body;
 
@@ -111,6 +112,7 @@ module.exports = {
           price,
           idLocal,
           salePrice,
+          limit,
           visible: visible ? true : false,
           accessory: true
         },
@@ -188,6 +190,7 @@ module.exports = {
       price,
       idLocal,
       visible,
+      limit,
       salePrice,
       accessory,
     } = req.body;
@@ -198,6 +201,7 @@ module.exports = {
           name: name.trim(),
           price,
           idLocal,
+          limit,
           salePrice,
           visible: visible ? true : false,
           accessory: accessory ? true : false,
