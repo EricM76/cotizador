@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
     enabled: DataTypes.BOOLEAN,
+    viewOrders: DataTypes.BOOLEAN,
     rolId: DataTypes.INTEGER,
     idLocal : DataTypes.INTEGER,
   }, {

@@ -16,7 +16,7 @@ router
     .get('/edit/:id',edit)
     .put('/update/:id',update)
     .delete('/remove/:id',adminSessionCheck,remove)
-    .get('/download',adminSessionCheck, download)
+    .get('/download', download)
     .get('/filter',adminSessionCheck, filter)
     /* apis */
     .post('/api/add-accessories',addAccessories)

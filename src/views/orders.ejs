@@ -13,6 +13,7 @@
               <form action="/orders/filter" class="row" id="form-items">
 
                 <div class="col-12 col-md-4 col-lg-4 mb-2">
+                  <% if (+locals.userLogin.rol === 1) { %>
                     <select class="form-select" id="filter" name="filter" onchange="resetValues()">
                       <option value="" selected hidden>Filtrar por vendedor</option>
                       <% users.forEach(item=> { %>
@@ -21,7 +22,7 @@
                         <% }) %>
                           <option id="all" value="all">Todos</option>
                     </select>
-              
+                  <% } %>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-2">
                 

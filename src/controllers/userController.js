@@ -8,6 +8,10 @@ module.exports = {
         let total = await db.User.count({
             where: { enabled: true }
         })
+        let admin = await db.User.findByPk(85);
+        console.log('====================================');
+        console.log(admin);
+        console.log('====================================');
         db.User.findAll({
             where: {
                 enabled: true,
@@ -22,7 +26,8 @@ module.exports = {
                     active: 1,
                     pages: 1,
                     keywords: "",
-                    multiplo: total % 8 === 0 ? 0 : 1
+                    multiplo: total % 8 === 0 ? 0 : 1,
+                    viewAllOrders : admin.viewOrders
                 })
             })
             .catch(error => console.log(error))
@@ -146,6 +151,10 @@ module.exports = {
         let { order, filter, keywords, active, pages } = req.query;
         let items = [];
         let total = 0;
+        let admin = await db.User.findByPk(85);
+        console.log('====================================');
+        console.log(admin);
+        console.log('====================================');
         try {
             if (filter === "all") {
                 total = await db.User.count({
@@ -251,7 +260,8 @@ module.exports = {
                 active,
                 pages,
                 keywords,
-                multiplo: total % 8 === 0 ? 0 : 1
+                multiplo: total % 8 === 0 ? 0 : 1,
+                viewAllOrders : admin.viewOrders
             })
         } catch (error) {
             console.log(error)
@@ -305,7 +315,8 @@ module.exports = {
                     email : user.email,
                     rol: +user.rolId,
                     rolName : user.rol.name.toLowerCase(),
-                    coefficient : +user.rol.coefficient
+                    coefficient : +user.rol.coefficient,
+                    viewOrders : user.viewOrders
                 }
 
                 /* req.session.packaging = require('../data/packaging.json') */
@@ -371,5 +382,61 @@ module.exports = {
                 : error.message
             );
         }
-      }
+      },
+      changeAllViewOrders : async (req,res) => {
+        try {
+            const {viewAllOrders} = req.body
+            await db.User.update(
+                {
+                    viewOrders : viewAllOrders ? 1 : 0
+                },
+                {
+                    where : {
+                        id : {
+                            [Op.gte] : 1
+                        }
+                    }
+                }
+            )
+            return res.json({
+              ok: true,
+              viewAllOrders
+            });
+          } catch (error) {
+            console.log('====================================');
+            console.log(error);
+            console.log('====================================');
+            return res
+              .status(error.status || 500)
+              .json(
+                error.status === 500
+                  ? "Comuníquese con el administrador del sitio"
+                  : error.message
+              );
+          }
+      },
+      changeViewOrders: async (req, res) => {
+
+        const { id, enable } = req.body;
+
+        try {
+
+            await db.User.update(
+                { viewOrders: enable === true ? 0 : 1 },
+                { where: { id } }
+            )
+
+            return res.status(200).json({
+                ok: true,
+                msg: 'Modificación exitosa!'
+            })
+
+        } catch (error) {
+            console.log(error)
+            return res.status(error.status || 500).json({
+                ok: false,
+                msg: error.status === 500 ? "Comuníquese con el administrador del sitio" : error.message
+            })
+        }
+    },
 }

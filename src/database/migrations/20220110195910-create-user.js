@@ -29,6 +29,9 @@ module.exports = {
       enabled: {
         type: Sequelize.BOOLEAN
       },
+      viewOrders: {
+        type: Sequelize.BOOLEAN
+      },
       rolId: {
         type: Sequelize.INTEGER,
         references : {

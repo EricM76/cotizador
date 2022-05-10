@@ -133,14 +133,15 @@
             <a class="nav-link" href="/users">Usuarios</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/orders">Presupuestos</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="#" onclick="updatePackaging(event)">
               Precio embalaje
             </a>
           </li>
-
+          <% } %>
+          <% if (locals.userLogin.viewOrders || locals.userLogin.rol === 1) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/orders">Presupuestos</a>
+            </li>
           <% } %>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

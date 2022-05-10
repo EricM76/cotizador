@@ -37,15 +37,22 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-12 col-md-3">
+                <div class="col-12 col-md-3 mb-3">
                   <a class="btn btn-sm btn-outline-dark w-100" href="/users/add">Agregar</a>
 
                 </div>
-                <div class="col-12 col-md-5 d-flex justify-content-center">
+                <div class="col-12 col-md-3 mb-3 d-flex justify-content-center align-items-center">
+                    <div class="form-check form-switch">
+                      <label for="viewAllOrders"><strong>Ver presupuestos</strong></label>
+                      <input class="form-check-input" type="checkbox" role="switch" id="viewAllOrders" name="viewAllOrders" <%= viewAllOrders ? 'checked': null %>  onchange="changeAllViewOrders()">
+                  </div>
+                </div>
+                <div class="col-12 col-md-3 mb-3 d-flex justify-content-center">
                   <h5 class="text-center">USUARIOS </h5><span class="small ms-2">(<%= total %>)</span>
 
                 </div>
-                <div class="col-12 col-md-4 d-flex justify-content-end">
+              
+                <div class="col-12 col-md-3 d-flex justify-content-end">
                   <nav aria-label="Page navigation example">
                     <ul class="pagination pagination-sm">
 
@@ -98,6 +105,7 @@
                         <th scope="col">Usuario</th>
                         <th scope="col">Email</th>
                         <th scope="col">Teléfono</th>
+                        <th scope="col">Ver órdenes</th>
                         <th scope="col">Acciones</th>
                       </tr>
                     </thead>
@@ -105,11 +113,14 @@
                       <% items.forEach((item) => { %>
                         <tr>
                             <td class="">
+                              <div class="d-flex justify-content-center">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="enabled<%= item.id %>"
                                     <%=item.enabled && 'checked' %> onchange="changeEnable(<%=item.id%>,
                                     <%=item.enabled%>)">
                                 </div>
+                              </div>
+
                             </td>
                           <th scope="row">
                             <%= item.idLocal %>
@@ -132,6 +143,16 @@
                           <td>
                             <%= item.phone %>
                           </td>
+                          <td class="">
+                            <div class="d-flex justify-content-center">
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="viewOrders<%= item.id %>"
+                                <%=item.viewOrders && 'checked' %> onchange="changeViewOrders(<%=item.id%>,
+                                <%=item.viewOrders%>)">
+                            </div>
+                            </div>
+                          
+                        </td>
                           <td class="d-flex">
                             <a class="btn btn-sm btn-success mx-1" style="width:33px;"
                               href="/users/edit/<%= item.id %>"><i class="fas fa-edit"></i></a>

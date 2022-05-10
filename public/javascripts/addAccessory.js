@@ -28,6 +28,7 @@
           name: document.getElementById("accessory" + id).innerText,
           price: +document.getElementById("price" + id).innerText,
           quantity: +document.getElementById("input" + id).value,
+          limit: +document.getElementById("limit" + id).value,
           subtotal: +document.getElementById("subtotal" + id).innerText,
         };
         noFound = false;
@@ -51,6 +52,9 @@
       });
       Object.defineProperty(accessory, "quantity", {
         value: +document.getElementById("input" + id).value,
+      });
+      Object.defineProperty(accessory, "limit", {
+        value: +document.getElementById("limit" + id).value,
       });
       Object.defineProperty(accessory, "price", {
         value: +document.getElementById("price" + id).innerText,
@@ -115,7 +119,7 @@
 
     totalLast.innerHTML =toThousand(+totalQuoter.innerText + prices.reduce((acum, sum) => acum + sum))
 
-    accessories.forEach(({id,quantity,name,price}) => {
+    accessories.forEach(({id,quantity,limit,name,price}) => {
 
         $('accessories').innerHTML += `
         
@@ -130,10 +134,9 @@
           </td>
           <td>
           <input name="id" value="${id}" hidden/>
-
             </td>
             <td>
-              
+            <input name="limit" value="${limit}" hidden/>
             </td>
             <td>
               

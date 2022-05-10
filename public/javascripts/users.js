@@ -24,6 +24,56 @@ const changeEnable = async (id, enable) => {
     }
 }
 
+
+const changeViewOrders = async (id, enable) => {
+
+    try {
+
+
+        let response = await fetch(`/users/api/change-view-orders`, {
+            method: 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                id,
+                enable
+            })
+        });
+
+        let result = await response.json()
+
+        console.log(result)
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const changeAllViewOrders = async () => {
+
+    try {
+
+        let response = await fetch(`/users/api/view-all-orders`, {
+            method: 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                viewAllOrders : $('viewAllOrders').checked
+            })
+        });
+
+        let result = await response.json()
+
+        console.log(result)
+        $('viewAllOrders').checked = result.viewAllOrders
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 const changeActive = (id) => {
 
     sessionStorage.setItem('active',id)

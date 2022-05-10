@@ -27,39 +27,79 @@ const client = new SMTPClient({
 
 module.exports = {
   index: (req, res) => {
-    let users = db.Quotation.findAll({
-      attributes: ["userId"],
-      include: [{ association: "user" }],
-      group: ["userId"],
-      having: "",
-    });
-    let items = db.Order.findAll({
-      include: [
-        {
-          association: "quotations",
-          include: { all: true },
-        },
-        { association: "user" },
-      ],
-      order: [["createdAt", "DESC"]],
-      limit: 8,
-    });
-    let total = db.Order.count();
-    Promise.all([users, items, total])
-      .then(([users, items, total]) => {
-        return res.render("orders", {
-          items,
-          users,
-          total,
-          active: 1,
-          pages: 1,
-          keywords: "",
-          multiplo: total % 8 === 0 ? 0 : 1,
-          moment,
-          toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+    if (req.session.userLogin.rol === 1) {
+      let users = db.Quotation.findAll({
+        attributes: ["userId"],
+        include: [{ association: "user" }],
+        group: ["userId"],
+        having: "",
+      });
+      let items = db.Order.findAll({
+        include: [
+          {
+            association: "quotations",
+            include: { all: true },
+          },
+          { association: "user" },
+        ],
+        order: [["createdAt", "DESC"]],
+        limit: 8,
+      });
+      let total = db.Order.count();
+      Promise.all([users, items, total])
+        .then(([users, items, total]) => {
+          return res.render("orders", {
+            items,
+            users,
+            total,
+            active: 1,
+            pages: 1,
+            keywords: "",
+            multiplo: total % 8 === 0 ? 0 : 1,
+            moment,
+            toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+          });
+        })
+        .catch((error) => console.log(error));    
+      }else{
+        let users = db.Quotation.findAll({
+          attributes: ["userId"],
+          include: [{ association: "user" }],
+          group: ["userId"],
+          having: "",
         });
-      })
-      .catch((error) => console.log(error));
+        let items = db.Order.findAll({
+          include: [
+            {
+              association: "quotations",
+              include: { all: true },
+            },
+            { association: "user" },
+          ],
+          order: [["createdAt", "DESC"]],
+          limit: 8,
+          where : {
+            userId : req.session.userLogin.id
+          }
+        });
+        let total = db.Order.count();
+        Promise.all([users, items, total])
+          .then(([users, items, total]) => {
+            return res.render("orders", {
+              items,
+              users,
+              total,
+              active: 1,
+              pages: 1,
+              keywords: "",
+              multiplo: total % 8 === 0 ? 0 : 1,
+              moment,
+              toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            });
+          })
+          .catch((error) => console.log(error));
+      }
+   
   },
   add: async (req, res) => {
     if (req.query.quoters === "null") {
@@ -985,80 +1025,160 @@ module.exports = {
     let items = [];
     let users = [];
     let total = 0;
-
-    try {
-      users = await db.Quotation.findAll({
-        attributes: ["userId"],
-        include: [{ association: "user" }],
-        group: ["userId"],
-        having: "",
-      });
-      if (filter === "all" || !filter) {
-        total = await db.Order.count();
-        console.log("====================================");
-        console.log(total);
-        console.log("====================================");
-
-        items = await db.Order.findAll({
-          include: [
-            {
-              association: "quotations",
-              where: {
-                reference: {
-                  [Op.substring]: keywords,
+    if (req.session.userLogin.rol === 1) {
+      try {
+        users = await db.Quotation.findAll({
+          attributes: ["userId"],
+          include: [{ association: "user" }],
+          group: ["userId"],
+          having: "",
+        });
+        if (filter === "all" || !filter) {
+          total = await db.Order.count();
+          console.log("====================================");
+          console.log(total);
+          console.log("====================================");
+  
+          items = await db.Order.findAll({
+            include: [
+              {
+                association: "quotations",
+                where: {
+                  reference: {
+                    [Op.substring]: keywords,
+                  },
                 },
+                include: [{ all: true }],
               },
-              include: [{ all: true }],
+              { association: "user" },
+            ],
+            order: [order || "id"],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            //include: { all: true },
+          });
+        } else {
+          total = await db.Order.count({
+            where: {
+              userId: +filter,
             },
-            { association: "user" },
-          ],
-          order: [order || "id"],
-          limit: 8,
-          offset: active && +active * 8 - 8,
-          //include: { all: true },
-        });
-      } else {
-        total = await db.Order.count({
-          where: {
-            userId: +filter,
-          },
-        });
-        items = await db.Order.findAll({
-          where: {
-            userId: +filter,
-          },
-          include: [
-            {
-              association: "quotations",
-              where: {
-                reference: {
-                  [Op.substring]: keywords,
+          });
+          items = await db.Order.findAll({
+            where: {
+              userId: +filter,
+            },
+            include: [
+              {
+                association: "quotations",
+                where: {
+                  reference: {
+                    [Op.substring]: keywords,
+                  },
                 },
+                include: [{ all: true }],
               },
-              include: [{ all: true }],
-            },
-            { association: "user" },
-          ],
-          order: [order || "id"],
-          limit: 8,
-          offset: active && +active * 8 - 8,
-          //include: { all: true },
+              { association: "user" },
+            ],
+            order: [order || "id"],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            //include: { all: true },
+          });
+        }
+        return res.render("orders", {
+          items,
+          total,
+          active,
+          pages,
+          keywords,
+          multiplo: total % 8 === 0 ? 0 : 1,
+          moment,
+          users,
+          toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
         });
+      } catch (error) {
+        console.log(error);
       }
-      return res.render("orders", {
-        items,
-        total,
-        active,
-        pages,
-        keywords,
-        multiplo: total % 8 === 0 ? 0 : 1,
-        moment,
-        users,
-        toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
-      });
-    } catch (error) {
-      console.log(error);
+    }else{
+      try {
+        users = await db.Quotation.findAll({
+          attributes: ["userId"],
+          include: [{ association: "user" }],
+          group: ["userId"],
+          having: "",
+        });
+        if (filter === "all" || !filter) {
+          total = await db.Order.count({
+            where : {
+              userId : req.session.userLogin.id
+            }
+          });  
+          items = await db.Order.findAll({
+            include: [
+              {
+                association: "quotations",
+                where: {
+                  reference: {
+                    [Op.substring]: keywords,
+                  },
+                },
+                include: [{ all: true }],
+              },
+              { association: "user" },
+            ],
+            order: [order || "id"],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            where : {
+              userId : req.session.userLogin.id
+            }
+            //include: { all: true },
+          });
+        } else {
+          total = await db.Order.count({
+            where : {
+              userId : req.session.userLogin.id
+            }
+          });
+          items = await db.Order.findAll({
+            where : {
+              userId : req.session.userLogin.id
+            },
+            include: [
+              {
+                association: "quotations",
+                where: {
+                  reference: {
+                    [Op.substring]: keywords,
+                  },
+                },
+                include: [{ all: true }],
+              },
+              { association: "user" },
+            ],
+            order: [order || "id"],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            //include: { all: true },
+          });
+        }
+        return res.render("orders", {
+          items,
+          total,
+          active,
+          pages,
+          keywords,
+          multiplo: total % 8 === 0 ? 0 : 1,
+          moment,
+          users,
+          toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
+   
+
   },
   /* apis */
 };
