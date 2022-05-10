@@ -824,7 +824,7 @@ module.exports = {
                   alignment: "center",
                 },
                 {
-                  text: `Orden #${orderNumber}`,
+                  text: `Orden #${order.orderNumber}`,
                   alignment: "right",
                   fontSize: 18,
                 },
@@ -833,7 +833,7 @@ module.exports = {
             },
             footer: {
               columns: [
-                `Observaciones: ${observations}`,
+                `Observaciones: ${order.observations}`,
                 {
                   text: `Fecha: ${moment().format("DD/MM/YY")}`,
                   alignment: "right",

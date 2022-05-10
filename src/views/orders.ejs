@@ -27,10 +27,13 @@
                 <div class="col-12 col-md-4 col-lg-4 mb-2">
                 
                 </div>
-                <div class="col-12  col-md-4 col-lg-4 mb-2 position-relative">
-                <!--   <input type="text" class="form-control w-100" id="search" placeholder="Buscar por referencia..." name="search">
-                  <button class="btn btn-sm btn-dark-outline position-absolute end-0 top-0 me-3 mt-1" type="submit" onclick="handlerSearch()" id="btn-search"><i
-                      class="fas fa-search"></i></button> -->
+                <div class="col-12  col-md-4 col-lg-4 mb-2 d-flex justify-content-end align-items-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="sendEmail">
+                    <label class="form-check-label" for="sendEmail">
+                      Filtrar por no enviados
+                    </label>
+                  </div>
                 </div>
             </div>
             </div>
@@ -92,6 +95,7 @@
                         <tr>
                             <th scope="col" class="text-center">Info</th>
                             <th scope="col">Fecha</th>
+                            <th scope="col">Enviado</th>
                             <th scope="col">Orden</th>
                             <th scope="col">Vendedor</th>
                             <th scope="col">Usuario</th>
@@ -161,7 +165,12 @@
                             <td class="align-middle">
                                 <%= moment(item.date).format('DD-MM-YY') %>
                             </td>
-                         
+                            <td class="align-middle">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" disabled  <%= item.send ? 'checked' : null %>>
+                              </div>
+                             
+                            </td>
                             <td class="align-middle">
                                 <%= item.orderNumber%>
                               </td>
