@@ -20,6 +20,7 @@ router
     .get('/filter', filter)
     /* apis */
     .post('/api/add-accessories',addAccessories)
+    .post('/api/filter-no-send',)
 
 
 module.exports = router;

@@ -66,7 +66,6 @@ const goBack = (e) => {
     window.location = '/orders'
 }
 
-
 /* $('search').addEventListener('keydown', (e) => {
     e.key === 'Enter' && e.preventDefault()
 }) */
@@ -109,6 +108,8 @@ window.onload = function () {
         }
     }
 
+    $('filterNoSend').checked = query.get('filterNoSend')==="on" ? true : false;
+
     document.getElementById('form-items').addEventListener('submit', (e) => {
         e.preventDefault();
         getKeywords();
@@ -119,7 +120,8 @@ window.onload = function () {
 
 window.addEventListener('beforeunload', () => {
     sessionStorage.setItem('pathname', window.location.pathname)
-    
-
 })
+
+
+
 

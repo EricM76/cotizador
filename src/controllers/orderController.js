@@ -357,7 +357,6 @@ module.exports = {
       await db.Order.update(
         {
           observations: req.body.observations,
-          send: true,
           orderNumber:
             req.session.userLogin.id +
             "-" +
@@ -372,10 +371,10 @@ module.exports = {
           },
         }
       );
-      await db.Order.destroy({
+     /*  await db.Order.destroy({
         where: { send: 0 },
         force: true,
-      });
+      }); */
 
       let order = await db.Order.findOne({
         where: {
@@ -893,7 +892,7 @@ module.exports = {
           }
         );
 
-        setTimeout(() => {
+        setTimeout(async() => {
           let message;
           let message2;
              message2 = new Message({
@@ -972,6 +971,18 @@ module.exports = {
           client.send(message2, (err, message) => {
             console.log(err || message);
           });
+
+          await db.Order.update(
+            {
+              send: true,
+            },
+            {
+              where: {
+                id: +req.query.order,
+              },
+            }
+          );
+
           return res.redirect("/response/send-order");
         }, 2000);
       }
@@ -1021,7 +1032,10 @@ module.exports = {
     res.render("orders");
   },
   filter: async (req, res) => {
-    let { order, filter, keywords, active, pages } = req.query;
+    console.log("====================================");
+    console.log(req.query);
+    console.log("====================================");
+    let { order, filter, keywords, active, pages, filterNoSend } = req.query;
     let items = [];
     let users = [];
     let total = 0;
@@ -1034,11 +1048,11 @@ module.exports = {
           having: "",
         });
         if (filter === "all" || !filter) {
-          total = await db.Order.count();
-          console.log("====================================");
-          console.log(total);
-          console.log("====================================");
-  
+          total = await db.Order.count({
+            where : {
+              send : filterNoSend ? 0 : 1
+            }
+          });
           items = await db.Order.findAll({
             include: [
               {
@@ -1055,17 +1069,22 @@ module.exports = {
             order: [order || "id"],
             limit: 8,
             offset: active && +active * 8 - 8,
+            where : {
+              send : filterNoSend ? 0 : 1
+            }
             //include: { all: true },
           });
         } else {
           total = await db.Order.count({
             where: {
               userId: +filter,
+              send : filterNoSend ? 0 : 1
             },
           });
           items = await db.Order.findAll({
             where: {
               userId: +filter,
+              send : filterNoSend ? 0 : 1
             },
             include: [
               {
@@ -1110,7 +1129,8 @@ module.exports = {
         if (filter === "all" || !filter) {
           total = await db.Order.count({
             where : {
-              userId : req.session.userLogin.id
+              userId : req.session.userLogin.id,
+              send : filterNoSend ? 0 : 1
             }
           });  
           items = await db.Order.findAll({
@@ -1130,19 +1150,22 @@ module.exports = {
             limit: 8,
             offset: active && +active * 8 - 8,
             where : {
-              userId : req.session.userLogin.id
+              userId : req.session.userLogin.id,
+              send : filterNoSend ? 0 : 1
             }
             //include: { all: true },
           });
         } else {
           total = await db.Order.count({
             where : {
-              userId : req.session.userLogin.id
+              userId : req.session.userLogin.id,
+              send : filterNoSend ? 0 : 1
             }
           });
           items = await db.Order.findAll({
             where : {
-              userId : req.session.userLogin.id
+              userId : req.session.userLogin.id,
+              send : filterNoSend ? 0 : 1
             },
             include: [
               {
@@ -1181,4 +1204,5 @@ module.exports = {
 
   },
   /* apis */
+  
 };
