@@ -1048,20 +1048,11 @@ module.exports = {
           having: "",
         });
         if (filter === "all" || !filter) {
-          total = await db.Order.count({
-            where : {
-              send : filterNoSend ? 0 : 1
-            }
-          });
+          total = await db.Order.count();
           items = await db.Order.findAll({
             include: [
               {
                 association: "quotations",
-                where: {
-                  reference: {
-                    [Op.substring]: keywords,
-                  },
-                },
                 include: [{ all: true }],
               },
               { association: "user" },
@@ -1069,31 +1060,21 @@ module.exports = {
             order: [order || "id"],
             limit: 8,
             offset: active && +active * 8 - 8,
-            where : {
-              send : filterNoSend ? 0 : 1
-            }
             //include: { all: true },
           });
         } else {
           total = await db.Order.count({
             where: {
               userId: +filter,
-              send : filterNoSend ? 0 : 1
             },
           });
           items = await db.Order.findAll({
             where: {
               userId: +filter,
-              send : filterNoSend ? 0 : 1
             },
             include: [
               {
                 association: "quotations",
-                where: {
-                  reference: {
-                    [Op.substring]: keywords,
-                  },
-                },
                 include: [{ all: true }],
               },
               { association: "user" },
@@ -1130,18 +1111,12 @@ module.exports = {
           total = await db.Order.count({
             where : {
               userId : req.session.userLogin.id,
-              send : filterNoSend ? 0 : 1
             }
           });  
           items = await db.Order.findAll({
             include: [
               {
                 association: "quotations",
-                where: {
-                  reference: {
-                    [Op.substring]: keywords,
-                  },
-                },
                 include: [{ all: true }],
               },
               { association: "user" },
@@ -1151,7 +1126,6 @@ module.exports = {
             offset: active && +active * 8 - 8,
             where : {
               userId : req.session.userLogin.id,
-              send : filterNoSend ? 0 : 1
             }
             //include: { all: true },
           });
@@ -1159,22 +1133,15 @@ module.exports = {
           total = await db.Order.count({
             where : {
               userId : req.session.userLogin.id,
-              send : filterNoSend ? 0 : 1
             }
           });
           items = await db.Order.findAll({
             where : {
               userId : req.session.userLogin.id,
-              send : filterNoSend ? 0 : 1
             },
             include: [
               {
                 association: "quotations",
-                where: {
-                  reference: {
-                    [Op.substring]: keywords,
-                  },
-                },
                 include: [{ all: true }],
               },
               { association: "user" },
