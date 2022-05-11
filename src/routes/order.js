@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {index,add,preview,store,send,detail,edit,update,remove, download, filter, addAccessories} = require('../controllers/orderController');
+const {index,add,preview,store,send,detail,edit,update,remove, download, filter, addAccessories, reSend} = require('../controllers/orderController');
 const adminSessionCheck = require('../middlewares/adminSessionCheck');
 const upLoadTicket = require('../middlewares/upLoadTicket')
 
@@ -20,7 +20,7 @@ router
     .get('/filter', filter)
     /* apis */
     .post('/api/add-accessories',addAccessories)
-    .post('/api/filter-no-send',)
+    .post('/api/resend',reSend)
 
 
 module.exports = router;

@@ -66,6 +66,58 @@ const goBack = (e) => {
     window.location = '/orders'
 }
 
+const reSend = async (e,userId, orderId) => {
+    e.preventDefault()
+    Swal.fire({
+        title: '¿Desea reenviar la información por email?',
+        text: "Se enviarán el pdf, la planilla de excel y la imagen del comprobante",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#8B0000',
+        cancelButtonColor: '#C0C0C0',
+        confirmButtonText: 'Enviar pedido'
+    }).then( async (result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                {
+                    title: 'Enviando...',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            )
+            try {
+                let response = await fetch('/orders/api/resend',{
+                    method : 'POST',
+                    headers: {
+                        "Content-type": "application/json",
+                      },
+                    body : JSON.stringify({
+                        orderId,
+                        userId
+                    })
+                })
+                let result = await response.json();
+                if(result.ok){
+                    Swal.fire(
+                        {
+                            title: 'Información ha sido reenviada con éxito',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }
+                    )
+                }
+              
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    })
+  
+
+}
+
 /* $('search').addEventListener('keydown', (e) => {
     e.key === 'Enter' && e.preventDefault()
 }) */

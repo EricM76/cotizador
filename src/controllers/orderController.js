@@ -26,7 +26,12 @@ const client = new SMTPClient({
 });
 
 module.exports = {
-  index: (req, res) => {
+  index: async (req, res) => {
+    await db.Order.destroy({
+      where : {
+        orderNumber : null
+      }
+    })
     if (+req.session.userLogin.rol === 1) {
       let users = db.Quotation.findAll({
         attributes: ["userId"],
@@ -49,9 +54,7 @@ module.exports = {
      
       Promise.all([users, items, total])
         .then(([users, items, total]) => {
-          console.log('====================================');
-          console.log(items);
-          console.log('====================================');
+        
           return res.render("orders", {
             items,
             users,
@@ -271,63 +274,6 @@ module.exports = {
         });
       })
       .catch((error) => console.log(error));
-  },
-  addAccessories: async (req, res) => {
-
-    const { accessories, order } = req.body;
-    console.log('====================================');
-    console.log(req.body);
-    console.log('====================================');
-
-    try {
-      accessories.forEach(async ({ id, price }) => {
-
-        try {
-          let quotation = await db.Quotation.create({
-            clothWidth: 0,
-            heigth: 0,
-            amount: +price,
-            date: new Date(),
-            reference: req.session.userLogin.name,
-            systemId: +id,
-            clothId: 626,
-            colorId: 17,
-            supportId: 18,
-            patternId: 6,
-            chainId: 6,
-            userId: req.session.userLogin.id,
-          })
-          await db.OrderQuotation.create({
-            quotationId: quotation.id,
-            orderId: +order,
-          });
-        } catch (error) {
-          console.log('====================================');
-          console.log(error);
-          console.log('====================================');
-        }
-      })
-
-      return res.status(200).json({
-        ok: true,
-        data: req.body
-      })
-
-    }
-    catch (error) {
-      console.log('====================================');
-      console.log(error);
-      console.log('====================================');
-      return res
-        .status(error.status || 500)
-        .json(
-          error.status === 500
-            ? "Comuníquese con el administrador del sitio"
-            : error.message
-        );
-    }
-
-
   },
   send: async (req, res) => {
     const packaging = +fs.readFileSync(
@@ -1246,9 +1192,172 @@ module.exports = {
         console.log(error);
       }
     }
-
-
   },
   /* apis */
+  addAccessories: async (req, res) => {
+
+    const { accessories, order } = req.body;
+    console.log('====================================');
+    console.log(req.body);
+    console.log('====================================');
+
+    try {
+      accessories.forEach(async ({ id, price }) => {
+
+        try {
+          let quotation = await db.Quotation.create({
+            clothWidth: 0,
+            heigth: 0,
+            amount: +price,
+            date: new Date(),
+            reference: req.session.userLogin.name,
+            systemId: +id,
+            clothId: 626,
+            colorId: 17,
+            supportId: 18,
+            patternId: 6,
+            chainId: 6,
+            userId: req.session.userLogin.id,
+          })
+          await db.OrderQuotation.create({
+            quotationId: quotation.id,
+            orderId: +order,
+          });
+        } catch (error) {
+          console.log('====================================');
+          console.log(error);
+          console.log('====================================');
+        }
+      })
+
+      return res.status(200).json({
+        ok: true,
+        data: req.body
+      })
+
+    }
+    catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+      return res
+        .status(error.status || 500)
+        .json(
+          error.status === 500
+            ? "Comuníquese con el administrador del sitio"
+            : error.message
+        );
+    }
+  },
+  reSend : async (req,res) => {
+
+    const {userId,orderId} = req.body;
+    console.log('====================================');
+    console.log(req.body);
+    console.log('====================================');
+    try {
+
+      const user = await db.User.findByPk(+userId);
+      const order = await db.Order.findByPk(+orderId)
+
+      setTimeout(async () => {
+        let message;
+        let message2;
+        message2 = new Message({
+          text: `Hola, ${user.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
+          from: "cotizadorblancomad@gmail.com",
+          to: user.email,
+          cc: " ",
+          subject: "Orden #" + order.orderNumber,
+          attachment: [
+            {
+              path: path.resolve(
+                __dirname,
+                "..",
+                "downloads",
+                `${order.orderNumber}.pdf`
+              ),
+              type: "application/pdf",
+              name: `${order.orderNumber}.pdf`,
+            },
+            {
+              path: path.resolve(
+                __dirname,
+                "..",
+                "downloads",
+                order.ticket || ''
+              ),
+              type: "image",
+              name: order.ticket,
+            }
+          ],
+        });
+        message = new Message({
+          text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${user.name}.`,
+          from: "cotizadorblancomad@gmail.com",
+          to: "cotizadorblancomad@gmail.com",
+          cc: " ",
+          subject: "Orden #" + order.orderNumber,
+          attachment: [
+            {
+              path: path.resolve(
+                __dirname,
+                "..",
+                "downloads",
+                `${order.orderNumber}.pdf`
+              ),
+              type: "application/pdf",
+              name: `${order.orderNumber}.pdf`,
+            },
+            {
+              path: path.resolve(
+                __dirname,
+                "..",
+                "downloads",
+                `${order.orderNumber}.xls`
+              ),
+              type: "application/octet-stream",
+              name: `${order.orderNumber}.xls`,
+            },
+            {
+              path: path.resolve(
+                __dirname,
+                "..",
+                "downloads",
+                order.ticket || ''
+              ),
+              type: "image",
+              name: order.ticket,
+            }
+          ],
+        });
+  
+        client.send(message, (err, message) => {
+          console.log(err || message);
+        });
+  
+        client.send(message2, (err, message) => {
+          console.log(err || message);
+        });
+  
+        return res.json({
+          ok: true,
+          msg : "emails enviados con éxito"
+        });
+
+      }, 2000);
+    } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+      return res
+        .status(error.status || 500)
+        .json(
+          error.status === 500
+            ? "Comuníquese con el administrador del sitio"
+            : error.message
+        );
+    }
+  }
 
 };

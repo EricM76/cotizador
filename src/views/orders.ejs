@@ -166,8 +166,11 @@
                                 <%= moment(item.date).format('DD-MM-YY') %>
                             </td>
                             <td class="align-middle">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" disabled  <%= item.send ? 'checked' : null %>>
+                              <div class="d-flex justify-content-around">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" disabled  <%= item.send ? 'checked' : null %>>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-primary" onclick="reSend(event,'<%=item.userId%>','<%=item.id%>')"><i class="fas fa-share"></i></a>
                               </div>
                              
                             </td>
