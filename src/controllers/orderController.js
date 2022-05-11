@@ -27,7 +27,7 @@ const client = new SMTPClient({
 
 module.exports = {
   index: (req, res) => {
-    if (req.session.userLogin.rol === 1) {
+    if (+req.session.userLogin.rol === 1) {
       let users = db.Quotation.findAll({
         attributes: ["userId"],
         include: [{ association: "user" }],
@@ -60,46 +60,50 @@ module.exports = {
             toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
           });
         })
-        .catch((error) => console.log(error));    
-      }else{
-        let users = db.Quotation.findAll({
-          attributes: ["userId"],
-          include: [{ association: "user" }],
-          group: ["userId"],
-          having: "",
-        });
-        let items = db.Order.findAll({
-          include: [
-            {
-              association: "quotations",
-              include: { all: true },
-            },
-            { association: "user" },
-          ],
-          order: [["createdAt", "DESC"]],
-          limit: 8,
-          where : {
-            userId : req.session.userLogin.id
-          }
-        });
-        let total = db.Order.count();
-        Promise.all([users, items, total])
-          .then(([users, items, total]) => {
-            return res.render("orders", {
-              items,
-              users,
-              total,
-              active: 1,
-              pages: 1,
-              keywords: "",
-              multiplo: total % 8 === 0 ? 0 : 1,
-              moment,
-              toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
-            });
-          })
-          .catch((error) => console.log(error));
-      }
-   
+        .catch((error) => console.log(error));
+    } else {
+      let users = db.Quotation.findAll({
+        attributes: ["userId"],
+        include: [{ association: "user" }],
+        group: ["userId"],
+        having: "",
+      });
+      let items = db.Order.findAll({
+        include: [
+          {
+            association: "quotations",
+            include: { all: true },
+          },
+          { association: "user" },
+        ],
+        order: [["createdAt", "DESC"]],
+        limit: 8,
+        where: {
+          userId: req.session.userLogin.id
+        }
+      });
+      let total = db.Order.count({
+        where: {
+          userId: req.session.userLogin.id
+        }
+      });
+      Promise.all([users, items, total])
+        .then(([users, items, total]) => {
+          return res.render("orders", {
+            items,
+            users,
+            total,
+            active: 1,
+            pages: 1,
+            keywords: "",
+            multiplo: total % 8 === 0 ? 0 : 1,
+            moment,
+            toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+
   },
   add: async (req, res) => {
     if (req.query.quoters === "null") {
@@ -110,7 +114,7 @@ module.exports = {
 
     await db.Quotation.update(
       {
-        quantity : 1
+        quantity: 1
       },
       {
         where: {
@@ -134,7 +138,7 @@ module.exports = {
 
     items.forEach(async (item) => {
       const { systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth } = item;
-      let priceUpdated = await quoterUpdate(req,systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth);
+      let priceUpdated = await quoterUpdate(req, systemId, clothId, colorId, supportId, patternId, chainId, clothWidth, heigth);
 
       item.amount = +priceUpdated.toFixed(0);
 
@@ -219,11 +223,11 @@ module.exports = {
   preview: async (req, res) => {
 
     let accessories = await db.System.findAll({
-      where : {
-        accessory : true,
-        visible : true
+      where: {
+        accessory: true,
+        visible: true
       },
-      order : [['name']]
+      order: [['name']]
     })
 
     db.Order.findOne({
@@ -264,62 +268,62 @@ module.exports = {
       })
       .catch((error) => console.log(error));
   },
-  addAccessories : async (req,res) => {
+  addAccessories: async (req, res) => {
 
-      const {accessories, order} = req.body;
-      console.log('====================================');
-      console.log(req.body);
-      console.log('====================================');
+    const { accessories, order } = req.body;
+    console.log('====================================');
+    console.log(req.body);
+    console.log('====================================');
+
+    try {
+      accessories.forEach(async ({ id, price }) => {
 
         try {
-          accessories.forEach(async ({id,price}) => {
-
-            try {
-              let quotation = await db.Quotation.create({
-                clothWidth: 0,
-                heigth: 0,
-                amount: +price,
-                date: new Date(),
-                reference : req.session.userLogin.name,
-                systemId: +id,
-                clothId: 626,
-                colorId: 17,
-                supportId: 18,
-                patternId: 6,
-                chainId: 6,
-                userId: req.session.userLogin.id,
-              })
-              await db.OrderQuotation.create({
-                quotationId: quotation.id,
-                orderId: +order,
-              });
-            } catch (error) {
-              console.log('====================================');
-              console.log(error);
-              console.log('====================================');
-            }
-        })
-
-          return res.status(200).json({
-            ok : true,
-            data : req.body
+          let quotation = await db.Quotation.create({
+            clothWidth: 0,
+            heigth: 0,
+            amount: +price,
+            date: new Date(),
+            reference: req.session.userLogin.name,
+            systemId: +id,
+            clothId: 626,
+            colorId: 17,
+            supportId: 18,
+            patternId: 6,
+            chainId: 6,
+            userId: req.session.userLogin.id,
           })
-
-        }
-        catch (error) {
+          await db.OrderQuotation.create({
+            quotationId: quotation.id,
+            orderId: +order,
+          });
+        } catch (error) {
           console.log('====================================');
           console.log(error);
           console.log('====================================');
-          return res
-            .status(error.status || 500)
-            .json(
-              error.status === 500
-                ? "Comuníquese con el administrador del sitio"
-                : error.message
-            );
         }
-    
-    
+      })
+
+      return res.status(200).json({
+        ok: true,
+        data: req.body
+      })
+
+    }
+    catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+      return res
+        .status(error.status || 500)
+        .json(
+          error.status === 500
+            ? "Comuníquese con el administrador del sitio"
+            : error.message
+        );
+    }
+
+
   },
   send: async (req, res) => {
     const packaging = +fs.readFileSync(
@@ -340,19 +344,19 @@ module.exports = {
     limit = typeof limit === "string" ? limit.split() : limit;
 
     const accessories = [];
-    if(name){
+    if (name) {
       for (let i = 0; i < name.length; i++) {
-      
+
         accessories.push({
-          id : id[i],
-          quantity : quantity[i] > limit[i] ? limit[i] : quantity[i],
-          name : name[i],
-          price : price[i]
+          id: id[i],
+          quantity: quantity[i] > limit[i] ? limit[i] : quantity[i],
+          name: name[i],
+          price: price[i]
         })
-        
+
       }
     }
-  
+
     try {
       await db.Order.update(
         {
@@ -371,10 +375,10 @@ module.exports = {
           },
         }
       );
-     /*  await db.Order.destroy({
-        where: { send: 0 },
-        force: true,
-      }); */
+      /*  await db.Order.destroy({
+         where: { send: 0 },
+         force: true,
+       }); */
 
       let order = await db.Order.findOne({
         where: {
@@ -400,13 +404,13 @@ module.exports = {
 
         let priceAccessory = 0;
 
-        if(accessories.length > 0){
+        if (accessories.length > 0) {
           const prices = accessories.map(
-            (accessory) => +accessory.price * +accessory.quantity 
+            (accessory) => +accessory.price * +accessory.quantity
           )
           priceAccessory = prices.reduce((acum, num) => acum + num)
         }
-     
+
         const total = amounts.reduce((acum, num) => acum + num) + priceAccessory;
 
         await db.Order.update(
@@ -525,7 +529,7 @@ module.exports = {
           </tr>
           `
         });
-        accessories.forEach(({id,quantity,name,price}) => {
+        accessories.forEach(({ id, quantity, name, price }) => {
           table += `
             <tr>
             <th scope="row">
@@ -667,7 +671,7 @@ module.exports = {
             body.push([{ text: quotation.quantity }, { text: quotation.system.name }, { text: quotation.cloth.name }, { text: quotation.color.name }, { text: quotation.clothWidth }, { text: quotation.heigth }, { text: quotation.pattern.name }, { text: quotation.chain.name }, { text: quotation.support.name }, { text: quotation.command }, { text: quotation.supportOrientation }, { text: quotation.clothOrientation }, { text: quotation.environment }, { text: quotation.reference }, { text: quotation.observations }, { text: quotation.amount, alignment: "right" }, { text: quotation.amount * quotation.quantity, alignment: "right" }]);
           });
 
-          accessories.forEach(({quantity, name, price}) => {
+          accessories.forEach(({ quantity, name, price }) => {
             body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: +price, alignment: "right" }, { text: +price * +quantity, alignment: "right" }]);
           });
 
@@ -766,11 +770,11 @@ module.exports = {
           const body = [
             ["Cant", "Sistema", "Tela", "Color", "Ancho", "Alto", "Modelo", "Cadena", "Soporte", "Comando", "Orien. Soporte", "Orien. Tela", "Ambiente", "Referencia", "Observaciones", "Precio unitario", "Total",],
           ];
-    
-          accessories.forEach(({quantity, name, price}) => {
-            body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "", alignment: "right" }, { text: "" , alignment: "right" }]);
+
+          accessories.forEach(({ quantity, name, price }) => {
+            body.push([{ text: quantity }, { text: name }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "", alignment: "right" }, { text: "", alignment: "right" }]);
           });
-    
+
           body.push([
             { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" },
             {
@@ -793,7 +797,7 @@ module.exports = {
               alignment: "right",
             },
           ]);
-    
+
           docDefinition = {
             defaultStyle: {
               fontSize: 10,
@@ -892,77 +896,77 @@ module.exports = {
           }
         );
 
-        setTimeout(async() => {
+        setTimeout(async () => {
           let message;
           let message2;
-             message2 = new Message({
-              text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
-              from: "cotizadorblancomad@gmail.com",
-              to: req.session.userLogin.email,
-              cc: " ",
-              subject: "Orden #" + order.orderNumber,
-              attachment: [
-                {
-                  path: path.resolve(
-                    __dirname,
-                    "..",
-                    "downloads",
-                    `${order.orderNumber}.pdf`
-                  ),
-                  type: "application/pdf",
-                  name: `${order.orderNumber}.pdf`,
-                },
-                {
-                  path: path.resolve(
-                    __dirname,
-                    "..",
-                    "downloads",
-                    order.ticket || ''
-                  ),
-                  type: "image",
-                  name: order.ticket,
-                }
-              ],
-            });
-            message = new Message({
-              text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
-              from: "cotizadorblancomad@gmail.com",
-              to: "cotizadorblancomad@gmail.com",
-              cc: " ",
-              subject: "Orden #" + order.orderNumber,
-              attachment: [
-                {
-                  path: path.resolve(
-                    __dirname,
-                    "..",
-                    "downloads",
-                    `${order.orderNumber}.pdf`
-                  ),
-                  type: "application/pdf",
-                  name: `${order.orderNumber}.pdf`,
-                },
-                {
-                  path: path.resolve(
-                    __dirname,
-                    "..",
-                    "downloads",
-                    `${order.orderNumber}.xls`
-                  ),
-                  type: "application/octet-stream",
-                  name: `${order.orderNumber}.xls`,
-                },
-                {
-                  path: path.resolve(
-                    __dirname,
-                    "..",
-                    "downloads",
-                    order.ticket || ''
-                  ),
-                  type: "image",
-                  name: order.ticket,
-                }
-              ],
-            });  
+          message2 = new Message({
+            text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
+            from: "cotizadorblancomad@gmail.com",
+            to: req.session.userLogin.email,
+            cc: " ",
+            subject: "Orden #" + order.orderNumber,
+            attachment: [
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  `${order.orderNumber}.pdf`
+                ),
+                type: "application/pdf",
+                name: `${order.orderNumber}.pdf`,
+              },
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  order.ticket || ''
+                ),
+                type: "image",
+                name: order.ticket,
+              }
+            ],
+          });
+          message = new Message({
+            text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
+            from: "cotizadorblancomad@gmail.com",
+            to: "cotizadorblancomad@gmail.com",
+            cc: " ",
+            subject: "Orden #" + order.orderNumber,
+            attachment: [
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  `${order.orderNumber}.pdf`
+                ),
+                type: "application/pdf",
+                name: `${order.orderNumber}.pdf`,
+              },
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  `${order.orderNumber}.xls`
+                ),
+                type: "application/octet-stream",
+                name: `${order.orderNumber}.xls`,
+              },
+              {
+                path: path.resolve(
+                  __dirname,
+                  "..",
+                  "downloads",
+                  order.ticket || ''
+                ),
+                type: "image",
+                name: order.ticket,
+              }
+            ],
+          });
 
           client.send(message, (err, message) => {
             console.log(err || message);
@@ -1032,14 +1036,14 @@ module.exports = {
     res.render("orders");
   },
   filter: async (req, res) => {
-    console.log("====================================");
-    console.log(req.query);
-    console.log("====================================");
     let { order, filter, keywords, active, pages, filterNoSend } = req.query;
     let items = [];
     let users = [];
     let total = 0;
-    if (req.session.userLogin.rol === 1) {
+    console.log('====================================');
+    console.log(+req.session.userLogin.rol);
+    console.log('====================================');
+    if (+req.session.userLogin.rol === 1) {
       try {
         users = await db.Quotation.findAll({
           attributes: ["userId"],
@@ -1048,42 +1052,117 @@ module.exports = {
           having: "",
         });
         if (filter === "all" || !filter) {
-          total = await db.Order.count();
-          items = await db.Order.findAll({
-            include: [
-              {
-                association: "quotations",
-                include: [{ all: true }],
+          if (filterNoSend) {
+            total = await db.Order.count({
+              where : {
+                send : 0
+              }
+            });
+            items = await db.Order.findAll({
+              include: [
+                {
+                  association: "quotations",
+                  include: [{ all: true }],
+                },
+                { association: "user" },
+              ],
+              order: [order || "id"],
+              limit: 8,
+              offset: active && +active * 8 - 8,
+              where : {
+                send : 0
               },
-              { association: "user" },
-            ],
-            order: [order || "id"],
-            limit: 8,
-            offset: active && +active * 8 - 8,
-            //include: { all: true },
-          });
+            });
+          } else {
+            total = await db.Order.count();
+            items = await db.Order.findAll({
+              include: [
+                {
+                  association: "quotations",
+                  include: [{ all: true }],
+                },
+                { association: "user" },
+              ],
+              order: [order || "id"],
+              limit: 8,
+              offset: active && +active * 8 - 8,
+              //include: { all: true },
+            });
+          }
         } else {
-          total = await db.Order.count({
-            where: {
-              userId: +filter,
-            },
-          });
-          items = await db.Order.findAll({
-            where: {
-              userId: +filter,
-            },
-            include: [
-              {
-                association: "quotations",
-                include: [{ all: true }],
+          if (filterNoSend) {
+            total = await db.Order.count({
+              where: {
+                userId: +filter,
+                send : 0
               },
-              { association: "user" },
-            ],
-            order: [order || "id"],
-            limit: 8,
-            offset: active && +active * 8 - 8,
-            //include: { all: true },
-          });
+            });
+            items = await db.Order.findAll({
+              where: {
+                userId: +filter,
+                send : 0
+              },
+              include: [
+                {
+                  association: "quotations",
+                  include: [{ all: true }],
+                },
+                { association: "user" },
+              ],
+              order: [order || "id"],
+              limit: 8,
+              offset: active && +active * 8 - 8,
+              //include: { all: true },
+            });
+          }else{
+            if (filterNoSend) {
+              total = await db.Order.count({
+                where: {
+                  userId: +filter,
+                  send : 0
+                },
+              });
+              items = await db.Order.findAll({
+                where: {
+                  userId: +filter,
+                  send : 0
+                },
+                include: [
+                  {
+                    association: "quotations",
+                    include: [{ all: true }],
+                  },
+                  { association: "user" },
+                ],
+                order: [order || "id"],
+                limit: 8,
+                offset: active && +active * 8 - 8,
+                //include: { all: true },
+              });
+            }else{
+              total = await db.Order.count({
+                where: {
+                  userId: +filter,
+                },
+              });
+              items = await db.Order.findAll({
+                where: {
+                  userId: +filter,
+                },
+                include: [
+                  {
+                    association: "quotations",
+                    include: [{ all: true }],
+                  },
+                  { association: "user" },
+                ],
+                order: [order || "id"],
+                limit: 8,
+                offset: active && +active * 8 - 8,
+                //include: { all: true },
+              });
+            }
+          }
         }
         return res.render("orders", {
           items,
@@ -1099,59 +1178,56 @@ module.exports = {
       } catch (error) {
         console.log(error);
       }
-    }else{
+    } else {
       try {
-        users = await db.Quotation.findAll({
-          attributes: ["userId"],
-          include: [{ association: "user" }],
-          group: ["userId"],
-          having: "",
-        });
-        if (filter === "all" || !filter) {
-          total = await db.Order.count({
-            where : {
-              userId : req.session.userLogin.id,
-            }
-          });  
-          items = await db.Order.findAll({
-            include: [
-              {
-                association: "quotations",
-                include: [{ all: true }],
-              },
-              { association: "user" },
-            ],
-            order: [order || "id"],
-            limit: 8,
-            offset: active && +active * 8 - 8,
-            where : {
-              userId : req.session.userLogin.id,
-            }
-            //include: { all: true },
-          });
-        } else {
-          total = await db.Order.count({
-            where : {
-              userId : req.session.userLogin.id,
-            }
-          });
-          items = await db.Order.findAll({
-            where : {
-              userId : req.session.userLogin.id,
-            },
-            include: [
-              {
-                association: "quotations",
-                include: [{ all: true }],
-              },
-              { association: "user" },
-            ],
-            order: [order || "id"],
-            limit: 8,
-            offset: active && +active * 8 - 8,
-            //include: { all: true },
-          });
-        }
+          if (filterNoSend) {
+            total = await db.Order.count({
+              where: {
+                userId: req.session.userLogin.id,
+                send : 0
+              }
+            });
+            items = await db.Order.findAll({
+              include: [
+                {
+                  association: "quotations",
+                  include: [{ all: true }],
+                },
+                { association: "user" },
+              ],
+              order: [order || "id"],
+              limit: 8,
+              offset: active && +active * 8 - 8,
+              where: {
+                userId: req.session.userLogin.id,
+                send : 0
+              }
+              //include: { all: true },
+            });
+          }else{
+            total = await db.Order.count({
+              where: {
+                userId: req.session.userLogin.id,
+              }
+            });
+            items = await db.Order.findAll({
+              include: [
+                {
+                  association: "quotations",
+                  include: [{ all: true }],
+                },
+                { association: "user" },
+              ],
+              order: [order || "id"],
+              limit: 8,
+              offset: active && +active * 8 - 8,
+              where: {
+                userId: req.session.userLogin.id,
+              }
+              //include: { all: true },
+            });
+          }
+         
         return res.render("orders", {
           items,
           total,
@@ -1160,16 +1236,15 @@ module.exports = {
           keywords,
           multiplo: total % 8 === 0 ? 0 : 1,
           moment,
-          users,
           toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
         });
       } catch (error) {
         console.log(error);
       }
     }
-   
+
 
   },
   /* apis */
-  
+
 };
