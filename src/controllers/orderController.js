@@ -46,8 +46,12 @@ module.exports = {
         limit: 8,
       });
       let total = db.Order.count();
+     
       Promise.all([users, items, total])
         .then(([users, items, total]) => {
+          console.log('====================================');
+          console.log(items);
+          console.log('====================================');
           return res.render("orders", {
             items,
             users,

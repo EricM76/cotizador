@@ -776,7 +776,7 @@ module.exports = {
 
     await db.Order.create({
       userId: req.session.userLogin.id,
-      send: true,
+      observations,
       packaging: +fs.readFileSync(
         path.resolve(__dirname, "..", "data", "packaging.json")
       ),
@@ -787,7 +787,7 @@ module.exports = {
       total 
     })
 
-    setTimeout(() => {
+    setTimeout(async () => {
       let message;
       let message2;
       message2 = new Message({
@@ -866,6 +866,16 @@ module.exports = {
       client.send(message2, (err, message) => {
         console.log(err || message);
       });
+      await db.Order.update(
+        {
+          send: true,
+        },
+        {
+          where : {
+            orderNumber
+          }
+        }
+      )
       return res.redirect("/response/send-order");
     }, 2000);
   }
