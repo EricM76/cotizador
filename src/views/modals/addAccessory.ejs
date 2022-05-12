@@ -51,7 +51,7 @@
                 <div class="d-flex justify-content-between">
                   <span>$</span
                   ><span id="price<%= accessory.id %>"
-                    ><%= accessory.salePrice %></span
+                    ><%= (locals.userLogin.rolName !== "medidor") ? accessory.salePrice : "-" %></span
                   >
                 </div>
               </td>
@@ -62,7 +62,7 @@
                 >
                   <span>$</span
                   ><span class="subtotal" id="subtotal<%= accessory.id %>"
-                    >0</span
+                    ><%= (locals.userLogin.rolName !== "medidor") ? 0 : "-" %></span
                   >
                 </div>
               </td>

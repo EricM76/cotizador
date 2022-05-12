@@ -158,7 +158,7 @@
               <button type="button" class="btn btn-secondary mb-2 ms-2" onclick="window.history.back()" id="btn-back">Volver atrás</button>
               <button type="button" class="btn btn-outline-dark mb-2 ms-2" id="btn-accessory" data-bs-toggle="modal" data-bs-target="#accessoryModal">Accesorios</button>
               <% if (locals.userLogin.rolName !== "medidor") { %>
-              <label for="ticket" class="btn btn-outline-dark mb-2 ms-2 disabled" id="btnTicket">Comprobante depósito</label>
+              <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
               <input class="" type="file" id="ticket" name="ticket" hidden>   
               <% } %>           
               <button type="submit" class="btn btn-primary mb-2 ms-2" id="btn-submit">Enviar pedido</button>

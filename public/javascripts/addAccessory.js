@@ -13,10 +13,16 @@
 
     if(+document.getElementById("input" + id).value <= +document.getElementById('limit'+id).value){
     let accessory = {};
-
-    document.getElementById("subtotal" + id).innerHTML =
+    
+    if(!isNaN(+document.getElementById("price" + id).innerText)){
+      document.getElementById("subtotal" + id).innerHTML =
       +document.getElementById("input" + id).value *
       +document.getElementById("price" + id).innerText;
+    }else{
+      document.getElementById("subtotal" + id).innerHTML = "-"
+    }
+    
+  
     let noFound = true;
 
     let accessoriesUpdated = accessories.map((element) => {
@@ -88,7 +94,11 @@
     for (let i = 0; i < subtotales.length; i++) {
       prices.push(+subtotales[i].innerHTML);
     }
-    total.innerHTML = toThousand(prices.reduce((acum, sum) => acum + sum));
+    if(!isNaN(prices.reduce((acum, sum) => acum + sum))){
+      total.innerHTML = toThousand(prices.reduce((acum, sum) => acum + sum));
+    }else {
+      total.innerHTML = "-"
+    }
   }
 
   btnCancel.addEventListener("click", () => {
@@ -99,7 +109,9 @@
       subtotales[i].innerHTML = null;
     }
     total.innerHTML = null;
-    totalLast.innerHTML = toThousand(totalQuoter.innerText)
+    if(totalQuoter){
+      totalLast.innerHTML = toThousand(totalQuoter.innerText)
+    }
     accessories = [];
     $('accessories').innerHTML = null;
 
@@ -117,8 +129,9 @@
       prices.push(+subtotales[i].innerHTML);
     }
 
-    totalLast.innerHTML =toThousand(+totalQuoter.innerText + prices.reduce((acum, sum) => acum + sum))
-
+    if(totalQuoter){
+      totalLast.innerHTML = toThousand(+totalQuoter.innerText + prices.reduce((acum, sum) => acum + sum))
+  
     accessories.forEach(({id,quantity,limit,name,price}) => {
 
         $('accessories').innerHTML += `
@@ -180,4 +193,57 @@
 
         `
     })
+  }else{
+    accessories.forEach(({id,quantity,limit,name,price}) => {
+
+      $('accessories').innerHTML += `
+      
+      <tr>
+        <th scope="row">
+          ${quantity}
+          <input name="quantity" value="${quantity}" hidden/>
+        </th>
+        <td colspan="3">
+          ${name}
+          <input name="name" value="${name}" hidden/>
+        </td>
+        <td>
+        <input name="id" value="${id}" hidden/>
+          </td>
+          <td>
+          <input name="limit" value="${limit}" hidden/>
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+            
+          </td>
+          <td>
+          <input name="price" value="${price}" hidden/>
+          </td>
+
+      </tr>
+
+      `
+  })
+  }
   });
