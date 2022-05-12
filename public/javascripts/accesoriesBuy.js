@@ -131,6 +131,8 @@ $('form-sendOrder').addEventListener('submit', (e) => {
 
             btnSubmit.disabled = true;
             btnBack.disabled = true;
+            $('btnTicket').classList.add('disabled');
+            
             e.target.submit()
                 Swal.fire(
                     {
