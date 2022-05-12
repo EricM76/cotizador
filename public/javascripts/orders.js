@@ -98,6 +98,7 @@ const reSend = async (e,userId, orderId) => {
                     })
                 })
                 let result = await response.json();
+                console.log(result)
                 if(result.ok){
                     Swal.fire(
                         {

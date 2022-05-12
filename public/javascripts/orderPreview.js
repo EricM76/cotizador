@@ -1,6 +1,8 @@
 const observations = $('observations');
 const btnSubmit = $('btn-submit');
 const btnBack = $('btn-back');
+const btnAccessory = $('btn-accessory');
+const btnTicket = $('btnTicket');
 
 window.addEventListener('load', () => {
 
@@ -67,17 +69,18 @@ document.getElementById('form-sendOrder').addEventListener('submit', (e) => {
             localStorage.removeItem('dataOrder');
             btnSubmit.disabled = true;
             btnBack.disabled = true;
-            e.target.submit();
-
+            btnAccessory.disabled = true;
+            btnTicket.disabled = true;
             Swal.fire(
                 {
                     title : 'Enviando...',
                     icon :'info',
                     showConfirmButton: false,
-                    timer: 2000
+                    timer: 3000
                 }
                
               )
+            e.target.submit();
         }
     })
 
