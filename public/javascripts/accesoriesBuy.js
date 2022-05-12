@@ -132,14 +132,14 @@ $('form-sendOrder').addEventListener('submit', (e) => {
             btnSubmit.disabled = true;
             btnBack.disabled = true;
             $('btnTicket').classList.add('disabled');
-            
+
             e.target.submit()
                 Swal.fire(
                     {
                         title: 'Enviando...',
                         icon: 'info',
                         showConfirmButton: false,
-                        timer: 2000
+                        timer: 3000
                     }
                 )
 
