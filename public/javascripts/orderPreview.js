@@ -70,7 +70,7 @@ document.getElementById('form-sendOrder').addEventListener('submit', (e) => {
             btnSubmit.disabled = true;
             btnBack.disabled = true;
             btnAccessory.disabled = true;
-            btnTicket.disabled = true;
+            btnTicket.classList.add('disabled');
             Swal.fire(
                 {
                     title : 'Enviando...',
