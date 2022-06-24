@@ -7,10 +7,10 @@ const { JSDOM } = require("jsdom");
 
 const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
-
+const productKey = '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'
 /* sendInBlue */
 var SibApiV3Sdk = require('sib-api-v3-sdk');
-SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = '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';
+SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = productKey;
 
 const { Op } = require("sequelize");
 const fonts = require("../fonts/Roboto");
