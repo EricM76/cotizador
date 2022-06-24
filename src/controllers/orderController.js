@@ -21,10 +21,18 @@ const fs = require("fs");
 const db = require("../database/models");
 const { quoterUpdate } = require('./quoterController')
 
-const client = new SMTPClient({
+/* const client = new SMTPClient({
   user: "cotizadorblancomad@gmail.com",
   password: "cotizador2022",
   host: "smtp.gmail.com",
+  ssl: true,
+  timeout: 10000,
+}); */
+
+const client = new SMTPClient({
+  user: "cotizadorblancomad@gmail.com",
+  password: "qr7UaYy59JE1jL2w",
+  host: "smtp-relay.sendinblue.com",
   ssl: true,
   timeout: 10000,
 });
@@ -833,7 +841,7 @@ module.exports = {
             )
           )
         );
-        pdfDoc.pipe(
+     /*    pdfDoc.pipe(
           fs.createWriteStream(
             path.resolve(
               __dirname,
@@ -843,7 +851,7 @@ module.exports = {
               `${order.orderNumber}.pdf`
             )
           )
-        );
+        ); */
         pdfDoc.end();
 
         let fileAdmin = `${order.orderNumber}.xls`;
@@ -861,7 +869,7 @@ module.exports = {
           }
         );
 
-       /*  setTimeout(async () => {
+        setTimeout(async () => {
           let message;
           let message2;
           message2 = new Message({
@@ -896,7 +904,7 @@ module.exports = {
           message = new Message({
             text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
             from: "cotizadorblancomad@gmail.com",
-            to: "cotizadorblancomad@gmail.com",
+            to: "menaeric@hotmail.com",
             cc: " ",
             subject: "Orden #" + order.orderNumber,
             attachment: [
@@ -953,8 +961,8 @@ module.exports = {
           );
 
           return res.redirect("/response/send-order");
-        }, 2000); */
-          new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
+        }, 2000);
+         /*  new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
             {
               subject:'Orden #{{params.order}}',
               sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
@@ -998,7 +1006,7 @@ module.exports = {
                 }
               );
               return res.redirect("/response/send-order");
-            });
+            }); */
       }
     } catch (error) {
       console.log(error);
