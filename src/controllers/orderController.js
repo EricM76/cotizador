@@ -7,8 +7,12 @@ const { JSDOM } = require("jsdom");
 
 const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
-const { Op } = require("sequelize");
 
+/* sendInBlue */
+var SibApiV3Sdk = require('sib-api-v3-sdk');
+SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = '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';
+
+const { Op } = require("sequelize");
 const fonts = require("../fonts/Roboto");
 const PdfPrinter = require("pdfmake");
 const printer = new PdfPrinter(fonts);
@@ -829,6 +833,17 @@ module.exports = {
             )
           )
         );
+        pdfDoc.pipe(
+          fs.createWriteStream(
+            path.resolve(
+              __dirname,
+              "..",
+              "..",
+              "public",
+              `${order.orderNumber}.pdf`
+            )
+          )
+        );
         pdfDoc.end();
 
         let fileAdmin = `${order.orderNumber}.xls`;
@@ -846,7 +861,7 @@ module.exports = {
           }
         );
 
-        setTimeout(async () => {
+       /*  setTimeout(async () => {
           let message;
           let message2;
           message2 = new Message({
@@ -938,7 +953,52 @@ module.exports = {
           );
 
           return res.redirect("/response/send-order");
-        }, 2000);
+        }, 2000); */
+          new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
+            {
+              subject:'Orden #{{params.order}}',
+              sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
+              to : [{'name': '{{params.userName}}', 'email':req.session.userLogin.email}],
+              htmlContent : '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
+              params : {
+                userName :req.session.userLogin.name,
+                userEmail : req.session.userLogin.email,
+                order : order.orderNumber
+              },
+              attachment: [
+                {
+                  url: 'https://cotizador.portaleric.com/'+order.orderNumber+'.pdf',
+                  name: order.orderNumber + '.pdf'
+                },
+              ]
+            }
+            ).then(async function(data) {
+              console.log(data);
+              await db.Order.update(
+                {
+                  send: true,
+                },
+                {
+                  where: {
+                    id: +req.query.order,
+                  },
+                }
+              );
+              return res.redirect("/response/send-order");
+            }, async function(error) {
+              console.error(error);
+              await db.Order.update(
+                {
+                  send: false,
+                },
+                {
+                  where: {
+                    id: +req.query.order,
+                  },
+                }
+              );
+              return res.redirect("/response/send-order");
+            });
       }
     } catch (error) {
       console.log(error);
