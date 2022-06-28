@@ -7,10 +7,13 @@ const { JSDOM } = require("jsdom");
 
 const moment = require("moment");
 const { SMTPClient, Message } = require("emailjs");
-const productKey = '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'
+
 /* sendInBlue */
 var SibApiV3Sdk = require('sib-api-v3-sdk');
-SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = productKey;
+SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.EMAIL_SEND_BLUE_APIKEY;
+
+const axios = require("axios").default;
+
 
 const { Op } = require("sequelize");
 const fonts = require("../fonts/Roboto");
@@ -31,7 +34,7 @@ const { quoterUpdate } = require('./quoterController')
 
 const client = new SMTPClient({
   user: "cotizadorblancomad@gmail.com",
-  password: "qr7UaYy59JE1jL2w",
+  password: process.env.EMAIL_SEND_BLUE_SMTPKEY,
   host: "smtp-relay.sendinblue.com",
   ssl: true,
   timeout: 10000,
@@ -841,7 +844,7 @@ module.exports = {
             )
           )
         );
-     /*    pdfDoc.pipe(
+      /*   pdfDoc.pipe(
           fs.createWriteStream(
             path.resolve(
               __dirname,
@@ -869,7 +872,7 @@ module.exports = {
           }
         );
 
-        setTimeout(async () => {
+       setTimeout(async () => {
           let message;
           let message2;
           message2 = new Message({
@@ -962,7 +965,46 @@ module.exports = {
 
           return res.redirect("/response/send-order");
         }, 2000);
-         /*  new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
+
+      /*  const optionsAxios = {
+          method: 'POST',
+          url: 'https://api.sendinblue.com/v3/smtp/email',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': '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'
+          },
+          data: {
+            sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
+            to: [{email: req.session.userLogin.email}],
+             attachment: [
+              {
+                url: 'https://cotizador.portaleric.com/'+order.orderNumber+'.pdf',
+                name: order.orderNumber + '.pdf'
+              }
+            ],
+            subject:'Orden #{{params.order}}',
+            htmlContent : '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
+            },
+            params : {
+              userName :req.session.userLogin.name,
+              userEmail : req.session.userLogin.email,
+              order : order.orderNumber
+            },
+        };
+        
+        axios.request(optionsAxios).then(function (response) {
+          console.log(response.data);
+          return res.redirect("/response/send-order");
+
+        }).catch(function (error) {
+          console.error(error);
+          return res.redirect("/response/send-order");
+
+        });
+ */
+
+        /*   new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
             {
               subject:'Orden #{{params.order}}',
               sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
@@ -992,7 +1034,6 @@ module.exports = {
                   },
                 }
               );
-              return res.redirect("/response/send-order");
             }, async function(error) {
               console.error(error);
               await db.Order.update(
@@ -1005,7 +1046,6 @@ module.exports = {
                   },
                 }
               );
-              return res.redirect("/response/send-order");
             }); */
       }
     } catch (error) {
