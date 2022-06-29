@@ -1,6 +1,7 @@
 require('dotenv').config();
 const path = require("path");
-const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+const {request} = require('express')
+const fullUrl = request.protocol + '://' + request.get('host') + request.originalUrl;
 
 const XLSX = require("xlsx");
 const createHTML = require('create-html');
