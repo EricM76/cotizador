@@ -1,5 +1,6 @@
-const path = require("path");
 require('dotenv').config();
+const path = require("path");
+const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
 const XLSX = require("xlsx");
 const createHTML = require('create-html');
@@ -623,6 +624,11 @@ module.exports = {
           sheet: 0
         });
 
+        XLSX.writeFile(workbook, path.resolve(__dirname, '..','..','public',"emails",`${order.orderNumber}.xls`), {
+          bookType: "xlml",
+          sheet: 0
+        });
+
 
 
         /* PDF VENDEDOR/ADMIN/CONTROL */
@@ -845,6 +851,7 @@ module.exports = {
             )
           )
         );
+        /* guardo en públic */
         pdfDoc.pipe(
           fs.createWriteStream(
             path.resolve(
@@ -852,6 +859,7 @@ module.exports = {
               "..",
               "..",
               "public",
+              "emails",
               `${order.orderNumber}.pdf`
             )
           )
@@ -967,7 +975,7 @@ module.exports = {
           return res.redirect("/response/send-order");
         }, 2000); */
 
-      const optionsAxios = {
+      const optionsAxiosClient = {
           method: 'POST',
           url: 'https://api.sendinblue.com/v3/smtp/email',
           headers: {
@@ -980,7 +988,7 @@ module.exports = {
             to: [{email: req.session.userLogin.email}],
              attachment: [
               {
-                url: 'https://cotizador.portaleric.com/'+order.orderNumber+'.pdf',
+                url: fullUrl + '/emails/'+order.orderNumber+'.pdf',
                 name: order.orderNumber + '.pdf'
               }
             ],
@@ -993,16 +1001,53 @@ module.exports = {
               order : order.orderNumber
             },
         };
+
+        const optionsAxiosAdmin = {
+          method: 'POST',
+          url: 'https://api.sendinblue.com/v3/smtp/email',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
+          },
+          data: {
+            sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
+            to: [{email: 'menaeric@hotmail.com'}],
+             attachment: [
+              {
+                url: fullUrl + '/emails/'+order.orderNumber+'.pdf',
+                name: order.orderNumber + '.pdf'
+              },
+              {
+                url: fullUrl + '/emails/'+order.orderNumber+'.xls',
+                name: order.orderNumber + '.xls'
+              }
+            ],
+            subject:'Orden #{{params.order}}',
+            htmlContent : '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{req.session.userLogin.name}}. </p></body></html>',
+            },
+            params : {
+              userName :req.session.userLogin.name,
+              userEmail : req.session.userLogin.email,
+              order : order.orderNumber
+            },
+        };
         
-        axios.request(optionsAxios).then(function (response) {
-          console.log(response.data);
-          return res.redirect("/response/send-order");
+        let sendClient = axios.request(optionsAxiosClient);
+        let sendAdmin = axios.request(optionsAxiosAdmin)
 
-        }).catch(function (error) {
-          console.error(error);
-          return res.redirect("/response/send-order");
+        
+        Promise.all([sendClient, sendAdmin])
+          .then(function (response) {
+            console.log(response.data);
 
-        });
+            return res.redirect("/response/send-order");
+
+          }).catch(function (error) {
+            console.error(error);
+            return res.redirect("/response/send-order");
+
+          });
 
         /*   new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
             {
