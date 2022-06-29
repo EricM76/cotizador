@@ -623,7 +623,7 @@ module.exports = {
           sheet: 0
         });
 
-        XLSX.writeFile(workbook, `/emails/${order.orderNumber}.xls`, {
+        XLSX.writeFile(workbook, `/public/emails/${order.orderNumber}.xls`, {
           bookType: "xlml",
           sheet: 0
         });
