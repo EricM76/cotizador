@@ -1001,7 +1001,7 @@ module.exports = {
               to: [{ email: req.session.userLogin.email }],
               attachment: [
                 {
-                  url: fullUrl + '/emails/' + order.orderNumber + '.pdf',
+                  url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
                   name: order.orderNumber + '.pdf'
                 }
               ],
@@ -1013,11 +1013,11 @@ module.exports = {
               to: [{ email: 'menaeric@hotmail.com' }],
               attachment: [
                 {
-                  url: fullUrl + '/emails/' + order.orderNumber + '.pdf',
+                  url: 'https://cotizador.portaleric.com/emails//emails/' + order.orderNumber + '.pdf',
                   name: order.orderNumber + '.pdf'
                 },
                 {
-                  url: fullUrl + '/emails/' + order.orderNumber + '.xls',
+                  url: 'https://cotizador.portaleric.com/emails//emails/' + order.orderNumber + '.xls',
                   name: order.orderNumber + '.xls'
                 }
               ],
