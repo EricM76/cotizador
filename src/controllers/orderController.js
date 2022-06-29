@@ -1034,21 +1034,18 @@ module.exports = {
             },
         };
         
-        let sendClient = axios.request(optionsAxiosClient);
-        let sendAdmin = axios.request(optionsAxiosAdmin)
+        try {
+          let sendClient = await axios.request(optionsAxiosClient);
+          let sendAdmin = await axios.request(optionsAxiosAdmin);
+          console.log(sendClient.data);
+          console.log(sendAdmin.data);
+          return res.redirect("/response/send-order");
 
-        
-        Promise.all([sendClient, sendAdmin])
-          .then(function (response) {
-            console.log(response.data);
+        } catch (error) {
+          console.error(error);
+          return res.redirect("/response/send-order");
 
-            return res.redirect("/response/send-order");
-
-          }).catch(function (error) {
-            console.error(error);
-            return res.redirect("/response/send-order");
-
-          });
+        }
 
         /*   new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
             {
