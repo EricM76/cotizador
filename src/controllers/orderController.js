@@ -1,7 +1,5 @@
 require('dotenv').config();
 const path = require("path");
-const {request} = require('express')
-const fullUrl = request.protocol + '://' + request.get('host') + request.originalUrl;
 
 const XLSX = require("xlsx");
 const createHTML = require('create-html');
@@ -975,6 +973,8 @@ module.exports = {
 
           return res.redirect("/response/send-order");
         }, 2000); */
+        
+      const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
 
       const optionsAxiosClient = {
           method: 'POST',
