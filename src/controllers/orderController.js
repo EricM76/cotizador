@@ -44,8 +44,8 @@ const client = new SMTPClient({
 module.exports = {
   index: async (req, res) => {
     await db.Order.destroy({
-      where : {
-        orderNumber : null
+      where: {
+        orderNumber: null
       }
     })
     if (+req.session.userLogin.rol === 1) {
@@ -67,10 +67,10 @@ module.exports = {
         limit: 8,
       });
       let total = db.Order.count();
-     
+
       Promise.all([users, items, total])
         .then(([users, items, total]) => {
-        
+
           return res.render("orders", {
             items,
             users,
@@ -623,7 +623,7 @@ module.exports = {
           sheet: 0
         });
 
-        XLSX.writeFile(workbook, path.resolve(__dirname, '..','..','public',"emails",`${order.orderNumber}.xls`), {
+        XLSX.writeFile(workbook, path.resolve(__dirname, '..', '..', 'public', "emails", `${order.orderNumber}.xls`), {
           bookType: "xlml",
           sheet: 0
         });
@@ -880,173 +880,161 @@ module.exports = {
           }
         );
 
-     /*   setTimeout(async () => {
-          let message;
-          let message2;
-          message2 = new Message({
-            text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
-            from: "cotizadorblancomad@gmail.com",
-            to: req.session.userLogin.email,
-            cc: " ",
-            subject: "Orden #" + order.orderNumber,
-            attachment: [
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  `${order.orderNumber}.pdf`
-                ),
-                type: "application/pdf",
-                name: `${order.orderNumber}.pdf`,
-              },
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  order.ticket || ''
-                ),
-                type: "image",
-                name: order.ticket,
-              }
-            ],
-          });
-          message = new Message({
-            text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
-            from: "cotizadorblancomad@gmail.com",
-            to: "menaeric@hotmail.com",
-            cc: " ",
-            subject: "Orden #" + order.orderNumber,
-            attachment: [
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  `${order.orderNumber}.pdf`
-                ),
-                type: "application/pdf",
-                name: `${order.orderNumber}.pdf`,
-              },
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  `${order.orderNumber}.xls`
-                ),
-                type: "application/octet-stream",
-                name: `${order.orderNumber}.xls`,
-              },
-              {
-                path: path.resolve(
-                  __dirname,
-                  "..",
-                  "downloads",
-                  order.ticket || ''
-                ),
-                type: "image",
-                name: order.ticket,
-              }
-            ],
-          });
+        /*   setTimeout(async () => {
+             let message;
+             let message2;
+             message2 = new Message({
+               text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
+               from: "cotizadorblancomad@gmail.com",
+               to: req.session.userLogin.email,
+               cc: " ",
+               subject: "Orden #" + order.orderNumber,
+               attachment: [
+                 {
+                   path: path.resolve(
+                     __dirname,
+                     "..",
+                     "downloads",
+                     `${order.orderNumber}.pdf`
+                   ),
+                   type: "application/pdf",
+                   name: `${order.orderNumber}.pdf`,
+                 },
+                 {
+                   path: path.resolve(
+                     __dirname,
+                     "..",
+                     "downloads",
+                     order.ticket || ''
+                   ),
+                   type: "image",
+                   name: order.ticket,
+                 }
+               ],
+             });
+             message = new Message({
+               text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
+               from: "cotizadorblancomad@gmail.com",
+               to: "menaeric@hotmail.com",
+               cc: " ",
+               subject: "Orden #" + order.orderNumber,
+               attachment: [
+                 {
+                   path: path.resolve(
+                     __dirname,
+                     "..",
+                     "downloads",
+                     `${order.orderNumber}.pdf`
+                   ),
+                   type: "application/pdf",
+                   name: `${order.orderNumber}.pdf`,
+                 },
+                 {
+                   path: path.resolve(
+                     __dirname,
+                     "..",
+                     "downloads",
+                     `${order.orderNumber}.xls`
+                   ),
+                   type: "application/octet-stream",
+                   name: `${order.orderNumber}.xls`,
+                 },
+                 {
+                   path: path.resolve(
+                     __dirname,
+                     "..",
+                     "downloads",
+                     order.ticket || ''
+                   ),
+                   type: "image",
+                   name: order.ticket,
+                 }
+               ],
+             });
+   
+             client.send(message, (err, message) => {
+               console.log(err || message);
+             });
+   
+             client.send(message2, (err, message) => {
+               console.log(err || message);
+             });
+   
+             await db.Order.update(
+               {
+                 send: true,
+               },
+               {
+                 where: {
+                   id: +req.query.order,
+                 },
+               }
+             );
+   
+             return res.redirect("/response/send-order");
+           }, 2000); */
 
-          client.send(message, (err, message) => {
-            console.log(err || message);
-          });
-
-          client.send(message2, (err, message) => {
-            console.log(err || message);
-          });
-
-          await db.Order.update(
+        const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+        console.log('====================================');
+        console.log(fullUrl);
+        console.log('====================================');
+        const optionsAxios = {
+          method: 'POST',
+          url: 'https://api.sendinblue.com/v3/smtp/email',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
+          },
+          data: {
+            sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
+            subject: 'Orden #{{params.order}}',
+          },
+          params: {
+            userName: req.session.userLogin.name,
+            userEmail: req.session.userLogin.email,
+            order: order.orderNumber
+          },
+          messageVersions: [
+            //Definition for Message Version 1 
             {
-              send: true,
+              to: [{ email: req.session.userLogin.email }],
+              attachment: [
+                {
+                  url: fullUrl + '/emails/' + order.orderNumber + '.pdf',
+                  name: order.orderNumber + '.pdf'
+                }
+              ],
+              htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
             },
+
+            // Definition for Message Version 2
             {
-              where: {
-                id: +req.query.order,
-              },
+              to: [{ email: 'menaeric@hotmail.com' }],
+              attachment: [
+                {
+                  url: fullUrl + '/emails/' + order.orderNumber + '.pdf',
+                  name: order.orderNumber + '.pdf'
+                },
+                {
+                  url: fullUrl + '/emails/' + order.orderNumber + '.xls',
+                  name: order.orderNumber + '.xls'
+                }
+              ],
+              htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{req.session.userLogin.name}}. </p></body></html>',
             }
-          );
-
-          return res.redirect("/response/send-order");
-        }, 2000); */
-        
-      const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-
-      const optionsAxiosClient = {
-          method: 'POST',
-          url: 'https://api.sendinblue.com/v3/smtp/email',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
-          },
-          data: {
-            sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
-            to: [{email: req.session.userLogin.email}],
-             attachment: [
-              {
-                url: fullUrl + '/emails/'+order.orderNumber+'.pdf',
-                name: order.orderNumber + '.pdf'
-              }
-            ],
-            subject:'Orden #{{params.order}}',
-            htmlContent : '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
-            },
-            params : {
-              userName :req.session.userLogin.name,
-              userEmail : req.session.userLogin.email,
-              order : order.orderNumber
-            },
+          ]
         };
 
-        const optionsAxiosAdmin = {
-          method: 'POST',
-          url: 'https://api.sendinblue.com/v3/smtp/email',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
-          },
-          data: {
-            sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
-            to: [{email: 'menaeric@hotmail.com'}],
-             attachment: [
-              {
-                url: fullUrl + '/emails/'+order.orderNumber+'.pdf',
-                name: order.orderNumber + '.pdf'
-              },
-              {
-                url: fullUrl + '/emails/'+order.orderNumber+'.xls',
-                name: order.orderNumber + '.xls'
-              }
-            ],
-            subject:'Orden #{{params.order}}',
-            htmlContent : '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{req.session.userLogin.name}}. </p></body></html>',
-            },
-            params : {
-              userName :req.session.userLogin.name,
-              userEmail : req.session.userLogin.email,
-              order : order.orderNumber
-            },
-        };
-        
-      axios.request(optionsAxiosClient)
-        .then(function (response) {
-          console.log(response.data);
-          axios.request(optionsAxiosAdmin)
-            .then(function (response) {
-              console.log(response.data);
-              return res.redirect("/response/send-order");
-            })
-        })
-        .catch(error => {
-          console.error(error);
-          return res.redirect("/response/send-order");
-        })
+        axios.request(optionsAxios)
+          .then(function (response) {
+            console.log(response.data);
+            return res.redirect("/response/send-order");
+          })
+          .catch(error => {
+            console.error(error);
+            return res.redirect("/response/send-order");
+          })
 
         /*   new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
             {
@@ -1156,8 +1144,8 @@ module.exports = {
         if (filter === "all" || !filter) {
           if (filterNoSend) {
             total = await db.Order.count({
-              where : {
-                send : 0
+              where: {
+                send: 0
               }
             });
             items = await db.Order.findAll({
@@ -1171,8 +1159,8 @@ module.exports = {
               order: [order || "id"],
               limit: 8,
               offset: active && +active * 8 - 8,
-              where : {
-                send : 0
+              where: {
+                send: 0
               },
             });
           } else {
@@ -1196,13 +1184,13 @@ module.exports = {
             total = await db.Order.count({
               where: {
                 userId: +filter,
-                send : 0
+                send: 0
               },
             });
             items = await db.Order.findAll({
               where: {
                 userId: +filter,
-                send : 0
+                send: 0
               },
               include: [
                 {
@@ -1216,18 +1204,18 @@ module.exports = {
               offset: active && +active * 8 - 8,
               //include: { all: true },
             });
-          }else{
+          } else {
             if (filterNoSend) {
               total = await db.Order.count({
                 where: {
                   userId: +filter,
-                  send : 0
+                  send: 0
                 },
               });
               items = await db.Order.findAll({
                 where: {
                   userId: +filter,
-                  send : 0
+                  send: 0
                 },
                 include: [
                   {
@@ -1241,7 +1229,7 @@ module.exports = {
                 offset: active && +active * 8 - 8,
                 //include: { all: true },
               });
-            }else{
+            } else {
               total = await db.Order.count({
                 where: {
                   userId: +filter,
@@ -1282,54 +1270,54 @@ module.exports = {
       }
     } else {
       try {
-          if (filterNoSend) {
-            total = await db.Order.count({
-              where: {
-                userId: req.session.userLogin.id,
-                send : 0
-              }
-            });
-            items = await db.Order.findAll({
-              include: [
-                {
-                  association: "quotations",
-                  include: [{ all: true }],
-                },
-                { association: "user" },
-              ],
-              order: [order || "id"],
-              limit: 8,
-              offset: active && +active * 8 - 8,
-              where: {
-                userId: req.session.userLogin.id,
-                send : 0
-              }
-              //include: { all: true },
-            });
-          }else{
-            total = await db.Order.count({
-              where: {
-                userId: req.session.userLogin.id,
-              }
-            });
-            items = await db.Order.findAll({
-              include: [
-                {
-                  association: "quotations",
-                  include: [{ all: true }],
-                },
-                { association: "user" },
-              ],
-              order: [order || "id"],
-              limit: 8,
-              offset: active && +active * 8 - 8,
-              where: {
-                userId: req.session.userLogin.id,
-              }
-              //include: { all: true },
-            });
-          }
-         
+        if (filterNoSend) {
+          total = await db.Order.count({
+            where: {
+              userId: req.session.userLogin.id,
+              send: 0
+            }
+          });
+          items = await db.Order.findAll({
+            include: [
+              {
+                association: "quotations",
+                include: [{ all: true }],
+              },
+              { association: "user" },
+            ],
+            order: [order || "id"],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            where: {
+              userId: req.session.userLogin.id,
+              send: 0
+            }
+            //include: { all: true },
+          });
+        } else {
+          total = await db.Order.count({
+            where: {
+              userId: req.session.userLogin.id,
+            }
+          });
+          items = await db.Order.findAll({
+            include: [
+              {
+                association: "quotations",
+                include: [{ all: true }],
+              },
+              { association: "user" },
+            ],
+            order: [order || "id"],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            where: {
+              userId: req.session.userLogin.id,
+            }
+            //include: { all: true },
+          });
+        }
+
         return res.render("orders", {
           items,
           total,
@@ -1401,9 +1389,9 @@ module.exports = {
         );
     }
   },
-  reSend : async (req,res) => {
+  reSend: async (req, res) => {
 
-    const {userId,orderId} = req.body;
+    const { userId, orderId } = req.body;
     console.log('====================================');
     console.log(req.body);
     console.log('====================================');
@@ -1483,18 +1471,18 @@ module.exports = {
             }
           ],
         });
-  
+
         client.send(message, (err, message) => {
           console.log(err || message);
         });
-  
+
         client.send(message2, (err, message) => {
           console.log(err || message);
         });
-  
+
         return res.json({
           ok: true,
-          msg : "emails enviados con éxito"
+          msg: "emails enviados con éxito"
         });
 
       }, 2000);
