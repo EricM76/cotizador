@@ -974,10 +974,6 @@ module.exports = {
              return res.redirect("/response/send-order");
            }, 2000); */
 
-        const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-        console.log('====================================');
-        console.log(fullUrl);
-        console.log('====================================');
         const optionsAxios = {
           method: 'POST',
           url: 'https://api.sendinblue.com/v3/smtp/email',
@@ -994,9 +990,6 @@ module.exports = {
               userEmail: req.session.userLogin.email,
               order: order.orderNumber
             },
-            messageVersions: [
-              //Definition for Message Version 1 
-              {
                 to: [{ email: req.session.userLogin.email }],
                 attachment: [
                   {
@@ -1005,37 +998,55 @@ module.exports = {
                   }
                 ],
                 htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
-              },
-  
-              // Definition for Message Version 2
-              {
-                to: [{ email: 'menaeric@hotmail.com' }],
-                attachment: [
-                  {
-                    url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
-                    name: order.orderNumber + '.pdf'
-                  },
-                  {
-                    url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.xls',
-                    name: order.orderNumber + '.xls'
-                  }
-                ],
-                htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{req.session.userLogin.name}}. </p></body></html>',
-              }
-            ]
           },
-        
         };
 
-        axios.request(optionsAxios)
-          .then(function (response) {
-            console.log(response.data);
-            return res.redirect("/response/send-order");
-          })
-          .catch(error => {
-            console.error(error);
-            return res.redirect("/response/send-order");
-          })
+        const optionsAxios2 = {
+          method: 'POST',
+          url: 'https://api.sendinblue.com/v3/smtp/email',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
+          },
+          data: {
+            sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
+            subject: 'Orden #{{params.order}}',
+            params: {
+              userName: req.session.userLogin.name,
+              userEmail: req.session.userLogin.email,
+              order: order.orderNumber
+            },
+            to: [{ email: 'menaeric@hotmail.com' }],
+            attachment: [
+              {
+                url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
+                name: order.orderNumber + '.pdf'
+              },
+              {
+                url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.xls',
+                name: order.orderNumber + '.xls'
+              }
+            ],
+            htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{req.session.userLogin.name}}. </p></body></html>',
+          },
+        };
+
+        try {
+          let sendClient = await axios.request(optionsAxios);
+          let sendAdmin = await axios.request(optionsAxios2);
+          console.log(sendClient);
+          console.log(sendAdmin);
+          return res.redirect("/response/send-order");
+
+        } catch (error) {
+          console.log(error)
+          return res.redirect("/response/send-order");
+
+        }
+      
+         
+
 
         /*   new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
             {
