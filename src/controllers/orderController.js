@@ -1,4 +1,5 @@
 const path = require("path");
+require('dotenv').config();
 
 const XLSX = require("xlsx");
 const createHTML = require('create-html');
@@ -844,7 +845,7 @@ module.exports = {
             )
           )
         );
-      /*   pdfDoc.pipe(
+        pdfDoc.pipe(
           fs.createWriteStream(
             path.resolve(
               __dirname,
@@ -854,7 +855,7 @@ module.exports = {
               `${order.orderNumber}.pdf`
             )
           )
-        ); */
+        );
         pdfDoc.end();
 
         let fileAdmin = `${order.orderNumber}.xls`;
@@ -872,7 +873,7 @@ module.exports = {
           }
         );
 
-       setTimeout(async () => {
+     /*   setTimeout(async () => {
           let message;
           let message2;
           message2 = new Message({
@@ -964,15 +965,15 @@ module.exports = {
           );
 
           return res.redirect("/response/send-order");
-        }, 2000);
+        }, 2000); */
 
-      /*  const optionsAxios = {
+      const optionsAxios = {
           method: 'POST',
           url: 'https://api.sendinblue.com/v3/smtp/email',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            'api-key': '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'
+            'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
           },
           data: {
             sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
@@ -1002,7 +1003,6 @@ module.exports = {
           return res.redirect("/response/send-order");
 
         });
- */
 
         /*   new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
             {
