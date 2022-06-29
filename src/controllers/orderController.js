@@ -989,41 +989,42 @@ module.exports = {
           data: {
             sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
             subject: 'Orden #{{params.order}}',
-          },
-          params: {
-            userName: req.session.userLogin.name,
-            userEmail: req.session.userLogin.email,
-            order: order.orderNumber
-          },
-          messageVersions: [
-            //Definition for Message Version 1 
-            {
-              to: [{ email: req.session.userLogin.email }],
-              attachment: [
-                {
-                  url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
-                  name: order.orderNumber + '.pdf'
-                }
-              ],
-              htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
+            params: {
+              userName: req.session.userLogin.name,
+              userEmail: req.session.userLogin.email,
+              order: order.orderNumber
             },
-
-            // Definition for Message Version 2
-            {
-              to: [{ email: 'menaeric@hotmail.com' }],
-              attachment: [
-                {
-                  url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
-                  name: order.orderNumber + '.pdf'
-                },
-                {
-                  url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.xls',
-                  name: order.orderNumber + '.xls'
-                }
-              ],
-              htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{req.session.userLogin.name}}. </p></body></html>',
-            }
-          ]
+            messageVersions: [
+              //Definition for Message Version 1 
+              {
+                to: [{ email: req.session.userLogin.email }],
+                attachment: [
+                  {
+                    url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
+                    name: order.orderNumber + '.pdf'
+                  }
+                ],
+                htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
+              },
+  
+              // Definition for Message Version 2
+              {
+                to: [{ email: 'menaeric@hotmail.com' }],
+                attachment: [
+                  {
+                    url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
+                    name: order.orderNumber + '.pdf'
+                  },
+                  {
+                    url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.xls',
+                    name: order.orderNumber + '.xls'
+                  }
+                ],
+                htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{req.session.userLogin.name}}. </p></body></html>',
+              }
+            ]
+          },
+        
         };
 
         axios.request(optionsAxios)
