@@ -1013,11 +1013,11 @@ module.exports = {
               to: [{ email: 'menaeric@hotmail.com' }],
               attachment: [
                 {
-                  url: 'https://cotizador.portaleric.com/emails//emails/' + order.orderNumber + '.pdf',
+                  url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
                   name: order.orderNumber + '.pdf'
                 },
                 {
-                  url: 'https://cotizador.portaleric.com/emails//emails/' + order.orderNumber + '.xls',
+                  url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.xls',
                   name: order.orderNumber + '.xls'
                 }
               ],
