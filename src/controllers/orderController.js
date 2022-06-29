@@ -1032,18 +1032,17 @@ module.exports = {
           },
         };
 
-        try {
-          let sendClient = await axios.request(optionsAxios);
-          let sendAdmin = await axios.request(optionsAxios2);
-          console.log(sendClient);
-          console.log(sendAdmin);
-          return res.redirect("/response/send-order");
-
-        } catch (error) {
-          console.log(error)
-          return res.redirect("/response/send-order");
-
-        }
+          axios.request(optionsAxios)
+            .then(sendClient => {
+              axios.request(optionsAxios2)
+                .then(sendAdmin => {
+                  console.log(sendClient.data);
+                  console.log(sendAdmin.data);
+                  return res.redirect("/response/send-order");
+                })
+            })
+            .catch(error => console.log(error))
+        
       
          
 
