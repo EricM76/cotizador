@@ -623,7 +623,7 @@ module.exports = {
           sheet: 0
         });
 
-        XLSX.writeFile(workbook, path.resolve(__dirname, '..', 'public', "emails", `${order.orderNumber}.xls`), {
+        XLSX.writeFile(workbook, path.resolve('public', "emails", `${order.orderNumber}.xls`), {
           bookType: "xlml",
           sheet: 0
         });
@@ -854,9 +854,6 @@ module.exports = {
         pdfDoc.pipe(
           fs.createWriteStream(
             path.resolve(
-              __dirname,
-              "..",
-              "..",
               "public",
               "emails",
               `${order.orderNumber}.pdf`
