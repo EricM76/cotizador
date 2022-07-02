@@ -623,6 +623,7 @@ module.exports = {
           sheet: 0
         });
 
+        /* guardo en public */
         XLSX.writeFile(workbook, path.resolve(__dirname,'..','..', 'public','emails',`${order.orderNumber}.xls`), {
           bookType: "xlml",
           sheet: 0
@@ -974,6 +975,11 @@ module.exports = {
              return res.redirect("/response/send-order");
            }, 2000); */
 
+        /* duplico el archivo de ticket */
+        if(fs.existsSync(path.resolve(__dirname, "..", "downloads", order.ticket))){
+          fs.copyFileSync(path.resolve(__dirname, "..", "downloads", order.ticket), path.resolve(__dirname, "..","..","public","tickets", order.ticket));
+        }
+
         const optionsAxios = {
           method: 'POST',
           url: 'https://api.sendinblue.com/v3/smtp/email',
@@ -995,6 +1001,10 @@ module.exports = {
                   {
                     url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
                     name: order.orderNumber + '.pdf'
+                  },
+                  {
+                    url: 'https://cotizador.portaleric.com/tickets/' + order.ticket,
+                    name: order.ticket
                   }
                 ],
                 htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
@@ -1026,6 +1036,10 @@ module.exports = {
               {
                 url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.xls',
                 name: order.orderNumber + '.xls'
+              },
+              {
+                url: 'https://cotizador.portaleric.com/tickets/' + order.ticket,
+                name: order.ticket
               }
             ],
             htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{params.userName}}. </p></body></html>',
@@ -1042,54 +1056,6 @@ module.exports = {
                 })
             })
             .catch(error => console.log(error))
-        
-      
-         
-
-
-        /*   new SibApiV3Sdk.TransactionalEmailsApi().sendTransacEmail(
-            {
-              subject:'Orden #{{params.order}}',
-              sender : {'email':'cotizadorblancomad@gmail.com', 'name':'Cotizador Blancomad'},
-              to : [{'name': '{{params.userName}}', 'email':req.session.userLogin.email}],
-              htmlContent : '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
-              params : {
-                userName :req.session.userLogin.name,
-                userEmail : req.session.userLogin.email,
-                order : order.orderNumber
-              },
-              attachment: [
-                {
-                  url: 'https://cotizador.portaleric.com/'+order.orderNumber+'.pdf',
-                  name: order.orderNumber + '.pdf'
-                },
-              ]
-            }
-            ).then(async function(data) {
-              console.log(data);
-              await db.Order.update(
-                {
-                  send: true,
-                },
-                {
-                  where: {
-                    id: +req.query.order,
-                  },
-                }
-              );
-            }, async function(error) {
-              console.error(error);
-              await db.Order.update(
-                {
-                  send: false,
-                },
-                {
-                  where: {
-                    id: +req.query.order,
-                  },
-                }
-              );
-            }); */
       }
     } catch (error) {
       console.log(error);
