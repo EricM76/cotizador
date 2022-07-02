@@ -1017,7 +1017,7 @@ module.exports = {
               userEmail: req.session.userLogin.email,
               order: order.orderNumber
             },
-            to: [{ email: 'menaeric@hotmail.com' }],
+            to: [{ email: 'cotizadorblancomad@gmail.com' }],
             attachment: [
               {
                 url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
@@ -1028,7 +1028,7 @@ module.exports = {
                 name: order.orderNumber + '.xls'
               }
             ],
-            htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{req.session.userLogin.name}}. </p></body></html>',
+            htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{params.userName}}. </p></body></html>',
           },
         };
 
