@@ -955,7 +955,7 @@ module.exports = {
           axios.request(optionsAxios)
             .then(sendClient => {
               axios.request(optionsAxios2)
-                .then(sendAdmin => {
+                .then(async(sendAdmin) => {
                   console.log(sendClient.data);
                   console.log(sendAdmin.data);
                   if(fs.existsSync(path.resolve(__dirname, "..","..","public","tickets", order.ticket))){
@@ -967,6 +967,16 @@ module.exports = {
                   if(fs.existsSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.xls'))){
                     fs.unlinkSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.xls'))
                   }
+                  await db.Order.update(
+                    {
+                      send : true
+                    },
+                    {
+                      where: {
+                        id: +req.query.order,
+                      },
+                    }
+                  );
                   return res.redirect("/response/send-order");
                 })
             })
