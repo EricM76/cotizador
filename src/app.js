@@ -7,6 +7,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const session = require('express-session');
+const MemoryStore = require('memorystore')(session)
+
 const methodOverride = require('method-override');
 const localsUserCheck = require('./middlewares/localsUserCheck');
 const userSessionCheck = require('./middlewares/userSessionCheck');
@@ -41,7 +43,10 @@ app.use(cookieParser());
 app.use(session({
   secret : "CoT1zADor",
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: new MemoryStore({
+    checkPeriod: 86400000 // prune expired entries every 24h
+  }),
 }))
 app.use(methodOverride('_method'));
 app.use(localsUserCheck);
