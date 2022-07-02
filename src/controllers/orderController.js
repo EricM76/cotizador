@@ -983,7 +983,7 @@ module.exports = {
             'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
           },
           data: {
-            sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
+            sender: { 'email': 'info@blancomad.com', 'name': 'Cotizador Blancomad' },
             subject: 'Orden #{{params.order}}',
             params: {
               userName: req.session.userLogin.name,
@@ -1010,7 +1010,7 @@ module.exports = {
             'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
           },
           data: {
-            sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
+            sender: { 'email': 'info@blancomad.com', 'name': 'Cotizador Blancomad' },
             subject: 'Orden #{{params.order}}',
             params: {
               userName: req.session.userLogin.name,
