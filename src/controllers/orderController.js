@@ -881,100 +881,6 @@ module.exports = {
           }
         );
 
-        /*   setTimeout(async () => {
-             let message;
-             let message2;
-             message2 = new Message({
-               text: `Hola, ${req.session.userLogin.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
-               from: "cotizadorblancomad@gmail.com",
-               to: req.session.userLogin.email,
-               cc: " ",
-               subject: "Orden #" + order.orderNumber,
-               attachment: [
-                 {
-                   path: path.resolve(
-                     __dirname,
-                     "..",
-                     "downloads",
-                     `${order.orderNumber}.pdf`
-                   ),
-                   type: "application/pdf",
-                   name: `${order.orderNumber}.pdf`,
-                 },
-                 {
-                   path: path.resolve(
-                     __dirname,
-                     "..",
-                     "downloads",
-                     order.ticket || ''
-                   ),
-                   type: "image",
-                   name: order.ticket,
-                 }
-               ],
-             });
-             message = new Message({
-               text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${req.session.userLogin.name}.`,
-               from: "cotizadorblancomad@gmail.com",
-               to: "menaeric@hotmail.com",
-               cc: " ",
-               subject: "Orden #" + order.orderNumber,
-               attachment: [
-                 {
-                   path: path.resolve(
-                     __dirname,
-                     "..",
-                     "downloads",
-                     `${order.orderNumber}.pdf`
-                   ),
-                   type: "application/pdf",
-                   name: `${order.orderNumber}.pdf`,
-                 },
-                 {
-                   path: path.resolve(
-                     __dirname,
-                     "..",
-                     "downloads",
-                     `${order.orderNumber}.xls`
-                   ),
-                   type: "application/octet-stream",
-                   name: `${order.orderNumber}.xls`,
-                 },
-                 {
-                   path: path.resolve(
-                     __dirname,
-                     "..",
-                     "downloads",
-                     order.ticket || ''
-                   ),
-                   type: "image",
-                   name: order.ticket,
-                 }
-               ],
-             });
-   
-             client.send(message, (err, message) => {
-               console.log(err || message);
-             });
-   
-             client.send(message2, (err, message) => {
-               console.log(err || message);
-             });
-   
-             await db.Order.update(
-               {
-                 send: true,
-               },
-               {
-                 where: {
-                   id: +req.query.order,
-                 },
-               }
-             );
-   
-             return res.redirect("/response/send-order");
-           }, 2000); */
-
         /* duplico el archivo de ticket */
         if(fs.existsSync(path.resolve(__dirname, "..", "downloads", order.ticket))){
           fs.copyFileSync(path.resolve(__dirname, "..", "downloads", order.ticket), path.resolve(__dirname, "..","..","public","tickets", order.ticket));
@@ -1027,7 +933,7 @@ module.exports = {
               userEmail: req.session.userLogin.email,
               order: order.orderNumber
             },
-            to: [{ email: 'menaeric@hotmail.com' }],
+            to: [{ email: 'info@blancomad.com' }],
             attachment: [
               {
                 url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
@@ -1052,6 +958,15 @@ module.exports = {
                 .then(sendAdmin => {
                   console.log(sendClient.data);
                   console.log(sendAdmin.data);
+                  if(fs.existsSync(path.resolve(__dirname, "..","..","public","tickets", order.ticket))){
+                    fs.unlinkSync(path.resolve(__dirname, "..","..","public","tickets", order.ticket))
+                  }
+                  if(fs.existsSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.pdf'))){
+                    fs.unlinkSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.pdf'))
+                  }
+                  if(fs.existsSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.xls'))){
+                    fs.unlinkSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.xls'))
+                  }
                   return res.redirect("/response/send-order");
                 })
             })
@@ -1382,7 +1297,7 @@ module.exports = {
         let message2;
         message2 = new Message({
           text: `Hola, ${user.name}.\nSe adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación.`,
-          from: "cotizadorblancomad@gmail.com",
+          from: "info@blancomad.com",
           to: user.email,
           cc: " ",
           subject: "Orden #" + order.orderNumber,
@@ -1412,7 +1327,7 @@ module.exports = {
         message = new Message({
           text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${user.name}.`,
           from: "cotizadorblancomad@gmail.com",
-          to: "cotizadorblancomad@gmail.com",
+          to: "info@blancomad.com",
           cc: " ",
           subject: "Orden #" + order.orderNumber,
           attachment: [
