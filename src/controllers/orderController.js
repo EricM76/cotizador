@@ -302,7 +302,7 @@ module.exports = {
       id,
       limit
     } = req.body;
-
+    return res.send(req.body)
     id = typeof id === "string" ? id.split() : id;
     name = typeof name === "string" ? name.split() : name;
     price = typeof price === "string" ? price.split() : price;
@@ -495,6 +495,7 @@ module.exports = {
           </tr>
           `
         });
+
         accessories.forEach(({ id, quantity, name, price }) => {
           table += `
             <tr>
@@ -547,7 +548,7 @@ module.exports = {
                   ${price}
             </td>
             <td style="text-align:right;">
-                  ${+price * +quantity}
+                  ${price * quantity}
             </td>
         </tr>
           `
