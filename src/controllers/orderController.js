@@ -302,7 +302,6 @@ module.exports = {
       id,
       limit
     } = req.body;
-    return res.send(req.body)
     id = typeof id === "string" ? id.split() : id;
     name = typeof name === "string" ? name.split() : name;
     price = typeof price === "string" ? price.split() : price;

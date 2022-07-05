@@ -131,7 +131,7 @@
 
     if(totalQuoter){
       totalLast.innerHTML = toThousand(+totalQuoter.innerText + prices.reduce((acum, sum) => acum + sum))
-  
+  console.log(accesories)
     accessories.forEach(({id,quantity,limit,name,price}) => {
 
         $('accessories').innerHTML += `
