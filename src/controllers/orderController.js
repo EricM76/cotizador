@@ -933,7 +933,7 @@ module.exports = {
               userEmail: req.session.userLogin.email,
               order: order.orderNumber
             },
-            to: [{ email: 'info@blancomad.com' }],
+            to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
             attachment: [
               {
                 url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
@@ -1338,7 +1338,7 @@ module.exports = {
           text: `Se adjunta planilla de la orden #${order.orderNumber}.\nVendedor/a: ${user.name}.`,
           from: "cotizadorblancomad@gmail.com",
           to: "info@blancomad.com",
-          cc: " ",
+          cc: "menaericdaniel@gmail.com",
           subject: "Orden #" + order.orderNumber,
           attachment: [
             {
