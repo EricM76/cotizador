@@ -958,7 +958,7 @@ module.exports = {
                 .then(async(sendAdmin) => {
                   console.log(sendClient.data);
                   console.log(sendAdmin.data);
-                  if(fs.existsSync(path.resolve(__dirname, "..","..","public","tickets", order.ticket))){
+                /*   if(fs.existsSync(path.resolve(__dirname, "..","..","public","tickets", order.ticket))){
                     fs.unlinkSync(path.resolve(__dirname, "..","..","public","tickets", order.ticket))
                   }
                   if(fs.existsSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.pdf'))){
@@ -966,7 +966,7 @@ module.exports = {
                   }
                   if(fs.existsSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.xls'))){
                     fs.unlinkSync(path.resolve(__dirname, "..","..","public","emails", order.orderNumber + '.xls'))
-                  }
+                  } */
                   await db.Order.update(
                     {
                       send : true
@@ -1388,6 +1388,7 @@ module.exports = {
         });
 
       }, 2000);
+
     } catch (error) {
       console.log('====================================');
       console.log(error);
