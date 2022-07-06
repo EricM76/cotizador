@@ -18,6 +18,7 @@
           <h5 class="modal-title" id="exampleModalLabel">Agregar accesorios</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div> -->
+        <span hidden id="rol"><%= locals.userLogin.rolName %></span>
       <div class="modal-body">
         <table class="table table-sm">
           <thead>
@@ -50,9 +51,15 @@
               <td>
                 <div class="d-flex justify-content-between">
                   <span>$</span
-                  ><span id="price<%= accessory.id %>"
-                    ><%= (locals.userLogin.rolName !== "medidor") ? accessory.salePrice : "-" %></span
                   >
+                  <% if (locals.userLogin.rolName === "medidor") { %>
+                    <span>-</span>
+                      <span id="price<%= accessory.id %>" hidden><%=accessory.salePrice%></span>
+                  <% }else{ %>
+                  <span id="price<%= accessory.id %>"
+                    ><%=accessory.salePrice%></span
+                  >
+                  <% } %>
                 </div>
               </td>
               <td>

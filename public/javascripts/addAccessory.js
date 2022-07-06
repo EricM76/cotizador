@@ -14,7 +14,7 @@
     if(+document.getElementById("input" + id).value <= +document.getElementById('limit'+id).value){
     let accessory = {};
     
-    if(!isNaN(+document.getElementById("price" + id).innerText)){
+    if($('rol').innerText !== 'medidor'){
       document.getElementById("subtotal" + id).innerHTML =
       +document.getElementById("input" + id).value *
       +document.getElementById("price" + id).innerText;
@@ -118,8 +118,6 @@
   });
 
   btnAdd.addEventListener("click", async () => {
-
-    console.log(accessories)
   
     $('accessories').innerHTML = null;
     $('accessories').innerHTML = ' <tr> </tr>';
@@ -128,10 +126,10 @@
     for (let i = 0; i < subtotales.length; i++) {
       prices.push(+subtotales[i].innerHTML);
     }
-
+    console.log(accessories)
     if(totalQuoter){
+
       totalLast.innerHTML = toThousand(+totalQuoter.innerText + prices.reduce((acum, sum) => acum + sum))
-  console.log(accesories)
     accessories.forEach(({id,quantity,limit,name,price}) => {
 
         $('accessories').innerHTML += `
@@ -194,6 +192,7 @@
         `
     })
   }else{
+
     accessories.forEach(({id,quantity,limit,name,price}) => {
 
       $('accessories').innerHTML += `
