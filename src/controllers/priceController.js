@@ -180,6 +180,23 @@ module.exports = {
         };
       });
 
+      await db.System.bulkCreate(prices, {
+        updateOnDuplicate: ["price"],
+      });
+
+       /* precio de accesorios */
+       data = await db.System.findAll();
+       prices = data.map((item) => {
+         return {
+           id: item.id,
+           salePrice: item.salePrice + item.salePrice * coefficient,
+         };
+       });
+ 
+       await db.System.bulkCreate(prices, {
+         updateOnDuplicate: ["salePrice"],
+       });
+
     } catch (error) {
       console.log(error);
     }
