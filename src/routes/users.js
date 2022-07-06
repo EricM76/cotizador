@@ -5,9 +5,10 @@ const { index, add, store, login, processLogin, edit, update, remove, filter, en
 const loginValidator = require('../validations/loginValidator');
 const registerValidator = require('../validations/registerValidator');
 const adminSessionCheck = require('../middlewares/adminSessionCheck');
+const controlSessionCheck = require('../middlewares/controlSessionCheck');
 
 router
-    .get('/',adminSessionCheck, index)
+    .get('/',controlSessionCheck, index)
     .get('/add',adminSessionCheck, add)
     .post('/store',adminSessionCheck,registerValidator, store)
     .get('/login', login)

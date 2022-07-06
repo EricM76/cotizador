@@ -88,7 +88,13 @@
             </ul>
           </li>
           <% } %>
-          <% if (locals.userLogin.rol === 1) { %>
+          <% if (locals.userLogin.rol === 1 || locals.userLogin.rol === 2) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/users">Usuarios</a>
+            </li>
+            <% } %>
+
+            <% if (locals.userLogin.rol === 1) { %>
 
           <li class="nav-item dropdown">
             <a
@@ -129,9 +135,7 @@
               <li><a class="dropdown-item" href="/prices/edit/item">Por sistema</a></li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/users">Usuarios</a>
-          </li>
+        
           <li class="nav-item">
             <a class="nav-link" href="#" onclick="updatePackaging(event)">
               Precio embalaje
