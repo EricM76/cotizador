@@ -165,7 +165,7 @@ module.exports = {
     setTimeout(() => {
       req.session.itemsUpdated = itemsUpdated;
       return res.render("orderAdd", {
-        items: itemsUpdated,
+        items: itemsUpdated.sort((a,b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0),
       })
     }, 2000);
 
