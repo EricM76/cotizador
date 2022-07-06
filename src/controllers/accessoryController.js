@@ -7,7 +7,6 @@ const createHTML = require('create-html');
 const { JSDOM } = require("jsdom");
 
 const moment = require("moment");
-const { SMTPClient, Message } = require("emailjs");
 const { Op } = require("sequelize");
 
 const fonts = require("../fonts/Roboto");
@@ -15,14 +14,22 @@ const PdfPrinter = require("pdfmake");
 const printer = new PdfPrinter(fonts);
 const fs = require("fs");
 
+const { SMTPClient, Message } = require("emailjs");
+
+/* sendInBlue */
+var SibApiV3Sdk = require('sib-api-v3-sdk');
+SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.EMAIL_SEND_BLUE_APIKEY;
+
+const axios = require("axios").default;
 
 const client = new SMTPClient({
   user: "cotizadorblancomad@gmail.com",
-  password: "cotizador2022",
-  host: "smtp.gmail.com",
+  password: process.env.EMAIL_SEND_BLUE_SMTPKEY,
+  host: "smtp-relay.sendinblue.com",
   ssl: true,
   timeout: 10000,
 });
+
 
 module.exports = {
   index: async (req, res) => {
@@ -551,6 +558,12 @@ module.exports = {
       sheet: 0
     });
 
+     /* guardo en public */
+     XLSX.writeFile(workbook, path.resolve(__dirname,'..','..', 'public','emails',`${orderNumber}.xls`), {
+      bookType: "xlml",
+      sheet: 0
+    });
+
 
 
     /* PDF VENDEDOR/ADMIN/CONTROL */
@@ -769,6 +782,20 @@ module.exports = {
         )
       )
     );
+
+     /* guardo en públic */
+     pdfDoc.pipe(
+      fs.createWriteStream(
+        path.resolve(
+          __dirname,
+          "..",
+          "..",
+          "public",
+          "emails",
+          `${orderNumber}.pdf`
+        )
+      )
+    );
     pdfDoc.end();
 
     let fileAdmin = `${orderNumber}.xls`;
@@ -785,9 +812,14 @@ module.exports = {
       fileClient,
       fileAdmin,
       total 
-    })
+    });
 
-    setTimeout(async () => {
+      /* duplico el archivo de ticket */
+      if(fs.existsSync(path.resolve(__dirname, "..", "downloads", ticket))){
+        fs.copyFileSync(path.resolve(__dirname, "..", "downloads", ticket), path.resolve(__dirname, "..","..","public","tickets", ticket));
+      }
+
+/*     setTimeout(async () => {
       let message;
       let message2;
       message2 = new Message({
@@ -877,7 +909,95 @@ module.exports = {
         }
       )
       return res.redirect("/response/send-order");
-    }, 2000);
+    }, 2000); */
+
+
+    const optionsAxios = {
+      method: 'POST',
+      url: 'https://api.sendinblue.com/v3/smtp/email',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
+      },
+      data: {
+        sender: { 'email': 'info@blancomad.com', 'name': 'Cotizador Blancomad' },
+        subject: 'Orden #{{params.order}}',
+        params: {
+          userName: req.session.userLogin.name,
+          userEmail: req.session.userLogin.email,
+          order: orderNumber
+        },
+            to: [{ email: req.session.userLogin.email }],
+            attachment: [
+              {
+                url: 'https://cotizador.portaleric.com/emails/' + orderNumber + '.pdf',
+                name: orderNumber + '.pdf'
+              },
+              {
+                url: 'https://cotizador.portaleric.com/tickets/' + ticket,
+                name: ticket
+              }
+            ],
+            htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Hola, {{params.userName}}.</p><p>Se adjunta copia del pedido generado en el sistema. Gracias por usar nuestra aplicación. </p></body></html>',
+      },
+    };
+
+    const optionsAxios2 = {
+      method: 'POST',
+      url: 'https://api.sendinblue.com/v3/smtp/email',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': process.env.EMAIL_SEND_BLUE_APIKEY
+      },
+      data: {
+        sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
+        subject: 'Orden #{{params.order}}',
+        params: {
+          userName: req.session.userLogin.name,
+          userEmail: req.session.userLogin.email,
+          order: orderNumber
+        },
+        to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
+        attachment: [
+          {
+            url: 'https://cotizador.portaleric.com/emails/' + orderNumber + '.pdf',
+            name: orderNumber + '.pdf'
+          },
+          {
+            url: 'https://cotizador.portaleric.com/emails/' + orderNumber + '.xls',
+            name: orderNumber + '.xls'
+          },
+          {
+            url: 'https://cotizador.portaleric.com/tickets/' + ticket,
+            name: ticket
+          }
+        ],
+        htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{params.userName}}. </p></body></html>',
+      },
+    };
+
+      axios.request(optionsAxios)
+        .then(sendClient => {
+          axios.request(optionsAxios2)
+            .then(async(sendAdmin) => {
+              console.log(sendClient.data);
+              console.log(sendAdmin.data);
+              await db.Order.update(
+                {
+                  send : true
+                },
+                {
+                  where: {
+                    orderNumber,
+                  },
+                }
+              );
+              return res.redirect("/response/send-order");
+            })
+        })
+        .catch(error => console.log(error))
   }
 
 };

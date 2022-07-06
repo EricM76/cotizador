@@ -15,6 +15,14 @@ SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = process.env.E
 
 const axios = require("axios").default;
 
+const client = new SMTPClient({
+  user: "cotizadorblancomad@gmail.com",
+  password: process.env.EMAIL_SEND_BLUE_SMTPKEY,
+  host: "smtp-relay.sendinblue.com",
+  ssl: true,
+  timeout: 10000,
+});
+
 
 const { Op } = require("sequelize");
 const fonts = require("../fonts/Roboto");
@@ -25,21 +33,6 @@ const fs = require("fs");
 const db = require("../database/models");
 const { quoterUpdate } = require('./quoterController')
 
-/* const client = new SMTPClient({
-  user: "cotizadorblancomad@gmail.com",
-  password: "cotizador2022",
-  host: "smtp.gmail.com",
-  ssl: true,
-  timeout: 10000,
-}); */
-
-const client = new SMTPClient({
-  user: "cotizadorblancomad@gmail.com",
-  password: process.env.EMAIL_SEND_BLUE_SMTPKEY,
-  host: "smtp-relay.sendinblue.com",
-  ssl: true,
-  timeout: 10000,
-});
 
 module.exports = {
   index: async (req, res) => {
