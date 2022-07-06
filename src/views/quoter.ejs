@@ -104,18 +104,19 @@
                       </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3">
-                      <% if (userLogin.rol !== 2) { %>
-                        <div class="alert alert-warning" >
-                          Todos los campos son obligatorios.
+                      <% if (userLogin.rol == 2 || userLogin.rol == 1) { %>
+                        <div class="form-floating ">
+                          <select class="form-select" id="rol" name="rol">
+                            <option value="" selected hidden>Seleccione el rol</option>
+                            <% for( let i = 3; i < rols.length; i++ ) { %>
+                              <option value="<%= rols[i].id %>"><%= rols[i].name %></option>
+                            <% } %>
+                          </select>
+                          <label for="systems">Rol</label>
                         </div>
                       <% }else{ %>
-                      <div class="form-floating ">
-                        <select class="form-select" id="rol" name="rol">
-                          <% for( let i = 3; i < rols.length; i++ ) { %>
-                            <option value="<%= rols[i].id %>"><%= rols[i].name %></option>
-                          <% } %>
-                        </select>
-                        <label for="systems">Rol</label>
+                      <div class="alert alert-warning" >
+                        Todos los campos son obligatorios.
                       </div>
                       <% } %>
 

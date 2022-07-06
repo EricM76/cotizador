@@ -478,7 +478,7 @@ module.exports = {
       /* CALCULO SEGÚN EL ROL DEL VENDEDOR */
       amount = req.session.userLogin.coefficient !== 0 ? amount + amount * req.session.userLogin.coefficient : amount;
       let data;
-      if (+req.session.userLogin.rol === 2) {
+      if (+req.session.userLogin.rol === 2 || +req.session.userLogin.rol === 1) {
         let rolSelected = await db.Rol.findByPk(req.body.rol);
         console.log('====================================');
         console.log('ID ROL',req.body.rol);
