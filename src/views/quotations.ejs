@@ -98,7 +98,7 @@
                       <thead>
                         <tr>
                           <th scope="col">Fecha</th>
-                          <% if (locals.userLogin.rol === 1 && locals.userLogin.rol === 2) { %>
+                          <% if (locals.userLogin.rol === 1 || locals.userLogin.rol === 2) { %>
                           <th scope="col">Usuario</th>
                           <% } %>
                           <th scope="col">Referencia</th>
