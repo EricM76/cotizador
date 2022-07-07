@@ -160,6 +160,18 @@ module.exports = {
 
       itemsUpdated.push(item);
 
+      /* ACTUALIZO LOS PRECIOS EN LA BASE DE DATOS */
+      await db.Quotation.update(
+        {
+          amount : item.amount,
+        },
+        {
+          where: {
+            id: item.id,
+          },
+        },
+      );
+
     });
 
     setTimeout(() => {
