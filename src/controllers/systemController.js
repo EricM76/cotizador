@@ -231,6 +231,7 @@ module.exports = {
       patterns,
       chains,
       visible,
+      accessory
     } = req.body;
     cloths = typeof cloths === "string" ? cloths.split() : cloths;
     colors = typeof colors === "string" ? colors.split() : colors;
@@ -276,6 +277,7 @@ module.exports = {
           price,
           idLocal,
           visible: visible ? true : false,
+          accessory: accessory ? true : false,
         },
         {
           where: { id: req.params.id },
