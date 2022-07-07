@@ -15,7 +15,7 @@ const getPriceBandas = require("../helpers/getPriceBandas");
 
 module.exports = {
   index: async (req, res) => {
-    if (req.session.userLogin.rol === 1) {
+    if (req.session.userLogin.rol === 1 || req.session.userLogin.rol === 2) {
       let total = await db.Quotation.count();
       let users = await db.Quotation.findAll({
         attributes: ["userId"],
@@ -185,7 +185,7 @@ module.exports = {
     let users = [];
     let total = 0;
 
-    if (req.session.userLogin.rol === 1) {
+    if (req.session.userLogin.rol === 1 || req.session.userLogin.rol === 2) {
       try {
         users = await db.Quotation.findAll({
           attributes: ["userId"],

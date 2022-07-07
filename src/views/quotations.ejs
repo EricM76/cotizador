@@ -12,11 +12,11 @@
 
               <form action="/quoters/filter" class="row" id="form-items">
                 <div class="col-12 col-md-1 mb-2">
-                    <a href="/accessories/buy" class="btn btn-outline-dark w-100 px-1 border-0"  ><i class="fas fa-cart-plus"></i></a>
+                    <a href="/accessories/buy" class="btn btn-outline-dark w-100 px-1 border-0 <%= locals.userLogin.rol === 1 || locals.userLogin.rol === 2 ? 'disabled' : null %>"  ><i class="fas fa-cart-plus"></i></a>
                 
                 </div>
                 <div class="col-12 col-md-3 col-lg-3 mb-2">
-                    <% if (locals.userLogin.rol === 1) { %>
+                    <% if (locals.userLogin.rol === 1 || locals.userLogin.rol === 2) { %>
                       <select class="form-select" id="filter" name="filter" onchange="resetValues()">
                         <option value="" selected hidden>Filtrar por vendedor</option>
                         <% users.forEach(item=> { %>
@@ -32,7 +32,7 @@
                
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-2">
-                  <button type="button" data-bs-toggle="modal" data-bs-target="#quoterModal"  id="btn-createQuotation" class="btn btn-outline-dark w-100">Nueva cotización</button>
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#quoterModal"  id="btn-createQuotation" class="btn btn-outline-dark w-100 <%= locals.userLogin.rol === 1 || locals.userLogin.rol === 2 ? 'disabled' : null %>"  >Nueva cotización</button>
                 </div>
                 <div class="col-12  col-md-4 col-lg-4 mb-2 position-relative">
                   <input type="text" class="form-control w-100" id="search" placeholder="Buscar por referencia..." name="search">
@@ -98,7 +98,7 @@
                       <thead>
                         <tr>
                           <th scope="col">Fecha</th>
-                          <% if (locals.userLogin.rol === 1) { %>
+                          <% if (locals.userLogin.rol === 1 && locals.userLogin.rol === 2) { %>
                           <th scope="col">Usuario</th>
                           <% } %>
                           <th scope="col">Referencia</th>
@@ -113,7 +113,7 @@
                           <% if (locals.userLogin.rol !== 3) { %>
                             <th scope="col">Monto</th>
                           <% } %>
-                          <% if (locals.userLogin.rol !== 1) { %>
+                          <% if (locals.userLogin.rol !== 1 && locals.userLogin.rol !== 2) { %>
                             <th scope="col"></th>
                           <% } %>
                         </tr>
@@ -124,7 +124,7 @@
                             <th scope="row">
                               <%= moment(item.date).format('DD-MM-YY HH:mm') %>
                             </th>
-                            <% if (locals.userLogin.rol === 1) { %>
+                            <% if (locals.userLogin.rol === 1 || locals.userLogin.rol === 2) { %>
                             <td>
                               <%= item.user.username %>
                             </td>
@@ -162,7 +162,7 @@
                               <%= item.amount %>
                             </td>
                             <% } %>
-                            <% if (locals.userLogin.rol !== 1) { %>
+                            <% if (locals.userLogin.rol !== 1 && locals.userLogin.rol !== 2) { %>
                               <td>
                               <div class="form-check">
                                 <input name="quotation" class="form-check-input" type="checkbox" value=<%= item.id %>  id="flexCheckDefault">
