@@ -1,6 +1,7 @@
 let supportOrientations = document.querySelectorAll('#support-orientation');
 let clothOrientations = document.querySelectorAll('#cloth-orientation');
 let commands = document.querySelectorAll('#command');
+let quantities = document.querySelectorAll('#quantity');
 let observations = document.querySelectorAll('#observations');
 let btnOrdenGenerate = document.getElementById('btn-orderGenerate');
 let systems = document.querySelectorAll('#system');
@@ -48,9 +49,12 @@ window.addEventListener('load', () => {
 })
 
 const updateTotal = (id,amount,event) => {
-  if(+event.target.value !== 0){
+  if(+event.target.value > 0){
+    event.target.classList.remove('is-invalid');
     $('amount'+id).value = +event.target.value * +amount;
     console.log(id, amount,+event.target.value);
+  }else{
+    event.target.classList.add('is-invalid');
   }
 }
 
@@ -59,10 +63,12 @@ const verifyErrors = () => {
     if(
     commands[i].classList.contains('is-invalid') ||
     supportOrientations[i].classList.contains('is-invalid') ||
-    clothOrientations[i].classList.contains('is-invalid')
+    clothOrientations[i].classList.contains('is-invalid') ||
+    quantities[i].classList.contains('is-invalid')
     ){
       accordions[i].classList.add('bg-danger');
       $('msg-error').hidden = false;
+
     }else{
       accordions[i].classList.remove('bg-danger');
       $('msg-error').hidden = true;
@@ -73,6 +79,7 @@ const verifyErrors = () => {
 $('form-generate-order').addEventListener('submit', (e) => {
   e.preventDefault();
   let empty = false;
+
 
 
   for (let i = 0; i < supportOrientations.length; i++) {
@@ -96,10 +103,18 @@ $('form-generate-order').addEventListener('submit', (e) => {
     }
   }
 
+  for (let i = 0; i < quantities.length; i++) {
+    if (quantities[i].value < 1) {
+      empty = true
+      quantities[i].classList.add('is-invalid');
+    }
+  }
+
  verifyErrors();
 
   if (!empty) {
-
+    $('btn-backQuotations').classList.add('disabled');
+    $('btn-orderGenerate').classList.add('disabled');
     let dataOrder = {
       supportOrientations: [],
       clothOrientations: [],

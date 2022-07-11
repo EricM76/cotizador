@@ -63,6 +63,11 @@ document.getElementById('form-sendOrder').addEventListener('submit', (e) => {
     }).then((result) => {
         if (result.isConfirmed) {
            
+            $('btn-submit').classList.add('disabled');
+            $('btnTicket').classList.add('disabled');
+            $('btn-accessory').classList.add('disabled');
+            $('btn-back').classList.add('disabled');
+
             sessionStorage.removeItem('orderInProcess');
             sessionStorage.removeItem('observations');
             localStorage.removeItem('selected');
