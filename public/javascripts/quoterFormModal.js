@@ -16,11 +16,8 @@ window.addEventListener('load', async () => {
         let response = await fetch('/systems/api/get-all');
         let result = await response.json();
 
-        $('systems').innerHTML = null;
+       /*  $('systems').innerHTML = null;
         $('systems').innerHTML += `<option value="" selected hidden>Seleccione...</option>`
-       /*  result.data.forEach(item => {
-            $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>`
-        }) */
         $('systems').innerHTML += `<option value="113">Roller</option>`
         $('systems').innerHTML += `<option value="111">Romanas</option>`
         $('systems').innerHTML += `<option value="112">Paneles Orientales</option>`
@@ -29,7 +26,46 @@ window.addEventListener('load', async () => {
         $('systems').innerHTML += `<option value="130">Pellizco Doble</option>`
         $('systems').innerHTML += `<option value="116">Triple Pellizco</option>`
         $('systems').innerHTML += `<option value="127">Cenefa</option>`
-        $('systems').innerHTML += `<option value="114">Guías</option>`
+        $('systems').innerHTML += `<option value="114">Guías</option>` */
+
+        $('systems').innerHTML = null;
+        $('systems').innerHTML += `<option value="" selected hidden>Seleccione...</option>`
+        /* result.data.forEach(item => {
+            $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>`
+        }) */
+        result.data.forEach(item => {
+            item.id == 113 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        });
+        result.data.forEach(item => {
+            item.id == 111 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        });
+        result.data.forEach(item => {
+            item.id == 112 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        });
+        result.data.forEach(item => {
+            item.id == 179 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        });
+        result.data.forEach(item => {
+            item.id == 129 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        })
+        result.data.forEach(item => {
+            item.id == 130 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        })
+        result.data.forEach(item => {
+            item.id == 116 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        })
+        result.data.forEach(item => {
+            item.id == 127 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        })
+        result.data.forEach(item => {
+            item.id == 114 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        })
+        result.data.forEach(item => {
+            item.id == 119 ? $('systems').innerHTML += `<option value="${item.id}">${item.name}</option>` : null
+        })
+        result.data.forEach(({ id, name }) => {
+            id != 113 && id != 111 && id != 112 && id != 179 && id != 129 && id != 130 && id != 116 && id != 127 && id != 114 && id != 119 ? $('systems').innerHTML += `<option value="${id}">${name}</option>` : null
+        })
 
     } catch (error) {
         console.error(error)
