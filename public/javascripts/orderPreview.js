@@ -64,7 +64,7 @@ document.getElementById('form-sendOrder').addEventListener('submit', (e) => {
         if (result.isConfirmed) {
            
             $('btn-submit').classList.add('disabled');
-            $('btnTicket').classList.add('disabled');
+            $('btnTicket') && $('btnTicket').classList.add('disabled');
             $('btn-accessory').classList.add('disabled');
             $('btn-back').classList.add('disabled');
 
