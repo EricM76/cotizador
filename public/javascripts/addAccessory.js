@@ -11,7 +11,7 @@
   function updateSubotal(id) {
     let error = false
 
-    if(+document.getElementById("input" + id).value <= +document.getElementById('limit'+id).value){
+    if(+document.getElementById("input" + id).value <= +document.getElementById('limit'+id).value && +document.getElementById("input" + id).value >= 0){
     let accessory = {};
     
     if($('rol').innerText !== 'medidor'){
@@ -75,7 +75,9 @@
 
     updateTotal();
   }else{
-    $('error'+id).hidden = false;
+    if($('input'+id).value > 0){
+      $('error'+id).hidden = false
+    }
     $('input'+id).classList.add('is-invalid');
     for (let i = 0; i < quantities.length; i++) {
       quantities[i].classList.contains('is-invalid')
@@ -100,6 +102,21 @@
       total.innerHTML = "-"
     }
   }
+
+/*   document.getElementById('accesories-table').addEventListener('click', (e) => {
+    
+
+      if(e.target.classList.contains('quantity')){
+        e.target.addEventListener('blur', (e) => {
+          if(+e.target.value < 0){
+            e.target.classList.add('is-invalid');
+          }else{
+            e.target.classList.remove('is-invalid');
+          }
+        })
+      }
+
+  }) */
 
   btnCancel.addEventListener("click", () => {
     for (let i = 0; i < quantities.length; i++) {
