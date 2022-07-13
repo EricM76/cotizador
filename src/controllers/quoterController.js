@@ -26,7 +26,7 @@ module.exports = {
 
       db.Quotation.findAll({
         limit: 8,
-        order : [['date','DESC']],
+        order : [['updatedAt','DESC']],
         include: { all: true },
       })
         .then((items) => {
@@ -65,7 +65,7 @@ module.exports = {
           }
         },
         limit: 8,
-        order : [['date','DESC']],
+        order : [['updatedAt','DESC']],
         include: { all: true },
       })
         .then((items) => {
@@ -207,7 +207,7 @@ module.exports = {
                 [Op.substring]: keywords,
               },
             },
-            order : [['date','DESC']],
+            order : [['updatedAt','DESC']],
             limit: 8,
             offset: active && +active * 8 - 8,
             include: { all: true },
@@ -228,7 +228,7 @@ module.exports = {
                 [Op.substring]: keywords,
               },
             },
-            order : [['date','DESC']],
+            order : [['updatedAt','DESC']],
             limit: 8,
             offset: active && +active * 8 - 8,
             include: { all: true },
@@ -265,7 +265,7 @@ module.exports = {
               [Op.substring]: keywords,
             },
           },
-          order : [['date','DESC']],
+          order : [['updatedAt','DESC']],
           limit: 8,
           offset: active && +active * 8 - 8,
           include: { all: true },
