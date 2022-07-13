@@ -132,7 +132,7 @@
               <a href="/" class="btn btn-secondary mb-2 ms-2" id="btn-back">Cancelar pedido</a>
               <% if (locals.userLogin.rolName !== "medidor") { %>
               <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
-              <input class="" type="file" id="ticket" name="ticket" hidden>   
+              <input class="" type="file" id="ticket" name="ticket" accept="image/*" hidden>   
               <% } %>           
               <button type="submit" class="btn btn-primary mb-2 ms-2" id="btn-submit" disabled>Enviar pedido</button>
             </div>

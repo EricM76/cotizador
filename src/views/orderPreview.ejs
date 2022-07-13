@@ -159,7 +159,7 @@
               <button type="button" class="btn btn-outline-dark mb-2 ms-2" id="btn-accessory" data-bs-toggle="modal" data-bs-target="#accessoryModal">Accesorios</button>
               <% if (locals.userLogin.rolName !== "medidor") { %>
               <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
-              <input class="" type="file" id="ticket" name="ticket" hidden>   
+              <input class="" type="file" id="ticket" name="ticket" accept="image/*" hidden>   
               <% } %>           
               <button type="submit" class="btn btn-primary mb-2 ms-2" id="btn-submit">Enviar pedido</button>
             </div>
