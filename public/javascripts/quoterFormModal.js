@@ -16,17 +16,17 @@ window.addEventListener('load', async () => {
         let response = await fetch('/systems/api/get-all');
         let result = await response.json();
 
-       /*  $('systems').innerHTML = null;
-        $('systems').innerHTML += `<option value="" selected hidden>Seleccione...</option>`
-        $('systems').innerHTML += `<option value="113">Roller</option>`
-        $('systems').innerHTML += `<option value="111">Romanas</option>`
-        $('systems').innerHTML += `<option value="112">Paneles Orientales</option>`
-        $('systems').innerHTML += `<option value="179">Bandas Verticales</option>`
-        $('systems').innerHTML += `<option value="129">Pellizco Simple</option>`
-        $('systems').innerHTML += `<option value="130">Pellizco Doble</option>`
-        $('systems').innerHTML += `<option value="116">Triple Pellizco</option>`
-        $('systems').innerHTML += `<option value="127">Cenefa</option>`
-        $('systems').innerHTML += `<option value="114">Guías</option>` */
+        /*  $('systems').innerHTML = null;
+         $('systems').innerHTML += `<option value="" selected hidden>Seleccione...</option>`
+         $('systems').innerHTML += `<option value="113">Roller</option>`
+         $('systems').innerHTML += `<option value="111">Romanas</option>`
+         $('systems').innerHTML += `<option value="112">Paneles Orientales</option>`
+         $('systems').innerHTML += `<option value="179">Bandas Verticales</option>`
+         $('systems').innerHTML += `<option value="129">Pellizco Simple</option>`
+         $('systems').innerHTML += `<option value="130">Pellizco Doble</option>`
+         $('systems').innerHTML += `<option value="116">Triple Pellizco</option>`
+         $('systems').innerHTML += `<option value="127">Cenefa</option>`
+         $('systems').innerHTML += `<option value="114">Guías</option>` */
 
         $('systems').innerHTML = null;
         $('systems').innerHTML += `<option value="" selected hidden>Seleccione...</option>`
@@ -81,7 +81,7 @@ const getData = async (target) => {
     sessionStorage.removeItem('chains');
 
     try {
-      
+
         $('spinner').hidden = false;
 
 
@@ -106,7 +106,7 @@ const getData = async (target) => {
         patterns = patterns.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
         chains = chains.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name) ? -1 : 0);
 
-        sessionStorage.setItem('chains',JSON.stringify(chains));
+        sessionStorage.setItem('chains', JSON.stringify(chains));
 
         $('cloths').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
         cloths.forEach(cloth => {
@@ -150,9 +150,9 @@ $('systems').addEventListener('change', async ({ target }) => {
 
     getData(target);
 
-        /* 114: GUIAS */
+    /* 114: GUIAS */
 
-    if(target.value == 114){
+    if (target.value == 114) {
         $('large-box').classList.remove('box-hidden');
         $('colors-box').classList.remove('box-hidden');
 
@@ -166,7 +166,7 @@ $('systems').addEventListener('change', async ({ target }) => {
 
         $('large').value = null;
 
-       /* 127: CENEFA */
+        /* 127: CENEFA */
     } else if (target.value == 127) {
         $('large-box').classList.remove('box-hidden');
         $('colors-box').classList.remove('box-hidden');
@@ -182,7 +182,7 @@ $('systems').addEventListener('change', async ({ target }) => {
         $('large').value = null;
 
         /* 179: BANDAS */
-    }else if(target.value == 179){
+    } else if (target.value == 179) {
         $('railWidth-box').classList.remove('box-hidden');
         $('large-box').classList.remove('box-hidden');
         $('cloths-box').classList.remove('box-hidden');
@@ -234,131 +234,131 @@ $('systems').addEventListener('focus', async (e) => {
     let elements = e.path[3].elements;
 
     for (let index = 0; index < elements.length; index++) {
-        elements[index].classList.remove('is-invalid')   
+        elements[index].classList.remove('is-invalid')
     }
- 
+
 
 })
 
 /* validar datos */
-$('systems').addEventListener('focus', ({target}) => {
+$('systems').addEventListener('focus', ({ target }) => {
 
     target.classList.remove('is-invalid')
 
 })
 
-$('cloths').addEventListener('focus', ({target}) => {
-
-     target.classList.remove('is-invalid')
-
-})
-$('colors').addEventListener('focus', ({target}) => {
-
-     target.classList.remove('is-invalid')
-
-})
-$('supports').addEventListener('focus', ({target}) => {
-
-     target.classList.remove('is-invalid')
-
-})
-$('patterns').addEventListener('focus', ({target}) => {
-
-     target.classList.remove('is-invalid')
-
-})
-$('chains').addEventListener('focus', ({target}) => {
-
-     target.classList.remove('is-invalid')
-
-})
-$('width').addEventListener('focus', ({target}) => {
-
-     target.classList.remove('is-invalid')
-
-})
-$('railWidth').addEventListener('focus', ({target}) => {
+$('cloths').addEventListener('focus', ({ target }) => {
 
     target.classList.remove('is-invalid')
 
 })
-$('heigth').addEventListener('focus', ({target}) => {
+$('colors').addEventListener('focus', ({ target }) => {
 
-     target.classList.remove('is-invalid')
-
-})
-$('referenceQuoter').addEventListener('focus', ({target}) => {
-
-     target.classList.remove('is-invalid')
+    target.classList.remove('is-invalid')
 
 })
+$('supports').addEventListener('focus', ({ target }) => {
 
-$('cloths').addEventListener('blur', ({target}) => {
-    if(!target.value){
-        target.classList.add('is-invalid')
-    }else{
-        target.classList.remove('is-invalid')
-    }
-   })
-   $('colors').addEventListener('blur', ({target}) => {
-    if(!target.value){
-        target.classList.add('is-invalid')
-    }else{
-        target.classList.remove('is-invalid')
-    }
-   })
-   $('supports').addEventListener('blur', ({target}) => {
-    if(!target.value){
-        target.classList.add('is-invalid')
-    }else{
-        target.classList.remove('is-invalid')
-    }
-   })
-   $('patterns').addEventListener('blur', ({target}) => {
-    if(!target.value){
-        target.classList.add('is-invalid')
-    }else{
-        target.classList.remove('is-invalid')
-    }
-   });
+    target.classList.remove('is-invalid')
 
-   $('patterns').addEventListener('change', ({target}) => {
-    if(+target.value === 3 || +target.value === 4){
+})
+$('patterns').addEventListener('focus', ({ target }) => {
+
+    target.classList.remove('is-invalid')
+
+})
+$('chains').addEventListener('focus', ({ target }) => {
+
+    target.classList.remove('is-invalid')
+
+})
+$('width').addEventListener('focus', ({ target }) => {
+
+    target.classList.remove('is-invalid')
+
+})
+$('railWidth').addEventListener('focus', ({ target }) => {
+
+    target.classList.remove('is-invalid')
+
+})
+$('heigth').addEventListener('focus', ({ target }) => {
+
+    target.classList.remove('is-invalid')
+
+})
+$('referenceQuoter').addEventListener('focus', ({ target }) => {
+
+    target.classList.remove('is-invalid')
+
+})
+
+$('cloths').addEventListener('blur', ({ target }) => {
+    if (!target.value) {
+        target.classList.add('is-invalid')
+    } else {
+        target.classList.remove('is-invalid')
+    }
+})
+$('colors').addEventListener('blur', ({ target }) => {
+    if (!target.value) {
+        target.classList.add('is-invalid')
+    } else {
+        target.classList.remove('is-invalid')
+    }
+})
+$('supports').addEventListener('blur', ({ target }) => {
+    if (!target.value) {
+        target.classList.add('is-invalid')
+    } else {
+        target.classList.remove('is-invalid')
+    }
+})
+$('patterns').addEventListener('blur', ({ target }) => {
+    if (!target.value) {
+        target.classList.add('is-invalid')
+    } else {
+        target.classList.remove('is-invalid')
+    }
+});
+
+$('patterns').addEventListener('change', ({ target }) => {
+    if (+target.value === 3 || +target.value === 4) {
         $('chains').disabled = true;
         $('chains').classList.remove('is-invalid');
         $('chains').innerHTML = null;
         $('chains').innerHTML = `<option value="6">0</option>`;
-    }else{
+    } else {
         $('chains').disabled = false;
-       /*  $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
-       $('chains').innerHTML = null;
+        /*  $('chains').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`; */
+        $('chains').innerHTML = null;
         JSON.parse(sessionStorage.getItem('chains')).forEach(chain => {
             $('chains').innerHTML += `<option ${chain.id === 1 && 'selected'} value="${chain.id}">${chain.name}</option>`
         })
     }
 })
-   $('chains').addEventListener('blur', ({target}) => {
-    if(!target.value){
+$('chains').addEventListener('blur', ({ target }) => {
+    if (!target.value) {
         target.classList.add('is-invalid')
-    }else{
+    } else {
         target.classList.remove('is-invalid')
     }
-   })
+})
 
-   $('large').addEventListener('change', ({target}) => {
+$('large').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '127': //cenefa
-        if (+target.value > 280) {
-            $('errorLarge').innerHTML = `El ancho máximo permitido es de 280 cm`;
-            target.classList.add('is-invalid')
-        } else if (!target.value) {
-            target.classList.add('is-invalid')
-        } else {
-            $('errorLarge').innerHTML = null;
-            target.classList.remove('is-invalid')
-        }
-        break
-    
+            if (+target.value > 280) {
+                $('errorLarge').innerHTML = `El ancho máximo permitido es de 280 cm`;
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorLarge').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break
+
         default:
             break;
     }
@@ -366,13 +366,13 @@ $('cloths').addEventListener('blur', ({target}) => {
 
 
 
-   $('width').addEventListener('change', ({target}) => {
+$('width').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
             if (+target.value > 270) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 target.classList.remove('is-invalid')
@@ -383,7 +383,7 @@ $('cloths').addEventListener('blur', ({target}) => {
             if (+target.value > 170) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 170 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorWidth').innerHTML = null
@@ -394,19 +394,19 @@ $('cloths').addEventListener('blur', ({target}) => {
             if (+target.value > 350) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 350 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorWidth').innerHTML = null;
                 target.classList.remove('is-invalid')
             }
             break;
-    
+
         case '114': //guias (laterales)
             if (+target.value > 280) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 280 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorWidth').innerHTML = null;
@@ -417,7 +417,7 @@ $('cloths').addEventListener('blur', ({target}) => {
             if (+target.value > 300) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorWidth').innerHTML = null;
@@ -427,47 +427,47 @@ $('cloths').addEventListener('blur', ({target}) => {
         case '116': //triple pellizco
         case '129': //pellizco simple
         case '130': //pellizco doble
-                if (+target.value > 270) {
-                    $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
-                    target.classList.add('is-invalid')
-                } else if (!target.value) {
-                    target.classList.add('is-invalid')
-                } else {
-                    $('errorWidth').innerHTML = null;
-                    target.classList.remove('is-invalid')
-                }
-                break
+            if (+target.value > 270) {
+                $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorWidth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break
         default:
             break;
     }
-   })
+})
 
-   /* GUIAS */
-   $('large').addEventListener('change', ({target}) => {
-    if(+target.value > 280){
+/* GUIAS */
+$('large').addEventListener('change', ({ target }) => {
+    if (+target.value > 280) {
         target.classList.add('is-invalid')
-    }else if(!target.value){
+    } else if (!target.value) {
         target.classList.add('is-invalid')
-    }else{
+    } else {
         target.classList.remove('is-invalid')
     }
-   });
+});
 
-   $('railWidth').addEventListener('blur', ({target}) => {
-    if(!target.value){
+$('railWidth').addEventListener('blur', ({ target }) => {
+    if (!target.value) {
         target.classList.add('is-invalid')
-    }else{
+    } else {
         target.classList.remove('is-invalid')
     }
-   })
+})
 
-   $('heigth').addEventListener('change', ({target}) => {
+$('heigth').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
             if (+target.value > 300) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 300cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -478,7 +478,7 @@ $('cloths').addEventListener('blur', ({target}) => {
             if (+target.value > 260) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 260cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -489,7 +489,7 @@ $('cloths').addEventListener('blur', ({target}) => {
             if (+target.value > 310) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 310cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -502,7 +502,7 @@ $('cloths').addEventListener('blur', ({target}) => {
             if (+target.value > 250) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
                 target.classList.add('is-invalid')
-            } else if(!target.value) {
+            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -523,14 +523,14 @@ $('cloths').addEventListener('blur', ({target}) => {
         default:
             break;
     }
-   })
-   $('referenceQuoter').addEventListener('blur', ({target}) => {
-    if(!target.value){
+})
+$('referenceQuoter').addEventListener('blur', ({ target }) => {
+    if (!target.value) {
         target.classList.add('is-invalid')
-    }else{
+    } else {
         target.classList.remove('is-invalid')
     }
-   })
+})
 
 /* enviar formulario */
 
@@ -558,11 +558,11 @@ $('form-quoter').addEventListener('submit', async (e) => {
     } else if ($('systems').value == 179) {
         $('large').value = 0;
         $('width').value = 0;
-    } else if($('systems').value == 112){
+    } else if ($('systems').value == 112) {
         $('large').value = 0;
         $('railWidth').value = 0;
         $('chains').value = 6; //cadena: 0.0
-    } else if($('systems').value == 116 || $('systems').value == 129 || $('systems').value == 130){
+    } else if ($('systems').value == 116 || $('systems').value == 129 || $('systems').value == 130) {
         $('chains').value = 6; //cadena: 0.0
         $('large').value = 0;
         $('railWidth').value = 0;
@@ -579,7 +579,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
             $('amountQuoter-box').setAttribute('hidden', true)
 
         }
-        console.log(elements[i].name,elements[i].value)
+        console.log(elements[i].name, elements[i].value)
 
     }
     if (!error) {
@@ -599,8 +599,8 @@ $('form-quoter').addEventListener('submit', async (e) => {
                     width: $('width').value.trim(),
                     heigth: $('heigth').value.trim(),
                     reference: $('referenceQuoter').value.trim(),
-                    rol : $('rol') ? $('rol').value : 1,
-                    large : $('large').value,
+                    rol: $('rol') ? $('rol').value : 1,
+                    large: $('large').value,
                     railWidth: $('railWidth').value.trim(),
                 })
             });
@@ -614,7 +614,10 @@ $('form-quoter').addEventListener('submit', async (e) => {
                 $('amountQuoter').classList.add('h4')
                 $('amountQuoter').innerHTML = result.rol !== 3 ? `Monto: $ ${result.data}` : 'Producto encontrado';
 
-                if(window.location.pathname === '/quoters'){
+                $('btn-cancel-formModal').classList.add('disabled');
+                $('btn-send-formModal').classList.add('disabled');
+
+                if (window.location.pathname === '/quoters' || window.location.pathname === '/quoters/filter') {
 
                     Swal.fire({
                         position: 'center',
@@ -622,20 +625,41 @@ $('form-quoter').addEventListener('submit', async (e) => {
                         title: 'Agregando a sus cotizaciones...',
                         showConfirmButton: false,
                         timer: 1500,
-                        didClose : () => {
+                        didClose: () => {
                             window.location.reload()
-
                         }
-                      })
-                   
+                    })
 
-                }else{
+                } else {
                     let query = new URLSearchParams(window.location.search);
                     let ids = JSON.parse(query.get('quoters'));
                     ids.push(result.quotation.id)
                     localStorage.setItem('selected', JSON.stringify(ids))
                     console.log(ids)
                     window.location.href = `/orders/add?quoters=[${ids}]`
+                    let timerInterval
+                    Swal.fire({
+                        title: 'Agregando cotización...',
+                        html: 'Espere <b></b> segundos.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft() / 100
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+                        /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            console.log('I was closed by the timer')
+                        }
+                    })
                 }
 
             } else {
