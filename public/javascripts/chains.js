@@ -35,7 +35,7 @@ $('form-chain').addEventListener('submit', (e) => {
         $('idLocal').classList.add('is-invalid');
     }
 
-    if($('name').value < 0){
+    if($('name').value < 0 || !$('name')){
         $('name').classList.add('is-invalid');
     }
     
