@@ -69,7 +69,9 @@ module.exports = {
     },
     remove : (req,res) => {
         db.Pattern.destroy({where:{id: req.params.id}})
-        res.redirect('/patterns')
+        .then( () => {
+            return res.redirect('/patterns')
+        }).catch(error => console.log(error))
     },
     filter: async (req, res) => {
 

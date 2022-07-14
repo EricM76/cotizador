@@ -67,7 +67,9 @@ module.exports = {
     },
     remove : (req,res) => {
         db.Color.destroy({where:{id: req.params.id}})
-        res.redirect('/colors')
+            .then( () => {
+                return res.redirect('/colors')
+            }).catch(error => console.log(error))
     },
     filter: async (req, res) => {
 

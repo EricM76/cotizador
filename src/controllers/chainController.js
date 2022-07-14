@@ -36,8 +36,8 @@ module.exports = {
       visible: enabled,
       name,
       idLocal,
-      price : +price || 0,
-    }).then( () => {
+      price: +price || 0,
+    }).then(() => {
       console.log('cadena agregada con éxito');
       return res.redirect("/chains");
     }).catch(error => console.log(error))
@@ -70,8 +70,10 @@ module.exports = {
     res.redirect("/chains");
   },
   remove: (req, res) => {
-    db.Chain.destroy({ where: { id: req.params.id } });
-    res.redirect("/chains");
+    db.Chain.destroy({ where: { id: req.params.id } })
+      .then(() => {
+        return res.redirect('/chains')
+      }).catch(error => console.log(error))
   },
   filter: async (req, res) => {
     let { order, filter, keywords, active, pages } = req.query;
@@ -150,10 +152,10 @@ module.exports = {
       });
     }
   },
-  getIdsLocal : async (req,res) => {
+  getIdsLocal: async (req, res) => {
     try {
       let idsLocal = await db.Chain.findAll({
-        attributes : ['idLocal']
+        attributes: ['idLocal']
       });
       let ids = idsLocal.map(id => id.idLocal);
       console.log('====================================');
@@ -161,7 +163,7 @@ module.exports = {
       console.log('====================================');
       return res.json({
         ok: true,
-        ids 
+        ids
       });
     } catch (error) {
       console.log('====================================');

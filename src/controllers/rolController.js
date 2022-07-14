@@ -54,8 +54,13 @@ module.exports = {
         res.redirect("/rols");
     },
     remove : (req,res) => {
-        db.Rol.destroy({where:{id: req.params.id}})
-        res.redirect('/rols')
+        db.Rol.destroy({
+            where:{
+                id: req.params.id
+            }
+        }).then( () => {
+            return res.redirect('/rols')
+        }).catch( error => console.log(error))
     },
     filter: async (req, res) => {
 
