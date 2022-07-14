@@ -21,14 +21,25 @@ $('idLocal').addEventListener('keydown', async ({ target }) => {
     }
 })
 
+$('name').addEventListener('keyup', ({target}) => {
+    if(target.value >= 0){
+        target.classList.remove('is-invalid');
+    }
+})
+
+
 $('form-chain').addEventListener('submit', (e) => {
     e.preventDefault();
 
     if(!$('idLocal').value){
         $('idLocal').classList.add('is-invalid');
     }
+
+    if($('name').value < 0){
+        $('name').classList.add('is-invalid');
+    }
     
-    if (!$('idLocal').classList.contains('is-invalid')) {
+    if (!$('idLocal').classList.contains('is-invalid') && !$('name').classList.contains('is-invalid')) {
         sessionStorage.removeItem('idLocal')
         e.target.submit();
     }
