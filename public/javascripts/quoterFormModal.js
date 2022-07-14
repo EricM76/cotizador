@@ -125,7 +125,7 @@ const getData = async (target) => {
 
         $('patterns').innerHTML = `<option value = "" selected hidden>Seleccione...</option>`;
         patterns.forEach(pattern => {
-            $('patterns').innerHTML += `<option value="${pattern.id}">${pattern.name}</option>`
+            $('patterns').innerHTML += `<option value="${pattern.id}" ${pattern.id == 3 && target.value == 111 ? 'selected' : pattern.id == 2 && target.value != 111 ? 'selected' : null}  >${pattern.name}</option>`
         })
 
         if (chains.length > 0) {
