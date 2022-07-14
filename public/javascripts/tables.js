@@ -1,3 +1,28 @@
+const confirmDelete = (e) => {
+    e.preventDefault();
+    Swal.fire({
+        title: '¿Está seguro que desea eliminar?',
+        text: "No podrá revertir los cambios",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8B0000',
+        cancelButtonColor: '#C0C0C0',
+        confirmButtonText: 'Confirmar'
+    }).then( async (result) => {
+        if (result.isConfirmed) {
+            e.target.submit()
+            Swal.fire(
+                {
+                    title: 'Eliminado...',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            )
+        }
+    })
+}
+
 const changeVisibility = async (id, visibility,item) => {
     try {
 
