@@ -25,7 +25,9 @@ window.addEventListener("load", async () => {
           title: "Todos los precios fueron actualizados",
           showConfirmButton: false,
           timer: 1500,
+          willClose : () => window.location.href = '/prices'
         });
+        
   }
 
   try {
@@ -211,8 +213,14 @@ $('coefficient') && $('coefficient').addEventListener('focus', () => {
 
 })
 
-$('coefficient') && $('coefficient') && $('coefficient').addEventListener('change', (e) => {
-  e.target.classList.add('is-valid')
+$('coefficient') && $('coefficient') && $('coefficient').addEventListener('keyup', ({target}) => {
+  target.classList.remove('is-invalid')
+  if(target.value !== 0) {
+    $('btn-apply').disabled = false
+  }else{
+    target.classList.add('is-invalid');
+    $('btn-apply').disabled = true
+  }
 })
 
 $('form-updatePriceGlobal') && $('form-updatePriceGlobal').addEventListener('submit', (e) => {
