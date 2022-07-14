@@ -136,10 +136,13 @@ module.exports = {
 
         try {
 
-            await db.Color.update(
+            await db.Pattern.update(
                 { visible: visibility === "true" ? 0 : 1 },
                 { where: { id } }
             )
+            return res.status(200).json({
+                ok: true,
+              });
 
         } catch (error) {
             console.log(error)

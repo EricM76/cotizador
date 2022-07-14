@@ -5,7 +5,9 @@ const changeVisibility = async (id, visibility,item) => {
             method: 'POST'
         });
         let result = await response.json()
-        console.log(result)
+        if(result.ok){
+            window.location.href = `/${item}`
+        }
 
     } catch (error) {
         console.error(error)

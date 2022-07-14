@@ -316,6 +316,9 @@ module.exports = {
         { visible: visibility === "true" ? 0 : 1 },
         { where: { id } }
       );
+      return res.status(200).json({
+        ok: true,
+      });
     } catch (error) {
       console.log(error);
       return res.status(error.status || 500).json({
