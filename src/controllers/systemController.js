@@ -317,11 +317,24 @@ module.exports = {
   },
   remove: async (req, res) => {
     try {
-      await db.System.destroy({ where: { id: req.params.id }});
+      await db.System.destroy({ 
+        where: { 
+          id: req.params.id 
+        }
+      });
       res.redirect("/systems");
     } catch (error) {
       console.log(error);
     }
+  },
+  restore : (req,res) => {
+    db.System.restore({
+      where : {
+        id : req.params.id
+      }
+    })
+      .then( () => res.redirect('/systems'))
+      .catch(error => console.log(error))
   },
   filter: async (req, res) => {
     let { order, filter, keywords, active, pages } = req.query;
