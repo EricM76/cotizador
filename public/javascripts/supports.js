@@ -23,12 +23,24 @@ $('idLocal').addEventListener('keydown', async ({ target }) => {
 
 $('form-support').addEventListener('submit', (e) => {
     e.preventDefault();
+    let error = false;
+    let elements = e.target.elements;
 
     if(!$('idLocal').value){
         $('idLocal').classList.add('is-invalid');
     }
+
+    for (let i = 1; i < elements.length - 1; i++) {
+        if(!elements[i].value){
+            error = true
+        }
+    }
+
+    if($('idLocal').classList.contains('is-invalid')){
+        error = true
+    }
     
-    if (!$('idLocal').classList.contains('is-invalid')) {
+    if (!error) {
         sessionStorage.removeItem('idLocal')
         e.target.submit();
     }

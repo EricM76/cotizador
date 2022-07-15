@@ -65,9 +65,14 @@ module.exports = {
         );
         res.redirect("/supports");
     },
-    remove : (req,res) => {
-        db.Support.destroy({where:{id: req.params.id}})
-        res.redirect('/supports')
+    remove : async (req,res) => {
+        try {
+            await db.Support.destroy({where:{id: req.params.id}})
+            res.redirect('/supports')
+        } catch (error) {
+            console.log(error)
+        }
+        
     },
     filter: async (req, res) => {
 
