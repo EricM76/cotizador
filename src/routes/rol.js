@@ -11,7 +11,7 @@ router
     .get('/detail/:id',detail)
     .get('/edit/:id',edit)
     .put('/update/:id',adminSessionCheck,update)
-    .delete('/remove/:id',adminSessionCheck,remove)
+    //.delete('/remove/:id',adminSessionCheck,remove)
     .get('/filter',filter)
     .post('/api/visibility/:id/:visibility',adminSessionCheck,visibility)
 

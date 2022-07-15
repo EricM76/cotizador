@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { index, add, store, login, processLogin, edit, update, remove, filter, enable, logout, verifyUsername, getIdsLocal, changeAllViewOrders, changeViewOrders} = require('../controllers/userController');
+const { index, add, store, login, processLogin, edit, update, remove, restore, filter, enable, logout, verifyUsername, getIdsLocal, changeAllViewOrders, changeViewOrders} = require('../controllers/userController');
 const loginValidator = require('../validations/loginValidator');
 const registerValidator = require('../validations/registerValidator');
 const adminSessionCheck = require('../middlewares/adminSessionCheck');
@@ -16,8 +16,9 @@ router
     .get('/logout',logout)
     .get('/edit/:id',adminSessionCheck, edit)
     .put('/update/:id',adminSessionCheck, update)
-    .delete('/remove/:id',adminSessionCheck, remove)
+    //.delete('/remove/:id',adminSessionCheck, remove)
     .get('/filter', filter)
+    .get('/restore/:id', adminSessionCheck, restore)
 
     /* apis */
     .post('/api/enable', enable)

@@ -104,10 +104,12 @@
                           <td class="d-flex">
                             <a class="btn btn-sm btn-success mx-1" style="width:33px;"
                               href="/rols/edit/<%= item.id %>"><i class="fas fa-edit"></i></a>
-                            <form action="/rols/remove/<%= item.id %>?_method=delete" method="post">
+                            <!-- <form action="/rols/remove/<%= item.id %>?_method=delete" method="post">
                               <button class="btn btn-sm btn-danger mx-1" style="width:33px;"><i
                                   class="fas fa-trash"></i></button>
-                            </form>
+                            </form> -->
+                            <button class="btn btn-sm btn-danger mx-1 disabled" style="width:33px;"><i
+                                  class="fas fa-trash"></i></button>
                           </td>
                         </tr>
                         <% }) %>

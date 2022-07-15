@@ -149,6 +149,15 @@ module.exports = {
             return res.redirect('/users')
         }).catch(error => console.log(error))
     },
+    restore : (req,res) => {
+        db.User.restore({
+            where : {
+                id : req.params.id
+            }
+        }).then( () => {
+            return res.redirect('/users')
+        }).catch(error => console.log(error))
+    },
     search: (req, res) => {
         res.render('users')
     },
