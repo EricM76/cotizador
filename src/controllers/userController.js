@@ -141,7 +141,13 @@ module.exports = {
 
     },
     remove: (req, res) => {
-        res.render('users')
+        db.User.destroy({
+            where : {
+                id : req.params.id
+            }
+        }).then( () => {
+            return res.redirect('/users')
+        }).catch(error => console.log(error))
     },
     search: (req, res) => {
         res.render('users')
