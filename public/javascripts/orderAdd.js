@@ -113,8 +113,8 @@ $('form-generate-order').addEventListener('submit', (e) => {
  verifyErrors();
 
   if (!empty) {
-    $('btn-backQuotations').classList.add('disabled');
-    $('btn-orderGenerate').classList.add('disabled');
+   /*  $('btn-backQuotations').classList.add('disabled');
+    $('btn-orderGenerate').classList.add('disabled'); */
     let dataOrder = {
       supportOrientations: [],
       clothOrientations: [],
