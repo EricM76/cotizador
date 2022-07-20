@@ -270,6 +270,7 @@ module.exports = {
         {
           association: "quotations",
           include: { all: true },
+          order : [['updatedAt','DESC']]
         },
       ],
     })

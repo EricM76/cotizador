@@ -122,7 +122,7 @@
                         <% items.forEach((item)=> { %>
                           <tr>
                             <th scope="row">
-                              <%= moment(item.date).format('DD-MM-YY HH:mm') %>
+                              <%= moment(item.updatedAt).format('DD-MM-YY HH:mm') %>
                             </th>
                             <% if (locals.userLogin.rol === 1 || locals.userLogin.rol === 2) { %>
                             <td>
