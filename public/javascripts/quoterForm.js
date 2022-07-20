@@ -286,6 +286,7 @@ $('systems').addEventListener('change', async ({ target }) => {
             `
         break
         default:
+            $('clarifications').innerHTML = null;
             break;
     }
 
