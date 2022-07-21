@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const db = require('../database/models');
 const { Op } = require('sequelize');
 const { validationResult } = require('express-validator');
+const moment = require('moment');
 
 module.exports = {
     index: async (req, res) => {
@@ -289,9 +290,20 @@ module.exports = {
         try {
 
             await db.User.update(
-                { enabled: enable === true ? 0 : 1 },
+                { enabled: enable === true ? 0 : 1},
                 { where: { id } }
             )
+
+            let user = await db.User.findByPk(id);
+
+            if(user.enabled){
+                await db.Order.update(
+                    {
+                        userId :id
+                    },
+                    {where:{userId:id}}
+                )
+            }
 
             return res.status(200).json({
                 ok: true,
@@ -315,6 +327,7 @@ module.exports = {
         if (errors.isEmpty()) {
 
             try {
+               
                 let user = await db.User.findOne({
                     where: {
                         username,
@@ -322,7 +335,34 @@ module.exports = {
                     include : [
                         {association : 'rol'}
                     ]
-                })
+                });
+
+                let order = await db.Order.findAll({
+                    where : {
+                        userId : user.id
+                    },
+                    limit : 1,
+                    order : [['id','DESC']]
+                });
+                if(order.length > 0 && moment().diff(moment(order[0].updatedAt),'days')>90){
+                    await db.User.update(
+                        {
+                            enabled : false
+                        },
+                        {
+                            where : {
+                                username
+                            }
+                        }
+                    )
+                    return res.render('login', {
+                        errors: {
+                            username : {
+                                msg: "usuario bloqueado"
+                            }
+                        }
+                    })
+                }
                 req.session.userLogin = {
                     id : user.id,
                     name: user.name,
