@@ -915,11 +915,11 @@ module.exports = {
                 to: [{ email: req.session.userLogin.email }],
                 attachment: [
                   {
-                    url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.pdf',
+                    url: req.protocol + '://' + req.get('host') + '/emails/' + order.orderNumber + '.pdf',
                     name: order.orderNumber + '.pdf'
                   },
                   {
-                    url: 'https://blancomad.com.ar/tickets/' + order.ticket,
+                    url: req.protocol + '://' + req.get('host') + '/tickets/' + order.ticket,
                     name: order.ticket
                   }
                 ],
@@ -946,15 +946,15 @@ module.exports = {
             to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
             attachment: [
               {
-                url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.pdf',
+                url: req.protocol + '://' + req.get('host') + '/emails/' + order.orderNumber + '.pdf',
                 name: order.orderNumber + '.pdf'
               },
               {
-                url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.xls',
+                url: req.protocol + '://' + req.get('host') + '/emails/' + order.orderNumber + '.xls',
                 name: order.orderNumber + '.xls'
               },
               {
-                url: 'https://blancomad.com.ar/tickets/' + order.ticket,
+                url: req.protocol + '://' + req.get('host') + '/tickets/' + order.ticket,
                 name: order.ticket
               }
             ],
@@ -1419,11 +1419,11 @@ module.exports = {
               to: [{ email: user.email }],
               attachment: [
                 {
-                  url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.pdf',
+                  url: req.protocol + '://' + req.get('host') + '/emails/' + order.orderNumber + '.pdf',
                   name: order.orderNumber + '.pdf'
                 },
                 {
-                  url: 'https://blancomad.com.ar/tickets/' + order.ticket,
+                  url: req.protocol + '://' + req.get('host') + '/tickets/' + order.ticket,
                   name: order.ticket
                 }
               ],
@@ -1450,15 +1450,15 @@ module.exports = {
           to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
           attachment: [
             {
-              url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.pdf',
+              url: req.protocol + '://' + req.get('host') + '/emails/' + order.orderNumber + '.pdf',
               name: order.orderNumber + '.pdf'
             },
             {
-              url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.xls',
+              url: req.protocol + '://' + req.get('host') + '/emails/' + order.orderNumber + '.xls',
               name: order.orderNumber + '.xls'
             },
             {
-              url: 'https://blancomad.com.ar/tickets/' + order.ticket,
+              url: req.protocol + '://' + req.get('host') + '/tickets/' + order.ticket,
               name: order.ticket
             }
           ],
