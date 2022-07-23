@@ -915,11 +915,11 @@ module.exports = {
                 to: [{ email: req.session.userLogin.email }],
                 attachment: [
                   {
-                    url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
+                    url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.pdf',
                     name: order.orderNumber + '.pdf'
                   },
                   {
-                    url: 'https://cotizador.portaleric.com/tickets/' + order.ticket,
+                    url: 'https://blancomad.com.ar/tickets/' + order.ticket,
                     name: order.ticket
                   }
                 ],
@@ -946,15 +946,15 @@ module.exports = {
             to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
             attachment: [
               {
-                url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
+                url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.pdf',
                 name: order.orderNumber + '.pdf'
               },
               {
-                url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.xls',
+                url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.xls',
                 name: order.orderNumber + '.xls'
               },
               {
-                url: 'https://cotizador.portaleric.com/tickets/' + order.ticket,
+                url: 'https://blancomad.com.ar/tickets/' + order.ticket,
                 name: order.ticket
               }
             ],
@@ -1419,11 +1419,11 @@ module.exports = {
               to: [{ email: user.email }],
               attachment: [
                 {
-                  url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
+                  url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.pdf',
                   name: order.orderNumber + '.pdf'
                 },
                 {
-                  url: 'https://cotizador.portaleric.com/tickets/' + order.ticket,
+                  url: 'https://blancomad.com.ar/tickets/' + order.ticket,
                   name: order.ticket
                 }
               ],
@@ -1450,15 +1450,15 @@ module.exports = {
           to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
           attachment: [
             {
-              url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.pdf',
+              url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.pdf',
               name: order.orderNumber + '.pdf'
             },
             {
-              url: 'https://cotizador.portaleric.com/emails/' + order.orderNumber + '.xls',
+              url: 'https://blancomad.com.ar/emails/' + order.orderNumber + '.xls',
               name: order.orderNumber + '.xls'
             },
             {
-              url: 'https://cotizador.portaleric.com/tickets/' + order.ticket,
+              url: 'https://blancomad.com.ar/tickets/' + order.ticket,
               name: order.ticket
             }
           ],
