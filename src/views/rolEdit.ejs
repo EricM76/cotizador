@@ -31,7 +31,7 @@
                                 <div class="col-12 col-md-3">
                                     <div class="form-floating">
                                         <input type="number" class="form-control" id="coefficient" name="coefficient"
-                                            placeholder="Coeficiente" value="<%=item.coefficient * 100 %>" required>
+                                            placeholder="Coeficiente" value=<%=(item.coefficient * 100).toFixed(0) %> required>
                                         <label for="coefficient">Coeficiente</label>
                                     </div>
                                   

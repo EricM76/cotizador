@@ -297,11 +297,23 @@ module.exports = {
             let user = await db.User.findByPk(id);
 
             if(user.enabled){
+                let order = await db.Order.findAll({
+                    where : {
+                        userId : id
+                    },
+                    limit : 1,
+                    order : ['updatedAt']
+                })
+        
                 await db.Order.update(
                     {
                         userId :id
                     },
-                    {where:{userId:id}}
+                    {
+                        where: {
+                            id : order[0].id
+                        }
+                    }
                 )
             }
 

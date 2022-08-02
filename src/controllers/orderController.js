@@ -56,7 +56,7 @@ module.exports = {
           },
           { association: "user" },
         ],
-        order: [["createdAt", "DESC"]],
+        order: [["updatedAt", "DESC"]],
         limit: 8,
       });
       let total = db.Order.count();
@@ -92,7 +92,7 @@ module.exports = {
           },
           { association: "user" },
         ],
-        order: [["createdAt", "DESC"]],
+        order: [["updatedAt", "DESC"]],
         limit: 8,
         where: {
           userId: req.session.userLogin.id
@@ -1068,7 +1068,7 @@ module.exports = {
                 },
                 { association: "user" },
               ],
-              order: [["createdAt",'DESC']],
+              order: [["updatedAt",'DESC']],
               limit: 8,
               offset: active && +active * 8 - 8,
               where: {
@@ -1085,7 +1085,7 @@ module.exports = {
                 },
                 { association: "user" },
               ],
-              order: [["createdAt",'DESC']],
+              order: [["updatedAt",'DESC']],
               limit: 8,
               offset: active && +active * 8 - 8,
               //include: { all: true },
@@ -1111,7 +1111,7 @@ module.exports = {
                 },
                 { association: "user" },
               ],
-              order: [["createdAt",'DESC']],
+              order: [["updatedAt",'DESC']],
               limit: 8,
               offset: active && +active * 8 - 8,
               //include: { all: true },
@@ -1136,7 +1136,7 @@ module.exports = {
                   },
                   { association: "user" },
                 ],
-                order: [["createdAt",'DESC']],
+                order: [["updatedAt",'DESC']],
                 limit: 8,
                 offset: active && +active * 8 - 8,
                 //include: { all: true },
@@ -1158,7 +1158,7 @@ module.exports = {
                   },
                   { association: "user" },
                 ],
-                order: [["createdAt",'DESC']],
+                order: [["updatedAt",'DESC']],
                 limit: 8,
                 offset: active && +active * 8 - 8,
                 //include: { all: true },

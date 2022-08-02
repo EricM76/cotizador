@@ -99,7 +99,7 @@
                             <%= item.name %>
                           </td>
                           <td class="text-end pe-5">
-                            <%= item.coefficient * 100 %>%
+                            <%= (item.coefficient * 100).toFixed(0) %>%
                           </td>
                           <td class="d-flex">
                             <a class="btn btn-sm btn-success mx-1" style="width:33px;"
