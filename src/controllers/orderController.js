@@ -706,8 +706,13 @@ module.exports = {
                 },
                 {
                   text: `Orden #${order.orderNumber}`,
-                  alignment: "right",
+                  alignment: "center",
                   fontSize: 18,
+                },
+                {
+                  text: `VENDEDOR: ${req.session.userLogin.name} ${req.session.userLogin.surname}`,
+                  alignment: "right",
+                  fontSize: 14,
                 },
               ],
               margin: [20, 30],
@@ -1443,11 +1448,11 @@ module.exports = {
           sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
           subject: 'Orden #{{params.order}}',
           params: {
-            userName: user.name,
+            userName: user.name + ' ' + user.surname,
             userEmail: user.email,
             order: order.orderNumber
           },
-          to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
+          to: [{ email: 'info@blancomad.com' }],
           attachment: [
             {
               url: req.protocol + '://' + req.get('host') + '/emails/' + order.orderNumber + '.pdf',
