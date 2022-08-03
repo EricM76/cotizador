@@ -721,7 +721,7 @@ module.exports = {
               columns: [
                 `Observaciones: ${order.observations}`,
                 {
-                  text: `Fecha: ${moment().format("DD/MM/YY")}`,
+                  text: `Fecha: ${moment().format("DD/MM/YY HH:mm")}`,
                   alignment: "right",
                 },
               ],
@@ -815,8 +815,13 @@ module.exports = {
                 },
                 {
                   text: `Orden #${order.orderNumber}`,
-                  alignment: "right",
+                  alignment: "center",
                   fontSize: 18,
+                },
+                {
+                  text: `MEDIDOR: ${req.session.userLogin.name} ${req.session.userLogin.surname}`,
+                  alignment: "right",
+                  fontSize: 14,
                 },
               ],
               margin: [20, 30],
@@ -945,10 +950,11 @@ module.exports = {
             subject: 'Orden #{{params.order}}',
             params: {
               userName: req.session.userLogin.name,
+              userSurname : req.session.userLogin.surname,
               userEmail: req.session.userLogin.email,
               order: order.orderNumber
             },
-            to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
+            to: [{ email: 'info@blancomad.com' }],
             attachment: [
               {
                 url: req.protocol + '://' + req.get('host') + '/emails/' + order.orderNumber + '.pdf',
@@ -963,7 +969,7 @@ module.exports = {
                 name: order.ticket
               }
             ],
-            htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{params.userName}}. </p></body></html>',
+            htmlContent: '<html><body><h1>Cotizador Blancomad</h1><p>Se adjunta planilla de la orden #{{params.order}}.\nVendedor/a: {{params.userName}} {{params.userSurname}}. </p></body></html>',
           },
         };
 
