@@ -947,7 +947,7 @@ module.exports = {
           },
           data: {
             sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
-            subject: 'Orden #{{params.order}}',
+            subject: '{{userName}} {{userSurname}}. Orden #{{params.order}}',
             params: {
               userName: req.session.userLogin.name,
               userSurname : req.session.userLogin.surname,
