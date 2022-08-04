@@ -93,9 +93,13 @@
                       <div class="col-12 col-md-6 col-lg-3 mb-3">
                         <div class="form-floating">
                         <select class="form-select" id="support-orientation" name="supportOrientation" onchange="this.classList.remove('is-invalid'); verifyErrors()">
+                          <% if (system.id == 119) { %>
+                            <option selected value="NO APLICA">No aplica</option>
+                            <% }else{ %>
                           <option selected hidden value="">Seleccione...</option>
                           <option value="PARED">Pared</option>
                           <option value="TECHO">Techo</option>
+                          <% } %>
                         </select>
                         <label for="support-orientation">Orientación soporte</label>
                       </div>
@@ -117,7 +121,7 @@
                       <div class="col-12 col-md-6 col-lg-2 mb-3">
                         <div class="form-floating">
                         <select class="form-select" id="command" name="command" onchange="this.classList.remove('is-invalid'); verifyErrors()" >
-                          <% if (system.id == 127 || system.id == 114) { %>
+                          <% if (system.id == 127 || system.id == 114 || system.id == 119) { %>
                             <option selected value="NO APLICA">No aplica</option>
                           <% }else{ %>
                           <option selected hidden value="">Seleccione...</option>
