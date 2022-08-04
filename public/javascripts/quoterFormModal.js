@@ -180,6 +180,21 @@ $('systems').addEventListener('change', async ({ target }) => {
         $('heigth-box').classList.add('box-hidden');
 
         $('large').value = null;
+    
+        /* 119: VISILLO */
+    } else if (target.value == 119) { 
+        $('heigth-box').classList.remove('box-hidden');
+        $('colors-box').classList.remove('box-hidden');
+        $('width-box').classList.remove('box-hidden');
+        $('cloths-box').classList.remove('box-hidden');
+
+        $('large-box').classList.add('box-hidden');
+        $('railWidth-box').classList.add('box-hidden');
+        $('supports-box').classList.add('box-hidden');
+        $('patterns-box').classList.add('box-hidden');
+        $('chains-box').classList.add('box-hidden');
+
+        $('large').value = null;
 
         /* 179: BANDAS */
     } else if (target.value == 179) {
@@ -369,6 +384,7 @@ $('large').addEventListener('change', ({ target }) => {
 $('width').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
+        case '119': //visillo
             if (+target.value > 270) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
                 target.classList.add('is-invalid')
@@ -464,6 +480,7 @@ $('railWidth').addEventListener('blur', ({ target }) => {
 $('heigth').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
+        case '119': //visillo
             if (+target.value > 300) {
                 $('errorHeigth').innerHTML = `El alto máximo permitido es de 300cm`;
                 target.classList.add('is-invalid')
@@ -555,6 +572,14 @@ $('form-quoter').addEventListener('submit', async (e) => {
         $('heigth').value = 0;
         $('width').value = 0;
         $('railWidth').value = 0;
+
+    } else if ($('systems').value == 119) { //visillo
+        $('supports').value = 18 //soporte: ninguno;
+        $('patterns').value = 6; //modelo: ninguno
+        $('chains').value = 6; //cadena: 0.0
+        $('railWidth').value = 0;
+        $('large').value = 0;
+
     } else if ($('systems').value == 179) {
         $('large').value = 0;
         $('width').value = 0;
