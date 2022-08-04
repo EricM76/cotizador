@@ -916,7 +916,7 @@ module.exports = {
           },
           data: {
             sender: { 'email': 'info@blancomad.com', 'name': 'Cotizador Blancomad' },
-            subject: '{{params.userName}} {{params.userSurname}}. Orden #{{params.order}}',
+            subject: 'Orden #{{params.order}}',
             params: {
               userName: req.session.userLogin.name,
               userSurname: req.session.userLogin.surname,
@@ -948,7 +948,7 @@ module.exports = {
           },
           data: {
             sender: { 'email': 'cotizadorblancomad@gmail.com', 'name': 'Cotizador Blancomad' },
-            subject: 'Orden #{{params.order}}',
+            subject: '{{params.userName}} {{params.userSurname}}. Orden #{{params.order}}',
             params: {
               userName: req.session.userLogin.name,
               userSurname : req.session.userLogin.surname,
