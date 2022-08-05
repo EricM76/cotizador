@@ -85,33 +85,59 @@ function updateTotal() {
 }
 
 $('ticket') && $('ticket').addEventListener('change', e => {
-    let regExExt = /(.jpg|.jpeg|.png|.gif|.webp)$/i;
+    let regExExt = /(.pdf|.jpg|.jpeg|.png|.gif|.webp)$/i;
 
     switch (true) {
         case $('ticket').value !== "" && !regExExt.exec($('ticket').value):
-            $('ticketError').innerHTML = "El comprobante debe ser una imagen (jpg, jpeg, png, gif, webp)"
-            vistaPrevia.src = ""
+            $('ticketError').innerHTML = "El comprobante debe ser una imagen (jpg, jpeg, png, gif, webp) o un PDF"
+            vistaPrevia.hidden = true;
+            /* vistaPrevia.src = ""; */
+            Swal.fire(
+                {
+                    title: 'Upss... hubo un problema en la carga del comprobante',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            )
             break;
 
         default:
             $('ticketError').innerHTML = "";
-            $('btnTicket').innerHTML = "Reemplar comprobante"
-            $('btnDeletePreview').innerHTML = "<i class='fas fa-times-circle bg-white rounded-circle'></i>"
-            let reader = new FileReader();
+             $('btnTicket').innerHTML = "Reemplazar comprobante"
+             $('btnDeletePreview').innerHTML = "<i class='fas fa-times-circle bg-white rounded-circle'></i>"
+           /* let reader = new FileReader();
             reader.readAsDataURL(e.target.files[0])
             reader.onload = () => {
                 $('vistaPrevia').src = reader.result
-            }
+            } */
+            vistaPrevia.hidden = false
+            Swal.fire(
+                {
+                    title: 'Comprobante agregado',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            )
             break;
     }
 });
 
 $('btnDeletePreview').addEventListener('click', (e) => {
     e.preventDefault();
-    $('ticket').files[0] = null;
-    $('vistaPrevia').src = null;
+    $('ticket').value = null;
+    $('vistaPrevia').hidden = true;
     $('btnDeletePreview').innerHTML = null;
-    $('btnTicket').innerHTML = "Comprobante depósito"
+    $('btnTicket').innerHTML = "Comprobante depósito";
+    Swal.fire(
+        {
+            title: 'Comprobante eliminado',
+            icon: 'warning',
+            showConfirmButton: false,
+            timer: 2000
+        }
+    )
 
 })
 

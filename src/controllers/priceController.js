@@ -119,6 +119,20 @@ module.exports = {
         updateOnDuplicate: ["amount"],
       });
 
+       /* grilla de precios por medida */
+       data = await db.Grid.findAll();
+       prices = data.map((item) => {
+         return {
+           id: item.id,
+           price: item.price + item.price * coefficient,
+         };
+       });
+ 
+       await db.Grid.bulkCreate(prices, {
+         updateOnDuplicate: ["price"],
+       });
+ 
+
       /* precio de telas */
       data = await db.Cloth.findAll();
       prices = data.map((item) => {
