@@ -19,31 +19,37 @@ observations.addEventListener('keyup', ({ target }) => {
 
 
 $('ticket') && $('ticket').addEventListener('change', e => {
-    let regExExt = /(.jpg|.jpeg|.png|.gif|.webp)$/i;
+    let regExExt = /(.pdf|.jpg|.jpeg|.png|.gif|.webp)$/i;
 
     switch (true) {
         case $('ticket').value !== "" && !regExExt.exec($('ticket').value):
-            $('ticketError').innerHTML = "El comprobante debe ser una imagen (jpg, jpeg, png, gif, webp)"
-            vistaPrevia.src = ""
+            $('ticketError').innerHTML = "El comprobante debe ser una imagen (jpg, jpeg, png, gif, webp) o un PDF"
+            vistaPrevia.hidden = true;
+            /* vistaPrevia.src = ""; */
             break;
 
         default:
             $('ticketError').innerHTML = "";
-             $('btnTicket').innerHTML = "Reemplar comprobante"
+             $('btnTicket').innerHTML = "Reemplazar comprobante"
              $('btnDeletePreview').innerHTML = "<i class='fas fa-times-circle bg-white rounded-circle'></i>"
-           let reader = new FileReader();
+           /* let reader = new FileReader();
             reader.readAsDataURL(e.target.files[0])
             reader.onload = () => {
                 $('vistaPrevia').src = reader.result
-            }
+            } */
+            vistaPrevia.hidden = false
+
             break;
     }
 });
 
 $('btnDeletePreview').addEventListener('click', (e) => {
     e.preventDefault();
-    $('ticket').files[0] = null;
-    $('vistaPrevia').src = null;
+    $('ticket').value = null;
+    console.log('====================================');
+    console.log($('ticket'));
+    console.log('====================================');
+    $('vistaPrevia').hidden = true;
     $('btnDeletePreview').innerHTML = null;
     $('btnTicket').innerHTML = "Comprobante depósito"
 

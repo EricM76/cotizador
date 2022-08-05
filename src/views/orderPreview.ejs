@@ -31,7 +31,7 @@
                         <div class="ms-2 ">
                           <span class="small text-danger" id="ticketError"></span>
                           <div class="position-relative">
-                            <img src="" alt="" id="vistaPrevia" height="80px">
+                            <img src="/images/ticket.png" alt="" id="vistaPrevia" height="80px" hidden>
                             <a href="" class="text-danger h6 position-absolute top-0 end-0" id="btnDeletePreview"></a>
                           </div>
                        
@@ -159,7 +159,7 @@
               <button type="button" class="btn btn-outline-dark mb-2 ms-2" id="btn-accessory" data-bs-toggle="modal" data-bs-target="#accessoryModal">Accesorios</button>
               <% if (locals.userLogin.rolName !== "medidor") { %>
               <label for="ticket" class="btn btn-outline-dark mb-2 ms-2" id="btnTicket">Comprobante depósito</label>
-              <input class="" type="file" id="ticket" name="ticket" accept="image/*" hidden>   
+              <input class="" type="file" id="ticket" name="ticket" accept=".pdf,image/*" hidden>   
               <% } %>           
               <button type="submit" class="btn btn-primary mb-2 ms-2" id="btn-submit">Enviar pedido</button>
             </div>
