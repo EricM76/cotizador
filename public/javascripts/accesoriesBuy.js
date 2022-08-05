@@ -92,6 +92,14 @@ $('ticket') && $('ticket').addEventListener('change', e => {
             $('ticketError').innerHTML = "El comprobante debe ser una imagen (jpg, jpeg, png, gif, webp) o un PDF"
             vistaPrevia.hidden = true;
             /* vistaPrevia.src = ""; */
+            Swal.fire(
+                {
+                    title: 'Upss... hubo un problema en la carga del comprobante',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            )
             break;
 
         default:
@@ -104,7 +112,14 @@ $('ticket') && $('ticket').addEventListener('change', e => {
                 $('vistaPrevia').src = reader.result
             } */
             vistaPrevia.hidden = false
-
+            Swal.fire(
+                {
+                    title: 'Comprobante agregado',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            )
             break;
     }
 });
@@ -112,12 +127,17 @@ $('ticket') && $('ticket').addEventListener('change', e => {
 $('btnDeletePreview').addEventListener('click', (e) => {
     e.preventDefault();
     $('ticket').value = null;
-    console.log('====================================');
-    console.log($('ticket'));
-    console.log('====================================');
     $('vistaPrevia').hidden = true;
     $('btnDeletePreview').innerHTML = null;
-    $('btnTicket').innerHTML = "Comprobante depósito"
+    $('btnTicket').innerHTML = "Comprobante depósito";
+    Swal.fire(
+        {
+            title: 'Comprobante eliminado',
+            icon: 'warning',
+            showConfirmButton: false,
+            timer: 2000
+        }
+    )
 
 })
 
