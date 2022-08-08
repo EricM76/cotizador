@@ -9,13 +9,16 @@ module.exports = {
     res.render("messagePremiumStandard");
   },
   width: async (req, res) => {
-    const items = await db.Cloth.findAll({ where: { visible: true },order:[['name','ASC']] });
+    const items = await db.Cloth.findAll({ where: { visible: true, width: {[Op.gt] : 0} },order:[['name','ASC']] });
     res.render("clothWidth", { items, total: items.length });
   },
   search: async (req, res) => {
     const items = await db.Cloth.findAll({
       where: {
         visible: true,
+        width : {
+          [Op.gt] : 0
+        },
         name: {
             [Op.like]: `%${req.query.search}%`,
           }
