@@ -541,6 +541,48 @@ $('railWidth').addEventListener('blur', ({ target }) => {
         target.classList.remove('is-invalid')
     }
 })
+
+$('heigth').addEventListener('keyup', (event) => {
+    const {target, keyCode} = event;
+   /*  if(keyCode == 188 || keyCode == 190 ) {
+        target.classList.add('is-invalid')
+        $('errorHeigth').innerHTML = `El ancho debe ser expresado en 'cm'`;
+    }else {
+        target.classList.remove('is-invalid')
+        $('errorHeigth').innerHTML = null;
+    } */
+    let text;
+    if ($('systems').value === "113") {
+            switch (true) {
+                case target.value && +target.value <= 200:
+                    text = "Largo de cadena recomendada 2.00 mts"
+                    break;
+                case target.value && +target.value <= 225:
+                    text = "Largo de cadena recomendada 2.50 mts"
+                    break;
+                case target.value && +target.value <= 250:
+                    text = "Largo de cadena recomendada 3.00 mts"
+                    break;
+                case target.value && +target.value <= 275:
+                    text = "Largo de cadena recomendada 3.50 mts"
+                    break;
+                case target.value && +target.value <= 300:
+                    text = "Largo de cadena recomendada 4.00 mts"
+                    break;
+                case target.value && +target.value <= 325:
+                    text = "Largo de cadena recomendada 4.50 mts"
+                    break;
+                case target.value && +target.value <= 350:
+                    text = "Largo de cadena recomendada 5.00 mts"
+                    break;
+                default:
+                    text = "Todos los campos son obligatorios"
+                    break;
+            }
+            $('message').innerHTML = text;
+    }
+})
+
 $('heigth').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
@@ -605,6 +647,78 @@ $('heigth').addEventListener('change', ({ target }) => {
             break;
     }
 })
+
+$('heigth').addEventListener('blur', ({target}) => {
+    $('message').innerHTML = "Todos los campos son obligatorios";
+    const regex = /[,.]/g;
+
+    let text =  $('errorHeigth').innerHTML
+    if(target.value && (target.value < 10 || regex.test(target.value))) {
+        $('errorHeigth').innerHTML = `La medida debe ser expresada en centímetros`;
+        target.classList.add('is-invalid')
+    }else {
+        
+        $('errorHeigth').innerHTML = null;
+        !text && target.classList.remove('is-invalid')
+    }
+
+    if(!target.value){
+        target.classList.add('is-invalid')
+        $('errorHeigth').innerHTML = null;
+    }
+    
+}); 
+
+$('width').addEventListener('blur', ({target}) => {
+
+    const regex = /[,.]/g;
+    if(target.value && (regex.test(target.value) || target.value < 10)) {
+        target.classList.add('is-invalid')
+        $('errorWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
+    }
+
+    if(!target.value){
+        target.classList.add('is-invalid')
+        $('errorWidth').innerHTML = null;
+    }
+});
+
+$('railWidth').addEventListener('blur', ({target}) => {
+
+    const regex = /[,.]/g;
+    if(target.value && (regex.test(target.value) || target.value < 10)) {
+        target.classList.add('is-invalid')
+        $('errorRailWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
+    }
+
+    if(!target.value){
+        target.classList.add('is-invalid')
+        $('errorRailWidth').innerHTML = null;
+    }
+});
+
+$('large').addEventListener('blur', ({target}) => {
+
+    const regex = /[,.]/g;
+
+    if(!target.value){
+        target.classList.add('is-invalid')
+        $('errorLarge').innerHTML = null;
+    }
+
+    if(target.value && (regex.test(target.value) || target.value < 10)) {
+        target.classList.add('is-invalid')
+        $('errorLarge').innerHTML = `El largo debe ser expresado en centímetros`;
+    }
+
+    if(target.value >= 10){
+        target.classList.remove('is-invalid')
+        $('errorLarge').innerHTML = null;
+    }
+
+   
+});
+
 $('reference').addEventListener('blur', ({ target }) => {
     if (!target.value) {
         target.classList.add('is-invalid')

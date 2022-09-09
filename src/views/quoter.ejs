@@ -80,11 +80,12 @@
                         <input type="text" class="form-control" id="railWidth" name="railWidth" required>
                         <label for="railWidth">Ancho de riel (cm)</label>
                       </div>
+                      <span id="errorRailWidth" class="text-danger ms-3"></span>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4 mb-3 box-hidden" id="large-box">
                       <div class="form-floating" >
                         <input type="text" class="form-control" id="large" name="large" required>
-                        <label for="large">Largo</label>
+                        <label for="large">Largo (cm)</label>
                       </div>
                       <span id="errorLarge" class="text-danger ms-3"></span>
 
@@ -115,7 +116,7 @@
                           <label for="systems">Rol</label>
                         </div>
                       <% }else{ %>
-                      <div class="alert alert-warning" >
+                      <div class="alert alert-warning" id="message">
                         Todos los campos son obligatorios.
                       </div>
                       <% } %>
