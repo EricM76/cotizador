@@ -137,6 +137,12 @@ const getData = async (target) => {
         $('large').value = null;
         $('heigth').value = null;
         $('reference').value = null;
+        
+        $('suggestionHeigth').innerHTML = null;
+        $('suggestionHeigth').classList.remove('alert-warning');
+
+        $('errorLarge').innerHTML = null;
+
     } catch (error) {
         console.error(error)
     }
@@ -428,7 +434,7 @@ $('chains').addEventListener('blur', ({ target }) => {
     }
 })
 
-$('large').addEventListener('change', ({ target }) => {
+/* $('large').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '127': //cenefa
             if (+target.value > 280) {
@@ -445,7 +451,7 @@ $('large').addEventListener('change', ({ target }) => {
         default:
             break;
     }
-})
+}) */
 
 $('width').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
@@ -527,10 +533,12 @@ $('width').addEventListener('change', ({ target }) => {
 $('large').addEventListener('change', ({ target }) => {
     if (+target.value > 280) {
         target.classList.add('is-invalid')
+        $('errorLarge').innerHTML = `El largo máximo permitido es de 280 cm`;
     } else if (!target.value) {
         target.classList.add('is-invalid')
     } else {
-        target.classList.remove('is-invalid')
+        target.classList.remove('is-invalid');
+        $('errorLarge').innerHTML = null
     }
 })
 
@@ -544,42 +552,40 @@ $('railWidth').addEventListener('blur', ({ target }) => {
 
 $('heigth').addEventListener('keyup', (event) => {
     const {target, keyCode} = event;
-   /*  if(keyCode == 188 || keyCode == 190 ) {
-        target.classList.add('is-invalid')
-        $('errorHeigth').innerHTML = `El ancho debe ser expresado en 'cm'`;
-    }else {
-        target.classList.remove('is-invalid')
-        $('errorHeigth').innerHTML = null;
-    } */
     let text;
     if ($('systems').value === "113") {
             switch (true) {
-                case target.value && +target.value <= 200:
+                case target.value > 10 && +target.value <= 200:
                     text = "Largo de cadena recomendada 2.00 mts"
                     break;
-                case target.value && +target.value <= 225:
+                case target.value > 10 && +target.value <= 225:
                     text = "Largo de cadena recomendada 2.50 mts"
                     break;
-                case target.value && +target.value <= 250:
+                case target.value > 10 && +target.value <= 250:
                     text = "Largo de cadena recomendada 3.00 mts"
                     break;
-                case target.value && +target.value <= 275:
+                case target.value > 10 && +target.value <= 275:
                     text = "Largo de cadena recomendada 3.50 mts"
                     break;
-                case target.value && +target.value <= 300:
+                case target.value > 10 && +target.value <= 300:
                     text = "Largo de cadena recomendada 4.00 mts"
                     break;
-                case target.value && +target.value <= 325:
+                case target.value > 10 && +target.value <= 325:
                     text = "Largo de cadena recomendada 4.50 mts"
                     break;
-                case target.value && +target.value <= 350:
+                case target.value > 10 && +target.value <= 350:
                     text = "Largo de cadena recomendada 5.00 mts"
                     break;
                 default:
-                    text = "Todos los campos son obligatorios"
+                    $('suggestionHeigth').innerHTML = null;
+                    $('suggestionHeigth').classList.remove('alert-warning')
                     break;
             }
-            $('message').innerHTML = text;
+            if(text){
+                $('suggestionHeigth').classList.add('alert-warning')
+                $('suggestionHeigth').innerHTML = `<i class="fas fa-info-circle"></i> ${text}` ;
+            }
+          
     }
 })
 
@@ -649,17 +655,12 @@ $('heigth').addEventListener('change', ({ target }) => {
 })
 
 $('heigth').addEventListener('blur', ({target}) => {
-    $('message').innerHTML = "Todos los campos son obligatorios";
     const regex = /[,.]/g;
 
     let text =  $('errorHeigth').innerHTML
     if(target.value && (target.value < 10 || regex.test(target.value))) {
         $('errorHeigth').innerHTML = `La medida debe ser expresada en centímetros`;
         target.classList.add('is-invalid')
-    }else {
-        
-        $('errorHeigth').innerHTML = null;
-        !text && target.classList.remove('is-invalid')
     }
 
     if(!target.value){
@@ -689,6 +690,9 @@ $('railWidth').addEventListener('blur', ({target}) => {
     if(target.value && (regex.test(target.value) || target.value < 10)) {
         target.classList.add('is-invalid')
         $('errorRailWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
+    }else {
+        target.classList.remove('is-invalid')
+        $('errorRailWidth').innerHTML = null;
     }
 
     if(!target.value){
@@ -709,14 +713,8 @@ $('large').addEventListener('blur', ({target}) => {
     if(target.value && (regex.test(target.value) || target.value < 10)) {
         target.classList.add('is-invalid')
         $('errorLarge').innerHTML = `El largo debe ser expresado en centímetros`;
-    }
+    } 
 
-    if(target.value >= 10){
-        target.classList.remove('is-invalid')
-        $('errorLarge').innerHTML = null;
-    }
-
-   
 });
 
 $('reference').addEventListener('blur', ({ target }) => {
@@ -727,9 +725,10 @@ $('reference').addEventListener('blur', ({ target }) => {
     }
 })
 
-$('rol') && $('rol').addEventListener('change', async () => {
+$('rol') && $('rol').addEventListener('change', async ({target}) => {
 
     if ($('systems').value) {
+        target.classList.remove('is-invalid') 
 
         await sendForm()
 
@@ -830,6 +829,10 @@ const sendForm = async () => {
                 })
             });
             const result = await response.json();
+
+            $('suggestionHeigth').classList.remove('alert-warning')
+            $('suggestionHeigth').innerHTML = null;
+
             if (result.ok) {
                 console.log('====================================');
                 console.log('RESPUESTA DE LA API', result.ok);
@@ -848,6 +851,7 @@ const sendForm = async () => {
                 $('amount-box').classList.add('alert-danger')
                 $('amount-box').removeAttribute('hidden', false)
                 $('amount').classList.add('h6')
+                $('amount').classList.add('py-2')
                 $('amount').classList.remove('h4')
                 $('amount').innerHTML = `El producto no se encuentra en la lista de precios`
             }

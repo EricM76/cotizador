@@ -141,6 +141,13 @@ const getData = async (target) => {
         $('large').value = null;
         $('heigth').value = null;
         $('referenceQuoter').value = null;
+
+        $('suggestionHeigth').innerHTML = null;
+        $('suggestionHeigth').classList.remove('alert-warning');
+
+        $('errorLarge').innerHTML = null;
+
+
     } catch (error) {
         console.error(error)
     }
@@ -359,7 +366,7 @@ $('chains').addEventListener('blur', ({ target }) => {
         target.classList.remove('is-invalid')
     }
 })
-
+/* 
 $('large').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '127': //cenefa
@@ -377,7 +384,7 @@ $('large').addEventListener('change', ({ target }) => {
         default:
             break;
     }
-})
+}) */
 
 
 
@@ -461,11 +468,13 @@ $('width').addEventListener('change', ({ target }) => {
 /* GUIAS */
 $('large').addEventListener('change', ({ target }) => {
     if (+target.value > 280) {
-        target.classList.add('is-invalid')
+        target.classList.add('is-invalid');
+        $('errorLarge').innerHTML = `El largo máximo permitido es de 280 cm`;
     } else if (!target.value) {
         target.classList.add('is-invalid')
     } else {
-        target.classList.remove('is-invalid')
+        target.classList.remove('is-invalid');
+        $('errorLarge').innerHTML = null;
     }
 });
 
@@ -477,12 +486,51 @@ $('railWidth').addEventListener('blur', ({ target }) => {
     }
 })
 
+$('heigth').addEventListener('keyup', (event) => {
+    const {target, keyCode} = event;
+    let text;
+    if ($('systems').value === "113") {
+            switch (true) {
+                case target.value > 10 && +target.value <= 200:
+                    text = "Largo de cadena recomendada 2.00 mts"
+                    break;
+                case target.value > 10 && +target.value <= 225:
+                    text = "Largo de cadena recomendada 2.50 mts"
+                    break;
+                case target.value > 10 && +target.value <= 250:
+                    text = "Largo de cadena recomendada 3.00 mts"
+                    break;
+                case target.value > 10 && +target.value <= 275:
+                    text = "Largo de cadena recomendada 3.50 mts"
+                    break;
+                case target.value > 10 && +target.value <= 300:
+                    text = "Largo de cadena recomendada 4.00 mts"
+                    break;
+                case target.value > 10 && +target.value <= 325:
+                    text = "Largo de cadena recomendada 4.50 mts"
+                    break;
+                case target.value > 10 && +target.value <= 350:
+                    text = "Largo de cadena recomendada 5.00 mts"
+                    break;
+                default:
+                    $('suggestionHeigth').innerHTML = null;
+                    $('suggestionHeigth').classList.remove('alert-warning')
+                    break;
+            }
+            if(text){
+                $('suggestionHeigth').classList.add('alert-warning')
+                $('suggestionHeigth').innerHTML = `<i class="fas fa-info-circle"></i> ${text}` ;
+            }
+          
+    }
+})
+
 $('heigth').addEventListener('change', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
             if (+target.value > 300) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300cm`;
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
@@ -493,7 +541,7 @@ $('heigth').addEventListener('change', ({ target }) => {
             break;
         case '111': //romanas
             if (+target.value > 260) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 260cm`;
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 260 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
@@ -504,7 +552,7 @@ $('heigth').addEventListener('change', ({ target }) => {
             break;
         case '112': //paneles orientales
             if (+target.value > 310) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 310cm`;
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 310 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
@@ -540,7 +588,65 @@ $('heigth').addEventListener('change', ({ target }) => {
         default:
             break;
     }
-})
+});
+
+$('heigth').addEventListener('blur', ({target}) => {
+    const regex = /[,.]/g;
+
+    let text =  $('errorHeigth').innerHTML
+    if(target.value && (target.value < 10 || regex.test(target.value))) {
+        $('errorHeigth').innerHTML = `La medida debe ser expresada en centímetros`;
+        target.classList.add('is-invalid')
+    }
+
+    if(!target.value){
+        target.classList.add('is-invalid')
+        $('errorHeigth').innerHTML = null;
+    }
+    
+}); 
+
+$('width').addEventListener('blur', ({target}) => {
+
+    const regex = /[,.]/g;
+    if(target.value && (regex.test(target.value) || target.value < 10)) {
+        target.classList.add('is-invalid')
+        $('errorWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
+    }
+
+    if(!target.value){
+        target.classList.add('is-invalid')
+        $('errorWidth').innerHTML = null;
+    }
+});
+
+$('railWidth').addEventListener('blur', ({target}) => {
+
+    const regex = /[,.]/g;
+    if(target.value && (regex.test(target.value) || target.value < 10)) {
+        target.classList.add('is-invalid')
+        $('errorRailWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
+    }else {
+        target.classList.remove('is-invalid')
+        $('errorRailWidth').innerHTML = null;
+    }
+
+    if(!target.value){
+        target.classList.add('is-invalid')
+        $('errorRailWidth').innerHTML = null;
+    }
+});
+
+$('large').addEventListener('blur', ({target}) => {
+
+    const regex = /[,.]/g;
+
+    if(target.value && (regex.test(target.value) || target.value < 10)) {
+        target.classList.add('is-invalid')
+        $('errorLarge').innerHTML = `El largo debe ser expresado en centímetros`;
+    }
+
+});
 $('referenceQuoter').addEventListener('blur', ({ target }) => {
     if (!target.value) {
         target.classList.add('is-invalid')
