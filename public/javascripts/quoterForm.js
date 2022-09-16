@@ -453,25 +453,20 @@ $('chains').addEventListener('blur', ({ target }) => {
     }
 }) */
 
-$('width').addEventListener('change', ({ target }) => {
+$('width').addEventListener('keyup', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
             if (+target.value > 270) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
                 target.classList.add('is-invalid')
-            } else if (!target.value) {
-                target.classList.add('is-invalid')
             } else {
-                target.classList.remove('is-invalid')
                 $('errorWidth').innerHTML = null
             }
             break;
         case '111': //romanas
             if (+target.value > 170) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 170 cm`;
-                target.classList.add('is-invalid')
-            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorWidth').innerHTML = null
@@ -481,8 +476,6 @@ $('width').addEventListener('change', ({ target }) => {
         case '112': //paneles orientales
             if (+target.value > 350) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 350 cm`;
-                target.classList.add('is-invalid')
-            } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
                 $('errorWidth').innerHTML = null;
@@ -494,6 +487,73 @@ $('width').addEventListener('change', ({ target }) => {
             if (+target.value > 280) {
                 $('errorWidth').innerHTML = `El ancho máximo permitido es de 280 cm`;
                 target.classList.add('is-invalid')
+            } else {
+                $('errorWidth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break
+        case '179': //bandas verticales
+            if (+target.value > 300) {
+                $('errorWidth').innerHTML = `El ancho máximo permitido es de 300 cm`;
+                target.classList.add('is-invalid')
+            } else {
+                $('errorWidth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break
+        case '116': //triple pellizco
+        case '129': //pellizco simple
+        case '130': //pellizco doble
+            if (+target.value > 270) {
+                $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
+                target.classList.add('is-invalid')
+            } else {
+                $('errorWidth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break
+        default:
+            break;
+    }
+})
+
+$('width').addEventListener('blur', ({ target }) => {
+    switch ($('systems').value) {
+        case '113': //roller
+        case '119': //visillo
+            if (+target.value > 270) {
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                target.classList.remove('is-invalid')
+                $('errorWidth').innerHTML = null
+            }
+            break;
+        case '111': //romanas
+            if (+target.value > 170) {
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorWidth').innerHTML = null
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '112': //paneles orientales
+            if (+target.value > 350) {
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorWidth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+
+        case '114': //guias (laterales)
+            if (+target.value > 280) {
+                target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
@@ -503,7 +563,6 @@ $('width').addEventListener('change', ({ target }) => {
             break
         case '179': //bandas verticales
             if (+target.value > 300) {
-                $('errorWidth').innerHTML = `El ancho máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
@@ -516,7 +575,6 @@ $('width').addEventListener('change', ({ target }) => {
         case '129': //pellizco simple
         case '130': //pellizco doble
             if (+target.value > 270) {
-                $('errorWidth').innerHTML = `El ancho máximo permitido es de 270 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
@@ -530,10 +588,19 @@ $('width').addEventListener('change', ({ target }) => {
     }
 })
 //guias (laterales)
-$('large').addEventListener('change', ({ target }) => {
+$('large').addEventListener('keyup', ({ target }) => {
     if (+target.value > 280) {
         target.classList.add('is-invalid')
         $('errorLarge').innerHTML = `El largo máximo permitido es de 280 cm`;
+    } else {
+        target.classList.remove('is-invalid');
+        $('errorLarge').innerHTML = null
+    }
+});
+
+$('large').addEventListener('blur', ({ target }) => {
+    if (+target.value > 280) {
+        target.classList.add('is-invalid')
     } else if (!target.value) {
         target.classList.add('is-invalid')
     } else {
@@ -589,7 +656,62 @@ $('heigth').addEventListener('keyup', (event) => {
     }
 })
 
-$('heigth').addEventListener('change', ({ target }) => {
+$('heigth').addEventListener('keyup', ({ target }) => {
+    switch ($('systems').value) {
+        case '113': //roller
+        case '119': //visillo
+            if (+target.value > 300) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '111': //romanas
+            if (+target.value > 260) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 260 cm`;
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '112': //paneles orientales
+            if (+target.value > 310) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 310 cm`;
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '116': //triple pellizco
+        case '129': //pellizco simple
+        case '130': //pellizco doble
+            if (+target.value > 250) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '179': //bandas verticales
+            if (+target.value > 250) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break
+        default:
+            break;
+    }
+});
+
+$('heigth').addEventListener('blur', ({ target }) => {
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
@@ -652,7 +774,7 @@ $('heigth').addEventListener('change', ({ target }) => {
         default:
             break;
     }
-})
+});
 
 $('heigth').addEventListener('blur', ({target}) => {
     const regex = /[,.]/g;
