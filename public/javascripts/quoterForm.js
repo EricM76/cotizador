@@ -453,7 +453,7 @@ $('chains').addEventListener('blur', ({ target }) => {
     }
 }) */
 
-$('width').addEventListener('keyup', ({ target }) => {
+const checkWidthMax = (target) => {
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
@@ -515,9 +515,9 @@ $('width').addEventListener('keyup', ({ target }) => {
         default:
             break;
     }
-})
+};
 
-$('width').addEventListener('blur', ({ target }) => {
+const checkWidthValue = (target) => {
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
@@ -586,9 +586,22 @@ $('width').addEventListener('blur', ({ target }) => {
         default:
             break;
     }
+}
+
+$('width').addEventListener('keyup', ({ target }) => {
+    checkWidthMax(target)
+});
+
+$('width').addEventListener('change', ({ target }) => {
+    checkWidthMax(target)
+})
+
+$('width').addEventListener('blur', ({ target }) => {
+    checkWidthValue(target)
 })
 //guias (laterales)
-$('large').addEventListener('keyup', ({ target }) => {
+
+const checkLargeMax = (target) => {
     if (+target.value > 280) {
         target.classList.add('is-invalid')
         $('errorLarge').innerHTML = `El largo máximo permitido es de 280 cm`;
@@ -596,9 +609,9 @@ $('large').addEventListener('keyup', ({ target }) => {
         target.classList.remove('is-invalid');
         $('errorLarge').innerHTML = null
     }
-});
+};
 
-$('large').addEventListener('blur', ({ target }) => {
+const checkLargeValue = (target) => {
     if (+target.value > 280) {
         target.classList.add('is-invalid')
     } else if (!target.value) {
@@ -607,18 +620,32 @@ $('large').addEventListener('blur', ({ target }) => {
         target.classList.remove('is-invalid');
         $('errorLarge').innerHTML = null
     }
-})
+}
+$('large').addEventListener('keyup', ({ target }) => {
+   checkLargeMax(target)
+});
 
-$('railWidth').addEventListener('blur', ({ target }) => {
+$('large').addEventListener('change', ({ target }) => {
+    checkLargeMax(target)
+ });
+
+$('large').addEventListener('blur', ({ target }) => {
+  checkLargeValue(target)
+});
+
+const checkRailWidthValue = (target) => {
     if (!target.value) {
         target.classList.add('is-invalid')
     } else {
         target.classList.remove('is-invalid')
     }
-})
+}
 
-$('heigth').addEventListener('keyup', (event) => {
-    const {target, keyCode} = event;
+$('railWidth').addEventListener('blur', ({ target }) => {
+  checkRailWidthValue(target)
+});
+
+const checkHeigthChain = (target) => {
     let text;
     if ($('systems').value === "113") {
             switch (true) {
@@ -654,9 +681,13 @@ $('heigth').addEventListener('keyup', (event) => {
             }
           
     }
-})
+};
 
-$('heigth').addEventListener('keyup', ({ target }) => {
+$('heigth').addEventListener('keyup', ({target}) => {
+    checkHeigthChain(target)
+});
+
+const checkHeigthMax = (target) => {
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
@@ -709,74 +740,86 @@ $('heigth').addEventListener('keyup', ({ target }) => {
         default:
             break;
     }
+}
+
+const checkHeigthValue = (target) => {
+    switch ($('systems').value) {
+        case '113': //roller
+        case '119': //visillo
+            if (+target.value > 300) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '111': //romanas
+            if (+target.value > 260) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 260 cm`;
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '112': //paneles orientales
+            if (+target.value > 310) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 310 cm`;
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '116': //triple pellizco
+        case '129': //pellizco simple
+        case '130': //pellizco doble
+            if (+target.value > 250) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break;
+        case '179': //bandas verticales
+            if (+target.value > 250) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
+                target.classList.add('is-invalid')
+            } else if (!target.value) {
+                target.classList.add('is-invalid')
+            } else {
+                $('errorHeigth').innerHTML = null;
+                target.classList.remove('is-invalid')
+            }
+            break
+        default:
+            break;
+    }
+}
+
+$('heigth').addEventListener('keyup', ({ target }) => {
+    checkHeigthMax(target)
+});
+
+$('heigth').addEventListener('change', ({ target }) => {
+    checkHeigthMax(target)
 });
 
 $('heigth').addEventListener('blur', ({ target }) => {
-    switch ($('systems').value) {
-        case '113': //roller
-        case '119': //visillo
-            if (+target.value > 300) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
-                target.classList.add('is-invalid')
-            } else if (!target.value) {
-                target.classList.add('is-invalid')
-            } else {
-                $('errorHeigth').innerHTML = null;
-                target.classList.remove('is-invalid')
-            }
-            break;
-        case '111': //romanas
-            if (+target.value > 260) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 260 cm`;
-                target.classList.add('is-invalid')
-            } else if (!target.value) {
-                target.classList.add('is-invalid')
-            } else {
-                $('errorHeigth').innerHTML = null;
-                target.classList.remove('is-invalid')
-            }
-            break;
-        case '112': //paneles orientales
-            if (+target.value > 310) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 310 cm`;
-                target.classList.add('is-invalid')
-            } else if (!target.value) {
-                target.classList.add('is-invalid')
-            } else {
-                $('errorHeigth').innerHTML = null;
-                target.classList.remove('is-invalid')
-            }
-            break;
-        case '116': //triple pellizco
-        case '129': //pellizco simple
-        case '130': //pellizco doble
-            if (+target.value > 250) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
-                target.classList.add('is-invalid')
-            } else if (!target.value) {
-                target.classList.add('is-invalid')
-            } else {
-                $('errorHeigth').innerHTML = null;
-                target.classList.remove('is-invalid')
-            }
-            break;
-        case '179': //bandas verticales
-            if (+target.value > 250) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
-                target.classList.add('is-invalid')
-            } else if (!target.value) {
-                target.classList.add('is-invalid')
-            } else {
-                $('errorHeigth').innerHTML = null;
-                target.classList.remove('is-invalid')
-            }
-            break
-        default:
-            break;
-    }
+    checkHeigthValue(target)
 });
 
-$('heigth').addEventListener('blur', ({target}) => {
+const checkHeigthDecimal = (target) => {
     const regex = /[,.]/g;
 
     let text =  $('errorHeigth').innerHTML
@@ -789,11 +832,24 @@ $('heigth').addEventListener('blur', ({target}) => {
         target.classList.add('is-invalid')
         $('errorHeigth').innerHTML = null;
     }
+}
+
+$('heigth').addEventListener('blur', ({target}) => {
+    checkHeigthDecimal(target)
     
 }); 
 
-$('width').addEventListener('blur', ({target}) => {
+$('heigth').addEventListener('change', ({target}) => {
+    checkHeigthDecimal(target)
+    
+}); 
 
+$('heigth').addEventListener('keyup', ({target}) => {
+    checkHeigthDecimal(target)
+    
+}); 
+
+const checkWidthDecimal = (target) => {
     const regex = /[,.]/g;
     if(target.value && (regex.test(target.value) || target.value < 10)) {
         target.classList.add('is-invalid')
@@ -804,10 +860,21 @@ $('width').addEventListener('blur', ({target}) => {
         target.classList.add('is-invalid')
         $('errorWidth').innerHTML = null;
     }
+}
+
+$('width').addEventListener('blur', ({target}) => {
+    checkWidthDecimal(target)
 });
 
-$('railWidth').addEventListener('blur', ({target}) => {
+$('width').addEventListener('change', ({target}) => {
+    checkWidthDecimal(target)
+});
 
+$('width').addEventListener('keyup', ({target}) => {
+    checkWidthDecimal(target)
+});
+
+const checkRailWidthDecimal = (target) => {
     const regex = /[,.]/g;
     if(target.value && (regex.test(target.value) || target.value < 10)) {
         target.classList.add('is-invalid')
@@ -821,10 +888,19 @@ $('railWidth').addEventListener('blur', ({target}) => {
         target.classList.add('is-invalid')
         $('errorRailWidth').innerHTML = null;
     }
+}
+
+$('railWidth').addEventListener('blur', ({target}) => {
+    checkRailWidthDecimal(target);
+});
+$('railWidth').addEventListener('keyup', ({target}) => {
+    checkRailWidthDecimal(target);
+});
+$('railWidth').addEventListener('change', ({target}) => {
+    checkRailWidthDecimal(target);
 });
 
-$('large').addEventListener('blur', ({target}) => {
-
+const checkLargeDecimal = (target) => {
     const regex = /[,.]/g;
 
     if(!target.value){
@@ -836,7 +912,18 @@ $('large').addEventListener('blur', ({target}) => {
         target.classList.add('is-invalid')
         $('errorLarge').innerHTML = `El largo debe ser expresado en centímetros`;
     } 
+}
 
+$('large').addEventListener('blur', ({target}) => {
+    checkLargeDecimal(target)
+});
+
+$('large').addEventListener('keyup', ({target}) => {
+    checkLargeDecimal(target)
+});
+
+$('large').addEventListener('change', ({target}) => {
+    checkLargeDecimal(target)
 });
 
 $('reference').addEventListener('blur', ({ target }) => {

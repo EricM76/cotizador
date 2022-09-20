@@ -31,18 +31,38 @@ module.exports = {
       total: items.length,
     });
   },
-  updatePackaging : (req,res) => {
+  updatePackaging : async (req,res) => {
     req.session.packaging = +req.body.packaging;
-    fs.writeFileSync(path.resolve(__dirname,'..','data','packaging.json'),JSON.stringify(req.session.packaging));
+    await db.Package.update(
+      {
+        price : req.body.packaging
+      },
+      {
+        where : {id : 1}
+      }
+    )
+    console.log('>>>>>>', req.session.packaging)
     return res.json({
       packaging : req.session.packaging
     })
+   /*  fs.writeFileSync(path.resolve(__dirname,'..','data','packaging.json'),JSON.stringify(req.session.packaging));
+    return res.json({
+      packaging : req.session.packaging
+    }) */
   },
-  getPackaging : (req,res) => {
-    req.session.packaging = JSON.parse(fs.readFileSync(path.resolve(__dirname,'..','data','packaging.json')));
+  getPackaging : async (req,res) => {
+   /*  req.session.packaging = JSON.parse(fs.readFileSync(path.resolve(__dirname,'..','data','packaging.json')));
     console.log('====================================');
     console.log(req.session.packaging);
     console.log('====================================');
-    return res.json(req.session.packaging);
+    return res.json(req.session.packaging); */
+    try {
+      let package = await db.Package.findByPk(1);
+      req.session.packaging = +package.price;
+      return res.json(req.session.packaging)
+    } catch (error) {
+      console.log(error)
+    }
+  
   }
 };
