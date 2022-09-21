@@ -498,7 +498,7 @@ module.exports = {
           console.log(+width);
           console.log('====================================');
           quotation = await db.Quotation.create({
-            clothWidth: +large !== 0 ? +large : +width,
+            clothWidth: +large !== 0 ? +large : +railWidth !== 0 ? +railWidth : +width,
             heigth: +heigth,
             amount: amount.toFixed(0),
             date: new Date(),
