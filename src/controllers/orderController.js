@@ -212,12 +212,11 @@ module.exports = {
     console.log('====================================');
 
     try {
+      let packaging = await db.Package.findByPk(1)
       let order = await db.Order.create({
         userId: req.session.userLogin.id,
         send: false,
-        packaging: +fs.readFileSync(
-          path.resolve(__dirname, "..", "data", "packaging.json")
-        ),
+        packaging : +packaging.price
       });
 
       for (let i = 0; i < ids.length; i++) {
@@ -298,9 +297,7 @@ module.exports = {
       .catch((error) => console.log(error));
   },
   send: async (req, res) => {
-    const packaging = +fs.readFileSync(
-      path.resolve(__dirname, "..", "data", "packaging.json")
-    )
+    let packaging = await db.Package.findByPk(1)
     let {
       name,
       price,
@@ -579,7 +576,7 @@ module.exports = {
                     <b>EMBALAJE:</b> 
                 </td>
                 <td style="text-align:right;">
-                    ${packaging}
+                    ${+packaging.price}
                 </td>
               </tr>
               <tr>
@@ -602,7 +599,7 @@ module.exports = {
                     <b>TOTAL:</b> 
                 </td>
                 <td style="text-align:right;">
-                    ${total + packaging}
+                    ${total + +packaging.price}
                 </td>
               </tr>
           </tbody>
@@ -660,7 +657,7 @@ module.exports = {
               alignment: "right",
             },
             {
-              text: packaging,
+              text: +packaging.price,
               alignment: "right",
             },
           ]);
@@ -671,7 +668,7 @@ module.exports = {
               alignment: "right",
             },
             {
-              text: total + packaging,
+              text: total + +packaging.price,
               alignment: "right",
             },
           ]);
