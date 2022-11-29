@@ -31,7 +31,18 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+sequelize
+  .authenticate()
+    .then( () => {
+      console.log('Connection success!')
+    })
+    .catch( (error) => {
+      console.log('Unable to connect to the database',error)
+    })
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+
 
 module.exports = db;
