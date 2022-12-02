@@ -290,7 +290,9 @@ module.exports = {
       console.log(error);
     }
   },
-  buy: (req, res) => {
+  buy: async (req, res) => {
+    let packaging = await db.Package.findByPk(1)
+
     db.System.findAll({
       where: {
         visible: true,
@@ -301,7 +303,7 @@ module.exports = {
       return res.render("accessoriesBuy", {
         accessories,
         user: req.session.userLogin,
-        packaging: JSON.parse(require('../data/packaging.json')),
+        packaging: packaging.price,
         toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
       })
     }).catch(error => console.log(error))
@@ -354,9 +356,12 @@ module.exports = {
   },
   sendBuy: async (req, res) => {
 
-    const packaging = +fs.readFileSync(
+   /*  const packaging = +fs.readFileSync(
       path.resolve(__dirname, "..", "data", "packaging.json")
-    );
+    ); */
+
+    let packaging = await db.Package.findByPk(1)
+
     const { quantities, names, prices, ids, observations, reference, limits} = req.body;
     const accessories = [];
 
@@ -511,7 +516,7 @@ module.exports = {
                  <b>EMBALAJE:</b> 
              </td>
              <td style="text-align:right;">
-                 ${packaging}
+                 ${packaging.price}
              </td>
            </tr>
            <tr>
@@ -534,7 +539,7 @@ module.exports = {
                  <b>TOTAL:</b> 
              </td>
              <td style="text-align:right;">
-                 ${total + packaging}
+                 ${total + packaging.price}
              </td>
            </tr>
        </tbody>
@@ -588,7 +593,7 @@ module.exports = {
           alignment: "right",
         },
         {
-          text: packaging,
+          text: packaging.price,
           alignment: "right",
         },
       ]);
@@ -599,7 +604,7 @@ module.exports = {
           alignment: "right",
         },
         {
-          text: total + packaging,
+          text: total + packaging.price,
           alignment: "right",
         },
       ]);
@@ -807,9 +812,7 @@ module.exports = {
     await db.Order.create({
       userId: req.session.userLogin.id,
       observations,
-      packaging: +fs.readFileSync(
-        path.resolve(__dirname, "..", "data", "packaging.json")
-      ),
+      packaging: packaging.price,
       orderNumber,
       ticket,
       fileClient,
@@ -934,11 +937,11 @@ module.exports = {
             to: [{ email: req.session.userLogin.email }],
             attachment: [
               {
-                url: 'https://cotizador.portaleric.com/emails/' + orderNumber + '.pdf',
+                url: req.protocol + '://' + req.get('host') + '/emails/' + orderNumber + '.pdf',
                 name: orderNumber + '.pdf'
               },
               {
-                url: 'https://cotizador.portaleric.com/tickets/' + ticket,
+                url: req.protocol + '://' + req.get('host') + '/tickets/' + ticket,
                 name: ticket
               }
             ],
@@ -965,15 +968,15 @@ module.exports = {
         to: [{ email: 'info@blancomad.com' },{email:'menaeric@hotmail.com'}],
         attachment: [
           {
-            url: 'https://cotizador.portaleric.com/emails/' + orderNumber + '.pdf',
+            url: req.protocol + '://' + req.get('host') + '/emails/' + orderNumber + '.pdf',
             name: orderNumber + '.pdf'
           },
           {
-            url: 'https://cotizador.portaleric.com/emails/' + orderNumber + '.xls',
+            url: req.protocol + '://' + req.get('host') + '/emails/' + orderNumber + '.xls',
             name: orderNumber + '.xls'
           },
           {
-            url: 'https://cotizador.portaleric.com/tickets/' + ticket,
+            url: req.protocol + '://' + req.get('host') + '/tickets/' + ticket,
             name: ticket
           }
         ],
