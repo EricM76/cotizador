@@ -52,7 +52,12 @@ const updateTotal = (id,amount,event) => {
   if(+event.target.value > 0){
     event.target.classList.remove('is-invalid');
     $('amount'+id).value = +event.target.value * +amount;
-    console.log(id, amount,+event.target.value);
+    //console.log(id, amount,+event.target.value);
+    if(+event.target.value > 1){
+      document.getElementById("command" + id).hidden = false
+    }else{
+      document.getElementById("command" + id).hidden = true
+    }
   }else{
     event.target.classList.add('is-invalid');
   }
@@ -64,7 +69,8 @@ const verifyErrors = () => {
     commands[i].classList.contains('is-invalid') ||
     supportOrientations[i].classList.contains('is-invalid') ||
     clothOrientations[i].classList.contains('is-invalid') ||
-    quantities[i].classList.contains('is-invalid')
+    quantities[i].classList.contains('is-invalid') ||
+    observations[i].classList.contains('is-invalid')
     ){
       accordions[i].classList.add('bg-danger');
       $('msg-error').hidden = false;
@@ -101,6 +107,10 @@ $('form-generate-order').addEventListener('submit', (e) => {
       empty = true
       commands[i].classList.add('is-invalid');
     }
+
+    if(commands[i].value === 'IZQ/DER' && observations[i].value===""){
+      observations[i].classList.add('is-invalid');
+    }
   }
 
   for (let i = 0; i < quantities.length; i++) {
@@ -108,8 +118,9 @@ $('form-generate-order').addEventListener('submit', (e) => {
       empty = true
       quantities[i].classList.add('is-invalid');
     }
-  }
+  };
 
+ 
  verifyErrors();
 
   if (!empty) {
@@ -168,3 +179,15 @@ $('form-generate-order').addEventListener('submit', (e) => {
 
  
 });
+
+const showObservation = ({target}) => {
+  if(target.value === "IZQ/DER"){
+    Swal.fire({
+      icon: 'warning',
+      title:'Aclarar en las observaciones',
+      text: 'Ejemplo: 2 der / 1 izq',
+      confirmButtonText : 'Entendido',
+      confirmButtonColor : '#990000'
+    })
+  }
+}
