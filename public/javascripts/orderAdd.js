@@ -39,6 +39,9 @@ window.addEventListener('load', () => {
   }
 
   for (let i = 0; i < commands.length; i++) {
+    if(quantities[i].value > 1){
+      document.getElementById('command' + quantities[i].getAttribute('data-id')).hidden = false;
+    }
     commands[i].value = dataOrder.commands[i]
   }
 
@@ -49,14 +52,32 @@ window.addEventListener('load', () => {
 })
 
 const updateTotal = (id,amount,event) => {
+  const commandOption = document.getElementById("command" + id)
+  const commandSelect = document.querySelector(".command" + id)
+  const observation = document.querySelector('.observations' + id)
   if(+event.target.value > 0){
     event.target.classList.remove('is-invalid');
     $('amount'+id).value = +event.target.value * +amount;
     //console.log(id, amount,+event.target.value);
-    if(+event.target.value > 1){
-      document.getElementById("command" + id).hidden = false
+    if(+event.target.value === 2){
+      commandOption.hidden = false
+      observation.classList.remove('is-invalid')
+      showErroObservation(true, id)
+    }else if(+event.target.value >= 3 ){
+      commandOption.hidden = false
+      showErroObservation(false, id)
     }else{
-      document.getElementById("command" + id).hidden = true
+      commandSelect.value = null;
+      commandOption.hidden = true;
+      observation.classList.remove('is-invalid');
+      showErroObservation(true, id)
+    }
+
+    if(+event.target.value >= 3 && (commandSelect.value === "IZQ/DER" || !commandSelect.value)){
+      showErroObservation(false, id)
+    }else{
+      showErroObservation(true, id)
+
     }
   }else{
     event.target.classList.add('is-invalid');
@@ -108,7 +129,24 @@ $('form-generate-order').addEventListener('submit', (e) => {
       commands[i].classList.add('is-invalid');
     }
 
-    if(commands[i].value === 'IZQ/DER' && observations[i].value===""){
+    if(commands[i].value === 'IZQ/DER' && observations[i].value.trim()==="" && quantities[i].value > 2){
+      empty = true
+      observations[i].classList.add('is-invalid');
+    }
+  }
+
+  for (let i = 0; i < quantities.length; i++) {
+    if (quantities[i].value < 1) {
+      empty = true
+      quantities[i].classList.add('is-invalid');
+    }
+  };
+
+
+  for (let i = 0; i < observations.length; i++) {
+
+    if(commands[i].value === 'IZQ/DER' && observations[i].value.trim()==="" && quantities[i].value > 2){
+      empty = true
       observations[i].classList.add('is-invalid');
     }
   }
@@ -180,14 +218,26 @@ $('form-generate-order').addEventListener('submit', (e) => {
  
 });
 
-const showObservation = ({target}) => {
-  if(target.value === "IZQ/DER"){
-    Swal.fire({
+const showObservation = ({target},id) => {
+ 
+  if(target.value === "IZQ/DER" && document.querySelector('.quantity' + id).value > 2){
+   /*  Swal.fire({
       icon: 'warning',
       title:'Aclarar en las observaciones',
       text: 'Ejemplo: 2 der / 1 izq',
       confirmButtonText : 'Entendido',
       confirmButtonColor : '#990000'
-    })
+    }) */
+    showErroObservation(false, id);
   }
+  else{
+    showErroObservation(true, id);
+    document.querySelector('.observations' + id).classList.remove('is-invalid')
+  }
+}
+
+const showErroObservation = (show, id) => {
+
+  document.getElementById('observationError' + id).hidden = show;
+
 }
