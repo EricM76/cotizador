@@ -399,7 +399,7 @@ module.exports = {
      </tr>
      <tr>
      <th scope="col">Vendedor:</th>
-     <th scope="col">${req.session.userLogin.id}</th>
+     <th scope="col">${req.session.userLogin.idLocal}</th>
      </tr>
      <tr>
      <th scope="col">Pedido para:</th>

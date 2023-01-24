@@ -377,6 +377,7 @@ module.exports = {
                 }
                 req.session.userLogin = {
                     id : user.id,
+                    idLocal: user.idLocal,
                     name: user.name,
                     surname : user.surname,
                     username : user.username,
