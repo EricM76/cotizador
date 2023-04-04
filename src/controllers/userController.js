@@ -10,9 +10,7 @@ module.exports = {
             where: { enabled: true }
         })
         let admin = await db.User.findByPk(85);
-        console.log('====================================');
-        console.log(admin);
-        console.log('====================================');
+       
         db.User.findAll({
             where: {
                 enabled: true,
@@ -315,13 +313,21 @@ module.exports = {
                         }
                     }
                 )
+
+                return res.status(200).json({
+                    ok: true,
+                    msg: 'Habilitación modificada con éxito!'
+                })
+                
+            }else{
+                return res.status(200).json({
+                    ok: true,
+                    msg: 'Habilitación modificada con éxito!'
+                })
+    
             }
 
-            return res.status(200).json({
-                ok: true,
-                msg: 'Habilitación modificada con éxito!'
-            })
-
+           
         } catch (error) {
             console.log(error)
             return res.status(error.status || 500).json({

@@ -19,11 +19,10 @@ module.exports = {
       let total = await db.Quotation.count();
       let users = await db.Quotation.findAll({
         attributes: ["userId"],
-        include: [{ association: "user" }],
+        include: [{ association: "user"}],
         group: ["userId"],
         having: "",
       });
-
       db.Quotation.findAll({
         limit: 8,
         order : [['updatedAt','DESC']],
@@ -180,7 +179,7 @@ module.exports = {
     }
   },
   filter: async (req, res) => {
-    let { order, filter, keywords, active, pages } = req.query;
+    let { order, filter, keywords, active, pages, typeUser } = req.query;
     let items = [];
     let users = [];
     let total = 0;
@@ -193,6 +192,7 @@ module.exports = {
           group: ["userId"],
           having: "",
         });
+        users = typeUser < 2 ? users.filter(item => item.user.enabled == typeUser) : users
         if (filter === "all" || !filter) {
           total = await db.Quotation.count({
             where: {
@@ -243,6 +243,7 @@ module.exports = {
           multiplo: total % 8 === 0 ? 0 : 1,
           moment,
           users,
+          typeUser
         });
       } catch (error) {
         console.log(error);

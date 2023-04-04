@@ -149,7 +149,7 @@ window.onload = function () {
 
     localStorage.removeItem('dataOrder')
         
-    let checks = document.querySelectorAll('.form-check-input');
+    let checks = document.querySelectorAll('.check-quotation');
     checks.forEach(check => {
         if (checkSelected(check.value)) {
             check.checked = true
