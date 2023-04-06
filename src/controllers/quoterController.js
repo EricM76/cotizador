@@ -193,7 +193,7 @@ module.exports = {
           having: "",
         });
         users = typeUser < 2 ? users.filter(item => item.user.enabled == typeUser) : users
-        if (filter === "all" || !filter) {
+        if (typeUser == 2 && !filter) {
           total = await db.Quotation.count({
             where: {
               reference: {
@@ -212,6 +212,34 @@ module.exports = {
             offset: active && +active * 8 - 8,
             include: { all: true },
           });
+        } else if(typeUser < 2 && !filter){
+          total = await db.Quotation.count({
+            where: {
+              reference: {
+                [Op.substring]: keywords,
+              },
+            },
+            include : [
+              {
+                association : 'user',
+                where : {
+                  enabled : typeUser
+                }
+              }
+            ]
+          });
+          items = await db.Quotation.findAll({
+            where: {
+              reference: {
+                [Op.substring]: keywords,
+              },
+            },
+            order : [['updatedAt','DESC']],
+            limit: 8,
+            offset: active && +active * 8 - 8,
+            include: { all: true },
+          });
+          items = items.filter(item => item.user.enabled == typeUser)
         } else {
           total = await db.Quotation.count({
             where: {
@@ -233,6 +261,7 @@ module.exports = {
             offset: active && +active * 8 - 8,
             include: { all: true },
           });
+          //total = items.length;
         }
         return res.render("quotations", {
           items,

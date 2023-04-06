@@ -28,7 +28,7 @@ const setValues = () => {
     document.getElementById('form-items').submit()
 }
 
-const resetValues = () => {
+const resetValues = (cleanFilter) => {
     sessionStorage.setItem('active', 1);
     sessionStorage.setItem('pages', 1);
     sessionStorage.removeItem('keywords');
@@ -36,6 +36,8 @@ const resetValues = () => {
     $('active').value = 1;
     $('pages').value = 1;
     $('keywords').value = "";
+
+    if(cleanFilter) document.getElementById('filter').value = null
 
     document.getElementById('form-items').submit()
 }

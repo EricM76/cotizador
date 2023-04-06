@@ -24,23 +24,23 @@
                           <option id="user<%= item.userId %>" value=<%=item.userId %> ><%= item.user.username %>
                           </option>
                           <% }) %>
-                            <option id="all" value="all">Todos</option>
+                           <!--  <option id="all" value="all">Todos</option> -->
                       </select>
                       <div class="d-flex justify-content-between">
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="typeUser" id="typeUser2" value="2" <%= typeUser == 2 && 'checked'%> onchange="resetValues()">
+                          <input class="form-check-input" type="radio" name="typeUser" id="typeUser2" value="2" <%= typeUser == 2 && 'checked'%> onchange="resetValues(true)">
                           <label class="form-check-label" for="typeUser2">
                             Todos
                           </label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="typeUser" id="typeUser1" value="1" <%= typeUser == 1 && 'checked'%> onchange="resetValues()">
+                          <input class="form-check-input" type="radio" name="typeUser" id="typeUser1" value="1" <%= typeUser == 1 && 'checked'%> onchange="resetValues(true)">
                           <label class="form-check-label" for="typeUser1">
                             Activos
                           </label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="typeUser" id="typeUser0" value="0" <%= typeUser == 0 && 'checked'%> onchange="resetValues()">
+                          <input class="form-check-input" type="radio" name="typeUser" id="typeUser0" value="0" <%= typeUser == 0 && 'checked'%> onchange="resetValues(true)">
                           <label class="form-check-label" for="typeUser0">
                             Inactivos
                           </label>
