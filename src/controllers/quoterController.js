@@ -38,6 +38,7 @@ module.exports = {
             multiplo: total % 8 === 0 ? 0 : 1,
             moment,
             users,
+            typeUser : 2
           });
         })
         .catch((error) => console.log(error));
