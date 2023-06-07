@@ -315,7 +315,8 @@ $('systems').addEventListener('change', async ({ target }) => {
 
 $('systems').addEventListener('focus', async (e) => {
 
-    let elements = e.path[3].elements;
+    //let elements = e.path[3].elements;
+    let elements = $('form-quoter').elements
 
     for (let index = 0; index < elements.length; index++) {
         elements[index].classList.remove('is-invalid')
@@ -494,10 +495,10 @@ const checkWidthMax = (target) => {
             break
         case '179': //bandas verticales
             if (+target.value > 300) {
-                $('errorWidth').innerHTML = `El ancho máximo permitido es de 300 cm`;
+                $('errorRailWidth').innerHTML = `El ancho máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
             } else {
-                $('errorWidth').innerHTML = null;
+                $('errorRailWidth').innerHTML = null;
                 target.classList.remove('is-invalid')
             }
             break
@@ -567,7 +568,7 @@ const checkWidthValue = (target) => {
             } else if (!target.value) {
                 target.classList.add('is-invalid')
             } else {
-                $('errorWidth').innerHTML = null;
+                $('errorRailWidth').innerHTML = null;
                 target.classList.remove('is-invalid')
             }
             break
@@ -633,6 +634,20 @@ $('large').addEventListener('blur', ({ target }) => {
   checkLargeValue(target)
 });
 
+/* bandas verticales */
+
+$('railWidth').addEventListener('keyup', ({ target }) => {
+    checkWidthMax(target)
+});
+
+$('railWidth').addEventListener('change', ({ target }) => {
+    checkWidthMax(target)
+})
+
+$('railWidth').addEventListener('blur', ({ target }) => {
+    checkWidthValue(target)
+})
+/* 
 const checkRailWidthValue = (target) => {
     if (!target.value) {
         target.classList.add('is-invalid')
@@ -643,7 +658,7 @@ const checkRailWidthValue = (target) => {
 
 $('railWidth').addEventListener('blur', ({ target }) => {
   checkRailWidthValue(target)
-});
+}); */
 
 const checkHeigthChain = (target) => {
     let text;
@@ -879,9 +894,6 @@ const checkRailWidthDecimal = (target) => {
     if(target.value && (regex.test(target.value) || target.value < 10)) {
         target.classList.add('is-invalid')
         $('errorRailWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
-    }else {
-        target.classList.remove('is-invalid')
-        $('errorRailWidth').innerHTML = null;
     }
 
     if(!target.value){
