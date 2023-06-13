@@ -56,7 +56,7 @@ module.exports = {
           },
           { association: "user" },
         ],
-        order: [["updatedAt", "DESC"]],
+        order: [["createdAt", "DESC"]],
         limit: 8,
       });
       let total = db.Order.count();

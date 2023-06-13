@@ -82,7 +82,6 @@ const getData = async (target) => {
 
         const response = await fetch(`/quoters/api/load/${target.value}`);
         const result = await response.json();
-        console.log(result)
 
         $('cloths').disabled = false;
         $('colors').disabled = false;
@@ -137,7 +136,7 @@ const getData = async (target) => {
         $('large').value = null;
         $('heigth').value = null;
         $('reference').value = null;
-        
+
         $('suggestionHeigth').innerHTML = null;
         $('suggestionHeigth').classList.remove('alert-warning');
 
@@ -182,8 +181,8 @@ $('systems').addEventListener('change', async ({ target }) => {
 
         $('large').value = null;
 
-      /* 119: VISILLO */
-    } else if (target.value == 119) { 
+        /* 119: VISILLO */
+    } else if (target.value == 119) {
         $('heigth-box').classList.remove('box-hidden');
         $('colors-box').classList.remove('box-hidden');
         $('width-box').classList.remove('box-hidden');
@@ -247,7 +246,7 @@ $('systems').addEventListener('change', async ({ target }) => {
     switch (target.value) {
         case "113": //roller
             $('clarifications').innerHTML =
-            `
+                `
             <h5>Roller</h5>
             <li>
                 La cadena de 2m seria una cadena de 1 metro de caida
@@ -266,9 +265,9 @@ $('systems').addEventListener('change', async ({ target }) => {
             </li>
             `
             break;
-        case "111" : //romanas
+        case "111": //romanas
             $('clarifications').innerHTML =
-            `
+                `
             <h5>Romanas</h5>
             <li>
                 Ancho: Un paño en romana se puede hacer hasta 1.70 de ancho
@@ -277,10 +276,10 @@ $('systems').addEventListener('change', async ({ target }) => {
             "Otras telas" agrupa las telas del muestrario que no se encuentran en la lista. Por ejemplo el Voile Lino Natural Codigo 900-21
             </li>
             `
-        break
-        case "112" : //paneles
+            break
+        case "112": //paneles
             $('clarifications').innerHTML =
-            `
+                `
             <h5>Paneles Orientales</h5>
             <li>
             Ancho menor a 210: Se hace en 3 paños
@@ -295,17 +294,17 @@ $('systems').addEventListener('change', async ({ target }) => {
             "Otras telas" agrupa las telas del muestrario que no se encuentran en la lista. Por ejemplo el Voile Lino Natural Codigo 900-21
             </li>
             `
-        break
+            break
         case '116': //triple pellizco
         case '129': //pellizco simple
         case '130': //pellizco doble
-        $('clarifications').innerHTML =
-            `
+            $('clarifications').innerHTML =
+                `
             <h5>Tradicionales</h5>
             <li>
             En caso de tener que instalar con orientación a pared, se utilizan "ELES", consulte el costo de cada ELE y que cantidad es necesaria en base al ancho.
             `
-        break
+            break
         default:
             $('clarifications').innerHTML = null;
             break;
@@ -589,8 +588,10 @@ const checkWidthValue = (target) => {
     }
 }
 
-$('width').addEventListener('keyup', ({ target }) => {
-    checkWidthMax(target)
+
+
+$('width').addEventListener('keyup', (event) => {
+    checkWidthMax(event.target);
 });
 
 $('width').addEventListener('change', ({ target }) => {
@@ -599,7 +600,8 @@ $('width').addEventListener('change', ({ target }) => {
 
 $('width').addEventListener('blur', ({ target }) => {
     checkWidthValue(target)
-})
+});
+
 //guias (laterales)
 
 const checkLargeMax = (target) => {
@@ -623,15 +625,15 @@ const checkLargeValue = (target) => {
     }
 }
 $('large').addEventListener('keyup', ({ target }) => {
-   checkLargeMax(target)
+    checkLargeMax(target)
 });
 
 $('large').addEventListener('change', ({ target }) => {
     checkLargeMax(target)
- });
+});
 
 $('large').addEventListener('blur', ({ target }) => {
-  checkLargeValue(target)
+    checkLargeValue(target)
 });
 
 /* bandas verticales */
@@ -663,42 +665,42 @@ $('railWidth').addEventListener('blur', ({ target }) => {
 const checkHeigthChain = (target) => {
     let text;
     if ($('systems').value === "113") {
-            switch (true) {
-                case target.value > 10 && +target.value <= 200:
-                    text = "Largo de cadena recomendada 2.00 mts"
-                    break;
-                case target.value > 10 && +target.value <= 225:
-                    text = "Largo de cadena recomendada 2.50 mts"
-                    break;
-                case target.value > 10 && +target.value <= 250:
-                    text = "Largo de cadena recomendada 3.00 mts"
-                    break;
-                case target.value > 10 && +target.value <= 275:
-                    text = "Largo de cadena recomendada 3.50 mts"
-                    break;
-                case target.value > 10 && +target.value <= 300:
-                    text = "Largo de cadena recomendada 4.00 mts"
-                    break;
-                case target.value > 10 && +target.value <= 325:
-                    text = "Largo de cadena recomendada 4.50 mts"
-                    break;
-                case target.value > 10 && +target.value <= 350:
-                    text = "Largo de cadena recomendada 5.00 mts"
-                    break;
-                default:
-                    $('suggestionHeigth').innerHTML = null;
-                    $('suggestionHeigth').classList.remove('alert-warning')
-                    break;
-            }
-            if(text){
-                $('suggestionHeigth').classList.add('alert-warning')
-                $('suggestionHeigth').innerHTML = `<i class="fas fa-info-circle"></i> ${text}` ;
-            }
-          
+        switch (true) {
+            case target.value > 10 && +target.value <= 200:
+                text = "Largo de cadena recomendada 2.00 mts"
+                break;
+            case target.value > 10 && +target.value <= 225:
+                text = "Largo de cadena recomendada 2.50 mts"
+                break;
+            case target.value > 10 && +target.value <= 250:
+                text = "Largo de cadena recomendada 3.00 mts"
+                break;
+            case target.value > 10 && +target.value <= 275:
+                text = "Largo de cadena recomendada 3.50 mts"
+                break;
+            case target.value > 10 && +target.value <= 300:
+                text = "Largo de cadena recomendada 4.00 mts"
+                break;
+            case target.value > 10 && +target.value <= 325:
+                text = "Largo de cadena recomendada 4.50 mts"
+                break;
+            case target.value > 10 && +target.value <= 350:
+                text = "Largo de cadena recomendada 5.00 mts"
+                break;
+            default:
+                $('suggestionHeigth').innerHTML = null;
+                $('suggestionHeigth').classList.remove('alert-warning')
+                break;
+        }
+        if (text) {
+            $('suggestionHeigth').classList.add('alert-warning')
+            $('suggestionHeigth').innerHTML = `<i class="fas fa-info-circle"></i> ${text}`;
+        }
+
     }
 };
 
-$('heigth').addEventListener('keyup', ({target}) => {
+$('heigth').addEventListener('keyup', ({ target }) => {
     checkHeigthChain(target)
 });
 
@@ -822,8 +824,8 @@ const checkHeigthValue = (target) => {
     }
 }
 
-$('heigth').addEventListener('keyup', ({ target }) => {
-    checkHeigthMax(target)
+$('heigth').addEventListener('keyup', (event) => {
+    checkHeigthMax(event.target)
 });
 
 $('heigth').addEventListener('change', ({ target }) => {
@@ -837,104 +839,104 @@ $('heigth').addEventListener('blur', ({ target }) => {
 const checkHeigthDecimal = (target) => {
     const regex = /[,.]/g;
 
-    let text =  $('errorHeigth').innerHTML
-    if(target.value && (target.value < 10 || regex.test(target.value))) {
+    let text = $('errorHeigth').innerHTML
+    if (target.value && (target.value < 10 || regex.test(target.value))) {
         $('errorHeigth').innerHTML = `La medida debe ser expresada en centímetros`;
         target.classList.add('is-invalid')
     }
 
-    if(!target.value){
+    if (!target.value) {
         target.classList.add('is-invalid')
         $('errorHeigth').innerHTML = null;
     }
 }
 
-$('heigth').addEventListener('blur', ({target}) => {
+$('heigth').addEventListener('blur', ({ target }) => {
     checkHeigthDecimal(target)
-    
-}); 
 
-$('heigth').addEventListener('change', ({target}) => {
-    checkHeigthDecimal(target)
-    
-}); 
+});
 
-$('heigth').addEventListener('keyup', ({target}) => {
+$('heigth').addEventListener('change', ({ target }) => {
     checkHeigthDecimal(target)
-    
-}); 
+
+});
+
+$('heigth').addEventListener('keyup', ({ target }) => {
+    checkHeigthDecimal(target)
+
+});
 
 const checkWidthDecimal = (target) => {
     const regex = /[,.]/g;
-    if(target.value && (regex.test(target.value) || target.value < 10)) {
+    if (target.value && (regex.test(target.value) || target.value < 10)) {
         target.classList.add('is-invalid')
         $('errorWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
     }
 
-    if(!target.value){
+    if (!target.value) {
         target.classList.add('is-invalid')
         $('errorWidth').innerHTML = null;
     }
 }
 
-$('width').addEventListener('blur', ({target}) => {
+$('width').addEventListener('blur', ({ target }) => {
     checkWidthDecimal(target)
 });
 
-$('width').addEventListener('change', ({target}) => {
+$('width').addEventListener('change', ({ target }) => {
     checkWidthDecimal(target)
 });
 
-$('width').addEventListener('keyup', ({target}) => {
+$('width').addEventListener('keyup', ({ target }) => {
     checkWidthDecimal(target)
 });
 
 const checkRailWidthDecimal = (target) => {
     const regex = /[,.]/g;
-    if(target.value && (regex.test(target.value) || target.value < 10)) {
+    if (target.value && (regex.test(target.value) || target.value < 10)) {
         target.classList.add('is-invalid')
         $('errorRailWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
     }
 
-    if(!target.value){
+    if (!target.value) {
         target.classList.add('is-invalid')
         $('errorRailWidth').innerHTML = null;
     }
 }
 
-$('railWidth').addEventListener('blur', ({target}) => {
+$('railWidth').addEventListener('blur', ({ target }) => {
     checkRailWidthDecimal(target);
 });
-$('railWidth').addEventListener('keyup', ({target}) => {
+$('railWidth').addEventListener('keyup', ({ target }) => {
     checkRailWidthDecimal(target);
 });
-$('railWidth').addEventListener('change', ({target}) => {
+$('railWidth').addEventListener('change', ({ target }) => {
     checkRailWidthDecimal(target);
 });
 
 const checkLargeDecimal = (target) => {
     const regex = /[,.]/g;
 
-    if(!target.value){
+    if (!target.value) {
         target.classList.add('is-invalid')
         $('errorLarge').innerHTML = null;
     }
 
-    if(target.value && (regex.test(target.value) || target.value < 10)) {
+    if (target.value && (regex.test(target.value) || target.value < 10)) {
         target.classList.add('is-invalid')
         $('errorLarge').innerHTML = `El largo debe ser expresado en centímetros`;
-    } 
+    }
 }
 
-$('large').addEventListener('blur', ({target}) => {
+$('large').addEventListener('blur', ({ target }) => {
     checkLargeDecimal(target)
 });
 
-$('large').addEventListener('keyup', ({target}) => {
+$('large').addEventListener('keyup', ({ target }) => {
     checkLargeDecimal(target)
 });
 
-$('large').addEventListener('change', ({target}) => {
+$('large').addEventListener('change', ({ target }) => {
     checkLargeDecimal(target)
 });
 
@@ -946,21 +948,67 @@ $('reference').addEventListener('blur', ({ target }) => {
     }
 })
 
-$('rol') && $('rol').addEventListener('change', async ({target}) => {
+$('rol') && $('rol').addEventListener('change', async ({ target }) => {
 
     if ($('systems').value) {
-        target.classList.remove('is-invalid') 
+        target.classList.remove('is-invalid')
 
         await sendForm()
 
     }
-})
+});
 
 /* enviar formulario */
 
 $('form-quoter').addEventListener('submit', async (e) => {
 
     e.preventDefault();
+    let errorWidth = false;
+    const response = await fetch(`/cloths/api/${$('cloths').value}`);
+    const { ok, cloth } = await response.json();
+
+    if (cloth.id === 632 || cloth.id === 730) {
+        if (
+            +$('width').value > (cloth.width)
+            || +$('width').value > (cloth.width) && +$('heigth').value >= (cloth.width - 20 + 1)
+        ) {
+            Swal.fire({
+                title: 'Corte de tela incorrecto',
+                html: `El ancho de no pude exceder el ancho del rollo. El de la tela <i>${cloth.name}</i> que es de <b>${cloth.width} cm</b>. <a target="_blank" href="/information/cloth-width">Ver todos los anchos</a>`,
+                icon: 'error',
+                confirmButtonColor: '#8B0000',
+                confirmButtonText: 'Entendido'
+            })
+            errorWidth = true;
+        }
+    } else if (cloth.width > 0
+        && (
+            +$('width').value > (cloth.width) && +$('heigth').value > cloth.width
+            || +$('width').value > (cloth.width) && +$('heigth').value > (cloth.width)
+            || +$('width').value > (cloth.width) && +$('heigth').value >= (cloth.width - 20 + 1))
+
+    ) {
+        Swal.fire({
+            title: 'Dimensiones excedidas',
+            html: `El ancho y el alto (+20) no puden exceder <b>al mismo tiempo </b> el ancho del rollo. El de la tela <i>${cloth.name}</i> es de <b>${cloth.width} cm</b>. <a target="_blank" href="/information/cloth-width">Ver todos los anchos</a>`,
+            icon: 'error',
+            confirmButtonColor: '#8B0000',
+            confirmButtonText: 'Entendido'
+        })
+        errorWidth = true;
+    }
+
+    if (errorWidth) {
+        $('amount-box').classList.remove('alert-success')
+        $('amount-box').classList.add('alert-danger')
+        $('amount-box').removeAttribute('hidden', false)
+        $('amount').classList.add('h6')
+        $('amount').classList.add('py-2')
+        $('amount').classList.remove('h4')
+        $('amount').innerHTML = `Verficar que las dimensiones se ajusten al ancho del rollo.`
+        return null
+    }
+
     await sendForm();
 
 })
@@ -1016,14 +1064,14 @@ const sendForm = async () => {
           console.log('====================================');
       } */
     for (let i = 0; i < elements.length - 1; i++) {
-      
+
         if (!elements[i].value || elements[i].classList.contains('is-invalid')) {
             error = true;
             elements[i].classList.add('is-invalid');
 
             $('amount-box').setAttribute('hidden', true)
         }
-        console.log(elements[i].name, elements[i].value)
+        //console.log(elements[i].name, elements[i].value)
 
     }
 

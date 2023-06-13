@@ -176,5 +176,26 @@ module.exports = {
             : error.message
         );
     }
+  },
+  getClothByPk : async (req,res) => {
+    try {
+      const cloth = await db.Cloth.findByPk(req.params.id)
+      return res.json({
+        ok: true,
+        cloth
+      });
+      
+    } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+      return res
+        .status(error.status || 500)
+        .json(
+          error.status === 500
+            ? "Comuníquese con el administrador del sitio"
+            : error.message
+        );
+    }
   }
 };

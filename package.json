@@ -36,5 +36,8 @@
   },
   "devDependencies": {
     "node-sass": "^7.0.1"
+  },
+  "nodemonConfig": {
+    "ignore": [ "./public/javascripts/*.js"]
   }
 }

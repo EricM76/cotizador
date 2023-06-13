@@ -322,7 +322,7 @@ module.exports = {
       const system = await db.System.findByPk(req.params.id, {
         include: [
           { association: "chains", attributes: ["id", "name"] },
-          { association: "cloths", attributes: ["id", "name"] },
+          { association: "cloths", attributes: ["id", "name","width"] },
           { association: "colors", attributes: ["id", "name"] },
           { association: "patterns", attributes: ["id", "name"] },
           { association: "supports", attributes: ["id", "name"] },

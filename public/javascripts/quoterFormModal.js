@@ -877,6 +877,40 @@ $('form-quoter').addEventListener('submit', async (e) => {
     let elements = e.target.elements
     let error = false;
 
+    const response = await fetch(`/cloths/api/${$('cloths').value}`);
+    const { ok, cloth } = await response.json();
+    
+    if (cloth.id === 632 || cloth.id === 730) {
+        if (
+            +$('width').value > (cloth.width)
+            || +$('width').value > (cloth.width) && +$('heigth').value >= (cloth.width - 20 + 1)
+        ) {
+            Swal.fire({
+                title: 'Corte de tela incorrecto',
+                html: `El ancho de no pude exceder el ancho del rollo. El de la tela <i>${cloth.name}</i> que es de <b>${cloth.width} cm</b>. <a target="_blank" href="/information/cloth-width">Ver todos los anchos</a>`,
+                icon: 'error',
+                confirmButtonColor: '#8B0000',
+                confirmButtonText: 'Entendido'
+            })
+            return null
+        }
+    }else if (cloth.width > 0
+        && (
+            +$('width').value > (cloth.width) && +$('heigth').value > cloth.width
+            || +$('width').value > (cloth.width) && +$('heigth').value > (cloth.width)
+            || +$('width').value > (cloth.width) && +$('heigth').value >= (cloth.width - 20 + 1))
+
+    ) {
+        Swal.fire({
+            title: 'Dimensiones excedidas',
+            html: `El ancho y el alto (+20) no puden exceder <b>al mismo tiempo </b> el ancho del rollo. El de la tela <i>${cloth.name}</i> es de <b>${cloth.width} cm</b>. <a target="_blank" href="/information/cloth-width">Ver todos los anchos</a>`,
+            icon: 'error',
+            confirmButtonColor: '#8B0000',
+            confirmButtonText: 'Entendido'
+        });
+        return null
+    }
+
     if ($('systems').value == 114) {
         $('cloths').value = 626; //tela: ninguno
         $('supports').value = 18 //soporte: ninguno;
