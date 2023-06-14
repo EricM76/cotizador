@@ -381,7 +381,7 @@ module.exports = {
                         userId: user.id
                     },
                     limit: 1,
-                    order: [['id', 'DESC']]
+                    order: [['updatedAt', 'DESC']]
                 });
                 if (order.length > 0 && moment().diff(moment(order[0].updatedAt), 'days') > 90) {
                     await db.User.update(
