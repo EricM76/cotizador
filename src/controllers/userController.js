@@ -402,6 +402,27 @@ module.exports = {
                         }
                     })
                 }
+
+                if(!order.length && ![1,2,3].includes(user.rolId) && moment().diff(moment(user.updatedAt), 'days') > 90 ){
+
+                    await db.User.update(
+                        {
+                            enabled: false
+                        },
+                        {
+                            where: {
+                                username
+                            }
+                        }
+                    )
+                    return res.render('login', {
+                        errors: {
+                            username: {
+                                msg: "usuario bloqueado"
+                            }
+                        }
+                    })
+                }
                 req.session.userLogin = {
                     id: user.id,
                     idLocal: user.idLocal,
