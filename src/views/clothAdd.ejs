@@ -5,7 +5,7 @@
   <body>
     <%- include('partials/header') %>
       <main class="container">
-        <section class="col-12 col-md-10 col-lg-8 mt-5 mx-auto">
+        <section class="col-12 col-md-10  mt-5 mx-auto">
           <article class="card shadow">
             <div class="card-header">
               Nueva Tela
@@ -31,10 +31,17 @@
                   <input type="text" class="form-control" id="price" name="price" placeholder="Precio">
                   <label for="price">Precio</label>
                 </div>
-                <div class="form-check form-switch mx-auto">
-                  <input class="form-check-input" type="checkbox" id="enabled" name="enabled">
-                  <label class="form-check-label" for="enabled">Visibilizar</label>
+                <div>
+                  <div class="form-check form-switch mx-auto">
+                    <input class="form-check-input" type="checkbox" id="enabled" name="enabled">
+                    <label class="form-check-label" for="enabled">Visibilizar</label>
+                  </div>
+                  <div class="form-check form-switch mx-auto">
+                    <input class="form-check-input" type="checkbox" id="traversedCut" name="traversedCut">
+                    <label class="form-check-label" for="traversedCut">No atravesado</label>
+                  </div>
                 </div>
+              
               </div>
 
               <div class="col-12 col-md-6 d-flex flex-column justify-content-center my-2">

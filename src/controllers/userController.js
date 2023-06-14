@@ -10,7 +10,7 @@ module.exports = {
             where: { enabled: true }
         })
         let admin = await db.User.findByPk(85);
-       
+
         db.User.findAll({
             where: {
                 enabled: true,
@@ -26,7 +26,7 @@ module.exports = {
                     pages: 1,
                     keywords: "",
                     multiplo: total % 8 === 0 ? 0 : 1,
-                    viewAllOrders : admin.viewOrders
+                    viewAllOrders: admin.viewOrders
                 })
             })
             .catch(error => console.log(error))
@@ -104,7 +104,7 @@ module.exports = {
                     surname,
                     email,
                     rolId: +rolId,
-                    idLocal : idLocal ? idLocal : null,
+                    idLocal: idLocal ? idLocal : null,
                     enabled: enabled ? 1 : 0,
                     phone,
                     username,
@@ -139,21 +139,42 @@ module.exports = {
         }
 
     },
-    remove: (req, res) => {
-        db.User.destroy({
-            where : {
-                id : req.params.id
-            }
-        }).then( () => {
+    remove: async (req, res) => {
+
+        if(+req.params.id === 85){
             return res.redirect('/users')
-        }).catch(error => console.log(error))
+        }
+
+        try {
+            await db.User.destroy({
+                where: {
+                    id: req.params.id
+                }
+            });
+            await db.Quotation.destroy({
+                where: {
+                    userId: req.params.id
+                }
+            });
+            await db.Order.destroy({
+                where: {
+                    userId: req.params.id
+                }
+            });
+
+            return res.redirect('/users')
+
+        } catch (error) {
+            console.log(error)
+        }
+
     },
-    restore : (req,res) => {
+    restore: (req, res) => {
         db.User.restore({
-            where : {
-                id : req.params.id
+            where: {
+                id: req.params.id
             }
-        }).then( () => {
+        }).then(() => {
             return res.redirect('/users')
         }).catch(error => console.log(error))
     },
@@ -275,7 +296,7 @@ module.exports = {
                 pages,
                 keywords,
                 multiplo: total % 8 === 0 ? 0 : 1,
-                viewAllOrders : admin.viewOrders
+                viewAllOrders: admin.viewOrders
             })
         } catch (error) {
             console.log(error)
@@ -288,28 +309,28 @@ module.exports = {
         try {
 
             await db.User.update(
-                { enabled: enable === true ? 0 : 1},
+                { enabled: enable === true ? 0 : 1 },
                 { where: { id } }
             )
 
             let user = await db.User.findByPk(id);
 
-            if(user.enabled){
+            if (user.enabled) {
                 let order = await db.Order.findAll({
-                    where : {
-                        userId : id
+                    where: {
+                        userId: id
                     },
-                    limit : 1,
-                    order : ['updatedAt']
+                    limit: 1,
+                    order: ['updatedAt']
                 })
-        
+
                 await db.Order.update(
                     {
-                        userId :id
+                        userId: id
                     },
                     {
                         where: {
-                            id : order[0].id
+                            id: order[0].id
                         }
                     }
                 )
@@ -318,16 +339,16 @@ module.exports = {
                     ok: true,
                     msg: 'Habilitación modificada con éxito!'
                 })
-                
-            }else{
+
+            } else {
                 return res.status(200).json({
                     ok: true,
                     msg: 'Habilitación modificada con éxito!'
                 })
-    
+
             }
 
-           
+
         } catch (error) {
             console.log(error)
             return res.status(error.status || 500).json({
@@ -345,53 +366,53 @@ module.exports = {
         if (errors.isEmpty()) {
 
             try {
-               
+
                 let user = await db.User.findOne({
                     where: {
                         username,
                     },
-                    include : [
-                        {association : 'rol'}
+                    include: [
+                        { association: 'rol' }
                     ]
                 });
 
                 let order = await db.Order.findAll({
-                    where : {
-                        userId : user.id
+                    where: {
+                        userId: user.id
                     },
-                    limit : 1,
-                    order : [['id','DESC']]
+                    limit: 1,
+                    order: [['id', 'DESC']]
                 });
-                if(order.length > 0 && moment().diff(moment(order[0].updatedAt),'days')>90){
+                if (order.length > 0 && moment().diff(moment(order[0].updatedAt), 'days') > 90) {
                     await db.User.update(
                         {
-                            enabled : false
+                            enabled: false
                         },
                         {
-                            where : {
+                            where: {
                                 username
                             }
                         }
                     )
                     return res.render('login', {
                         errors: {
-                            username : {
+                            username: {
                                 msg: "usuario bloqueado"
                             }
                         }
                     })
                 }
                 req.session.userLogin = {
-                    id : user.id,
+                    id: user.id,
                     idLocal: user.idLocal,
                     name: user.name,
-                    surname : user.surname,
-                    username : user.username,
-                    email : user.email,
+                    surname: user.surname,
+                    username: user.username,
+                    email: user.email,
                     rol: +user.rolId,
-                    rolName : user.rol.name.toLowerCase(),
-                    coefficient : +user.rol.coefficient,
-                    viewOrders : user.viewOrders
+                    rolName: user.rol.name.toLowerCase(),
+                    coefficient: +user.rol.coefficient,
+                    viewOrders: user.viewOrders
                 }
 
                 /* req.session.packaging = require('../data/packaging.json') */
@@ -412,85 +433,85 @@ module.exports = {
         res.redirect('/users/login')
     },
     /* APIS */
-    verifyUsername : async (req,res) => {
+    verifyUsername: async (req, res) => {
 
-        const {username} = req.body;
+        const { username } = req.body;
 
         let user = await db.User.findOne({
-            where : {
+            where: {
                 username
             }
         })
-        if(user){
+        if (user) {
             return res.status(200).json({
                 ok: false,
-                msg : 'El nombre de usuario ya existe'
+                msg: 'El nombre de usuario ya existe'
             })
-        }else{
+        } else {
             return res.status(200).json({
-                ok : true
+                ok: true
             })
         }
     },
-    getIdsLocal : async (req,res) => {
+    getIdsLocal: async (req, res) => {
         try {
-          let idsLocal = await db.User.findAll({
-            attributes : ['idLocal']
-          });
-          let ids = idsLocal.map(id => id.idLocal);
-          console.log('====================================');
-          console.log(ids);
-          console.log('====================================');
-          return res.json({
-            ok: true,
-            ids 
-          });
+            let idsLocal = await db.User.findAll({
+                attributes: ['idLocal']
+            });
+            let ids = idsLocal.map(id => id.idLocal);
+            console.log('====================================');
+            console.log(ids);
+            console.log('====================================');
+            return res.json({
+                ok: true,
+                ids
+            });
         } catch (error) {
-          console.log('====================================');
-          console.log(error);
-          console.log('====================================');
-          return res
-            .status(error.status || 500)
-            .json(
-              error.status === 500
-                ? "Comuníquese con el administrador del sitio"
-                : error.message
-            );
+            console.log('====================================');
+            console.log(error);
+            console.log('====================================');
+            return res
+                .status(error.status || 500)
+                .json(
+                    error.status === 500
+                        ? "Comuníquese con el administrador del sitio"
+                        : error.message
+                );
         }
-      },
-      changeAllViewOrders : async (req,res) => {
+    },
+    changeAllViewOrders: async (req, res) => {
         try {
-            const {viewAllOrders} = req.body
+            const { viewAllOrders } = req.body
             await db.User.update(
                 {
-                    viewOrders : viewAllOrders ? 1 : 0
+                    viewOrders: viewAllOrders ? 1 : 0
                 },
                 {
-                    where : {
-                        id : {
-                            [Op.gte] : 1
+                    where: {
+                        id: {
+                            [Op.gte]: 1
                         }
                     }
                 }
             )
             return res.json({
-              ok: true,
-              viewAllOrders
+                ok: true,
+                viewAllOrders
             });
-          } catch (error) {
+        } catch (error) {
             console.log('====================================');
             console.log(error);
             console.log('====================================');
             return res
-              .status(error.status || 500)
-              .json(
-                error.status === 500
-                  ? "Comuníquese con el administrador del sitio"
-                  : error.message
-              );
-          }
-      },
-      changeViewOrders: async (req, res) => {
+                .status(error.status || 500)
+                .json(
+                    error.status === 500
+                        ? "Comuníquese con el administrador del sitio"
+                        : error.message
+                );
+        }
+    },
+    changeViewOrders: async (req, res) => {
 
         const { id, enable } = req.body;
 

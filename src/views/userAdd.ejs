@@ -14,7 +14,7 @@
               <form action="/users/store" method="POST" class="row needs-validation" novalidate id="form-user">
                 <div class="col-12 col-md-6">
                   <div class="form-floating mb-3">
-                    <select class="form-select" id="floatingSelect" name="rolId">
+                    <select class="form-select" id="floatingSelect" name="rolId" required>
                       <option selected hidden value="">Seleccione...</option>
                       <% rols.forEach(rol=> { %>
                         <option value="<%= rol.id %>">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-12 col-md-6 d-flex justify-content-between align-items-center">
                   <div class="form-floating  mb-3 w-50">
-                    <input type="text" class="form-control" id="idLocal" name="idLocal" placeholder="ID Local">
+                    <input type="text" class="form-control" id="idLocal" name="idLocal" placeholder="ID Local" required>
                     <label for="idLocal">ID Local</label>
                   </div>
                   <span id="msg-error" class="text-danger text-small ms-2" hidden>El ID está en uso</span>
@@ -74,21 +74,21 @@
                 </div>
                 <div class="col-12 col-md-6">
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono">
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono" required>
                     <label for="phone">Teléfono</label>
                   </div>
                 </div>
 
                 <div class="col-12 col-md-6 mb-3">
                   <div class="form-floating ">
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Usuario">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Usuario" required>
                     <label for="username">Usuario</label>
                   </div>
                   <span class="ms-1 text-danger" id="error-username"></span>
                 </div>
                 <div class="col-12 col-md-6 mb-3">
                   <div class="form-floating ">
-                    <input type="text" class="form-control" id="password" name="password" placeholder="Contraseña">
+                    <input type="text" class="form-control" id="password" name="password" placeholder="Contraseña" required>
                     <label for="password">Contraseña</label>
                   </div>
                 </div>

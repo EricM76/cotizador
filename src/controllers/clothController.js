@@ -28,14 +28,16 @@ module.exports = {
     res.render("clothAdd");
   },
   store: (req, res) => {
-    let { name, price, enabled, idLocal, width } = req.body;
+    let { name, price, enabled, traversedCut, idLocal, width } = req.body;
 
     enabled = enabled ? 1 : 0;
+    traversedCut = traversedCut ? 1 : 0;
 
     db.Cloth.create({
       visible: enabled,
       name,
       idLocal,
+      traversedCut : traversedCut || false,
       price : +price || 0,
       width,
     }).then( () => {
@@ -52,9 +54,10 @@ module.exports = {
     res.render("clothEdit", { item });
   },
   update: (req, res) => {
-    let { name, price, enabled, idLocal, width } = req.body;
+    let { name, price, enabled, traversedCut, idLocal, width } = req.body;
 
     enabled = enabled ? 1 : 0;
+    traversedCut = traversedCut ? 1 : 0;
 
     db.Cloth.update(
       {
@@ -63,6 +66,7 @@ module.exports = {
         idLocal,
         price,
         width,
+        traversedCut : traversedCut || false,
       },
       {
         where: { id: req.params.id },

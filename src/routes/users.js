@@ -6,9 +6,10 @@ const loginValidator = require('../validations/loginValidator');
 const registerValidator = require('../validations/registerValidator');
 const adminSessionCheck = require('../middlewares/adminSessionCheck');
 const controlSessionCheck = require('../middlewares/controlSessionCheck');
+const userSessionCheck = require('../middlewares/userSessionCheck');
 
 router
-    .get('/',controlSessionCheck, index)
+    .get('/',userSessionCheck, controlSessionCheck, index)
     .get('/add',adminSessionCheck, add)
     .post('/store',adminSessionCheck,registerValidator, store)
     .get('/login', login)
@@ -16,7 +17,7 @@ router
     .get('/logout',logout)
     .get('/edit/:id',adminSessionCheck, edit)
     .put('/update/:id',adminSessionCheck, update)
-    //.delete('/remove/:id',adminSessionCheck, remove)
+    .delete('/remove/:id',adminSessionCheck, remove)
     .get('/filter', filter)
     .get('/restore/:id', adminSessionCheck, restore)
 
