@@ -48,6 +48,7 @@ module.exports = {
         group: ["userId"],
         having: "",
       });
+
       let items = db.Order.findAll({
         include: [
           {
@@ -63,7 +64,7 @@ module.exports = {
 
       Promise.all([users, items, total])
         .then(([users, items, total]) => {
-
+          users.sort((a,b) => a.user.username > b.user.username ? 1 : a.user.username < b.user.username ? -1  : 0)
           return res.render("orders", {
             items,
             users,
@@ -74,6 +75,7 @@ module.exports = {
             multiplo: total % 8 === 0 ? 0 : 1,
             moment,
             toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            typeUser : 2
           });
         })
         .catch((error) => console.log(error));
@@ -1047,13 +1049,11 @@ module.exports = {
     res.render("orders");
   },
   filter: async (req, res) => {
-    let { order, filter, keywords, active, pages, filterNoSend } = req.query;
+    let { order, filter, keywords, active, pages, filterNoSend, typeUser } = req.query;
     let items = [];
     let users = [];
     let total = 0;
-    console.log('====================================');
-    console.log(+req.session.userLogin.rol);
-    console.log('====================================');
+
     if (+req.session.userLogin.rol === 1) {
       try {
         users = await db.Quotation.findAll({
@@ -1062,12 +1062,29 @@ module.exports = {
           group: ["userId"],
           having: "",
         });
+        
+        users.sort((a,b) => a.user.username > b.user.username ? 1 : a.user.username < b.user.username ? -1  : 0)
+
+        users = typeUser < 2 ? users.filter(item => item.user.enabled == typeUser) : users;
+
+        /* si no se selecciona ningun vendedor en particular */
         if (filter === "all" || !filter) {
+          /* si tilda mostrar NO enviados */
           if (filterNoSend) {
             total = await db.Order.count({
               where: {
                 send: 0
-              }
+              },
+              include : [
+                {
+                  association : 'user',
+                  where : {
+                    enabled : typeUser == 2 ?  {
+                      [Op.or]: [1, 0]
+                    } : typeUser
+                  }
+                }
+              ]
             });
             items = await db.Order.findAll({
               include: [
@@ -1075,7 +1092,14 @@ module.exports = {
                   association: "quotations",
                   include: [{ all: true }],
                 },
-                { association: "user" },
+                {
+                  association : 'user',
+                  where : {
+                    enabled : typeUser == 2 ?  {
+                      [Op.or]: [1, 0]
+                    } : typeUser
+                  }
+                }
               ],
               order: [["updatedAt",'DESC']],
               limit: 8,
@@ -1084,15 +1108,36 @@ module.exports = {
                 send: 0
               },
             });
-          } else {
-            total = await db.Order.count();
+          } 
+          /* si mostramos todos los vendores con email NO enviados */
+          else {
+         
+            total = await db.Order.count({
+              include : [
+                {
+                  association : 'user',
+                  where : {
+                    enabled : typeUser == 2 ?  {
+                      [Op.or]: [1, 0]
+                    } : typeUser
+                  }
+                }
+              ]
+            });
             items = await db.Order.findAll({
               include: [
                 {
                   association: "quotations",
                   include: [{ all: true }],
                 },
-                { association: "user" },
+                {
+                  association : 'user',
+                  where : {
+                    enabled : typeUser == 2 ?  {
+                      [Op.or]: [1, 0]
+                    } : typeUser
+                  }
+                }
               ],
               order: [["updatedAt",'DESC']],
               limit: 8,
@@ -1100,7 +1145,10 @@ module.exports = {
               //include: { all: true },
             });
           }
-        } else {
+        } 
+        /* si se selecciona un vendedor en particular */
+        else {
+          /* si se tilda mostrar email NO enviados de un vendedor en particular */
           if (filterNoSend) {
             total = await db.Order.count({
               where: {
@@ -1125,32 +1173,9 @@ module.exports = {
               offset: active && +active * 8 - 8,
               //include: { all: true },
             });
-          } else {
-            if (filterNoSend) {
-              total = await db.Order.count({
-                where: {
-                  userId: +filter,
-                  send: 0
-                },
-              });
-              items = await db.Order.findAll({
-                where: {
-                  userId: +filter,
-                  send: 0
-                },
-                include: [
-                  {
-                    association: "quotations",
-                    include: [{ all: true }],
-                  },
-                  { association: "user" },
-                ],
-                order: [["updatedAt",'DESC']],
-                limit: 8,
-                offset: active && +active * 8 - 8,
-                //include: { all: true },
-              });
-            } else {
+          }  
+          /* si mostramos un venddor en particular y sus mails NO enviados */
+          else {
               total = await db.Order.count({
                 where: {
                   userId: +filter,
@@ -1173,7 +1198,6 @@ module.exports = {
                 //include: { all: true },
               });
             }
-          }
         }
         return res.render("orders", {
           items,
@@ -1184,6 +1208,7 @@ module.exports = {
           multiplo: total % 8 === 0 ? 0 : 1,
           moment,
           users,
+          typeUser,
           toThousand: (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
         });
       } catch (error) {
