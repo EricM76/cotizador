@@ -23,6 +23,7 @@ module.exports = {
         group: ["userId"],
         having: "",
       });
+     
       db.Quotation.findAll({
         limit: 8,
         order : [['updatedAt','DESC']],
@@ -193,7 +194,13 @@ module.exports = {
           group: ["userId"],
           having: "",
         });
-        users = typeUser < 2 ? users.filter(item => item.user.enabled == typeUser) : users
+      
+
+        users.sort((a,b) => a.user.username > b.user.username ? 1 : a.user.username < b.user.username ? -1  : 0)
+
+        users = typeUser < 2 ? users.filter(item => item.user.enabled == typeUser) : users;
+
+    
         if (typeUser == 2 && !filter) {
           total = await db.Quotation.count({
             where: {
