@@ -453,7 +453,15 @@ $('chains').addEventListener('blur', ({ target }) => {
     }
 }) */
 
-const checkWidthMax = (target) => {
+const checkWidthMax = async (target) => {
+    const response = await fetch(`/cloths/api/${$('cloths').value}`);
+    const { ok, cloth } = await response.json();
+    if (cloth.traversedCut && +target.value > cloth.width) {
+        $('errorWidth').innerHTML = `Supera el ancho del rollo`;
+        target.classList.add('is-invalid')
+        return null
+    }
+
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
@@ -517,7 +525,14 @@ const checkWidthMax = (target) => {
     }
 };
 
-const checkWidthValue = (target) => {
+const checkWidthValue = async (target) => {
+    const response = await fetch(`/cloths/api/${$('cloths').value}`);
+    const { ok, cloth } = await response.json();
+    if (cloth.traversedCut && +target.value > cloth.width) {
+        $('errorWidth').innerHTML = `Supera el ancho del rollo`;
+        target.classList.add('is-invalid')
+        return null
+    }
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
@@ -967,14 +982,18 @@ $('form-quoter').addEventListener('submit', async (e) => {
     const response = await fetch(`/cloths/api/${$('cloths').value}`);
     const { ok, cloth } = await response.json();
 
-    if (cloth.id === 632 || cloth.id === 730) {
+    console.log('====================================');
+    console.log(cloth.id, cloth.width, cloth.traversedCut);
+    console.log('====================================');
+
+    if (cloth.traversedCut) {
         if (
             +$('width').value > (cloth.width)
-            || +$('width').value > (cloth.width) && +$('heigth').value >= (cloth.width - 20 + 1)
+            || +$('width').value > (cloth.width) && +$('heigth').value > (cloth.width - 20)
         ) {
             Swal.fire({
                 title: 'Corte de tela incorrecto',
-                html: `El ancho de no pude exceder el ancho del rollo. El de la tela <i>${cloth.name}</i> que es de <b>${cloth.width} cm</b>. <a target="_blank" href="/information/cloth-width">Ver todos los anchos</a>`,
+                html: `El ancho de no pude exceder el ancho del rollo. El de la tela <i>${cloth.name}</i> es de <b>${cloth.width} cm</b>. <a target="_blank" href="/information/cloth-width">Ver todos los anchos</a>`,
                 icon: 'error',
                 confirmButtonColor: '#8B0000',
                 confirmButtonText: 'Entendido'
@@ -985,7 +1004,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
         && (
             +$('width').value > (cloth.width) && +$('heigth').value > cloth.width
             || +$('width').value > (cloth.width) && +$('heigth').value > (cloth.width)
-            || +$('width').value > (cloth.width) && +$('heigth').value >= (cloth.width - 20 + 1))
+            || +$('width').value > (cloth.width) && +$('heigth').value > (cloth.width - 20))
 
     ) {
         Swal.fire({
