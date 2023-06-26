@@ -138,6 +138,11 @@
               Precio embalaje
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="updatePercentageLineBlack(event)">
+             Linea Black
+            </a>
+          </li>
           <% } %>
           <% if (locals.userLogin.viewOrders || locals.userLogin.rol === 1 || locals.userLogin.rol === 2) { %>
             <li class="nav-item">
@@ -168,8 +173,19 @@
     }
   };
 
+  const getPercentageLineBlack = async () => {
+    try {
+      let response = await fetch("/information/get-percentage-lineblack");
+      let result = await response.json();
+      sessionStorage.setItem("percentageLineBlack", JSON.stringify(result.percentage));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
  
     getPackaging();
+    getPercentageLineBlack();
   
 
   const updatePackaging = async (e) => {
@@ -232,4 +248,55 @@
     localStorage.removeItem('selected');
     localStorage.removeItem('dataOrder');
   }
+
+  const updatePercentageLineBlack = async (e) => {
+    e.preventDefault()
+    let percentage = JSON.parse(sessionStorage.getItem("percentageLineBlack"));
+    try {
+      Swal.fire({
+        title: "Actualizar porcenaje Linea Black",
+        input: "number",
+        inputValue: percentage,
+        inputAttributes: {
+          autocapitalize: "off",
+        },
+        showCancelButton: true,
+        confirmButtonText: "Guardar",
+        confirmButtonColor : "#8B0000",
+        preConfirm: (data) => {
+          return fetch("/information/update-percentage-lineblack", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              percentage: data,
+            }),
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        },
+      }).then((result) => {
+        console.log(result);
+        if (result.isConfirmed) {
+          sessionStorage.setItem(
+            "percentageLineBlack",
+            JSON.stringify(result.value.percentage)
+          );
+          Swal.fire({
+            icon: "success",
+            title: "Pocentaje actualizado",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 </script>

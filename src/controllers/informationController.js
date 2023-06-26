@@ -41,7 +41,6 @@ module.exports = {
         where : {id : 1}
       }
     )
-    console.log('>>>>>>', req.session.packaging)
     return res.json({
       packaging : req.session.packaging
     })
@@ -63,6 +62,48 @@ module.exports = {
     } catch (error) {
       console.log(error)
     }
-  
-  }
+  },
+  updatePercentageLineBlack: async (req,res) => {
+    req.session.percentage = +req.body.percentage;
+    console.log('====================================');
+    console.log(req.body.percentage);
+    console.log('====================================');
+    try {
+      let response = await db.Package.update(
+        {
+          price : req.body.percentage
+        },
+        {
+          where : {
+            id : 2
+          }
+        }
+      )
+      return res.json({
+        ok : true,
+        percentage : req.session.percentage
+      })
+    } catch (error) {
+      console.log(error);
+      return res.json({
+        ok: false,
+        message : error.message
+      })
+    }
+  },
+  getPercentageLineBlack : async (req,res) => {
+     try {
+       let percentage = await db.Package.findByPk(2);
+       return res.json({
+        ok : true,
+        percentage: percentage.price
+       })
+     } catch (error) {
+       console.log(error)
+       return res.json({
+        ok: false,
+        message : error.message
+      })
+     }
+   },
 };
