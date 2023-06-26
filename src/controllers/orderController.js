@@ -41,7 +41,7 @@ module.exports = {
         orderNumber: null
       }
     })
-    if (+req.session.userLogin.rol === 1) {
+    if (+req.session.userLogin.rol === 1 || +req.session.userLogin.rol === 2) {
       let users = db.Quotation.findAll({
         attributes: ["userId"],
         include: [{ association: "user" }],
@@ -1054,7 +1054,7 @@ module.exports = {
     let users = [];
     let total = 0;
 
-    if (+req.session.userLogin.rol === 1) {
+    if (+req.session.userLogin.rol === 1 || +req.session.userLogin.rol === 2) {
       try {
         users = await db.Quotation.findAll({
           attributes: ["userId"],

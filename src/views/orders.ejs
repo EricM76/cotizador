@@ -13,7 +13,7 @@
               <form action="/orders/filter" class="row" id="form-items">
 
                 <div class="col-12 col-md-4 col-lg-4 mb-2">
-                  <% if (+locals.userLogin.rol === 1) { %>
+                  <% if (+locals.userLogin.rol === 1 || +locals.userLogin.rol === 2) { %>
                     <select class="form-select" id="filter" name="filter" onchange="resetValues()">
                       <option value="" selected hidden>Filtrar por vendedor</option>
                       <% users.forEach(item=> { %>
@@ -25,6 +25,8 @@
                   <% } %>
                 </div>
                 <div class="col-12 col-md-4 col-lg-4 mb-2">
+                  <% if (+locals.userLogin.rol === 1 || +locals.userLogin.rol === 2) { %>
+
                   <div class="d-flex justify-content-between">
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="typeUser" id="typeUser2" value="2" <%= typeUser == 2 && 'checked'%> onchange="resetValues()">
@@ -45,6 +47,8 @@
                       </label>
                     </div>
                   </div>
+                  <% } %>
+
                 </div>
                 <div class="col-12  col-md-4 col-lg-4 mb-2 d-flex justify-content-end align-items-center">
                   <div class="form-check">
