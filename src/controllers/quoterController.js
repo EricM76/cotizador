@@ -781,6 +781,17 @@ module.exports = {
         
       }
 
+      /* ************************************************ */
+      /*                     LINEA BLACK                  */
+      /* ************************************************ */
+
+      if (+lineBlack === 1) {
+
+        let {price} = await db.Package.findByPk(2);
+        amount = amount + (amount * price / 100)
+        
+      }
+
       /* CALCULO SEGÚN EL ROL DEL VENDEDOR */
       amount = req.session.userLogin.coefficient !== 0 ? amount + amount * req.session.userLogin.coefficient : amount;
 

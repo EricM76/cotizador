@@ -683,8 +683,8 @@ const checkHeigthMax = (target) => {
             }
             break;
         case '179': //bandas verticales
-            if (+target.value > 250) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
+            if (+target.value > 270) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 270 cm`;
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -746,8 +746,8 @@ const checkHeigthValue = (target) => {
             }
             break;
         case '179': //bandas verticales
-            if (+target.value > 250) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
+            if (+target.value > 270) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 270 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
@@ -888,7 +888,12 @@ $('referenceQuoter').addEventListener('blur', ({ target }) => {
     } else {
         target.classList.remove('is-invalid')
     }
-})
+});
+
+const setLineBlack = (state) => {
+    $('lineBlack').value = state;
+
+}
 
 /* enviar formulario */
 
@@ -971,7 +976,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
         $('railWidth').value = 0;
     }
 
-    for (let i = 0; i < elements.length - 1; i++) {
+    for (let i = 0; i < elements.length - 2; i++) {
 
         if (!elements[i].value || elements[i].classList.contains('is-invalid')) {
             error = true;
@@ -1002,6 +1007,7 @@ $('form-quoter').addEventListener('submit', async (e) => {
                     rol: $('rol') ? $('rol').value : 1,
                     large: $('large').value,
                     railWidth: $('railWidth').value.trim(),
+                    lineBlack: $('lineBlack').value
                 })
             });
             const result = await response.json();

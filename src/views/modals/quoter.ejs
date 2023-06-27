@@ -112,9 +112,12 @@
                       </div>
                      
                   </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-end flex-wrap">
-                      <a type="button" class="btn btn-secondary w-sm-100 m-1" data-bs-dismiss="modal" id="btn-cancel-formModal">CANCELAR</a>
-                      <button type="submit" id="btn-send-formModal" class="btn buttons__btn-custom w-sm-100 my-1">COTIZAR CORTINA</button>
+                  <input hidden class="form-check-input" type="checkbox" value="0" id="lineBlack">
+
+                    <div class="d-flex flex-column flex-md-row justify-content-end flex-wrap gap-2">
+                      <a type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-cancel-formModal">CANCELAR</a>
+                      <button type="submit" id="btn-send-formModal" class="btn buttons__btn-custom" onclick="setLineBlack(0)">COTIZAR CORTINA</button>
+                       <button type="submit" id="btn-send-formModal" class="btn btn-dark" onclick="setLineBlack(1)">LINEA BLACK</button>
                     </div>
                   </form>
                 </div>
