@@ -130,8 +130,13 @@
                          </div>
                    </div>
                     <div class="col-12 col-md-12 col-lg-4 mb-3">
-                   
-                    <button class="btn buttons__btn-custom w-100 py-3">COTIZAR CORTINA</button>
+                      <input hidden class="form-check-input" type="checkbox" value="0" id="lineBlack">
+
+                      <div class="d-flex justify-content-between gap-2 ">
+                        <button class="btn buttons__btn-custom w-100 py-3" type="submit" onclick="setLineBlack(0)">COTIZAR CORTINA</button>
+                        <button class="btn btn-dark w-100 py-3" type="submit" onclick="setLineBlack(1)">LÍNEA BLACK</button>
+                      </div>
+                  
                   </div>
                     <div class="col-12 mb-3">
                         <div class="alert alert-info">

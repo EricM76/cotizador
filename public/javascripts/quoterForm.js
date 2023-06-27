@@ -973,6 +973,12 @@ $('rol') && $('rol').addEventListener('change', async ({ target }) => {
     }
 });
 
+const setLineBlack = (state) => {
+    $('lineBlack').value = state;
+
+}
+
+
 /* enviar formulario */
 
 $('form-quoter').addEventListener('submit', async (e) => {
@@ -1082,7 +1088,7 @@ const sendForm = async () => {
           console.log($('chains').value);
           console.log('====================================');
       } */
-    for (let i = 0; i < elements.length - 1; i++) {
+    for (let i = 0; i < elements.length - 2; i++) {
 
         if (!elements[i].value || elements[i].classList.contains('is-invalid')) {
             error = true;
@@ -1113,7 +1119,8 @@ const sendForm = async () => {
                     heigth: $('heigth').value.trim(),
                     reference: $('reference').value.trim(),
                     rol: $('rol') ? $('rol').value : 1,
-                    large: $('large').value
+                    large: $('large').value,
+                    lineBlack: $('lineBlack').value
                 })
             });
             const result = await response.json();

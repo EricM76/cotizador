@@ -366,7 +366,8 @@ module.exports = {
         railWidth,
         heigth,
         reference,
-        large
+        large,
+        lineBlack
       } = req.body;
 
       const price = await db.Price.findOne({
@@ -511,6 +512,17 @@ module.exports = {
         console.log('RESULTADO FUNCIÓN', amount)
         console.log('====================================');
 
+      }
+
+      /* ************************************************ */
+      /*                     LINEA BLACK                  */
+      /* ************************************************ */
+
+      if (+lineBlack === 1) {
+
+        let {price} = await db.Package.findByPk(2);
+        amount = amount + (amount * price / 100)
+        
       }
 
       /* CALCULO SEGÚN EL ROL DEL VENDEDOR */
