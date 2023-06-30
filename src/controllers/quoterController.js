@@ -245,9 +245,23 @@ module.exports = {
             order : [['updatedAt','DESC']],
             limit: 8,
             offset: active && +active * 8 - 8,
-            include: { all: true },
+            include : [
+              'system','cloth','color','support','pattern','chain',
+              {
+                association : 'user',
+                where : {
+                  enabled : typeUser
+                }
+              }
+            ]
           });
-          items = items.filter(item => item.user.enabled == typeUser)
+          
+          items = items.filter(item => {
+
+            console.log(item.user, typeUser);
+            return item.user.enabled == typeUser
+          })
+          
         } else {
           total = await db.Quotation.count({
             where: {
