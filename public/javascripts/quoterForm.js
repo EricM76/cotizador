@@ -984,6 +984,9 @@ const setLineBlack = (state) => {
 $('form-quoter').addEventListener('submit', async (e) => {
 
     e.preventDefault();
+
+    if($('systems').value === '113'){
+
     let errorWidth = false;
     const response = await fetch(`/cloths/api/${$('cloths').value}`);
     const { ok, cloth } = await response.json();
@@ -1035,6 +1038,9 @@ $('form-quoter').addEventListener('submit', async (e) => {
     }
 
     await sendForm();
+}else {
+    await sendForm();
+}
 
 })
 
