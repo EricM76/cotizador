@@ -16,7 +16,7 @@ localStorage.getItem('dataOrder') && localStorage.removeItem('dataOrder');
 
 window.addEventListener('load', async () => {
 
-
+    
     try {
 
         let response = await fetch('/systems/api/get-all');

@@ -65,7 +65,7 @@ const getKeywords = () => {
 const goBack = (e) => {
     e.preventDefault()
 
-    window.location = '/quoters'
+    window.location = '/quoters/filter?search=&active=1&pages=1&keywords=&typeUser=2'
 }
 if($('btn-generateOrder')){
     $('btn-generateOrder').addEventListener('click', (e) => {
@@ -203,6 +203,11 @@ window.onload = function () {
     document.getElementById('form-items').addEventListener('submit', (e) => {
         e.preventDefault();
         getKeywords();
+        console.log('>>>',$('search').value);
+        if($('search').value === ""){
+            sessionStorage.removeItem('keywords');
+            $('keywords').value = ""
+        }
         e.target.submit()
 
     })

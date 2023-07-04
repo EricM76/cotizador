@@ -301,7 +301,7 @@ module.exports = {
       }
     } else {
       try {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>", keywords);
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>", typeUser);
         total = await db.Quotation.count({
           where: {
             userId: req.session.userLogin.id,
@@ -331,6 +331,7 @@ module.exports = {
           keywords,
           multiplo: total % 8 === 0 ? 0 : 1,
           moment,
+          typeUser
         });
       } catch (error) {
         console.log(error);
