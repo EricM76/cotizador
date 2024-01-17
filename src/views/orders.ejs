@@ -130,8 +130,17 @@
                       <tbody>
                         <% items.forEach((item)=> { %>
                           <tr>
+
                             <td class="align-middle text-center">
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#orderInfo<%= item.id %>"  id="btn-createQuotation" class="btn btn-sm btn-primary"><i class="fas fa-info"></i></button>
+                              <button 
+                                class="btn btn-sm <%= item.isCanceled ? 'btn-danger' : 'btn-outline-secondary' %>  px-1"
+                                onclick="onCancel(event, '<%=item.id%>')"
+                                id="btnCancel<%= item.id %>"
+                              >
+                                <i class="fas fa-ban"></i>
+                              </button>
+
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#orderInfo<%= item.id %>"  id="btn-createQuotation" class="btn btn-sm btn-primary px-2"><i class="fas fa-info"></i></button>
                                 <div class="modal fade" id="orderInfo<%= item.id %>" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
                                   <div class="modal-dialog modal-xl">
                                     <div class="modal-content">

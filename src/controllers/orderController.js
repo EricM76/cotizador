@@ -1533,6 +1533,33 @@ module.exports = {
             : error.message
         );
     }
+  },
+  onCancel : async (req,res) => {
+    const { orderId } = req.body;
+    console.log('====================================');
+    console.log(orderId);
+    console.log('====================================');
+    try {
+      let order = await db.Order.findByPk(orderId);
+      order.isCanceled = true;
+      await order.save()
+      
+      return res.status(200).json({
+        ok : true,
+        msg : "Pedido anulado"
+      });
+    } catch (error) {
+      return res
+      .status(error.status || 500)
+      .json({
+        ok : false,
+        msg:  error.status === 500
+        ? "Comuníquese con el administrador del sitio"
+        : error.message
+      });
+    }
+  
+
   }
 
 };

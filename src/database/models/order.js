@@ -32,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     fileAdmin: DataTypes.STRING,
     orderNumber: DataTypes.STRING,
     total :DataTypes.INTEGER,
-    ticket: DataTypes.STRING
+    ticket: DataTypes.STRING,
+    isCanceled : DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Order',

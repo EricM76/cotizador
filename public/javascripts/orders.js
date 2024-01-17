@@ -66,6 +66,59 @@ const goBack = (e) => {
     window.location = '/orders'
 }
 
+const onCancel = async (e, orderId) => {
+    e.preventDefault();
+
+    Swal.fire({
+        title: '¿Desea anular esta orden?',
+        text: "No se elminirá del sistema. Solo se indicará que la misma fue anulada.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8B0000',
+        cancelButtonColor: '#C0C0C0',
+        confirmButtonText: 'Anular'
+    }).then( async (result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                {
+                    title: 'Anulando...',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            )
+            try {
+                let response = await fetch('/orders/api/oncancel',{
+                    method : 'POST',
+                    headers: {
+                        "Content-type": "application/json",
+                      },
+                    body : JSON.stringify({
+                        orderId,
+                    })
+                })
+                let result = await response.json();
+                
+                if(result.ok){
+                    document.getElementById('btnCancel' + orderId).classList.add('btn-danger');
+                    document.getElementById('btnCancel' + orderId).classList.remove('btn-outline-secondary')
+                    Swal.fire(
+                        {
+                            title: 'Orden anulada con éxito',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }
+                    )
+                }
+              
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    })
+}
+
 const reSend = async (e,userId, orderId) => {
     e.preventDefault()
     Swal.fire({
