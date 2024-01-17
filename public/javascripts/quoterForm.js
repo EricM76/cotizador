@@ -305,6 +305,15 @@ $('systems').addEventListener('change', async ({ target }) => {
             En caso de tener que instalar con orientación a pared, se utilizan "ELES", consulte el costo de cada ELE y que cantidad es necesaria en base al ancho.
             `
             break
+        case '179':
+            $('clarifications').innerHTML =
+            `
+            <h5>Bandas verticales</h5>
+            <li>
+            La medida del alto es desde arriba del mecanismo hasta el fin del zocalo de abajo. El mecanismo de las bandas verticales ocupa unos 4cm. entonces la tela se hara 4cm. menos Por ejemplo si el alto es de 1.50 se hara(1.46 de alto + 0.04 de mecanismo)
+            </li>
+            `
+            break
         default:
             $('clarifications').innerHTML = null;
             break;
