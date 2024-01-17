@@ -154,7 +154,7 @@
                           
                         </td>
                           <td class="d-flex">
-                            <a class="btn btn-sm btn-success mx-1 <%= (locals.userLogin.rol == 2 || item.id == 85) && 'disabled' %>" style="width:33px;"
+                            <a class="btn btn-sm btn-success mx-1 <%= (locals.userLogin.rol == 2) && 'disabled' %>" style="width:33px;"
                               href="/users/edit/<%= item.id %>" ><i class="fas fa-edit"></i></a>
                               
                               <form action="/users/remove/<%= item.id %>?_method=delete" method="POST" onsubmit="sendDeleteUser(event, '<%= item.name %>', '<%= item.surname %>')">
