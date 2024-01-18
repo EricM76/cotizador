@@ -98,6 +98,7 @@
                     <thead>
                       <tr>
                         <th scope="col">Habilitado</th>
+                        <th scope="col">Infinito</th>
                         <th scope="col">IDLocal</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
@@ -120,7 +121,15 @@
                                     <%=item.enabled%>)" <%= locals.userLogin.rol == 2 && 'disabled' %> >
                                 </div>
                               </div>
-
+                            </td>
+                            <td class="">
+                              <div class="d-flex justify-content-center">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="enabled<%= item.id %>"
+                                    <%=item.infinity && 'checked' %> onchange="changeInfinity(<%=item.id%>,
+                                    <%=item.infinity%>)" <%= locals.userLogin.rol == 2 && 'disabled' %> >
+                                </div>
+                              </div>
                             </td>
                           <th scope="row">
                             <%= item.idLocal %>

@@ -24,6 +24,31 @@ const changeEnable = async (id, enable) => {
     }
 }
 
+const changeInfinity = async (id, infinity) => {
+
+    try {
+
+
+        let response = await fetch(`/users/api/infinity`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id,
+                infinity
+            })
+        });
+
+        let result = await response.json()
+
+        console.log(result)
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 
 const changeViewOrders = async (id, enable) => {
 

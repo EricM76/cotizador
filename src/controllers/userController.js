@@ -307,46 +307,46 @@ module.exports = {
         const { id, enable } = req.body;
 
         try {
-
-            await db.User.update(
-                { enabled: enable === true ? 0 : 1 },
+            let user = await db.User.findByPk(id);
+            user.enabled = enable === true ? 0 : 1;
+            user.recovered = !user.recovered;
+            await user.save()
+          /*   await db.User.update(
+                { 
+                    enabled: enable === true ? 0 : 1  
+                },
                 { where: { id } }
-            )
+            ) */
+
+            return res.status(200).json({
+                    ok: true,
+                    msg: 'Habilitación modificada con éxito!'
+                })
+
+
+        } catch (error) {
+            console.log(error)
+            return res.status(error.status || 500).json({
+                ok: false,
+                msg: error.status === 500 ? "Comuníquese con el administrador del sitio" : error.message
+            })
+        }
+    },
+    onInfinity: async (req, res) => {
+
+        const { id, infinity } = req.body;
+
+        try {
 
             let user = await db.User.findByPk(id);
+            user.infinity = !user.infinity;
+            await user.save()
 
-            if (user.enabled) {
-                let order = await db.Order.findAll({
-                    where: {
-                        userId: id
-                    },
-                    limit: 1,
-                    order: ['updatedAt']
-                })
 
-                await db.Order.update(
-                    {
-                        userId: id
-                    },
-                    {
-                        where: {
-                            id: order[0].id
-                        }
-                    }
-                )
-
-                return res.status(200).json({
-                    ok: true,
-                    msg: 'Habilitación modificada con éxito!'
-                })
-
-            } else {
-                return res.status(200).json({
-                    ok: true,
-                    msg: 'Habilitación modificada con éxito!'
-                })
-
-            }
+            return res.status(200).json({
+                ok: true,
+                msg: 'Habilitación indifinidamodificada con éxito!'
+            })
 
 
         } catch (error) {
@@ -381,9 +381,14 @@ module.exports = {
                         userId: user.id
                     },
                     limit: 1,
-                    order: [['updatedAt', 'DESC']]
+                    order: [['createdAt', 'DESC']]
                 });
-                if (order.length > 0 && moment().diff(moment(order[0].updatedAt), 'days') > 90) {
+                
+               
+                
+                if (order.length > 0 && moment().diff(moment(order[0].createdAt), 'days') > 90 && !user.recovered && !user.infinity) {
+
+                    
                     await db.User.update(
                         {
                             enabled: false
@@ -437,7 +442,8 @@ module.exports = {
                 }
 
                 /* req.session.packaging = require('../data/packaging.json') */
-
+                user.recovered = false;
+                await user.save();
                 return res.redirect('/quoters/add')
 
             } catch (error) {
