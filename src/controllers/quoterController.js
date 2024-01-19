@@ -556,6 +556,10 @@ module.exports = {
         console.log('====================================');
       }
 
+      function roundOut(num) {
+        return Math.round(num / 100) * 100;
+      }
+
       if (amount) {
         let quotation;
         if (req.session.userLogin.rol > 2) {
@@ -565,7 +569,7 @@ module.exports = {
           quotation = await db.Quotation.create({
             clothWidth: +large !== 0 ? +large : +railWidth !== 0 ? +railWidth : +width,
             heigth: +heigth,
-            amount: amount.toFixed(0),
+            amount: roundOut(amount.toFixed(0)),
             date: new Date(),
             reference,
             systemId: +system,
@@ -578,9 +582,12 @@ module.exports = {
           });
         }
 
+        console.log(data, roundOut(data));
+        console.log(amount, roundOut(amount));
+
         return res.status(200).json({
           ok: true,
-          data: data ? data.toFixed(0) : amount.toFixed(0),
+          data: data ? roundOut(data.toFixed(0)) : roundOut(amount.toFixed(0)),
           quotation,
           rol: req.session.userLogin.rol
         });
@@ -821,7 +828,11 @@ module.exports = {
         console.log('====================================');
       }
 
-      return amount
+      function roundOut(num) {
+        return Math.round(num / 100) * 100;
+      }
+
+      return roundOut(amount)
 
     } catch (error) {
       console.log(error);
