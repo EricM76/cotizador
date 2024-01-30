@@ -683,8 +683,8 @@ const checkHeigthMax = (target) => {
             }
             break;
         case '179': //bandas verticales
-            if (+target.value > 270) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 270 cm`;
+            if (+target.value > 315) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 315 cm`;
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -746,8 +746,8 @@ const checkHeigthValue = (target) => {
             }
             break;
         case '179': //bandas verticales
-            if (+target.value > 270) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 270 cm`;
+            if (+target.value > 315) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 315 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
