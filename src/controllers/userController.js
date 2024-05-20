@@ -305,11 +305,17 @@ module.exports = {
     enable: async (req, res) => {
 
         const { id, enable } = req.body;
-
+    
         try {
             let user = await db.User.findByPk(id);
-            user.enabled = enable === true ? 0 : 1;
-            user.recovered = !user.recovered;
+            console.log('====================================');
+            console.log('antes', user.enabled);
+            console.log('====================================');
+            user.enabled = !user.enabled;
+            console.log('====================================');
+            console.log('antes', user.enabled);
+            console.log('====================================');
+            user.recovered = true;
             await user.save()
           /*   await db.User.update(
                 { 
@@ -386,9 +392,16 @@ module.exports = {
                 
                
                 
-                if (order.length > 0 && moment().diff(moment(order[0].createdAt), 'days') > 90 && !user.recovered && !user.infinity) {
+                //if (order.length > 0 && moment().diff(moment(order[0].createdAt), 'days') > 90 && !user.recovered && !user.infinity) {
 
+                console.log('====================================');
+                console.log(order.length, user.recovered, user.infinity);
+                console.log('====================================');
                     
+                if (order.length > 0 && moment().diff(moment(order[0].createdAt), 'days') > 90 && !user.recovered && !user.infinity) {
+                    console.log('====================================');
+                    console.log('cambio 1');
+                    console.log('====================================');
                     await db.User.update(
                         {
                             enabled: false
@@ -408,8 +421,10 @@ module.exports = {
                     })
                 }
 
-                if(!order.length && ![1,2,3].includes(user.rolId) && moment().diff(moment(user.updatedAt), 'days') > 90 ){
-
+                if(!order.length && ![1,2,3].includes(user.rolId) && moment().diff(moment(user.createdAt), 'days') > 90 ){
+                    console.log('====================================');
+                    console.log('cambio 2');
+                    console.log('====================================');
                     await db.User.update(
                         {
                             enabled: false
@@ -442,7 +457,7 @@ module.exports = {
                 }
 
                 /* req.session.packaging = require('../data/packaging.json') */
-                user.recovered = false;
+                /* user.recovered = false; */
                 await user.save();
                 return res.redirect('/quoters/add')
 

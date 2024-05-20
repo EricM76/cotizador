@@ -732,8 +732,8 @@ const checkHeigthMax = (target) => {
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
-            if (+target.value > 300) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
+            if (+target.value > 320) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 320 cm`;
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -761,8 +761,8 @@ const checkHeigthMax = (target) => {
         case '116': //triple pellizco
         case '129': //pellizco simple
         case '130': //pellizco doble
-            if (+target.value > 250) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
+            if (+target.value > 300) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
             } else {
                 $('errorHeigth').innerHTML = null;
@@ -787,8 +787,8 @@ const checkHeigthValue = (target) => {
     switch ($('systems').value) {
         case '113': //roller
         case '119': //visillo
-            if (+target.value > 300) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
+            if (+target.value > 320) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 320 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
@@ -822,8 +822,8 @@ const checkHeigthValue = (target) => {
         case '116': //triple pellizco
         case '129': //pellizco simple
         case '130': //pellizco doble
-            if (+target.value > 250) {
-                $('errorHeigth').innerHTML = `El alto máximo permitido es de 250 cm`;
+            if (+target.value > 300) {
+                $('errorHeigth').innerHTML = `El alto máximo permitido es de 300 cm`;
                 target.classList.add('is-invalid')
             } else if (!target.value) {
                 target.classList.add('is-invalid')
