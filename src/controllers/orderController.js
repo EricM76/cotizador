@@ -309,17 +309,23 @@ module.exports = {
     } = req.body;
     id = typeof id === "string" ? id.split() : id;
     name = typeof name === "string" ? name.split() : name;
-    price = typeof price === "string" ? price.split() : price;
-    quantity = typeof quantity === "string" ? quantity.split() : quantity;
-    limit = typeof limit === "string" ? limit.split() : limit;
+    price = typeof price === "string" ? price.split() : +price;
+    quantity = typeof quantity === "string" ? quantity.split() : +quantity;
+    limit = typeof limit === "string" ? limit.split() : +limit;
 
     const accessories = [];
     if (name) {
       for (let i = 0; i < name.length; i++) {
 
+        console.log('====================================');
+        console.log('quantity', quantity[i]);
+        console.log('limit', limit[i]);
+        console.log( +quantity[i] > +limit[i]);
+        console.log('====================================');
+
         accessories.push({
           id: id[i],
-          quantity: quantity[i] > limit[i] ? limit[i] : quantity[i],
+          quantity: +quantity[i] > +limit[i] ? limit[i] : quantity[i], //true
           name: name[i],
           price: price[i]
         })

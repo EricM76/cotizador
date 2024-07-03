@@ -892,15 +892,17 @@ $('heigth').addEventListener('keyup', ({ target }) => {
 
 const checkWidthDecimal = (target) => {
     const regex = /[,.]/g;
-    if (target.value && (regex.test(target.value) || target.value < 10)) {
-        target.classList.add('is-invalid')
-        $('errorWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
-    }
 
     if (!target.value) {
         target.classList.add('is-invalid')
         $('errorWidth').innerHTML = null;
     }
+    if (target.value && (regex.test(target.value) || target.value < 10)) {
+        target.classList.add('is-invalid')
+        $('errorWidth').innerHTML = `El ancho debe ser expresado en centímetros`;
+    }
+
+  
 }
 
 $('width').addEventListener('blur', ({ target }) => {

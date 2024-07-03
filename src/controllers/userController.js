@@ -395,7 +395,10 @@ module.exports = {
                 //if (order.length > 0 && moment().diff(moment(order[0].createdAt), 'days') > 90 && !user.recovered && !user.infinity) {
 
                 console.log('====================================');
-                console.log(order.length, user.recovered, user.infinity);
+                console.log('ordenes',order.length);
+                console.log('recuperado',user.recovered);
+                console.log('infinito', user.infinity);
+                console.log('rol', user.rolId);
                 console.log('====================================');
                     
                 if (order.length > 0 && moment().diff(moment(order[0].createdAt), 'days') > 90 && !user.recovered && !user.infinity) {
@@ -421,7 +424,7 @@ module.exports = {
                     })
                 }
 
-                if(!order.length && ![1,2,3].includes(user.rolId) && moment().diff(moment(user.createdAt), 'days') > 90 ){
+                if(!order.length && ![1,2,3].includes(user.rolId) && moment().diff(moment(user.createdAt), 'days') > 90 && !user.infinity){
                     console.log('====================================');
                     console.log('cambio 2');
                     console.log('====================================');
